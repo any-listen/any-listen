@@ -43,7 +43,7 @@ module.exports = config
 docker run --volume=/home/music:/music --volume=/data:/server/data -p 8080:9500 -d test:latest
 ```
 
-### 环境变量说明
+环境变量说明
 
 | 变量名               | 描述                                                                                      |
 | -------------------- | ----------------------------------------------------------------------------------------- |
