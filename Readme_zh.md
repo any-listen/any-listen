@@ -1,5 +1,3 @@
-注意：该项目仍在积极开发中，目前仅提供网络服务版本。您可以直接部署到您的服务器或使用 docker。
-
 # Any Listen
 
 [English](Readme.md) | [中文](Readme_zh.md)
