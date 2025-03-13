@@ -1,8 +1,6 @@
 # Any Listen
 
-<div align="center">
-  <a href="README.md">English</a> | <a href="README_zh.md">中文</a>
-</div>
+[English](Readme.md) | [中文](Readme_zh.md)
 
 A cross-platform private song playback service.
 
