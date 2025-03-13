@@ -2,9 +2,7 @@
 
 # Any Listen
 
-<div align="center">
-  <a href="README.md">English</a> | <a href="README_zh.md">中文</a>
-</div>
+[English](Readme.md) | [中文](Readme_zh.md)
 
 一个跨平台的私人歌曲播放服务。
 
