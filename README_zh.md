@@ -12,6 +12,16 @@
 
 [https://hub.docker.com/r/lyswhut/any-listen-web-server](https://hub.docker.com/r/lyswhut/any-listen-web-server)
 
+### 直接部署
+
+[https://github.com/any-listen/any-listen-web-server/releases](https://github.com/any-listen/any-listen-web-server/releases)
+
+下载最新的版本，解压到相应目录
+
+参考 [https://github.com/lyswhut/lx-music-sync-server?tab=readme-ov-file](https://github.com/lyswhut/lx-music-sync-server?tab=readme-ov-file) 的使用方式，配置文件看下面
+
+---
+
 **使用示例**：
 
 1. 创建配置文件 `data/config.cjs`
