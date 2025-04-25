@@ -112,7 +112,7 @@
     gap: 2px;
     min-width: 0;
     span {
-      .mixin-ellipsis-1;
+      .mixin-ellipsis-1();
     }
   }
 

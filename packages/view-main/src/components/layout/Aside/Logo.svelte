@@ -2,7 +2,7 @@
   import { windowDarg } from '@/shared/browser/widnow'
 </script>
 
-{#if import.meta.env.VITE_IS_ELECTRON}
+{#if import.meta.env.VITE_IS_DESKTOP}
   <div class="aside-logo">Any Listen</div>
 {/if}
 {#if import.meta.env.VITE_IS_WEB}

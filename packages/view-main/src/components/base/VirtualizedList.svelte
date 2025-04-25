@@ -1,4 +1,4 @@
-<script lang="ts" generics="T extends {}">
+<script lang="ts" generics="T extends object">
   import { type Snippet, tick } from 'svelte'
   import { debounce, handleScroll } from './utils'
   import type { MouseEventHandler } from 'svelte/elements'

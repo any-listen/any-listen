@@ -1,14 +1,16 @@
+import { getLatestVersion } from '@any-listen/common/tools'
 import { appState } from '../app'
 import { request } from './request'
-import { compareVersions } from './utils'
+import { compareVersions, sleep } from './utils'
 
 interface EventTypes {
   checking_for_update: never
   update_available: AnyListen.UpdateInfo
-  update_not_available: AnyListen.VersionInfo
+  update_not_available: AnyListen.UpdateInfo
   download_progress: AnyListen.DownloadProgressInfo
   update_downloaded: never
   error: Error
+  ignore_version: string | null
 }
 type Listener = (event: unknown) => void
 class UpdateEvent {
@@ -31,7 +33,7 @@ class UpdateEvent {
       this.off(eventName, listener as Listener)
     }
   }
-  emit<T extends keyof EventTypes>(eventName: T, event: EventTypes[T]) {
+  emit<T extends keyof EventTypes>(eventName: T, ...[event]: EventTypes[T] extends never ? [] : [event: EventTypes[T]]) {
     setImmediate(() => {
       let targetListeners = this.listeners.get(eventName)
       if (!targetListeners) return
@@ -44,15 +46,15 @@ class UpdateEvent {
 
 const enName = 'YW55LWxpc3Rlbg=='
 const name = Buffer.from(enName, 'base64').toString()
-const orgName = `@${name}-web-server`
+const pkgName = `${name}-web-server`
 const address = [
-  [`https://raw.githubusercontent.com/${orgName}/${name}/main/publish/version.json`, 'direct'],
-  [`https://registry.npmjs.org/${orgName}/${name}/latest`, 'npm'],
-  [`https://cdn.jsdelivr.net/gh/${orgName}/${name}/publish/version.json`, 'direct'],
-  [`https://fastly.jsdelivr.net/gh/${orgName}/${name}/publish/version.json`, 'direct'],
-  [`https://gcore.jsdelivr.net/gh/${orgName}/${name}/publish/version.json`, 'direct'],
-  [`https://registry.npmmirror.com/${orgName}/${name}/latest`, 'npm'],
-  ['http://cdn.stsky.cn/lx-music/mobile/version.json', 'direct'],
+  [`https://raw.githubusercontent.com/${name}/${name}/main/packages/web-server/publish/version.json`, 'direct'],
+  [`https://registry.npmjs.org/@${name}/${pkgName}/latest`, 'npm'],
+  [`https://cdn.jsdelivr.net/gh/${name}/${name}/packages/web-server/publish/version.json`, 'direct'],
+  [`https://fastly.jsdelivr.net/gh/${name}/${name}/packages/web-server/publish/version.json`, 'direct'],
+  [`https://gcore.jsdelivr.net/gh/${name}/${name}/packages/web-server/publish/version.json`, 'direct'],
+  [`https://registry.npmmirror.com/@${name}/${pkgName}/latest`, 'npm'],
+  ['http://cdn.stsky.cn/any-listen/web-server/version.json', 'direct'],
 ] as const
 
 const getDirectInfo = async (url: string) => {
@@ -91,6 +93,7 @@ export const getUpdateInfo = async (index = 0): Promise<AnyListen.UpdateInfo> =>
 
 class Update extends UpdateEvent {
   async checkForUpdates(isAutoUpdate: boolean) {
+    this.emit('checking_for_update')
     let info: AnyListen.UpdateInfo
     try {
       info = await getUpdateInfo()
@@ -98,12 +101,10 @@ class Update extends UpdateEvent {
       this.emit('error', err as Error)
       return false
     }
-
-    if (compareVersions(appState.version, info.version) > 0) {
+    const latest = getLatestVersion(info, appState.appSetting['common.allowPreRelease'])
+    if (compareVersions(appState.version.version, latest.version) < 0) {
       this.emit('update_available', info)
-      if (isAutoUpdate) {
-        void this.downloadUpdate()
-      }
+      if (isAutoUpdate) void this.downloadUpdate()
       return true
     }
     this.emit('update_not_available', info)
@@ -124,3 +125,9 @@ class Update extends UpdateEvent {
   }
 }
 export const update = new Update()
+
+export const startCheckUpdateTimeout = async (): Promise<void> => {
+  await update.checkForUpdates(false).catch(() => {})
+  await sleep(86400_000)
+  return startCheckUpdateTimeout()
+}

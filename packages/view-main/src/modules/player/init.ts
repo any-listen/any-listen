@@ -1,7 +1,7 @@
-import { createUnsubscriptionSet } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
+import { appState } from '@/modules/app/store/state'
 import { settingEvent } from '@/modules/setting/store/event'
-import { getPlayInfo } from './store/playerRemoteAction'
+import { createUnsubscriptionSet } from '@/shared'
 import { initPlayer as initPlayerModules } from './init/index'
 import {
   initPlayHistoryList,
@@ -10,22 +10,28 @@ import {
   registerRemoteHistoryListAction,
   registerRemoteListAction,
   registerRemotePlayerAction,
+  release,
   sendCreatedEvent,
+  setCollectStatus,
   setPlayListId,
   setPlayMusicInfo,
-  release,
 } from './store/actions'
-import { appState } from '@/modules/app/store/state'
 import { playerEvent } from './store/event'
+import { getPlayInfo } from './store/playerRemoteAction'
 import { playerState } from './store/state'
 
 const init = async (isInited: boolean) => {
   initPlayerModules()
   sendCreatedEvent()
-  const [{ info, list, listId, historyList }] = await Promise.all([getPlayInfo(), appState.workerInitPromiseMain])
-  console.log(info, list, listId, historyList)
+  const [{ info, list, listId, isOnline, historyList, isCollect }] = await Promise.all([
+    getPlayInfo(),
+    appState.workerInitPromiseMain,
+  ])
+  console.log(info)
+  console.log(list, listId, historyList)
   initPlayList(list)
-  setPlayListId(listId)
+  setPlayListId(listId, isOnline)
+  setCollectStatus(isCollect)
   initPlayHistoryList(historyList)
   const targetMusicInfo = list[info.index] as AnyListen.Player.PlayMusicInfo | undefined
   if (targetMusicInfo && (!isInited || !playerState.playing)) {

@@ -32,7 +32,6 @@ declare interface Window {
   // key_event: KeyEventTypes
   // i18n: I18n
 
-  electron: any
   testData: any
 
   __anylisten_ipc_init__?: AnyListen.IPC.ConnectIPCSrivice

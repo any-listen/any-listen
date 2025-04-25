@@ -1,13 +1,13 @@
 import path from 'node:path'
-import { MessageChannel, Worker } from 'worker_threads'
 import type { UserConfig } from 'vite'
+import { MessageChannel, Worker } from 'worker_threads'
 
 import { dynamicImport } from './import-esm.cjs'
 import type { Vite } from './types'
 
 export type BuildSuatus = 'success' | 'error' | 'updated'
-export type TaksName = 'electron' | 'web-server' | 'web-preload' | 'view-main' | 'extension-preload'
-export type Target = 'electron' | 'web' | 'mobile'
+export type TaksName = 'desktop' | 'web-server' | 'web-preload' | 'view-main' | 'extension-preload'
+export type Target = 'desktop' | 'web' | 'mobile'
 
 /**
  * build code

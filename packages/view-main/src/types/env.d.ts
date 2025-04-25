@@ -4,7 +4,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_IS_WEB?: string
-  readonly VITE_IS_ELECTRON?: string
+  readonly VITE_IS_DESKTOP?: string
 }
 
 interface ImportMeta {
@@ -12,5 +12,6 @@ interface ImportMeta {
 }
 
 declare module 'svelte' {
-  export type ComponentExports<TComponent extends Component<any, any>> = TComponent extends Component<any, infer TExports> ? TExports : never
+  export type ComponentExports<TComponent extends Component<any, any>> =
+    TComponent extends Component<any, infer TExports> ? TExports : never
 }

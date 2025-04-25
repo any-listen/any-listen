@@ -7,12 +7,12 @@
   }
 </script>
 
-<script lang="ts" generics="T extends string = string">
+<script lang="ts">
   import { menuLocaltion } from '@/shared/compositions/menuLocaltion'
   import Portal from './Portal.svelte'
   import { tick } from 'svelte'
 
-  type _Menus = MenuList<T>
+  type _Menus = MenuList
   let render = $state(false)
   let anim = $state(false)
 
@@ -69,7 +69,7 @@
         if (!visible) render = false
       }}
     >
-      {#each menus as item}
+      {#each menus as item, idx (item?.action ?? idx)}
         {#if item}
           <button
             class="menuItem"
@@ -133,7 +133,7 @@
     // outline: none;
     transition: @transition-normal;
     transition-property: background-color, opacity;
-    .mixin-ellipsis-1;
+    .mixin-ellipsis-1();
     background-color: transparent;
     border: none;
 

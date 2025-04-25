@@ -33,13 +33,12 @@ import { debounce } from '@/shared'
 //   }
 // }
 
-export const tooltip: Action<HTMLElement, { delay?: number }> = (dom, { delay: _delay = 0 }) => {
+export const tooltip: Action<HTMLElement, { delay?: number } | undefined> = (dom, { delay = 0 } = {}) => {
   let instance: ComponentExports<typeof App> | null
   let prevTips = ''
   let prevX = 0
   let prevY = 0
   let isDraging = false
-  let delay = Math.max(_delay, 50)
 
   const unmountApp = () => {
     if (instance) {
@@ -51,22 +50,23 @@ export const tooltip: Action<HTMLElement, { delay?: number }> = (dom, { delay: _
     return dom.getAttribute('aria-label')
   }
 
-  const showTips = debounce((event: MouseEvent) => {
+  const handleShowTips = (event: MouseEvent, update = false) => {
     if (isDraging) return
-    let msg = getTips()?.trim()
-    if (!msg) return
-    prevTips = msg
+    let msg: string
+    if (!prevTips || update) {
+      let msg = getTips()?.trim()
+      if (!msg) return
+      prevTips = msg
+    } else msg = prevTips
 
-    if (!instance) {
-      instance = mount(App, {
-        target: document.getElementById('root')!,
-        props: {
-          onafterleave() {
-            unmountApp()
-          },
+    instance ||= mount(App, {
+      target: document.getElementById('root')!,
+      props: {
+        onafterleave() {
+          unmountApp()
         },
-      })
-    }
+      },
+    })
     void tick().then(() => {
       instance?.show(
         {
@@ -77,7 +77,8 @@ export const tooltip: Action<HTMLElement, { delay?: number }> = (dom, { delay: _
         10000
       )
     })
-  }, delay)
+  }
+  const showTips = delay ? debounce(handleShowTips, delay) : handleShowTips
 
   const hideTips = () => {
     if (!instance) return
@@ -92,7 +93,7 @@ export const tooltip: Action<HTMLElement, { delay?: number }> = (dom, { delay: _
   const updateTips = (event: MouseEvent) => {
     if (isDraging) return
     if (!instance) {
-      showTips(event)
+      showTips(event, true)
       return
     }
     setTimeout(() => {
@@ -111,6 +112,7 @@ export const tooltip: Action<HTMLElement, { delay?: number }> = (dom, { delay: _
     showTips(event)
   }
   dom.addEventListener('mousemove', handleMouseMove)
+  dom.addEventListener('mouseleave', hideTips)
   dom.addEventListener('click', updateTips)
   dom.addEventListener('wheel', updateTips)
   dom.addEventListener('contextmenu', updateTips)
@@ -126,6 +128,7 @@ export const tooltip: Action<HTMLElement, { delay?: number }> = (dom, { delay: _
   return {
     destroy() {
       dom.removeEventListener('mousemove', handleMouseMove)
+      dom.removeEventListener('mouseleave', hideTips)
       dom.removeEventListener('click', updateTips)
       dom.removeEventListener('wheel', updateTips)
       dom.removeEventListener('contextmenu', updateTips)

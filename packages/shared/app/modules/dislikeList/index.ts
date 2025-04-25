@@ -23,8 +23,6 @@ export const sendDislikeAction = async (action: AnyListen.IPCDislikeList.ActionL
     case 'dislike_music_clear':
       await dislikeListEvent.dislike_music_clear()
       break
-    default:
-      break
   }
 }
 

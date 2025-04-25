@@ -1,8 +1,8 @@
-import { createMsg2call } from 'message2call'
 import { triggerTimeout } from '@/apis/global'
-import { hostContext } from './host/state'
-import { extensionAPIEvent } from './event'
+import { createMessage2Call } from 'message2call'
 import { onResourceAction } from './apis/resource'
+import { extensionAPIEvent } from './event'
+import { hostContext } from './host/state'
 import { setMessage } from './i18n'
 
 const exposeObj = {
@@ -28,11 +28,11 @@ const exposeObj = {
   configurationChanged(keys, config) {
     extensionAPIEvent.configurationChanged(keys, config)
   },
-  async resourceAction(action) {
-    return onResourceAction(
-      // @ts-expect-error
-      action
-    )
+  async resourceAction<T extends keyof AnyListen.IPCExtension.ResourceAction>(
+    action: T,
+    params: Parameters<AnyListen.IPCExtension.ResourceAction[T]>[0]
+  ): Promise<Awaited<ReturnType<AnyListen.IPCExtension.ResourceAction[T]>>> {
+    return onResourceAction(action, params)
   },
   // clientConnectAction(id, isConnected) {
   //   if (isConnected) {
@@ -43,8 +43,8 @@ const exposeObj = {
   // },
 } satisfies AnyListen.IPCExtension.ExtensionIPCActions
 
-export const msg2call = createMsg2call<AnyListen.HostFuncs>({
-  funcsObj: exposeObj,
+export const msg2call = createMessage2Call<AnyListen.HostFuncs>({
+  exposeObj,
   isSendErrorStack: true,
   timeout: 0,
   sendMessage(data?: unknown) {

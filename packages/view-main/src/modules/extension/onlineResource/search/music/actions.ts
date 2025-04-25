@@ -84,32 +84,32 @@ import { resourceAction } from '@/shared/ipc/extension'
 export const search = async (
   extensionId: string,
   source: string,
-  keyword: string,
+  name: string,
+  artist: string,
   page: number,
   limit: number
 ): Promise<{
   list: AnyListen.Music.MusicInfoOnline[]
   total: number
 }> => {
-  console.log(extensionId, source, keyword, page, limit)
-  if (!keyword.trim().length) {
+  console.log(extensionId, source, name, artist, page, limit)
+  if (!name.trim().length) {
     return {
       list: [],
       total: 0,
     }
   }
-  return resourceAction({
-    action: 'musicSearch',
-    data: {
-      extensionId,
-      source,
-      keyword,
-      limit,
-      page,
-    },
+  return resourceAction('musicSearch', {
+    extensionId,
+    source,
+    name,
+    artist,
+    limit,
+    page,
   }).then((result) => {
     console.log(result)
     return {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       list: result.list ?? [],
       total: result.total,
     }

@@ -65,12 +65,10 @@ export default class Store {
     this.data = data
     if (this.runing) return
     if (this.batch) {
-      if (this.immediate == null) {
-        this.immediate = setImmediate(() => {
-          this.immediate = null
-          void this.handleWriteFile()
-        })
-      }
+      this.immediate ??= setImmediate(() => {
+        this.immediate = null
+        void this.handleWriteFile()
+      })
     } else void this.handleWriteFile()
   }
 }

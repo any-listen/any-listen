@@ -1,4 +1,4 @@
-import { createMsg2call, createProxyCallback } from 'message2call'
+import { createMessage2Call, createProxyCallback } from 'message2call'
 
 export declare type WorkerMainTypes = WarpPromiseRecord<AnyListen.WorkerMainTypes>
 
@@ -6,8 +6,8 @@ export const createMainWorker = (): WorkerMainTypes => {
   const worker: Worker = new Worker(new URL('../main/main.worker', import.meta.url), {
     type: 'module',
   })
-  const msg2call = createMsg2call<WorkerMainTypes>({
-    funcsObj: {
+  const msg2call = createMessage2Call<WorkerMainTypes>({
+    exposeObj: {
       inited() {
         window.dispatchEvent(new CustomEvent('worker-initialized-main'))
       },
@@ -37,7 +37,7 @@ export const createMainWorker = (): WorkerMainTypes => {
 //   const worker: Worker = new Worker(new URL('../download/download.worker', import.meta.url), {
 //     type: 'module',
 //   })
-//   const msg2call = createMsg2call<AnyListen.WorkerDownloadTypes>({
+//   const msg2call = createMessage2Call<AnyListen.WorkerDownloadTypes>({
 //     funcsObj: {},
 //     sendMessage(message) {
 //       worker.postMessage(message)

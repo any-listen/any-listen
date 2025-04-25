@@ -57,8 +57,8 @@
     }
   }
   .num {
-    .nobreak;
-    .center;
+    .nobreak();
+    .center();
     display: flex;
     align-items: center;
     justify-content: center;

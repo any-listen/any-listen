@@ -7,7 +7,7 @@ const rootPath = path.join(__dirname, '../../../')
 const projectPath = path.join(rootPath, 'packages/shared/extension-preload')
 
 const outputPath = {
-  electron: path.join(rootPath, 'packages/electron/dist'),
+  desktop: path.join(rootPath, 'packages/desktop/dist'),
   web: isProd ? path.join(rootPath, 'build/server') : path.join(rootPath, 'packages/web-server/server'),
   mobile: path.join(rootPath, 'packages/mobile/dist'),
 } as const

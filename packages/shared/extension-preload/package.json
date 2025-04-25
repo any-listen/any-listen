@@ -2,18 +2,18 @@
   "name": "@shared/extension-preload",
   "scripts": {
     "build:web": "vite build --mode web",
-    "build:electron": "vite build --mode electron",
+    "build:desktop": "vite build --mode desktop",
     "build:mobile": "vite --mode mobile"
   },
   "types": "./src/types/global.d.ts",
   "main": "vite.config.ts",
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
-    "message2call": "^1.1.1"
+    "message2call": "^2.0.3"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "vite": "^6.0.11"
+    "vite": "^6.2.3"
   }
 }

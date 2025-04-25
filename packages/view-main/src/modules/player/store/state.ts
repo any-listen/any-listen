@@ -44,6 +44,7 @@ export const playerState: InitState = {
     index: -1,
     listId: '',
     historyIndex: -1,
+    isOnline: false,
   },
   playerPlaying: false,
   playing: false,

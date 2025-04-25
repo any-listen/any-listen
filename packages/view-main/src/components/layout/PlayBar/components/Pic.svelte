@@ -7,13 +7,16 @@
 </script>
 
 <div class="container">
-  <button type="button" class="btn" onclick={() => {
-
-  }} oncontextmenu={() => {
-    let mInfo = playerState.playMusicInfo
-    if (!mInfo) return
-    scrollListTo(mInfo.listId, mInfo.isOnline, mInfo.musicInfo.id)
-  }}>
+  <button
+    type="button"
+    class="btn"
+    onclick={() => {}}
+    oncontextmenu={() => {
+      let mInfo = playerState.playMusicInfo
+      if (!mInfo) return
+      scrollListTo(mInfo.listId, mInfo.isOnline, mInfo.musicInfo.id)
+    }}
+  >
     <Image src={pic} />
   </button>
 </div>
@@ -35,6 +38,7 @@
     padding: 0;
     transition: opacity @transition-fast;
     cursor: pointer;
+    aspect-ratio: 1;
 
     &:hover {
       opacity: 0.6;

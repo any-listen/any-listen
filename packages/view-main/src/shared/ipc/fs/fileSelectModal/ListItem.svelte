@@ -107,6 +107,6 @@
 
   .name {
     flex: auto;
-    .mixin-ellipsis-1;
+    .mixin-ellipsis-1();
   }
 </style>

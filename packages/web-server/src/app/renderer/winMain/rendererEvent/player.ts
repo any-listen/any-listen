@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { getPlayInfo, playerEvent } from '@/app/modules/player'
-import type { ExposeClientFunctions, ExposeServerFunctions } from '.'
 import { broadcast } from '@/modules/ipc/websocket'
 import { onPlayHistoryListAction, onPlayListAction } from '@any-listen/app/modules/player'
+import type { ExposeClientFunctions, ExposeServerFunctions } from '.'
 
 // 暴露给前端的方法
 export const createExposePlayer = () => {
@@ -29,9 +29,6 @@ export const createExposePlayer = () => {
           break
         case 'statusText':
           playerEvent.statusText(pEvent.data)
-          break
-        case 'collectStatus':
-          playerEvent.collectStatus(pEvent.data)
           break
         case 'picUpdated':
           playerEvent.picUpdated(pEvent.data)

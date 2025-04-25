@@ -86,7 +86,7 @@
       if (disabled) return
       event.preventDefault()
       const touch = event.changedTouches[0]
-      var offsetX = touch.clientX - (event.currentTarget as HTMLDivElement).getBoundingClientRect().left
+      let offsetX = touch.clientX - (event.currentTarget as HTMLDivElement).getBoundingClientRect().left
       handleDown(touch.clientX, offsetX)
     }
   }
@@ -120,7 +120,7 @@
 
 <div class="slider" class:disabled>
   <div class="sliderContent">
-    <div class="sliderBar" bind:this={domSliderBar} style={`transform: scaleX(${(value - min) / (max - min) || 0});`}></div>
+    <div class="sliderBar" bind:this={domSliderBar} style:transform={`scaleX(${(value - min) / (max - min) || 0})`}></div>
   </div>
   <div
     class="sliderMask"

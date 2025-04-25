@@ -9,66 +9,72 @@ export const initPlayList = (list: AnyListen.Player.PlayMusicInfo[]) => {
 }
 
 export {
-  setPlayListId,
+  setPlayHistoryList as initPlayHistoryList,
+  setDislikeIds,
+  setIsLinkedList,
   setMaxPlayTime,
   setNowPlayTime,
-  setStatusText,
   setPlayerPlaying,
-  updatePlayIndex,
-  updatePlayHistoryIndex,
-  setIsLinkedList,
-  setDislikeIds,
-  setPlayHistoryList as initPlayHistoryList,
+  setPlayListId,
+  setPlaybackRate as setStatePlaybackRate,
   setVolume as setStateVolume,
   setVolumeMute as setStateVolumeMute,
-  setPlaybackRate as setStatePlaybackRate,
+  setStatusText,
+  updatePlayHistoryIndex,
+  updatePlayIndex,
 } from './commit'
 
 export {
-  setPlayListMusic,
   addPlayListMusic,
+  registerRemoteListAction,
   removePlayListMusic,
-  updatePlayListMusic,
-  updatePlayListMusicPos,
+  setPlayListMusic,
   setPlayListMusicPlayed,
   setPlayListMusicUnplayed,
   setPlayListMusicUnplayedAll,
-  registerRemoteListAction,
+  updatePlayListMusic,
+  updatePlayListMusicPos,
 } from './listRemoteAction'
 
 export {
+  getMusicPicDelay,
   getPlayInfo,
   registerLocalPlayerAction,
-  registerRemotePlayerAction,
   registerRemoteHistoryListAction,
-  getMusicPicDelay,
+  registerRemotePlayerAction,
 } from './playerRemoteAction'
 
 export {
-  skipNext,
-  skipPrev,
-  setPlayMusicInfo,
   collectMusic,
-  uncollectMusic,
   dislikeMusic,
   pause,
   play,
-  stop,
-  playIndex,
   playId,
+  playIndex,
   playList,
-  togglePlay,
-  setMusicUrl,
+  release,
   seekTo,
+  setCollectStatus,
   setLyricOffset,
+  setMusicUrl,
   setPlaybackRate,
+  setPlayMusicInfo,
   setVolume,
   setVolumeMute,
-  release,
+  skipNext,
+  skipPrev,
+  stop,
+  togglePlay,
+  uncollectMusic,
 } from './playerActions'
 
 export const addPlayLaterMusic = async (musicInfos: AnyListen.Music.MusicInfo[], listId: string, isOnline = false) => {
-  const list = createPlayMusicInfoList(musicInfos, listId, isOnline, true)
+  const list = createPlayMusicInfoList({
+    musicInfos,
+    listId,
+    isOnline,
+    playLater: true,
+  })
   await addPlayListMusic({ musics: list, pos: playerState.playList.findIndex((m) => m.playLater) + 1 })
 }
 

@@ -5,6 +5,7 @@
 
   // import { extensionList } from '@/modules/extension/reactive'
   import ListItemOnline from './ListItemOnline.svelte'
+  import ListItemEnpty from './ListItemEnpty.svelte'
 
   const list = useOnlineExtensionList()
 
@@ -19,6 +20,11 @@
       {#each list.val as ext (ext.id)}
         <ListItemOnline {ext} />
       {/each}
+      <ListItemEnpty />
+      <ListItemEnpty />
+      <ListItemEnpty />
+      <ListItemEnpty />
+      <ListItemEnpty />
     </ul>
   {:else}
     <Empty />

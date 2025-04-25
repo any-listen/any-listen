@@ -38,5 +38,6 @@
   }
   .settings-item-desc {
     font-size: 12px;
+    opacity: 0.7;
   }
 </style>

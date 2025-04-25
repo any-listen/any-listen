@@ -46,12 +46,10 @@ export default class Store {
   writeFile(data: string | Record<string, unknown> | Buffer | Uint8Array) {
     this.data = data
     if (this.batch) {
-      if (this.immediate == null) {
-        this.immediate = setImmediate(() => {
-          this.immediate = null
-          this.handleWriteFile()
-        })
-      }
+      this.immediate ??= setImmediate(() => {
+        this.immediate = null
+        this.handleWriteFile()
+      })
     } else this.handleWriteFile()
   }
 }

@@ -318,7 +318,21 @@ small {
 strong {
   font-weight: bold;
 }
-
+.nobreak {
+  white-space: nowrap;
+}
+.auto-hidden {
+  .mixin-ellipsis-1();
+}
+.break {
+  word-break: break-all;
+}
+.select {
+  user-select: text;
+}
+.no-select {
+  user-select: none;
+}
 .underline {
   text-decoration: underline;
 }
@@ -429,8 +443,8 @@ textarea::-webkit-resizer {
   border-bottom: var(--color-border);
 
   .num {
-    .nobreak;
-    .center;
+    .nobreak();
+    .center();
 
     color: var(--color-font-label);
   }
@@ -494,7 +508,7 @@ table {
 //       // transition:  0.3s cubic-bezier(0.4, 0, 0.2, 1);
 //       line-height: 16px;
 //       vertical-align: middle;
-//       .mixin-ellipsis-1;
+//       .mixin-ellipsis-1();
 
 //       &.auto {
 //         flex: auto;
@@ -519,7 +533,7 @@ table {
 //         white-space: initial;
 
 //         >.name {
-//           .mixin-ellipsis-1;
+//           .mixin-ellipsis-1();
 //         }
 //       }
 //       .badge {

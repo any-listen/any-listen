@@ -7,7 +7,7 @@ on:
       - 'webserver-v*'
 env:
   DESKTOP_REPO: any-listen-desktop
-  WEBSERVER_REPO: any-listen-web-server
+  WEBSERVER_REPO: any-listen-web-server-native-lib
 
 jobs:
   sync-desktop-app:
@@ -31,8 +31,8 @@ jobs:
           git config user.name "lyswhut"
           git config user.email "lyswhut@qq.com"
           git add .
-          tag_formated=$(echo ${{ github.ref_name }} | sed 's/webserver-v\?//')
-          git commit -m "release $tag_formated"
+          tag_formated=$(echo ${{ github.ref_name }} | sed 's/desktop-v\?//')
+          git commit -m "Release v$tag_formated"
           git remote set-url origin https://x-access-token:${{ secrets.GH_DESKTOP_PAT }}@github.com/any-listen/${{ env.DESKTOP_REPO }}.git
           git push origin main
 
@@ -43,7 +43,7 @@ jobs:
       - name: Checkout web server
         uses: actions/checkout@v4
         with:
-          repository: any-listen/any-listen-web-server
+          repository: any-listen/${{ env.WEBSERVER_REPO }}
           token: ${{ secrets.GH_WEB_SERVER_PAT }}
 
       - name: Checkout monorepo
@@ -58,6 +58,6 @@ jobs:
           git config user.email "lyswhut@qq.com"
           git add .
           tag_formated=$(echo ${{ github.ref_name }} | sed 's/webserver-v\?//')
-          git commit -m "release $tag_formated"
+          git commit -m "Release v$tag_formated"
           git remote set-url origin https://x-access-token:${{ secrets.GH_WEB_SERVER_PAT }}@github.com/any-listen/${{ env.WEBSERVER_REPO }}.git
           git push origin main

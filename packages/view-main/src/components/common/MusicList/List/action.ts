@@ -52,6 +52,16 @@ export const locateMusic = (musicInfo: AnyListen.Music.MusicInfoLocal) => {
 }
 
 export const dislikeMusic = async (musicInfo: AnyListen.Music.MusicInfo) => {
+  const confirm = await showSimpleConfirmModal(
+    musicInfo.singer
+      ? i18n.t('music_list__dislike_music_singer_tip', { name: musicInfo.name, singer: musicInfo.singer })
+      : i18n.t('music_list__dislike_music_tip', { name: musicInfo.name }),
+    {
+      cancelBtn: i18n.t('cancel_button_text_2'),
+      confirmBtn: i18n.t('confirm_button_text'),
+    }
+  )
+  if (!confirm) return
   await addInfo([{ name: musicInfo.name, singer: musicInfo.singer }])
   if (playerState.playMusicInfo && hasDislike(playerState.playMusicInfo.musicInfo)) {
     void skipNext()

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import fs from 'node:fs'
-import path from 'node:path'
-import { extensionEvent } from '../event'
+import { EXTENSION } from '@any-listen/common/constants'
+import { generateId, throttle } from '@any-listen/common/utils'
 import {
   basename,
   checkFile,
@@ -17,14 +16,16 @@ import {
   renamePath,
   toSha256,
 } from '@any-listen/nodejs'
-import { createVmConetxt, destroyContext, runExtension, setupVmContext } from '../vm'
-import { extensionState } from '../state'
-import { EXTENSION } from '@any-listen/common/constants'
 import { simpleDownload } from '@any-listen/nodejs/download'
+import { readLastLines } from '@any-listen/nodejs/logs'
 import { verifySignature } from '@any-listen/nodejs/sign'
-import { throttle } from '@any-listen/common/utils'
-import { getConfig, saveConfig, unloadConfig } from './configStore'
+import fs from 'node:fs'
+import path from 'node:path'
+import { extensionEvent } from '../event'
+import { extensionState } from '../state'
+import { createVmConetxt, destroyContext, runExtension, setupVmContext } from '../vm'
 import { sendConfigUpdatedEvent } from '../vm/hostContext/preloadFuncs'
+import { getConfig, saveConfig, unloadConfig } from './configStore'
 
 const FILE_EXT_NAME = `.${EXTENSION.pkgExtName}`
 const FILE_EXT_NAME_EXP = new RegExp(`\\.${EXTENSION.pkgExtName}$`, 'i')
@@ -34,7 +35,9 @@ const RESOURCE: AnyListen.Extension.ResourceAction[] = [
   'hotSearch',
   'musicSearch',
   'musicPic',
+  'musicLyric',
   'musicUrl',
+  'musicPicSearch',
   'songlistSearch',
   'songlist',
   'leaderboard',
@@ -43,13 +46,14 @@ const RESOURCE: AnyListen.Extension.ResourceAction[] = [
   'singerSearch',
   'singer',
   'lyricSearch',
-  'lyric',
+  'lyricDetail',
 ]
 
 const buildPath = async (extensionPath: string, _path: string) => {
   if (isAbsolute(_path)) throw new Error(`path not a relative path: ${_path}`)
   const enterFilePath = joinPath(extensionPath, _path)
   if (!enterFilePath.startsWith(extensionPath + path.sep)) throw new Error('main path illegal')
+  if (!(await checkFile(enterFilePath))) return ''
   return enterFilePath
 }
 
@@ -67,6 +71,7 @@ const verifyManifest = async (extensionPath: string, manifest: AnyListen.Extensi
 
   if (manifest.main != null) manifest.main = String(manifest.main)
   manifest.main = await buildPath(extensionPath, manifest.main)
+  if (!manifest.main) throw new Error('Main enter not defined')
 
   if (manifest.version != null) manifest.version = String(manifest.version)
   if (manifest.targetEngine != null) manifest.targetEngine = String(manifest.targetEngine)
@@ -206,7 +211,7 @@ export const removeExtensions = async (extensions: AnyListen.Extension.Extension
   while (extensions.length) {
     const ext = extensions.shift()!
     await unloadConfig(ext)
-    await Promise.all([removePath(ext.directory).catch((_) => _), removePath(ext.dataDirectory).catch((_) => _)])
+    await Promise.all([removePath(ext.directory).catch(() => {}), removePath(ext.dataDirectory).catch(() => {})])
   }
 }
 
@@ -219,10 +224,10 @@ export const loadExtension = async (extension: AnyListen.Extension.Extension) =>
     const vmState = await createVmConetxt(extension, extensionState.preloadScript)
     await setupVmContext(vmState)
     runTotalTime = await runExtension(vmState.vmContext, vmState.extension)
-  } catch (err: any) {
-    console.log('load extension error: ', err)
-    extension.errorMessage = err.message
-    extensionEvent.loadError(extension.id, err.message)
+  } catch (err) {
+    console.error('load extension error: ', err)
+    extension.errorMessage = (err as Error).message
+    extensionEvent.loadError(extension.id, (err as Error).message)
     return
   }
   extension.loadTimestamp = runTotalTime
@@ -261,8 +266,8 @@ export const downloadExtension = async (url: string, manifest?: AnyListen.Extens
     throw new Error(`Unable to read the path: ${url}`)
   }
 
-  const bundlePath = joinPath(extensionState.tempDir, `${toSha256(manifest?.id ?? Math.random().toString())}${FILE_EXT_NAME}`)
-  await simpleDownload(url, bundlePath).catch(async (err) => {
+  const bundlePath = joinPath(extensionState.tempDir, `${toSha256(manifest?.id ?? generateId())}${FILE_EXT_NAME}`)
+  await simpleDownload(url, bundlePath).catch(async (err: Error) => {
     await removePath(bundlePath)
     throw err
   })
@@ -301,12 +306,8 @@ const verifyExtension = async (unpackDir: string) => {
   if (extBundleFilePath) {
     extDir = extBundleFilePath.replace(new RegExp(`\\${extname(EXTENSION.extBundleFileName)}`), '')
     await createDir(extDir)
-    const { x } = await import('tar')
-    await x({
-      file: extBundleFilePath,
-      strip: 1,
-      C: extDir,
-    }).catch(async (err) => {
+    const { unpack } = await import('@any-listen/nodejs/tar')
+    await unpack(extBundleFilePath, extDir).catch(async (err: Error) => {
       await removePath(extDir)
       throw err
     })
@@ -331,12 +332,8 @@ export const unpackExtension = async (bundlePath: string) => {
   const targetDir = bundlePath.replace(FILE_EXT_NAME_EXP, '')
   if (await checkFile(targetDir)) await removePath(targetDir)
   await createDir(targetDir)
-  const { x } = await import('tar')
-  await x({
-    file: bundlePath,
-    strip: 1,
-    C: targetDir,
-  }).catch(async (err) => {
+  const { unpack } = await import('@any-listen/nodejs/tar')
+  await unpack(bundlePath, targetDir).catch(async (err: Error) => {
     await removePath(targetDir)
     throw err
   })
@@ -346,7 +343,7 @@ export const unpackExtension = async (bundlePath: string) => {
 
 export const backupExtension = async (extensionDir: string) => {
   const newPath = joinPath(extensionState.tempDir, `${basename(extensionDir)}.bak`)
-  await removePath(newPath).catch((_) => _)
+  await removePath(newPath).catch(() => {})
   if (!(await renamePath(extensionDir, newPath))) {
     throw new Error(`Could not rename extension: ${extensionDir}`)
   }
@@ -355,18 +352,18 @@ export const backupExtension = async (extensionDir: string) => {
 
 export const restoreExtension = async (extensionDir: string) => {
   const newPath = joinPath(extensionState.extensionDir, basename(extensionDir.replace(/\.bak$/, '')))
-  await removePath(newPath).catch((_) => _)
+  await removePath(newPath).catch(() => {})
   if (!(await renamePath(extensionDir, newPath))) {
     throw new Error(`Could not rename extension: ${extensionDir}`)
   }
   return newPath
 }
 
-export const mvExtension = async (extensionDir: string) => {
-  if (dirname(extensionDir) == extensionState.extensionDir) return extensionDir
-  const newPath = joinPath(extensionState.extensionDir, basename(extensionDir))
-  if (!(await renamePath(extensionDir, newPath))) {
-    throw new Error(`Could not rename extension: ${extensionDir}`)
+export const mvExtension = async (tempExtension: AnyListen.Extension.Extension) => {
+  if (dirname(tempExtension.directory) == extensionState.extensionDir) return tempExtension.directory
+  const newPath = joinPath(extensionState.extensionDir, `${tempExtension.id}_${tempExtension.version}`)
+  if (!(await renamePath(tempExtension.directory, newPath))) {
+    throw new Error(`Could not rename extension: ${tempExtension.directory}`)
   }
   return newPath
 }
@@ -452,4 +449,32 @@ export const updateExtensionSettings = async (id: string, config: Record<string,
   }
   extensionEvent.extenstionSettingUpdated(id, Object.keys(config), config)
   sendConfigUpdatedEvent(id, Object.keys(config), config)
+}
+
+export const getExtensionLastLogs = async (extId?: string): Promise<AnyListen.IPCExtension.LastLog[]> => {
+  if (extId == null) {
+    // TODO limit
+    return (
+      await Promise.all(
+        extensionState.extensions
+          .filter((ext) => ext.enabled)
+          .map(async (ext) => {
+            return {
+              logs: await readLastLines(joinPath(ext.dataDirectory, EXTENSION.logFileName), 100),
+              id: ext.id,
+              name: ext.name,
+            }
+          })
+      )
+    ).filter((log) => log.logs)
+  }
+  const ext = extensionState.extensions.find((ext) => ext.id == extId)
+  if (!ext) throw new Error('extension not found')
+  return [
+    {
+      logs: await readLastLines(joinPath(ext.dataDirectory, EXTENSION.logFileName), 100),
+      id: ext.id,
+      name: ext.name,
+    },
+  ]
 }

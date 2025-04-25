@@ -1,9 +1,9 @@
-import type { ExtensionSeriveTypes } from '../worker/utils'
 import _Event, { type EventType } from '@any-listen/nodejs/Event'
+import type { ExtensionSeriveTypes } from '../worker/utils'
 import { extensionState } from './state'
 
 export class Event extends _Event {
-  emitEvent<K extends keyof EventMethods>(eventName: K, ...args: any[]) {
+  emitEvent<K extends keyof EventMethods>(eventName: K, ...args: unknown[]) {
     this.emit(eventName, ...args)
   }
 
@@ -18,6 +18,8 @@ export class Event extends _Event {
         break
       case 'loadListStart':
         extensionState.crashMessage &&= null
+        break
+      default:
         break
     }
     this.emitEvent('extensionEvent', event)

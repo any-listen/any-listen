@@ -46,6 +46,7 @@ declare namespace AnyListen {
       duration: number
       index: number
       listId: string | null
+      isOnline: boolean
       historyIndex: number
     }
 

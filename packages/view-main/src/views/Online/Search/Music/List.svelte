@@ -4,7 +4,7 @@
   import type { SourceType } from '../shared'
   import Pagination from '@/components/material/Pagination.svelte'
   import { search } from '@/modules/extension/onlineResource/search/music/actions'
-  import { query } from '@/plugins/routes'
+  import { query, push } from '@/plugins/routes'
 
   let { source }: { source?: SourceType } = $props()
   let list = $state.raw<AnyListen.Music.MusicInfoOnline[]>([])
@@ -28,7 +28,7 @@
     listInfo.page = page
     const searchId = `${searchInfo.extId}_${searchInfo.source}_${searchInfo.text}_${listInfo.page}`
     listInfo.loading = true
-    void search(extId, sourceId, searchInfo.text, page, listInfo.limit)
+    void search(extId, sourceId, searchInfo.text, '', page, listInfo.limit)
       .then(({ list: _list, total }) => {
         if (searchId != `${searchInfo.extId}_${searchInfo.source}_${searchInfo.text}_${listInfo.page}`) {
           return
@@ -73,7 +73,19 @@
         name: 'search',
       }}
     />
-    <Pagination count={listInfo.total} page={listInfo.page} limit={listInfo.limit} onclick={handleSearch} />
+    <div class="pagination">
+      <Pagination
+        count={listInfo.total}
+        page={listInfo.page}
+        limit={listInfo.limit}
+        onclick={(page) => {
+          void push('/online', {
+            ...$query,
+            page,
+          })
+        }}
+      />
+    </div>
   {:else}
     <Empty />
   {/if}
@@ -86,5 +98,10 @@
     overflow: hidden;
     display: flex;
     flex-flow: column nowrap;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
   }
 </style>

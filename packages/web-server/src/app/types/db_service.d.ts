@@ -48,7 +48,7 @@ declare namespace AnyListen {
         }
       | {
           id: string
-          type: keyof Omit<AnyListen.Music.LyricInfo, 'lyric'>
+          type: keyof Omit<Music.LyricInfo, 'lyric'>
           text: string | null
           source: 'raw' | 'edited'
         }
@@ -61,13 +61,13 @@ declare namespace AnyListen {
     interface DownloadMusicInfo {
       id: string
       isComplate: 0 | 1
-      status: AnyListen.Download.DownloadTaskStatus
+      status: Download.DownloadTaskStatus
       statusText: string
       progress_downloaded: number
       progress_total: number
       url: string | null
-      quality: AnyListen.Quality
-      ext: AnyListen.Download.FileExt
+      quality: Music.Quality
+      ext: Download.FileExt
       fileName: string
       filePath: string
       musicInfo: string

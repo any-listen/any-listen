@@ -1,6 +1,6 @@
+import { joinPath } from '@any-listen/nodejs'
 import Store from '@any-listen/nodejs/Store'
 import { extensionEvent } from '../event'
-import { joinPath } from '@any-listen/nodejs'
 
 const stores = new Map<string, Store>()
 
@@ -9,8 +9,8 @@ const getStore = (extension: AnyListen.Extension.Extension) => {
   if (store) return store
   try {
     store = new Store(joinPath(extension.dataDirectory, 'configuration.json'), false, true)
-  } catch (err: any) {
-    extensionEvent.error(`init config store error: ${err.stack ?? err.message}`)
+  } catch (err) {
+    extensionEvent.error(`init config store error: ${(err as Error).stack ?? (err as Error).message}`)
     store = new Store(extension.dataDirectory, true, true)
   }
   stores.set(extension.id, store)

@@ -1,0 +1,15 @@
+{
+  "extends": "./node_modules/@any-listen/eslint/tsconfig.node.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "checkJs": true,
+    "outDir": "../../dist/electron",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "types": ["@any-listen/types", "@any-listen/app", "@any-listen/nodejs/node_modules/@types/node"]
+  },
+  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}

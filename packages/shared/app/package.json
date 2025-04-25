@@ -8,20 +8,19 @@
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
     "@any-listen/theme": "workspace:@shared/theme@*",
     "@any-listen/web": "workspace:@shared/web@*",
-    "better-sqlite3": "^11.7.0",
+    "better-sqlite3": "^11.9.1",
     "iconv-lite": "^0.6.3",
     "jschardet": "^3.1.4",
-    "jsonschema": "^1.4.1",
-    "message2call": "^1.1.1",
-    "music-metadata": "^10.6.4",
-    "tar": "^7.4.3",
-    "ws": "^8.18.0"
+    "jsonschema": "^1.5.0",
+    "message2call": "^2.0.3",
+    "music-metadata": "^11.0.5",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "@types/better-sqlite3": "^7.6.12",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/tar": "^6.1.13",
-    "vite": "^6.0.11"
+    "vite": "^6.2.6"
   }
 }

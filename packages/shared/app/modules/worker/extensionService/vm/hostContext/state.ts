@@ -4,6 +4,7 @@ export interface VMState {
   vmContext: AnyListen.ExtensionVM.VMContext
   preloadFuncs: AnyListen.PreloadFuncs
   unsubscribeEvents: Array<() => void>
+  logcat: (message: string) => void
 }
 
 export const contextState = {

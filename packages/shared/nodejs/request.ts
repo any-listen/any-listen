@@ -1,13 +1,13 @@
-import {
-  interceptors,
-  setGlobalDispatcher,
-  getGlobalDispatcher,
-  ProxyAgent,
-  type Dispatcher,
-  FormData,
-  request as nodeRrequest,
-} from 'undici'
 import qs from 'node:querystring'
+import {
+  FormData,
+  getGlobalDispatcher,
+  interceptors,
+  request as nodeRrequest,
+  ProxyAgent,
+  setGlobalDispatcher,
+  type Dispatcher,
+} from 'undici'
 
 const defaultOptions: Options = {
   timeout: 15000,
@@ -152,7 +152,6 @@ export interface Response<Res> {
   statusMessage?: string
 }
 
-// eslint-disable-next-line complexity
 const buildRequestBody = (options: Options) => {
   let contentType: string | undefined
   let body: string | Buffer | Uint8Array | FormData | undefined

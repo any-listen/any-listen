@@ -1,16 +1,17 @@
 import fs from 'node:fs'
-import path from 'node:path'
-import { LRUCache } from 'lru-cache'
-import { ENV_PARAMS } from '@/shared/constants'
-import defaultConfig from './shared/defaultConfig'
-import { checkAndCreateDir, exit, nodeProcess } from './shared/utils'
-import { initLogger, startupLog } from './shared/log4js'
-import { createServerApp } from './server'
-
 import http from 'node:http'
-import { onUpgrade } from './modules/ipc/websocket'
+import path from 'node:path'
+
+import { ENV_PARAMS } from '@/shared/constants'
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
+import { LRUCache } from 'lru-cache'
+import defaultConfig from './shared/defaultConfig'
+
+import { onUpgrade } from './modules/ipc/websocket'
+import { createServerApp } from './server'
 import { initServerData } from './shared/data'
+import { initLogger, startupLog } from './shared/log4js'
+import { checkAndCreateDir, exit, nodeProcess } from './shared/utils'
 
 type ENV_PARAMS_Type = typeof ENV_PARAMS
 type ENV_PARAMS_Value_Type = ENV_PARAMS_Type[number]
@@ -166,11 +167,21 @@ server.on('error', (error: NodeJS.ErrnoException) => {
 /**
  * Event listener for HTTP server "listening" event.
  */
-server.on('listening', () => {
+server.on('listening', async () => {
   const addr = server.address()
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`
   startupLog.info(`Listening on ${bindIP} ${bind}`)
 
+  if (import.meta.env.PROD) {
+    await import('./envPrepare')
+      .then(async ({ envPrepare }) => {
+        await envPrepare()
+      })
+      .catch((err) => {
+        console.log(err)
+        process.exit()
+      })
+  }
   void import('./app').then(({ initApp }) => {
     void initApp()
   })

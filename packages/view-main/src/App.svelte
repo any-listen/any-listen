@@ -16,7 +16,7 @@
 
 <div id="container" class="view-container">
   <Icons />
-  {#if import.meta.env.VITE_IS_ELECTRON}
+  {#if import.meta.env.VITE_IS_DESKTOP}
     {#if appReady.appAeady}
       <AppLayout />
     {/if}

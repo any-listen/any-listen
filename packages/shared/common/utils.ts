@@ -253,6 +253,12 @@ const prep = (t: string) =>
     .replace(/(?:\.0+)*(\.-\d+(?:\.\d+)?)\.*$/g, '$1')
     // return array
     .split('.')
+/**
+ * compare Versions
+ * @param a old version
+ * @param b new version
+ * @returns 1: a > b, 0: a = b, -1: a < b
+ */
 export const compareVersions = (a: string, b: string) => {
   const aArr = prep(a)
   const bArr = prep(b)
@@ -268,5 +274,12 @@ export const compareVersions = (a: string, b: string) => {
 
 // https://stackoverflow.com/a/44078785
 export const generateId = () => {
-  return performance.now().toString(36) + Math.random().toString(36).slice(2)
+  return Date.now().toString(36) + Math.random().toString(36).slice(2)
+}
+
+export const generateIdByPerf = () => {
+  return performance.now().toString(36).replace('.', '') + Math.random().toString(36).slice(2)
+}
+export const generateIdSimple = () => {
+  return Math.random().toString(36).slice(2)
 }

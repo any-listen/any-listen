@@ -1,0 +1,11 @@
+{
+  "extends": "./node_modules/@any-listen/eslint/tsconfig.node.json",
+  "compilerOptions": {
+    "composite": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "checkJs": false,
+    "types": ["@any-listen/nodejs/node_modules/@types/node"]
+  },
+  "include": ["build-config/*.cjs", "build-config/*.ts", "package.json", "./eslint.config.mjs"]
+}

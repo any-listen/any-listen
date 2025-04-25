@@ -2,6 +2,7 @@
   import Tab from '@/components/base/Tab.svelte'
   import { viewTypes } from './shared'
   import { i18n } from '@/plugins/i18n'
+  import HeaderActions from './HeaderActions.svelte'
   let { activeview }: { activeview: (typeof viewTypes)[number] } = $props()
   const typeList = $derived(
     viewTypes.map((t) => {
@@ -12,6 +13,7 @@
 
 <header class="header">
   <Tab list={typeList} itemkey="id" itemlabel="label" value={activeview} tagname="a" href="href" />
+  <HeaderActions />
 </header>
 
 <style lang="less">

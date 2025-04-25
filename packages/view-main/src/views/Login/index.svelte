@@ -14,7 +14,7 @@
     connectIPC(value)
   }
   onMount(() => {
-    appEvent.on('connectFailed', (message) => {
+    return appEvent.on('connectFailed', (message) => {
       errorMessage = message
     })
   })

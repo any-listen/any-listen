@@ -1,9 +1,9 @@
-import vm from 'node:vm'
 import fs from 'node:fs'
-import { createContext } from './hostContext'
-import { extensionState } from '../state'
-import type { VMState } from './hostContext/state'
+import vm from 'node:vm'
 import { extensionEvent } from '../event'
+import { extensionState } from '../state'
+import { createContext } from './hostContext'
+import type { VMState } from './hostContext/state'
 
 // const createVM = () => {
 //   vm.createContext()
@@ -35,7 +35,7 @@ export interface Env {
 }
 
 export const createVmConetxt = async (extension: AnyListen.Extension.Extension, preloadScript: string) => {
-  const vmState = createContext(extension)
+  const vmState = await createContext(extension)
   vm.runInContext(preloadScript, vmState.vmContext, {
     filename: 'preload.js',
   })
@@ -129,4 +129,4 @@ export const runExtension = async (vmContext: AnyListen.ExtensionVM.VMContext, e
 // }
 
 export { destroyContext } from './hostContext'
-export { updateLocale, resourceAction, updateI18nMessage } from './hostContext/preloadFuncs'
+export { resourceAction, updateI18nMessage, updateLocale } from './hostContext/preloadFuncs'

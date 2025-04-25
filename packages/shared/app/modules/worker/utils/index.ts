@@ -1,7 +1,7 @@
-import { Worker } from 'node:worker_threads'
 import path from 'node:path'
+import { Worker } from 'node:worker_threads'
 
-import { createMsg2call, createProxyCallback } from 'message2call'
+import { createMessage2Call, createProxyCallback } from 'message2call'
 
 // import dbService from '../dbService/index'
 
@@ -13,8 +13,8 @@ export const createDBServiceWorker = (onInited: () => void): DBSeriveTypes => {
   const worker: Worker = new Worker(path.join(__dirname, './db-service.worker'))
   const subChannel = new MessageChannel()
 
-  const msg2call = createMsg2call<DBSeriveTypes>({
-    funcsObj: {
+  const msg2call = createMessage2Call<DBSeriveTypes>({
+    exposeObj: {
       inited() {
         onInited()
       },
@@ -39,8 +39,8 @@ export const createUtilServiceWorker = (onInited: () => void): UtilSeriveTypes =
   const worker: Worker = new Worker(path.join(__dirname, './util-service.worker'))
   const subChannel = new MessageChannel()
 
-  const msg2call = createMsg2call<UtilSeriveTypes>({
-    funcsObj: {
+  const msg2call = createMessage2Call<UtilSeriveTypes>({
+    exposeObj: {
       inited() {
         onInited()
       },
@@ -71,8 +71,8 @@ export const createExtensionServiceWorker = (
   const worker: Worker = new Worker(path.join(__dirname, './extension-service.worker'))
   const subChannel = new MessageChannel()
 
-  const msg2call = createMsg2call<ExtensionSeriveTypes>({
-    funcsObj: {
+  const msg2call = createMessage2Call<ExtensionSeriveTypes>({
+    exposeObj: {
       inited() {
         onInited()
       },

@@ -15,9 +15,9 @@ import {
   updateExtensionI18nMessages,
 } from './manage'
 import { getOnlineExtensionList } from './onlineExtension'
-import { buildExtensionSettings, updateExtensionSettings, updateResourceListDeounce } from './shared'
+import { buildExtensionSettings, getExtensionLastLogs, updateExtensionSettings, updateResourceListDeounce } from './shared'
 import { extensionState } from './state'
-import { resourceAction, updateLocale, updateI18nMessage } from './vm'
+import { resourceAction, updateI18nMessage, updateLocale } from './vm'
 
 registerErrorHandler()
 
@@ -90,15 +90,24 @@ const extension = {
   getResourceList() {
     return extensionState.resourceList
   },
+  async getExtensionLastLogs(extId?: string) {
+    return getExtensionLastLogs(extId)
+  },
   async getAllExtensionSettings() {
     return buildExtensionSettings()
   },
   async updateExtensionSettings(extId: string, config: Record<string, unknown>) {
     await updateExtensionSettings(extId, config)
   },
-  resourceAction: async function (action: Parameters<AnyListen.IPCExtension.ResourceAction>[0]) {
-    return resourceAction(action)
-  } as AnyListen.IPCExtension.ResourceAction,
+  // async resourceAction(extId: string, config: Record<string, unknown>) {
+  //   await updateExtensionSettings(extId, config)
+  // },
+  async resourceAction<T extends keyof AnyListen.IPCExtension.ResourceAction>(
+    action: T,
+    params: Parameters<AnyListen.IPCExtension.ResourceAction[T]>[0]
+  ): Promise<Awaited<ReturnType<AnyListen.IPCExtension.ResourceAction[T]>>> {
+    return resourceAction(action, params)
+  },
   // clientConnected(id: string) {
   //   extensionEvent.clientConnected(id)
   // },

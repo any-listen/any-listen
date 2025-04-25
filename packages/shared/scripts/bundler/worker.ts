@@ -1,11 +1,11 @@
 import { type MessagePort, parentPort } from 'node:worker_threads'
 import { type TaksName, type Target, build } from './utils'
 
-// import { buildConfig as buildElectronConfig } from '@any-listen/electron'
+import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
+import { buildConfig as buildDesktopConfig } from '@any-listen/desktop'
 import { buildConfig as buildExtensionPreloadConfig } from '@any-listen/extension-preload/vite.config'
 import { buildConfig as buildWebConfig, buildPreloadConfig as buildWebPreloadConfig } from '@any-listen/web-server'
 import { dynamicImport } from './import-esm.cjs'
-import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
 
 if (!parentPort) throw new Error('Require run in worker')
 
@@ -13,7 +13,7 @@ const getWebViewMainIpc = () => {
   return process.env.NODE_ENV === 'development' ? 'http://localhost:9500/view-main.ipc.js' : './view-main.ipc.js'
 }
 
-type ViewMainTarget = 'electron' | 'web'
+type ViewMainTarget = 'desktop' | 'web'
 const getViewMainConfig = async (target: ViewMainTarget) => {
   const { buildConfig } = await dynamicImport('@any-listen/view-main')
   return buildConfig(target, DEV_SERVER_PORTS['view-main'], target == 'web' ? getWebViewMainIpc() : '')
@@ -35,8 +35,7 @@ parentPort.on('message', async ({ port, taskName, target }: { port?: MessagePort
     return
   }
   const configs = {
-    // electron: buildElectronConfig(target),
-    electron: buildWebPreloadConfig(target),
+    desktop: buildDesktopConfig(target),
     'web-server': buildWebConfig(target),
     'web-preload': buildWebPreloadConfig(target),
     'view-main': await getViewMainConfig(target as ViewMainTarget),

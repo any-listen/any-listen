@@ -1,5 +1,5 @@
-import { settingState } from './store/state'
 import { settingEvent } from './store/event'
+import { settingState } from './store/state'
 // import { readable } from 'svelte/store'
 
 // export const setting = readable(settingState.setting, (set) => {
@@ -9,7 +9,7 @@ import { settingEvent } from './store/event'
 // })
 
 export const useSetting = () => {
-  let val = $state(settingState.setting)
+  let val = $state.raw(settingState.setting)
 
   $effect(() => {
     const unsub = settingEvent.on('updated', () => {
@@ -26,7 +26,7 @@ export const useSetting = () => {
 }
 
 export const useSettingValue = <T extends keyof AnyListen.AppSetting>(key: T) => {
-  let val = $state(settingState.setting[key])
+  let val = $state.raw(settingState.setting[key])
 
   $effect(() => {
     const unsub = settingEvent.on('updated', (keys) => {

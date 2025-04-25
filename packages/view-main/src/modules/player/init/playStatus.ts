@@ -1,12 +1,13 @@
-import { createUnsubscriptionSet, setTitle } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
-import { onPlayerCreated } from '../shared'
-import { i18n } from '@/plugins/i18n'
-import { playerEvent } from '../store/event'
-import { setPlayerPlaying, setStatusText, skipNext } from '../store/actions'
-import { playerState } from '../store/state'
 import { settingState } from '@/modules/setting/store/state'
+import { i18n } from '@/plugins/i18n'
+import { setPause } from '@/plugins/player'
+import { createUnsubscriptionSet, setTitle } from '@/shared'
 import { buildMusicName } from '@any-listen/common/tools'
+import { onPlayerCreated } from '../shared'
+import { setPlayerPlaying, setStatusText, skipNext } from '../store/actions'
+import { playerEvent } from '../store/event'
+import { playerState } from '../store/state'
 
 let unregistered = createUnsubscriptionSet()
 export const initPlayStatus = () => {
@@ -21,6 +22,7 @@ export const initPlayStatus = () => {
       unregistered.add(
         playerEvent.on('pause', () => {
           setPlayerPlaying(false)
+          if (playerState.playing) return
           setStatusText(i18n.t('player__paused'))
         })
       )
@@ -53,18 +55,21 @@ export const initPlayStatus = () => {
       )
       unregistered.add(
         playerEvent.on('playerPlaying', () => {
+          if (!playerState.playing) setPause()
           // TODO
           // setPowerSaveBlocker(true)
         })
       )
       unregistered.add(
         playerEvent.on('playerEmptied', () => {
+          setPlayerPlaying(false)
           // TODO
           // setPowerSaveBlocker(false)
         })
       )
       unregistered.add(
         playerEvent.on('playerEnded', () => {
+          setPlayerPlaying(false)
           setStatusText(i18n.t('player__end'))
           void skipNext(true)
         })

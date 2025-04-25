@@ -100,7 +100,7 @@
 </script>
 
 <div class="search-input">
-  <div class="content" class:active={isFocus} class:small class:big>
+  <div class={['content', { active: isFocus, small, big }]}>
     <div class="form">
       <input
         bind:this={domInput}
@@ -161,7 +161,7 @@
           selectIndex = -1
         }}
       >
-        {#each list as item, index}
+        {#each list as item, index (index)}
           <div
             role="button"
             class="list-item"
@@ -282,7 +282,7 @@
         transition: background-color 0.2s ease;
         line-height: 1.3;
         span {
-          .mixin-ellipsis-2;
+          .mixin-ellipsis-2();
         }
 
         &.select {

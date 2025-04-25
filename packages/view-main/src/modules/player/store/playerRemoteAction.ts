@@ -1,10 +1,10 @@
+import { getMusicPic as getMusicPicFromRemote, getMusicUrl as getMusicUrlFromRemote } from '@/shared/ipc/music'
 import { onPlayHistoryListAction, onPlayerAction, sendPlayHistoryListAction, sendPlayerEvent } from '@/shared/ipc/player'
-import { getMusicUrl as getMusicUrlFromRemote, getMusicPic as getMusicPicFromRemote } from '@/shared/ipc/music'
 import * as commit from './commit'
 
 import { playerEvent } from './event'
+import { pause, play, playId, seekTo, setCollectStatus, skipNext, skipPrev, togglePlay } from './playerActions'
 import { playerState } from './state'
-import { pause, play, playId, seekTo, skipNext, skipPrev, togglePlay } from './playerActions'
 
 export { getPlayInfo } from '@/shared/ipc/player'
 
@@ -59,7 +59,7 @@ let prevProgress = {
   currentTime: 0,
 }
 export const getMusicUrl = async (info: AnyListen.IPCMusic.GetMusicUrlInfo): Promise<AnyListen.IPCMusic.MusicUrlInfo> => {
-  let key = `${info.musicInfo.id}_${info.quality}_${info.toggleSource}_${info.isRefresh}`
+  let key = `${info.musicInfo.id}_${info.quality}_${info.isRefresh}`
 
   if (getOtherSourcePromises.has(key)) return getOtherSourcePromises.get(key)!
 
@@ -86,6 +86,7 @@ export const getMusicUrl = async (info: AnyListen.IPCMusic.GetMusicUrlInfo): Pro
  * @param data
  */
 export const setPlayHistoryList = async (data: AnyListen.IPCPlayer.PlayHistoryListActionSet) => {
+  console.warn('setPlayHistoryList', data)
   commit.setPlayHistoryList(data)
   await sendPlayHistoryListAction({ action: 'setList', data })
 }
@@ -239,6 +240,9 @@ export const registerRemotePlayerAction = () => {
         break
       case 'prev':
         void skipPrev()
+        break
+      case 'collectStatus':
+        setCollectStatus(action.data)
         break
       // default:
       //   console.warn('unknown action:', action)

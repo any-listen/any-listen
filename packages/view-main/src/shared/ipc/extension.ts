@@ -64,9 +64,14 @@ export const updateExtensionSettings: AnyListen.IPC.ServerIPC['updateExtensionSe
   return ipc.updateExtensionSettings(extId, config)
 }
 
-export const resourceAction: AnyListen.IPC.ServerIPC['resourceAction'] = async (action) => {
-  return ipc.resourceAction(
-    // @ts-expect-error
-    action
-  )
+type RA = AnyListen.IPCExtension.ResourceAction
+export const resourceAction = async <T extends keyof RA>(
+  action: T,
+  params: Parameters<RA[T]>[0]
+): Promise<Awaited<ReturnType<RA[T]>>> => {
+  return ipc.resourceAction(action, params)
+}
+
+export const getExtensionLastLogs: AnyListen.IPC.ServerIPC['getExtensionLastLogs'] = async (extId) => {
+  return ipc.getExtensionLastLogs(extId)
 }

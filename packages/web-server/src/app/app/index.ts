@@ -1,18 +1,22 @@
-import { appState } from './state'
-import { parseEnvParams } from '@any-listen/nodejs/env'
-import { appEvent } from './event'
-import { getAppSetting, saveSetting } from './data'
-import { checkAndCreateDir, removePath } from '@/shared/utils'
 import { setProxy } from '@/app/shared/request'
+import { startCheckUpdateTimeout, update } from '@/app/shared/update'
 import { socketEvent } from '@/modules/ipc/event'
+import { appLog } from '@/shared/log4js'
+import { checkAndCreateDir, removePath } from '@/shared/utils'
+import { parseEnvParams } from '@any-listen/nodejs/env'
 import { version } from '../../../package.json'
+import { getAppSetting, saveSetting } from './data'
+import { appEvent } from './event'
+import { appState } from './state'
 
 const initState = () => {
   const envParams = parseEnvParams<AnyListen.CmdParams>()
   appState.envParams = {
     cmdParams: envParams.cmdParams,
   }
-  appState.version = version
+  appState.version.version = version
+  appState.version.commit = __GIT_COMMIT__ || ''
+  appState.version.commitDate = __GIT_COMMIT_DATE__ ? new Date(__GIT_COMMIT_DATE__).getTime() : 0
 }
 
 const setUserDataPath = async () => {
@@ -52,11 +56,50 @@ const listenerAppEvent = () => {
       handleProxyChange()
     }
   })
+  appEvent.on('inited', () => {
+    void startCheckUpdateTimeout()
+  })
   if (appState.appSetting['network.proxy.enable'] && appState.appSetting['network.proxy.host']) handleProxyChange()
   socketEvent.on('new_socket_inited', (socket) => {
     setImmediate(() => {
       appEvent.clientConnected(socket)
     })
+  })
+
+  update.on('checking_for_update', () => {
+    appState.version.status = 'checking'
+  })
+  update.on('update_available', (info) => {
+    appState.version.isLatest = false
+    appState.version.status = 'idle'
+    appState.version.newVersion = info
+  })
+  update.on('update_not_available', (info) => {
+    appState.version.isLatest = true
+    appState.version.status = 'idle'
+    appState.version.newVersion = info
+  })
+  update.on('error', (err) => {
+    console.log(err)
+    appState.version.status = 'error'
+    appLog.info('Check Update Error:', err)
+  })
+  update.on('download_progress', (info) => {
+    if (appState.version.status != 'downloading') {
+      appState.version.status = 'downloading'
+    }
+    appState.version.progress = info
+
+    let logMessage = `Download speed: ${info.bytesPerSecond}`
+    logMessage = `${logMessage} - Downloaded ${info.percent}%`
+    logMessage = `${logMessage} (${info.transferred}/${info.total})`
+    appLog.info(logMessage)
+  })
+  update.on('update_downloaded', (info) => {
+    appState.version.status = 'downloaded'
+  })
+  update.on('ignore_version', (version) => {
+    appState.version.ignoreVersion = version
   })
 }
 
@@ -84,5 +127,5 @@ export const sendInitedEvent = () => {
 
 export * as appActions from './actions'
 
-export { appState } from './state'
 export { appEvent } from './event'
+export { appState } from './state'

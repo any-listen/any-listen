@@ -89,7 +89,7 @@ export class Event extends _Event {
     this.extensionEvent({ action: 'listSet', data: extensions })
   }
 
-  logOutput(info: AnyListen.ExtensionVM.LogInfo) {
+  logOutput(info: AnyListen.LogInfo) {
     this.emitEvent('logOutput', info)
     this.extensionEvent({ action: 'logOutput', data: info })
   }

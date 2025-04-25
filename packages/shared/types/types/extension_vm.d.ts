@@ -27,13 +27,6 @@ declare global {
       //   raw: number[]
       //   body: string
       // }
-      interface LogInfo {
-        type: 'debug' | 'info' | 'warn' | 'error'
-        id: string
-        timestamp: number
-        name: string
-        message: string
-      }
       // type StorageActionTypes = AnyListen.IPCAction<'get', string[]>
       // | AnyListen.IPCAction<'set', Array<[string, string]>>
       // | AnyListen.IPCAction<'remove', string[]>
@@ -53,10 +46,10 @@ declare global {
       type RSA_PADDING = 'RSA_PKCS1_OAEP_PADDING' | 'RSA_NO_PADDING'
 
       interface Env {
-        clientType: AnyListen.ClientType
+        clientType: ClientType
         platform: 'mac' | 'linux' | 'windows' | 'android' | 'ios'
         arch: 'arm' | 'arm64' | 'x86' | 'x64'
-        locale: AnyListen.Locale
+        locale: Locale
         version: string
         i18nMessages: Record<string, string>
       }
@@ -72,8 +65,15 @@ declare global {
         __ext_host_call__utils_str2b64?: (data: string) => string
         __ext_host_call__utils_b642buf?: (data: string) => number[]
         __ext_host_call__utils_str2md5?: (data: string) => string
-        __ext_host_call__utils_aes_encrypt?: (mode: AES_MODE, data: string, key: string, iv: string) => string
-        __ext_host_call__utils_rsa_encrypt?: (mode: RSA_PADDING, data: string, key: string) => string
+        __ext_host_call__utils_aes_encrypt?: (
+          mode: AES_MODE,
+          data: Uint8Array | string,
+          key: Uint8Array | string,
+          iv: Uint8Array | string
+        ) => string
+        __ext_host_call__utils_rsa_encrypt?: (mode: RSA_PADDING, data: Uint8Array | string, key: Uint8Array | string) => string
+        __ext_host_call__utils_iconv_decode?: (data: Uint8Array | Uint16Array, encoding: string) => string
+        __ext_host_call__utils_iconv_encode?: (data: string, encoding: string) => Uint8Array
 
         // host -> preload
         __ext_preload__?: (key: string, action: keyof PreloadCallActions, data?: string) => void

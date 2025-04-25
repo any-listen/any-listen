@@ -1,5 +1,5 @@
-import { ipcPreloadEvent } from '@any-listen/app/modules/ipcPreloadEvent'
 import type { IPCSocket } from '@/preload/ws'
+import { ipcPreloadEvent } from '@any-listen/app/modules/ipcPreloadEvent'
 import type { ExposeFunctions } from '.'
 
 // 暴露给后端的方法
@@ -53,17 +53,20 @@ export const createClientExtension = (ipcSocket: IPCSocket) => {
     async getResourceList() {
       return ipcSocket.remoteQueueExtension.getResourceList()
     },
+    async getExtensionLastLogs(extId) {
+      return ipcSocket.remoteQueueExtension.getExtensionLastLogs(extId)
+    },
     async getAllExtensionSettings() {
       return ipcSocket.remoteQueueExtension.getAllExtensionSettings()
     },
     async updateExtensionSettings(extId, config) {
       return ipcSocket.remoteQueueExtension.updateExtensionSettings(extId, config)
     },
-    async resourceAction(action) {
-      return ipcSocket.remoteExtension.resourceAction(
-        // @ts-expect-error
-        action
-      )
+    async resourceAction<T extends keyof AnyListen.IPCExtension.ResourceAction>(
+      action: T,
+      params: Parameters<AnyListen.IPCExtension.ResourceAction[T]>[0]
+    ): Promise<Awaited<ReturnType<AnyListen.IPCExtension.ResourceAction[T]>>> {
+      return ipcSocket.remoteExtension.resourceAction(action, params)
     },
     onExtensionEvent(listener) {
       ipcPreloadEvent.on('extensionEvent', listener)

@@ -1,14 +1,14 @@
 import { appEvent, appState } from '@/app/app'
+import { playerEvent } from '@/app/modules/player'
 import { startExtensionServiceWorker } from '@/app/worker'
+import { extensionLog } from '@/shared/log4js'
 import { extensionEvent, extensionState } from '@any-listen/app/modules/extension'
+import { musicListEvent } from '@any-listen/app/modules/musicList'
 import { workers } from '@any-listen/app/modules/worker'
 import { EXTENSION, STORE_NAMES } from '@any-listen/common/constants'
 import { checkAndCreateDir, joinPath, readFile } from '@any-listen/nodejs'
-import { playerEvent } from '@/app/modules/player'
-import { musicListEvent } from '@any-listen/app/modules/musicList'
-import { extensionLog } from '@/shared/log4js'
 
-const handleExtensionLog = (info: AnyListen.ExtensionVM.LogInfo) => {
+const handleExtensionLog = (info: AnyListen.LogInfo) => {
   switch (info.type) {
     case 'info':
       extensionLog.info(`[${info.id}] ${info.message}`)
@@ -106,6 +106,7 @@ export const initExtension = async () => {
   })
 }
 
+// TODO: create extension icon public path
 export const loadLocalExtensions = async () => {
   return workers.extensionService.loadLocalExtensions()
 }
@@ -167,6 +168,10 @@ export const getResourceList = async () => {
   return workers.extensionService.getResourceList()
 }
 
+export const getExtensionLastLogs = async (id?: string) => {
+  return workers.extensionService.getExtensionLastLogs(id)
+}
+
 export const getAllExtensionSettings = async () => {
   return workers.extensionService.getAllExtensionSettings()
 }
@@ -175,11 +180,12 @@ export const updateExtensionSettings = async (extId: string, config: Record<stri
   return workers.extensionService.updateExtensionSettings(extId, config)
 }
 
-export const resourceAction: AnyListen.IPCExtension.ResourceAction = async (action) => {
-  return workers.extensionService.resourceAction(
-    // @ts-expect-error
-    action
-  )
+type RA = AnyListen.IPCExtension.ResourceAction
+export const resourceAction = async <T extends keyof RA>(
+  action: T,
+  params: Parameters<RA[T]>[0]
+): Promise<Awaited<ReturnType<RA[T]>>> => {
+  return workers.extensionService.resourceAction(action, params)
 }
 
 export { extensionEvent, extensionState }

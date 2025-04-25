@@ -1,38 +1,40 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0-beta.0",
   "name": "web-server",
   "main": "build-config/vite.config.ts",
   "scripts": {
     "build": "vite build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/any-listen/any-listen-web-server.git"
+  },
   "dependencies": {
-    "@koa/cors": "^5.0.0",
     "@any-listen/app": "workspace:@shared/app@*",
     "@any-listen/common": "workspace:@shared/common@*",
     "@any-listen/i18n": "workspace:@shared/i18n@*",
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
     "@any-listen/theme": "workspace:@shared/theme@*",
     "@any-listen/web": "workspace:@shared/web@*",
-    "better-sqlite3": "^11.8.1",
-    "bufferutil": "^4.0.9",
+    "@koa/cors": "^5.0.0",
+    "better-sqlite3": "^11.9.1",
     "jsonwebtoken": "^9.0.2",
-    "koa": "^2.15.3",
+    "koa": "^2.16.1",
     "koa-router": "^13.0.1",
     "log4js": "6.9.1",
-    "lru-cache": "^11.0.2",
-    "message2call": "^1.1.1",
-    "mime": "^4.0.6",
-    "utf-8-validate": "^6.0.5",
-    "ws": "8.18.0"
+    "lru-cache": "^11.1.0",
+    "message2call": "^2.0.3",
+    "mime": "^4.0.7",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "@types/jsonwebtoken": "^9.0.8",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/koa": "^2.15.0",
     "@types/koa-router": "^7.4.8",
     "@types/koa__cors": "^5.0.0",
     "@types/ws": "8.5.4",
-    "vite": "^6.0.11"
+    "vite": "^6.2.6"
   }
 }

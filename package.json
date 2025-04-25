@@ -2,16 +2,22 @@
   "name": "any-listen",
   "version": "0.1.0",
   "scripts": {
-    "dev": "pnpm dev:electron",
-    "dev:electron": "pnpm -F @shared/scripts dev:electron",
+    "dev": "pnpm dev:desktop",
+    "dev:desktop": "pnpm -F @shared/scripts dev:desktop",
     "dev:web": "pnpm -F @shared/scripts dev:web",
     "build:theme": "pnpm -F @shared/theme build:theme",
-    "build": "pnpm build:ele",
-    "build:dir": "pnpm -F @shared/scripts build:electron:dir",
-    "build:ele": "pnpm -F @shared/scripts build:electron",
+    "build": "pnpm build:desktop",
+    "build:dir": "pnpm -F @shared/scripts build:desktop:dir",
+    "build:desktop": "pnpm -F @shared/scripts build:desktop",
     "build:web": "pnpm -F @shared/scripts build:web",
+    "pub:web": "pnpm -F @shared/publish pub web-server",
+    "pub:desk": "pnpm -F @shared/publish pub desktop",
     "cldep": "rm -rf node_modules && pnpm -r exec rm -rf node_modules",
-    "postinstall": "pnpm -F electron rebuild:deps && pnpm -F web-server rebuild"
+    "postinstall": "pnpm -F desktop rebuild:deps && pnpm -F web-server rebuild"
+  },
+  "engines": {
+    "node": ">=22.12.0 || ^20.19.0",
+    "pnpm": "9"
   },
   "workspaces": [
     "packages/*"
@@ -23,7 +29,9 @@
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@^",
-    "prettier": "^3.4.2"
+    "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-packagejson": "^2.5.10"
   },
   "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4"
 }

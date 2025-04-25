@@ -26,14 +26,14 @@
   .name {
     font-size: 14px;
     color: var(--color-font-label);
-    .mixin-ellipsis-1;
+    .mixin-ellipsis-1();
     padding: 3px 0;
   }
 
   .statusText {
     box-sizing: content-box;
     height: 18px;
-    .mixin-ellipsis-1;
+    .mixin-ellipsis-1();
     font-size: 15px;
     padding-bottom: 3px;
   }

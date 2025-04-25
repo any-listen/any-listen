@@ -17,14 +17,20 @@ export const formatPath = (path: string) => {
   }
   return path
 }
-export const getParentDir = (dir: string) => {
+export const getParentDir = (dir: string, rootDirs: AnyListen.FileSystem.File[]) => {
   const sep = getSep(dir)
   const index = formatPath(dir).lastIndexOf(sep)
-  if (index === -1) return ''
-  return dir.substring(0, index)
+  if (index === -1 || dir == sep) return ''
+  let parent = dir.substring(0, index)
+  let parentDir = parent + sep
+  if (rootDirs.some((d) => parentDir.startsWith(d.name))) {
+    return parent || sep
+  }
+  return ''
 }
 export const buildFilesPath = (curDir: string, files: File[]) => {
   if (!curDir) return files.map((f) => f.name)
   const sep = getSep(curDir)
+  if (curDir.endsWith(sep)) curDir = curDir.substring(0, curDir.length - 1)
   return files.map((f) => curDir + sep + f.name)
 }

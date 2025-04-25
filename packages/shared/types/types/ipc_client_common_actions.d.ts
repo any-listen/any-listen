@@ -121,13 +121,16 @@ declare global {
           }
         | {
             type: 'available'
-            info: VersionInfo & {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-qualifier
+            info: AnyListen.UpdateInfo & {
               isAutoUpdate: boolean
+              ignoreVersion: string | null
             }
           }
         | {
             type: 'not_available'
-            info: VersionInfo
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-qualifier
+            info: AnyListen.UpdateInfo
           }
         | {
             type: 'error'

@@ -1,11 +1,11 @@
-import { i18n } from '@/plugins/i18n'
-import { playerEvent } from '../store/event'
-import { playerState } from '../store/state'
-import { settingState } from '@/modules/setting/store/state'
 import { onRelease } from '@/modules/app/shared'
+import { settingState } from '@/modules/setting/store/state'
+import { i18n } from '@/plugins/i18n'
 import { createUnsubscriptionSet } from '@/shared'
 import { onPlayerCreated } from '../shared'
 import { setMusicUrl, setStatusText, skipNext } from '../store/actions'
+import { playerEvent } from '../store/event'
+import { playerState } from '../store/state'
 
 let retryNum = 0
 let prevTimeoutId: string | null = null
@@ -59,6 +59,7 @@ const addDelayNextTimeout = () => {
 }
 
 const handleLoadeddata = () => {
+  if (!playerState.playing) return
   setStatusText(i18n.t('player__loading'))
 }
 
@@ -73,6 +74,7 @@ const handleEmpied = () => {
 }
 
 const handleWating = () => {
+  if (!playerState.playing) return
   setStatusText(i18n.t('player__buffering'))
 }
 

@@ -28,11 +28,9 @@ const showTips = debounce((event: MouseEvent) => {
   if (!msg) return
   prevTips = msg
 
-  if (!instance) {
-    instance = mount(App, {
-      target: document.getElementById('root')!,
-    })
-  }
+  instance ||= mount(App, {
+    target: document.getElementById('root')!,
+  })
   void tick().then(() => {
     instance?.show(
       {

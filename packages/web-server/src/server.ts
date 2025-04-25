@@ -1,7 +1,7 @@
 import Koa from 'koa'
-import reqInit from './middleware/req-init'
-import logHttp from './middleware/log-http'
 import createCors from './middleware/cors'
+import logHttp from './middleware/log-http'
+import reqInit from './middleware/req-init'
 import staticFile from './middleware/static-file'
 import router from './modules'
 

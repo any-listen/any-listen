@@ -1,7 +1,7 @@
 <script lang="ts">
   let { name }: { name: string } = $props()
 
-  let id = $derived(`#icon-${name as string}`)
+  let id = $derived(`#icon-${name}`)
 </script>
 
 <svg class="svg-icon" aria-hidden="true">

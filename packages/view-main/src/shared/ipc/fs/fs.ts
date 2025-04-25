@@ -1,9 +1,14 @@
 import { ipc } from '../ipc'
 
-export const readRootDir = async () => {
-  return ipc.fileSystemAction<'read_root_dir'>({
+let rootDir: AnyListen.FileSystem.File[] = []
+
+export const readRootDir = async (refresh?: boolean) => {
+  if (!refresh && rootDir.length) return rootDir
+  // eslint-disable-next-line require-atomic-updates
+  rootDir = await ipc.fileSystemAction<'read_root_dir'>({
     action: 'read_root_dir',
   })
+  return rootDir
 }
 
 export const readDir = async (path: string, fileFilter?: string[], isDirOnly?: boolean) => {

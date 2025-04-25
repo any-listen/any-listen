@@ -26,13 +26,13 @@ declare namespace AnyListen {
     interface GetMusicUrlInfo {
       musicInfo: Music.MusicInfo
       isRefresh?: boolean
-      quality?: string
-      toggleSource?: boolean
+      quality?: Music.Quality
+      // toggleSource?: boolean
     }
     interface MusicUrlInfo {
       url: string
-      toggleSource: boolean
-      quality: string
+      // toggleSource: boolean
+      quality: Music.Quality
       isFromCache: boolean
     }
 
@@ -40,12 +40,18 @@ declare namespace AnyListen {
       musicInfo: Music.MusicInfo
       listId?: string | null
       isRefresh?: boolean
-      toggleSource?: boolean
+      // toggleSource?: boolean
     }
 
     interface MusicPicInfo {
       url: string
-      toggleSource: boolean
+      // toggleSource: boolean
+      isFromCache: boolean
+    }
+
+    interface MusicLyricInfo {
+      info: Music.LyricInfo
+      // toggleSource: boolean
       isFromCache: boolean
     }
 
@@ -61,7 +67,7 @@ declare namespace AnyListen {
       getMusicPic: (info: GetMusicPicInfo) => MusicPicInfo
 
       /** 获取歌词 */
-      getMusicLyric: (info: GetMusicPicInfo) => Music.LyricInfo
+      getMusicLyric: (info: GetMusicPicInfo) => MusicLyricInfo
       /** 保存歌词 */
       setMusicLyric: (id: string, name: string, singer: string, info: Music.LyricInfo) => void
       /** 获取歌词缓存数量 */

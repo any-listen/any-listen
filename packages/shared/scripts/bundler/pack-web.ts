@@ -1,8 +1,8 @@
-import path from 'node:path'
+import { deleteSync } from 'del'
 import fs from 'node:fs/promises'
-import { sync } from 'del'
-import Spinnies from 'spinnies'
+import path from 'node:path'
 import colors from 'picocolors'
+import Spinnies from 'spinnies'
 import { type TaksName, runBuildWorkerStatus } from './utils'
 // import rendererConfig from './configs/renderer'
 import copyAssets from './copyAssets'
@@ -25,7 +25,7 @@ const runMainThread = async () => {
   const { createLogger } = (await dynamicImport('vite')) as typeof Vite
   const logger = createLogger('info')
   console.time('Build time')
-  sync(['build/**'], { cwd: rootPath })
+  deleteSync(['build/**'], { cwd: rootPath })
 
   const noop = () => {}
 

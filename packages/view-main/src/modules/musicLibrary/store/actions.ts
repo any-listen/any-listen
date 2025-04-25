@@ -16,7 +16,7 @@ import {
   updateUserList as updateUserListFromRemote,
 } from './listRemoteActions'
 import { settingState } from '@/modules/setting/store/state'
-import { throttle } from '@/shared'
+import { generateIdSimple, throttle } from '@/shared'
 import { showNotify } from '@/components/apis/notify'
 import { i18n } from '@/plugins/i18n'
 
@@ -53,7 +53,7 @@ export const createUserList = async (position: number, type: AnyListen.List.User
         position,
         listInfos: [
           {
-            id: String(Math.random()).substring(2),
+            id: generateIdSimple(),
             type,
             name,
             parentId: null,

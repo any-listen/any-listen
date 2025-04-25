@@ -7,7 +7,6 @@
   // export let params = {}
 
   // console.log(params)
-
 </script>
 
 <div class="player">
@@ -22,48 +21,45 @@
   </div>
 </div>
 
-
 <style lang="less">
-.player {
-  position: relative;
-  height: @height-player;
-  border-top: 1px solid var(--color-border);
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  contain: strict;
-  // padding: 6px;
-  z-index: 2;
-  // box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
-  * {
+  .player {
+    position: relative;
+    height: @height-player;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    contain: strict;
+    // padding: 6px;
+    z-index: 2;
+    // box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    * {
+    }
+
+    // &:before {
+    //   .mixin-after();
+    //   left: 0;
+    //   top: 0;
+    //   width: 100%;
+    //   height: 100%;
+    //   background-color: var(--color-main-background);
+    //   opacity: .9;
+    //   z-index: -1;
+    // }
   }
 
-  // &:before {
-  //   .mixin-after;
-  //   left: 0;
-  //   top: 0;
-  //   width: 100%;
-  //   height: 100%;
-  //   background-color: var(--color-main-background);
-  //   opacity: .9;
-  //   z-index: -1;
-  // }
-}
+  .side {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    position: relative;
+  }
 
-.side {
-  height: 100%;
-  flex: 1;
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-  position: relative;
-}
-
-.right {
-  justify-content: flex-end;
-  padding-right: 10px;
-  margin-left: -10px;
-}
-
+  .right {
+    justify-content: flex-end;
+    padding-right: 10px;
+    margin-left: -10px;
+  }
 </style>
-

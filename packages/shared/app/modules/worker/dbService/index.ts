@@ -1,5 +1,5 @@
-import { init } from './db'
 import { exposeWorker } from '../utils/worker'
+import { init } from './db'
 import {
   dislike_list,
   download,
@@ -18,21 +18,20 @@ const common = {
 
 void exposeWorker<{
   inited: () => void
-}>(Object.assign(
-      common,
-      metadata,
-      play_list,
-      music_library,
-      lyric,
-      music_url,
-      music_other_source,
-      download,
-      dislike_list,
-      play_count,
-    ))
-  .then(({ remote }) => {
-    remote.inited()
-  })
+}>({
+  ...common,
+  ...metadata,
+  ...play_list,
+  ...music_library,
+  ...lyric,
+  ...music_url,
+  ...music_other_source,
+  ...download,
+  ...dislike_list,
+  ...play_count,
+}).then(({ remote }) => {
+  remote.inited()
+})
 
 export type workerDBSeriveTypes = typeof common &
   typeof metadata &

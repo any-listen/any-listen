@@ -19,4 +19,6 @@ export default {
   proseWrap: 'preserve',
   htmlWhitespaceSensitivity: 'css',
   endOfLine: 'lf',
+  organizeImportsSkipDestructiveCodeActions: true,
+  plugins: ['prettier-plugin-organize-imports', 'prettier-plugin-packagejson'],
 }

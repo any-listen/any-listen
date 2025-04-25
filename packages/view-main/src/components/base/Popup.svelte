@@ -123,9 +123,7 @@
 {#if render}
   <Portal to="#root">
     <div
-      class="popup"
-      class:top={isShowTop}
-      class:active={anim}
+      class={['popup', { top: isShowTop, active: anim }]}
       style={popupStyle}
       aria-hidden={!anim}
       onclick={(e) => {

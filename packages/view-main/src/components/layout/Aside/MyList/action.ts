@@ -7,6 +7,7 @@ import {
 import { i18n } from '@/plugins/i18n'
 import { showOpenDialog } from '@/shared/ipc/app'
 import { createLocalMusicInfos } from '@/shared/ipc/music'
+import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
 
 const handleAddMusics = async (listId: string, filePaths: string[], index = -1) => {
   // console.log(index + 1, index + 201)
@@ -27,7 +28,7 @@ export const importLocalFile = async (listInfo: AnyListen.List.MyListInfo) => {
     filters: [
       // https://support.google.com/chromebook/answer/183093
       // 3gp, .avi, .mov, .m4v, .m4a, .mp3, .mkv, .ogm, .ogg, .oga, .webm, .wav
-      { name: 'Media File', extensions: ['mp3', 'flac', 'ogg', 'oga', 'wav', 'm4a'] },
+      { name: 'Media File', extensions: [...MEDIA_FILE_TYPES] },
     ],
   })
   if (canceled || !filePaths.length) return

@@ -1,7 +1,7 @@
 import _Event, { type EventType } from '@any-listen/nodejs/Event'
 
 export class Event extends _Event {
-  emitEvent<K extends keyof EventMethods>(eventName: K, ...args: any[]) {
+  emitEvent<K extends keyof EventMethods>(eventName: K, ...args: unknown[]) {
     this.emit(eventName, ...args)
   }
 

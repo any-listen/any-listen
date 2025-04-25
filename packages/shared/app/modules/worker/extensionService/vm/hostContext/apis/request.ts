@@ -21,6 +21,7 @@ export const request = async <Resp = unknown>(url: string, options: RequestOptio
     timeout: options.timeout,
     maxRedirect: options.maxRedirect,
   }).then((resp) => {
+    // console.log(resp.body)
     return {
       body: resp.body,
       headers: resp.headers,

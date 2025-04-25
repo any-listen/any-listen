@@ -1,28 +1,27 @@
-import { onExtensionEvent } from '@/shared/ipc/extension'
-import * as commit from './commit'
-import { extI18n } from '../i18n'
 import { dateFormat } from '@/shared'
+import { onExtensionEvent } from '@/shared/ipc/extension'
+import { extI18n } from '../i18n'
+import * as commit from './commit'
 import { extensionEvent } from './event'
 
 export {
+  disableExtension,
+  downloadAndParseExtension,
+  enableExtension,
+  getAllExtensionSettings,
   getExtensionErrorMessage,
   getExtensionList,
   getOnlineExtensionList,
+  getResourceList,
   installExtension,
+  resourceAction,
+  restartExtension,
   restartExtensionHost,
   startExtension,
-  enableExtension,
-  disableExtension,
-  restartExtension,
   uninstallExtension,
   updateExtension,
-  downloadAndParseExtension,
-  getResourceList,
-  resourceAction,
-  getAllExtensionSettings,
   updateExtensionSettings,
 } from '@/shared/ipc/extension'
-
 
 export const registerRemoteExtensionEvent = () => {
   const loadExt = (id: string) => {
@@ -83,7 +82,12 @@ export const registerRemoteExtensionEvent = () => {
         console.error('[ExtensionHost]', action.data)
         break
       case 'logOutput':
-        console.log('[ExtensionHost]', `[${dateFormat(action.data.timestamp)} ${action.data.id}(${extI18n.t(action.data.id, action.data.name)})]`, action.data.message)
+        console[action.data.type == 'info' ? 'log' : action.data.type](
+          '[ExtensionHost]',
+          `[${dateFormat(action.data.timestamp)} ${action.data.id}(${extI18n.t(action.data.id, action.data.name)})]`,
+          action.data.message
+        )
+        extensionEvent.logOutput(action.data)
         break
       case 'resourceUpdated':
         commit.setResourceList(action.data)
@@ -93,6 +97,7 @@ export const registerRemoteExtensionEvent = () => {
         // console.log('[ExtensionHost]', action.data)
         extensionEvent.extenstionSettingUpdated(action.data)
         break
+      // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
       default:
         console.warn('unknown action:', action)
         // eslint-disable-next-line no-case-declarations, @typescript-eslint/no-unused-vars
@@ -100,4 +105,3 @@ export const registerRemoteExtensionEvent = () => {
     }
   })
 }
-

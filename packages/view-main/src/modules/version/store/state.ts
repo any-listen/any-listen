@@ -1,9 +1,9 @@
 export interface State {
-  showModal: boolean
   versionInfo: {
     version: string
-    newVersion: AnyListen.VersionInfo | null
-    showModal: boolean
+    commit: string
+    commitDate: number
+    newVersion: AnyListen.UpdateInfo | null
     isUnknown: boolean
     isLatest: boolean
     reCheck: boolean
@@ -14,15 +14,15 @@ export interface State {
 }
 
 export const versionState: State = {
-  showModal: false,
   versionInfo: {
     version: '0.0.0',
+    commit: '',
+    commitDate: 0,
     newVersion: null,
-    showModal: false,
     reCheck: false,
     isUnknown: false,
     isLatest: false,
-    status: 'checking',
+    status: 'idle',
   },
   ignoreVersion: null,
   progress: null,

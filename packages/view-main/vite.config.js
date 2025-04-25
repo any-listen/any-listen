@@ -1,12 +1,12 @@
+import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 import fs from 'node:fs'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { env } from 'node:process'
-import { defaultClientConditions, defineConfig } from 'vite'
-import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte'
-import { sveltePreprocess } from 'svelte-preprocess'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import { fileURLToPath } from 'node:url'
 import pxtorem from 'postcss-pxtorem'
+import { sveltePreprocess } from 'svelte-preprocess'
+import { defaultClientConditions, defineConfig } from 'vite'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { createHtmlPlugin } from './build-config/html.plugin.js'
 // import type { UserConfig } from 'vite'
 
@@ -23,12 +23,12 @@ export const lessConfig = {
   },
 }
 
-// type Target = 'electron' | 'web'
+// type Target = 'desktop' | 'web'
 
 const dirs = {
-  electron: {
-    publicDir: path.join(rootPath, 'packages/electron/dist/electron'),
-    outDir: path.join(rootPath, 'packages/electron/dist/view-main'),
+  desktop: {
+    publicDir: path.join(rootPath, 'packages/desktop/dist/electron'),
+    outDir: path.join(rootPath, 'packages/desktop/dist/view-main'),
   },
   web: {
     publicDir: path.join(rootPath, 'packages/web-server/server/public'),
@@ -94,7 +94,7 @@ export const buildConfig = (target, port = 9200, ipcScript) => {
         inject: {
           data: {
             envScript: fs
-              .readFileSync(path.join(import.meta.dirname, 'build-config', target == 'web' ? 'web.js' : 'electron.js'))
+              .readFileSync(path.join(import.meta.dirname, 'build-config', target == 'web' ? 'web.js' : 'desktop.js'))
               .toString(),
           },
           tags: [

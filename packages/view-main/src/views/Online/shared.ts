@@ -1,5 +1,4 @@
 import type { resourceList } from '@/modules/extension/reactive.svelte'
-import type { StoresValues } from 'svelte/store'
 
 export const viewTypes = ['search', 'songlist', 'leaderboard', 'album', 'singer'] as const
 

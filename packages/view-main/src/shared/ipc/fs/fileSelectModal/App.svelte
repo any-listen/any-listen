@@ -66,7 +66,9 @@
       if (event.inputing) return
       event.event?.preventDefault()
       if (event.event?.repeat) return
-      void gotoDir(getParentDir(currentDir))
+      void readRootDir().then(async (files) => {
+        return gotoDir(getParentDir(currentDir, files))
+      })
     })
     const unsub2 = keyboardEvent.on('f5_down', (event) => {
       event.event?.preventDefault()
@@ -105,7 +107,7 @@
     closeModal()
   }
 
-  const gotoDir = async (path?: string) => {
+  const gotoDir = async (path?: string, refresh?: boolean) => {
     errorMessage = ''
     if (path) {
       path = formatPath(path)
@@ -131,7 +133,7 @@
           return []
         })
     } else {
-      const rootPath = await readRootDir()
+      const rootPath = await readRootDir(refresh)
         .then((files) => {
           return files.map((file) => {
             return {
@@ -165,7 +167,18 @@
   }
 </script>
 
-<Modal bind:visible teleport="#root" bgclose={false} {onafterleave} width="65%" maxwidth="900px" maxheight="80%">
+<Modal
+  bind:visible
+  teleport="#root"
+  bgclose={false}
+  {onafterleave}
+  width="65%"
+  maxwidth="900px"
+  maxheight="80%"
+  onclose={() => {
+    onsubmit({ canceled: true, filePaths: [] })
+  }}
+>
   <div class="header">
     <h2>{options.title}</h2>
     <Btn
@@ -179,7 +192,9 @@
     <Btn
       icon
       onclick={() => {
-        void gotoDir(getParentDir(currentDir))
+        void readRootDir().then(async (files) => {
+          return gotoDir(getParentDir(currentDir, files))
+        })
       }}
     >
       <SvgIcon name="back" />
@@ -195,7 +210,7 @@
     <Btn
       icon
       onclick={() => {
-        void gotoDir(currentDir)
+        void gotoDir(currentDir, true)
       }}
     >
       <SvgIcon name="reset" />
@@ -247,6 +262,9 @@
             }
           }}>{select.list.length ? $t('btn_unselect_all') : $t('btn_select_all')}</Btn
         >
+      {/if}
+      {#if select.list.length}
+        <span class="tip">{$t('btn_selected_tip', { num: select.list.length })}</span>
       {/if}
       <!-- <span class="exts">{options.filters?.map((f) => `*.${f}`).join(', ')}</span> -->
     </div>
@@ -357,11 +375,19 @@
     gap: 10px;
     justify-content: space-between;
 
-    // .left {
-    // }
+    .left {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+    }
     // .exts {
     //   font-size: 12px;
     // }
+    .tip {
+      font-size: 12px;
+      color: var(--color-font-label);
+    }
     .right {
       display: flex;
       flex-direction: row;

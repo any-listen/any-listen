@@ -2,6 +2,7 @@
 <html style="background-color: transparent">
   <head>
     <title>Any Listen</title>
+    <!-- <meta name="theme-color" content="#fff" /> -->
   </head>
   <body id="body" style="background-color: transparent">
     <div id="root" style="display: none"></div>
@@ -22,6 +23,8 @@
           window.dom_style.innerText = `:root {${Object.entries(colors)
             .map(([key, value]) => `${key}:${value};`)
             .join('')}}`
+
+          // document.querySelector('meta[name="theme-color"]')?.setAttribute('content', colors['--color-primary-light-1000'])
         }
         //<%- envScript %>
       }

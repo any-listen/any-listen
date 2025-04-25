@@ -1,7 +1,7 @@
-import Downloader, { type Options as DownloaderOptions } from './Downloader'
-import { getRequestAgent } from './util'
 import { sizeFormate } from '@any-listen/common/utils'
 import type http from 'http'
+import Downloader, { type Options as DownloaderOptions } from './Downloader'
+import { getRequestAgent } from './util'
 
 // these are the default options
 // const options = {
@@ -63,7 +63,7 @@ export const createDownload = ({
   dl.on('completed', () => {
     onCompleted()
   })
-    .on('error', (err: any) => {
+    .on('error', (err: Error) => {
       if (err.message === 'socket hang up') return
       onError(err)
     })

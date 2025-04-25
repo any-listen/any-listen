@@ -1,10 +1,10 @@
-import { dateFormat } from '@any-listen/common/utils'
 import { IPC_CLOSE_CODE, IPC_CODE } from '@any-listen/common/constants'
-import { createMsg2call } from 'message2call'
+import { dateFormat } from '@any-listen/common/utils'
+import { createMessage2Call } from 'message2call'
+import handleAuth from './auth'
+import { removeAuthKey } from './data'
 import { buildUrlPath, decryptMsg, encryptMsg, log } from './utils'
 import { wsEvent } from './wsEvent'
-import { removeAuthKey } from './data'
-import handleAuth from './auth'
 export interface KeyInfo {
   serverId: string
   // clientId: string
@@ -239,8 +239,8 @@ export const connect = (
   let closeEvents: Array<(err: Error) => void | Promise<void>> = []
   let disconnected = true
 
-  const message2read = createMsg2call<AnyListen.IPC.ServerCommonActions>({
-    funcsObj: exposeObj,
+  const message2read = createMessage2Call<AnyListen.IPC.ServerCommonActions>({
+    exposeObj,
     timeout: 0,
     isSendErrorStack: true,
     sendMessage(data) {
@@ -255,7 +255,6 @@ export const connect = (
         })
     },
     onCallBeforeParams(rawArgs) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
       return [client, ...rawArgs]
     },
     onError(error, path, groupName) {

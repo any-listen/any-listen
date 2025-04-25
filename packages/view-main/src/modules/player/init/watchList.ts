@@ -1,9 +1,13 @@
-import { createPlayMusicInfo } from '@any-listen/common/tools'
-import { arrPush, createUnsubscriptionSet, throttle } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
+import { dislikeListEvent } from '@/modules/dislikeList/store/event'
+import { dislikeListState } from '@/modules/dislikeList/store/state'
+import { getListMusics } from '@/modules/musicLibrary/store/actions'
+import { musicLibraryEvent } from '@/modules/musicLibrary/store/event'
+import { onSettingChanged } from '@/modules/setting/shared'
+import { arrPush, createUnsubscriptionSet, throttle } from '@/shared'
+import { workers } from '@/worker'
+import { createPlayMusicInfo } from '@any-listen/common/tools'
 import { onPlayerCreated } from '../shared'
-import { playerState } from '../store/state'
-import { playerEvent } from '../store/event'
 import {
   setDislikeIds,
   setIsLinkedList,
@@ -12,12 +16,8 @@ import {
   updatePlayHistoryIndex,
   updatePlayIndex,
 } from '../store/actions'
-import { musicLibraryEvent } from '@/modules/musicLibrary/store/event'
-import { getListMusics } from '@/modules/musicLibrary/store/actions'
-import { onSettingChanged } from '@/modules/setting/shared'
-import { dislikeListEvent } from '@/modules/dislikeList/store/event'
-import { workers } from '@/worker'
-import { dislikeListState } from '@/modules/dislikeList/store/state'
+import { playerEvent } from '../store/event'
+import { playerState } from '../store/state'
 
 const checkLinked = async () => {
   const currentMusicList = playerState.playList.filter((m) => !m.playLater)
@@ -43,10 +43,20 @@ const throttleListSync = throttle(async () => {
 
   const newList = playerState.playList.filter((m) => m.playLater)
   const targetMusicList = await getListMusics(targetListId)
-  const newTargetList = targetMusicList.map((m) => createPlayMusicInfo(m, targetListId, false, false))
+  const newTargetList = targetMusicList.map((m) => {
+    return createPlayMusicInfo({
+      musicInfo: m,
+      listId: targetListId,
+      isOnline: playerState.playInfo.isOnline,
+      playLater: false,
+      linked: true,
+    })
+  })
   arrPush(newList, newTargetList)
-  await setPlayListMusic({ list: newList, listId: targetListId })
-})
+  // TODO music info update
+  console.log('throttleListSync setPlayListMusic')
+  await setPlayListMusic({ list: newList, listId: targetListId, isOnline: playerState.playInfo.isOnline, isSync: true })
+}, 500)
 const handleListSync = (listIds: string[]) => {
   for (const id of listIds) {
     changedListIds.add(id)
@@ -120,6 +130,7 @@ export const initWatchList = () => {
         })
       )
 
+      // TODO music info update
       unregistered.add(musicLibraryEvent.on('listMusicChanged', handleListSync))
 
       unregistered.add(

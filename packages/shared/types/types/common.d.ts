@@ -2,7 +2,7 @@ import type { Locale as _Locale } from '@any-listen/i18n'
 
 declare global {
   namespace AnyListen {
-    type BuildTarget = 'electron' | 'web'
+    type BuildTarget = 'desktop' | 'web'
 
     type ClientType = 'desktop' | 'web' | 'mobile'
 
@@ -74,6 +74,18 @@ declare global {
       ip: string
     }
 
+    interface CurrentVersionInfo {
+      version: string
+      commit: string
+      commitDate: number
+      newVersion: UpdateInfo | null
+      isUnknown: boolean
+      isLatest: boolean
+      reCheck: boolean
+      status: UpdateStatus
+      ignoreVersion: string | null
+      progress: DownloadProgressInfo | null
+    }
     type UpdateStatus = 'downloaded' | 'downloading' | 'error' | 'checking' | 'idle'
     interface DownloadProgressInfo {
       total: number
@@ -85,11 +97,25 @@ declare global {
     interface VersionInfo {
       version: string
       desc: string
+      time: string
     }
     interface UpdateInfo extends VersionInfo {
       history: VersionInfo[]
+      beta?: VersionInfo[]
       // isForce: boolean
       // url: string
+    }
+    interface LastStartInfo {
+      time: number
+      version: string
+    }
+
+    interface LogInfo {
+      type: 'debug' | 'info' | 'warn' | 'error'
+      id: string
+      timestamp: number
+      name: string
+      message: string
     }
   }
 }

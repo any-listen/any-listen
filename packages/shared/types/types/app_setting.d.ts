@@ -68,6 +68,12 @@ declare global {
       'common.tryAutoUpdate': boolean
 
       /**
+       * 是否启用预发布版本
+       * @description 预发布版本是指在正式发布之前的版本，可能包含一些新功能或修复，但也可能不稳定
+       */
+      'common.allowPreRelease': boolean
+
+      /**
        * 更新版本后是否显示变更日志
        */
       'common.showChangeLog': boolean
@@ -83,9 +89,9 @@ declare global {
       'player.togglePlayMethod': 'listLoop' | 'random' | 'list' | 'singleLoop' | 'none'
 
       /**
-       * 是否优先播放320k音质
+       * 优先播放的音质
        */
-      'player.highQuality': boolean
+      'player.playQuality': '128k' | '320k' | 'flac' | 'flac24bit'
 
       /**
        * 是否显示任务栏进度条

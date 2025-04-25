@@ -26,6 +26,8 @@ declare global {
   var __ext_host_call__utils_str2md5: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_str2md5']
   var __ext_host_call__utils_aes_encrypt: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_aes_encrypt']
   var __ext_host_call__utils_rsa_encrypt: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_rsa_encrypt']
+  var __ext_host_call__utils_iconv_decode: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_iconv_decode']
+  var __ext_host_call__utils_iconv_encode: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_iconv_encode']
 }
 
 export {}

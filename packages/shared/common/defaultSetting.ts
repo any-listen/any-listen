@@ -13,11 +13,12 @@ const defaultSetting: AnyListen.AppSetting = {
   'common.controlBtnPosition': 'right',
   'common.playBarProgressStyle': 'mini',
   'common.tryAutoUpdate': true,
+  'common.allowPreRelease': false,
   'common.showChangeLog': true,
 
   'player.startupAutoPlay': false,
   'player.togglePlayMethod': 'listLoop',
-  'player.highQuality': false,
+  'player.playQuality': '128k',
   'player.isShowTaskProgess': true,
   'player.volume': 1,
   'player.isMute': false,

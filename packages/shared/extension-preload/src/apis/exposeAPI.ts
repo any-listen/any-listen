@@ -1,17 +1,18 @@
+import { hostContext } from '@/host/state'
+import { translate } from '@/i18n'
 import { app } from './app'
-import { env } from './env'
-import { request } from './request'
-import { crypto } from './crypto'
 import { buffer } from './buffer'
+import { configuration } from './configuration'
+import { crypto } from './crypto'
+import { env } from './env'
 import { onEvent } from './event'
+import { iconv } from './iconv'
 import { logcat } from './logcat'
-import { storage } from './storage'
 import { musicList } from './musicList'
 import { player } from './player'
+import { request } from './request'
 import { registerResourceAction } from './resource'
-import { hostContext } from '@/host/state'
-import { configuration } from './configuration'
-import { translate } from '@/i18n'
+import { storage } from './storage'
 
 export const getAPI = () => {
   const extensionAPI: Partial<AnyListen_API.API> = {
@@ -27,6 +28,7 @@ export const getAPI = () => {
     utils: {
       buffer,
       crypto,
+      iconv,
     },
     t(key, data) {
       return translate(key, data)

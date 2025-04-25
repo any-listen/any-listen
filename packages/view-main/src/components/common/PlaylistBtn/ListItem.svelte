@@ -223,7 +223,7 @@
   //   gap: 2px;
   //   min-width: 0;
   //   span {
-  //     .mixin-ellipsis-1;
+  //     .mixin-ellipsis-1();
   //   }
   // }
 
@@ -235,10 +235,10 @@
       flex-flow: row nowrap;
       align-items: center;
       gap: 5px;
-      .auto-hidden;
+      .auto-hidden();
     }
     h4 {
-      .auto-hidden;
+      .auto-hidden();
     }
     .singer {
       display: flex;
@@ -247,7 +247,7 @@
       font-size: 12px;
 
       span {
-        .auto-hidden;
+        .auto-hidden();
         + span {
           &::before {
             display: inline-block;
@@ -286,7 +286,7 @@
   //   line-height: 16px;
   //   vertical-align: middle;
   //   box-sizing: border-box;
-  //   .mixin-ellipsis-1;
+  //   .mixin-ellipsis-1();
 
   //   &.auto {
   //     flex: auto;
@@ -301,7 +301,7 @@
   //     align-items: center;
 
   //     > .name {
-  //       .mixin-ellipsis-1;
+  //       .mixin-ellipsis-1();
   //     }
   //   }
   //   // .badge {

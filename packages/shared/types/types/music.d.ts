@@ -2,6 +2,7 @@ declare namespace AnyListen {
   namespace Music {
     type Source = string
     type Quality = '128k' | '320k' | 'flac' | 'flac24bit' | '192k' | 'wav' | 'dobly' | 'master'
+    type FileType = 'mp3' | 'flac' | 'wav' | 'm4a'
 
     type MusicQualityType = Partial<
       Record<
@@ -65,7 +66,7 @@ declare namespace AnyListen {
       awlyric?: string | null
       name: string
       singer: string
-      interval: string
+      interval: string | null
 
       rawlrcInfo?: {
         // 歌曲歌词

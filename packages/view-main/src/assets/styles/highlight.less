@@ -1,0 +1,145 @@
+code[class*='language-'],
+pre[class*='language-'] {
+  font-size: 1em;
+  line-height: 1.5;
+  color: white;
+  text-align: left;
+  word-spacing: normal;
+  hyphens: none;
+  word-break: normal;
+  word-wrap: normal;
+  tab-size: 2;
+  white-space: pre;
+  // text-shadow: 0 -0.1em 0.2em black;
+  background: none;
+}
+
+// @media print {
+//   code[class*='language-'],
+//   pre[class*='language-'] {
+//     text-shadow: none;
+//   }
+// }
+
+// pre[class*='language-'],
+// :not(pre) > code[class*='language-'] {
+//   background: hsl(30deg 20% 25%);
+// }
+
+/* Code blocks */
+// pre[class*='language-'] {
+//   padding: 1em;
+//   margin: 0.5em 0;
+//   overflow: auto;
+//   border: 0.3em solid hsl(30deg 20% 40%);
+//   border-radius: 0.5em;
+//   box-shadow: 1px 1px 0.5em black inset;
+// }
+
+/* Inline code */
+// :not(pre) > code[class*='language-'] {
+//   padding: 0.15em 0.2em 0.05em;
+//   white-space: normal;
+//   border: 0.13em solid hsl(30deg 20% 40%);
+//   border-radius: 0.3em;
+//   box-shadow: 1px 1px 0.3em -0.1em black inset;
+// }
+
+.token.operator,
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  opacity: 0.6;
+}
+
+.token.punctuation {
+  opacity: 0.6;
+}
+
+.token.namespace {
+  opacity: 0.6;
+}
+
+// .token.property,
+// .token.tag,
+// .token.boolean,
+// .token.number,
+// .token.constant,
+// .token.symbol {
+//   color: hsl(350deg 40% 70%);
+// }
+
+// .token.selector,
+// .token.attr-name,
+// .token.string,
+// .token.char,
+// .token.builtin,
+// .token.inserted {
+//   color: hsl(75deg 70% 60%);
+// }
+
+// .token.operator,
+// .token.punctuation,
+// .token.variable {
+//   color: #6a938e;
+// }
+
+// .token.atrule,
+// .token.attr-value,
+// .token.keyword {
+//   color: hsl(350deg 40% 70%);
+// }
+
+// .token.regex,
+// .token.important {
+//   color: #e90;
+// }
+
+.token.uuid,
+.token.hash,
+.token.symbol,
+.token.boolean,
+.token.number {
+  color: var(--color-primary);
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+.token.italic {
+  font-style: italic;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+// .token.deleted {
+//   color: red;
+// }
+
+.token.date,
+.token.time {
+  // color: var(--color-600);
+  color: inherit;
+  opacity: 0.4;
+}
+.token.level.info {
+  color: #3f81c7;
+}
+.token.level.warning {
+  color: #e1af17;
+}
+.token.level.error {
+  color: #d16060;
+}
+.token.level.debug {
+  color: #91bb7c;
+}
+
+.token.url,
+.token.file-path {
+  text-decoration: underline;
+}

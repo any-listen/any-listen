@@ -1,4 +1,3 @@
+export const viewTypes = ['app', 'extension', 'logs'] as const
 
-export const viewTypes = ['app', 'extension'] as const
-
-export type ViewType = typeof viewTypes[number]
+export type ViewType = (typeof viewTypes)[number]

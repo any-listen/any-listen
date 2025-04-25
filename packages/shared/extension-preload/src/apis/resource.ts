@@ -3,9 +3,9 @@ import type { ListCommonResult } from '@/types/api'
 
 // type ExtractResourceActionReturnType<A> = AnyListen.IPCExtension.ResourceAction extends (action: AnyListen.IPCActionData<A, any>) => infer R ? R : never
 
-let handler: AnyListen.IPCExtension.ResourceAction
-export const registerResourceAction = (_handler: AnyListen_API.ResourceAction) => {
-  handler = _handler
+let actions: Partial<AnyListen.IPCExtension.ResourceAction>
+export const registerResourceAction = (_actions: Partial<AnyListen_API.ResourceAction>) => {
+  actions = _actions
 }
 
 // type T = ExtractResourceActionReturnType<'musicSearch'>
@@ -73,14 +73,12 @@ const verifyOnlineMusicArray = (
       } else musicInfo.interval = substrLength(musicInfo.interval)
       musicInfo.isLocal = false
       if (!musicInfo.meta) throw new Error(`${name} result.meta is null`)
-      if (musicInfo.meta.albumName) {
-        musicInfo.meta.albumName = substrLength(String(musicInfo.meta.albumName))
-      }
+      musicInfo.meta.albumName &&= substrLength(String(musicInfo.meta.albumName))
       musicInfo.meta.createTime = 0
       musicInfo.meta.posTime = 0
       musicInfo.meta.updateTime = 0
       musicInfo.meta.musicId = substrLength(String(musicInfo.meta.musicId))
-      if (musicInfo.meta.picUrl) musicInfo.meta.picUrl = substrLength(String(musicInfo.meta.picUrl), 2048)
+      musicInfo.meta.picUrl &&= substrLength(String(musicInfo.meta.picUrl), 2048)
       if (typeof musicInfo.meta.year != 'number' || musicInfo.meta.year > 10000000 || musicInfo.meta.year < 1) {
         delete musicInfo.meta.year
       } else musicInfo.meta.year = Math.trunc(musicInfo.meta.year)
@@ -106,6 +104,10 @@ const verifyUrl = (url: string, name: string) => {
   if (url.length > 2048) throw new Error(`${name} url is too long`)
   if (!urlRxp.test(url)) throw new Error(`${name} url is not a valid url`)
 }
+const verifyQuality = (quality: string) => {
+  if (typeof quality != 'string') throw new Error(`quality is not a string`)
+  if (!QUALITYS.includes(quality as AnyListen.Music.Quality)) throw new Error(`quality is not a valid quality`)
+}
 const verifyTipSearchAction = (result: string[]): string[] => {
   return verifyStringArray(result, 'tip search')
 }
@@ -121,16 +123,25 @@ const verifyMusicSearchAction = (
   verifyOnlineMusicArray(result.list, 'music search', source)
   return result
 }
-const verifyMusicPicAction = (result: string): string => {
-  verifyUrl(result, 'music pic')
+const verifyMusicPicAction = <T extends string | string[]>(result: T): T => {
+  if (Array.isArray(result)) {
+    for (const url of result) {
+      verifyUrl(url, 'music pic')
+    }
+  } else {
+    verifyUrl(result, 'music pic')
+  }
   return result
 }
-const verifyMusicUrlAction = (result: string): string => {
-  verifyUrl(result, 'music')
+const verifyMusicUrlAction = (result: AnyListen.IPCExtension.MusicUrlInfo): AnyListen.IPCExtension.MusicUrlInfo => {
+  verifyUrl(result.url, 'music')
+  verifyQuality(result.quality)
   return result
 }
 // TODO verify datas
-const verifyLyricSearchAction = (result: AnyListen.Music.LyricInfo[]): AnyListen.Music.LyricInfo[] => {
+const verifyLyricSearchAction = (
+  result: AnyListen.IPCExtension.LyricSearchResult[]
+): AnyListen.IPCExtension.LyricSearchResult[] => {
   return result
 }
 const verifyLyricAction = (result: AnyListen.Music.LyricInfo): AnyListen.Music.LyricInfo => {
@@ -177,40 +188,63 @@ const verifyLeaderboardDetailAction = (
   return result
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const onResourceAction: AnyListen.IPCExtension.ResourceAction = async (action): Promise<any> => {
-  if (!handler) throw new Error('resource action not registered')
-  switch (action.action) {
-    case 'tipSearch':
-      return verifyTipSearchAction(await handler(action))
-    case 'hotSearch':
-      return verifyHotSearchAction(await handler(action))
+type RA = AnyListen.IPCExtension.ResourceAction
+export const onResourceAction = async <T extends keyof RA>(
+  action: T,
+  params: Parameters<RA[T]>[0]
+): Promise<Awaited<ReturnType<RA[T]>>> => {
+  if (!actions) throw new Error('resource action not registered')
+  if (!actions[action]) throw new Error(`resource action ${action} not registered`)
+  switch (action) {
+    // case 'tipSearch':
+    //   return verifyTipSearchAction(await actions.tipSearch!(params)) as Awaited<ReturnType<RA[T]>>
+    // case 'hotSearch':
+    //   return verifyHotSearchAction(await actions.hotSearch!(params)) as Awaited<ReturnType<RA[T]>>
     case 'musicSearch':
-      return verifyMusicSearchAction(await handler(action), action.data.source)
+      return verifyMusicSearchAction(
+        await actions.musicSearch!(params as AnyListen.IPCExtension.SearchParams),
+        params.source
+      ) as Awaited<ReturnType<RA[T]>>
     case 'musicPic':
-      return verifyMusicPicAction(await handler(action))
+      return verifyMusicPicAction(await actions.musicPic!(params as AnyListen.IPCExtension.MusicCommonParams)) as Awaited<
+        ReturnType<RA[T]>
+      >
     case 'musicUrl':
-      return verifyMusicUrlAction(await handler(action))
+      return verifyMusicUrlAction(await actions.musicUrl!(params as AnyListen.IPCExtension.MusicUrlParams)) as Awaited<
+        ReturnType<RA[T]>
+      >
+    case 'musicLyric':
+      return verifyLyricAction(await actions.musicLyric!(params as AnyListen.IPCExtension.MusicCommonParams)) as Awaited<
+        ReturnType<RA[T]>
+      >
+    case 'musicPicSearch':
+      return verifyMusicPicAction(await actions.musicPicSearch!(params as AnyListen.IPCExtension.PicSearchParams)) as Awaited<
+        ReturnType<RA[T]>
+      >
     case 'lyricSearch':
-      return verifyLyricSearchAction(await handler(action))
-    case 'lyric':
-      return verifyLyricAction(await handler(action))
-    case 'songlistSearch':
-      return verifySonglistSearchAction(await handler(action))
-    case 'songlistSorts':
-      return verifySonglistSortsAction(await handler(action))
-    case 'songlistTags':
-      return verifySonglistTagsAction(await handler(action))
-    case 'songlist':
-      return verifySonglistAction(await handler(action))
-    case 'songlistDetail':
-      return verifySonglistDetailAction(await handler(action), action.data.source)
-    case 'leaderboard':
-      return verifyLeaderboardAction(await handler(action))
-    // case 'leaderboardDate': return verifyLeaderboardDateAction(await handler(action))
-    case 'leaderboardDetail':
-      return verifyLeaderboardDetailAction(await handler(action), action.data.source)
-    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+      return verifyLyricSearchAction(await actions.lyricSearch!(params as AnyListen.IPCExtension.LyricSearchParams)) as Awaited<
+        ReturnType<RA[T]>
+      >
+    case 'lyricDetail':
+      return verifyLyricAction(await actions.lyricDetail!(params as AnyListen.IPCExtension.ListDetailParams)) as Awaited<
+        ReturnType<RA[T]>
+      >
+    // case 'songlistSearch':
+    //   return verifySonglistSearchAction(await actions.songlistSearch!(params)) as Awaited<ReturnType<RA[T]>>
+    // case 'songlistSorts':
+    //   return verifySonglistSortsAction(await actions.songlistSorts!(params)) as Awaited<ReturnType<RA[T]>>
+    // case 'songlistTags':
+    //   return verifySonglistTagsAction(await actions.songlistTags!(params)) as Awaited<ReturnType<RA[T]>>
+    // case 'songlist':
+    //   return verifySonglistAction(await actions.songlist!(params)) as Awaited<ReturnType<RA[T]>>
+    // case 'songlistDetail':
+    //   return verifySonglistDetailAction(await actions.songlistDetail!(params), action.data.source) as Awaited<ReturnType<RA[T]>>
+    // case 'leaderboard':
+    //   return verifyLeaderboardAction(await actions.leaderboard!(params)) as Awaited<ReturnType<RA[T]>>
+    // // case 'leaderboardDate': return verifyLeaderboardDateAction(await handler(action))
+    // case 'leaderboardDetail':
+    //   return verifyLeaderboardDetailAction(await actions.leaderboardDetail!(params), action.data.source) as Awaited<ReturnType<RA[T]>>
+
     default:
       // eslint-disable-next-line no-case-declarations, @typescript-eslint/no-unused-vars
       const unknownAction: never = action

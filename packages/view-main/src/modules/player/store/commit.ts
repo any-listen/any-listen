@@ -29,8 +29,9 @@ export const updatePlayHistoryIndex = (historyIndex: number) => {
   playerEvent.playInfoChanged({ ...playerState.playInfo })
 }
 
-export const setPlayListId = (listId: string | null) => {
+export const setPlayListId = (listId: string | null, isOnline: boolean) => {
   playerState.playInfo.listId = listId
+  playerState.playInfo.isOnline = isOnline
 
   playerEvent.playInfoChanged({ ...playerState.playInfo })
 }
@@ -42,20 +43,18 @@ export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null) =>
 }
 
 export const setMusicInfo = (_musicInfo: Partial<AnyListen.Player.MusicInfo> | null) => {
-  if (!_musicInfo) {
-    _musicInfo = {
-      id: null,
-      pic: null,
-      lrc: null,
-      tlrc: null,
-      rlrc: null,
-      awlrc: null,
-      rawlrc: null,
-      name: '',
-      singer: '',
-      album: '',
-      collect: false,
-    }
+  _musicInfo ||= {
+    id: null,
+    pic: null,
+    lrc: null,
+    tlrc: null,
+    rlrc: null,
+    awlrc: null,
+    rawlrc: null,
+    name: '',
+    singer: '',
+    album: '',
+    collect: false,
   }
   for (const key of musicInfoKeys) {
     const val = _musicInfo[key]
@@ -71,7 +70,7 @@ export const setMusicInfo = (_musicInfo: Partial<AnyListen.Player.MusicInfo> | n
 export const setPlaying = (playing: boolean) => {
   if (playerState.playing == playing) return
   playerState.playing = playing
-  if (playerState.isPlayedStop) playerState.isPlayedStop = false
+  playerState.isPlayedStop &&= false
 
   playerEvent.playStatusChanged(playing)
 }

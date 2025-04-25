@@ -34,14 +34,8 @@
 </script>
 
 <button
-  class="btn"
   type={rawtype}
-  class:icon
-  class:icontext
-  class:min
-  class:outline
-  class:link
-  class:loading={loading || asyncLoading}
+  class={['btn', { min, outline, link, icon, icontext, loading: loading || asyncLoading }]}
   tabindex="0"
   aria-label={arialabel}
   disabled={disabled || loading || asyncLoading}

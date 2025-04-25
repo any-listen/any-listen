@@ -28,7 +28,7 @@
   }
 </script>
 
-<div class={`list ${align}`} role="tablist">
+<div class={['list', align]} role="tablist">
   {#if tagname == 'a' && href}
     {#each list as item (item[itemkey])}
       <a
@@ -121,7 +121,7 @@
     position: relative;
     padding: 8px 0;
     &:after {
-      .mixin-after;
+      .mixin-after();
       left: 0;
       bottom: 0;
       width: 100%;

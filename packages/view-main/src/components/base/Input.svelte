@@ -90,8 +90,7 @@
 
 <input
   bind:this={domInput}
-  class="input"
-  class:min
+  class={['input', { min }]}
   {id}
   {type}
   {placeholder}

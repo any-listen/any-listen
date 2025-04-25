@@ -1,5 +1,11 @@
 FROM alpine AS base
 
+# https://github.com/nodejs/docker-node/issues/1946
+
+# RUN apk add --update --no-cache nodejs npm
+# RUN node -e "console.log(123)"
+# RUN npm i corepack -g
+
 # https://github.com/nodejs/docker-node/blob/8d8fc479a7d5e98b71c944f362a76303c2ee18e5/22/alpine3.21/Dockerfile
 
 

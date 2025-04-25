@@ -80,7 +80,7 @@
       return virtualizedList?.getListEl()
     },
     selectAll() {
-      if (!multimode) multimode = true
+      multimode ||= true
       select.override([...list])
     },
   })

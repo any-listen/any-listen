@@ -2,14 +2,14 @@ import { getThemeList } from '@/modules/theme/store/action'
 import { langList, type Message } from '@/plugins/i18n'
 import { windowSizeList } from '@any-listen/common/constants'
 import type { Component } from 'svelte'
+import About from './About.svelte'
 import LoginDevices from './LoginDevices.svelte'
 import Update from './Update.svelte'
-import About from './About.svelte'
 
 interface SettingBase {
   field: keyof AnyListen.AppSetting
   name: keyof Message
-  description?: string
+  description?: keyof Message
 }
 export interface EnumItem {
   name: keyof Message
@@ -17,7 +17,7 @@ export interface EnumItem {
 }
 export interface SettingListComponentItem {
   name: keyof Message
-  description?: string
+  description?: keyof Message
   type: 'component'
   component: Component
 }
@@ -50,7 +50,7 @@ export const settings: SettingListSection[] = [
     id: 'basic',
     name: 'settings__basic',
     list: [
-      import.meta.env.VITE_IS_ELECTRON
+      import.meta.env.VITE_IS_DESKTOP
         ? {
             field: 'tray.enable',
             name: 'settings__basic_tray',
@@ -113,7 +113,7 @@ export const settings: SettingListSection[] = [
     id: 'player',
     name: 'settings__player',
     list: [
-      import.meta.env.VITE_IS_ELECTRON
+      import.meta.env.VITE_IS_DESKTOP
         ? {
             field: 'player.startupAutoPlay',
             name: 'settings__play_startup_auto_play',
@@ -131,7 +131,7 @@ export const settings: SettingListSection[] = [
     id: 'update',
     name: 'settings__update',
     list: [
-      import.meta.env.VITE_IS_ELECTRON
+      import.meta.env.VITE_IS_DESKTOP
         ? {
             field: 'common.tryAutoUpdate',
             name: 'settings__update_try_auto_update',
@@ -139,8 +139,15 @@ export const settings: SettingListSection[] = [
           }
         : null,
       {
+        field: 'common.allowPreRelease',
+        name: 'settings__update_allow_pre_release',
+        description: 'settings__update_allow_pre_release_desc',
+        type: 'boolean',
+      },
+      {
         field: 'common.showChangeLog',
         name: 'settings__update_show_change_log',
+        description: 'settings__update_show_change_log_desc',
         type: 'boolean',
       },
       {

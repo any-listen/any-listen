@@ -2,7 +2,7 @@ import WebEvent, { type EventType } from '@any-listen/web/Event'
 import type { InitState } from './state'
 
 class Event extends WebEvent {
-  emitEvent<K extends keyof EventMethods>(eventName: K, ...args: any[]) {
+  emitEvent<K extends keyof EventMethods>(eventName: K, ...args: unknown[]) {
     this.emit(eventName, ...args)
   }
 
@@ -28,6 +28,10 @@ class Event extends WebEvent {
 
   extenstionSettingUpdated(setting: AnyListen.IPCExtension.EventExtensionSettingUpdated) {
     this.emitEvent('extenstionSettingUpdated', setting)
+  }
+
+  logOutput(info: AnyListen.LogInfo) {
+    this.emitEvent('logOutput', info)
   }
 }
 

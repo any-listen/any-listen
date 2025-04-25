@@ -1,7 +1,7 @@
+import { execSync, spawn } from 'node:child_process'
+import { builtinModules } from 'node:module'
 import path from 'node:path'
 import type { UserConfig } from 'vite'
-import { builtinModules } from 'node:module'
-import { spawn } from 'node:child_process'
 
 export { buildConfig as buildPreloadConfig } from './vite.config.web'
 
@@ -40,6 +40,22 @@ export const runServer = (onLog: (data: Buffer, color: 'red' | 'blue') => void) 
   })
 
   return webProcess
+}
+
+const gitInfo = {
+  commit_id: '',
+  commit_date: '',
+}
+
+try {
+  if (!execSync('git status --porcelain').toString().trim()) {
+    gitInfo.commit_id = execSync('git log -1 --pretty=format:"%H"').toString().trim()
+    gitInfo.commit_date = execSync('git log -1 --pretty=format:"%ad" --date=iso-strict').toString().trim()
+  } else if (process.env.IS_CI) {
+    throw new Error('Working directory is not clean')
+  }
+} catch {
+  /* empty */
 }
 
 export const buildConfig = (mode: string): UserConfig => {
@@ -105,6 +121,8 @@ export const buildConfig = (mode: string): UserConfig => {
     },
     define: {
       'process.env.NODE_ENV': `"${process.env.NODE_ENV!}"`,
+      __GIT_COMMIT__: `"${gitInfo.commit_id}"`,
+      __GIT_COMMIT_DATE__: `"${gitInfo.commit_date}"`,
       // __QRC_DECODE_NODE_PATH__: `"${(isProd ? '../../build/Release' : path.join(rootPath, 'build/Release')).replace(/\\/g, '\\\\')}"`,
     },
     // cacheDir: path.join(rootPath, 'node_modules/.vite/main'),

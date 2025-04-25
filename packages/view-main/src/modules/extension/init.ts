@@ -1,21 +1,30 @@
-import { createUnsubscriptionSet } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
 import { settingEvent } from '@/modules/setting/store/event'
-import { getExtensionErrorMessage, getExtensionList, getResourceList, registerRemoteExtensionEvent, setCrash, setList, setResourceList } from './store/actions'
+import { createUnsubscriptionSet } from '@/shared'
 import { setMessages } from './i18n'
+import {
+  getExtensionErrorMessage,
+  getExtensionList,
+  getResourceList,
+  registerRemoteExtensionEvent,
+  setCrash,
+  setList,
+  setResourceList,
+} from './store/actions'
 import { extensionEvent } from './store/event'
 import { extensionState } from './store/state'
 
-const init = async() => {
+const init = async () => {
   const message = await getExtensionErrorMessage()
   setCrash(message)
   if (message == null) {
     await Promise.all([
-      getExtensionList().then(list => {
+      getExtensionList().then((list) => {
+        console.log(list)
         setList(list)
         setMessages(list)
       }),
-      getResourceList().then(list => {
+      getResourceList().then((list) => {
         console.log(list)
         setResourceList(list)
       }),
@@ -29,10 +38,12 @@ export const initExtension = () => {
   settingEvent.on('inited', () => {
     unregistereds.register((subscriptions) => {
       subscriptions.add(registerRemoteExtensionEvent())
-      subscriptions.add(extensionEvent.on('listChanged', (isChanged) => {
-        if (isChanged) return
-        setMessages(extensionState.extensionList)
-      }))
+      subscriptions.add(
+        extensionEvent.on('listChanged', (isChanged) => {
+          if (isChanged) return
+          setMessages(extensionState.extensionList)
+        })
+      )
     })
     void init()
   })

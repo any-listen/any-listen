@@ -71,7 +71,7 @@
     outline: none;
     display: flex;
     border-radius: @radius-border;
-    .mixin-ellipsis-1;
+    .mixin-ellipsis-1();
 
     &.active {
       // border-left-color: @color-theme-active;

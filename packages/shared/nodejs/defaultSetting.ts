@@ -1,5 +1,5 @@
-import path from 'node:path'
 import os from 'node:os'
+import path from 'node:path'
 import { isMac, isWin } from './index'
 
 const defaultSetting: AnyListen.AppSetting = {
@@ -21,7 +21,7 @@ const defaultSetting: AnyListen.AppSetting = {
 
   'player.startupAutoPlay': false,
   'player.togglePlayMethod': 'listLoop',
-  'player.highQuality': false,
+  'player.playQuality': '128k',
   'player.isShowTaskProgess': true,
   'player.volume': 1,
   'player.isMute': false,

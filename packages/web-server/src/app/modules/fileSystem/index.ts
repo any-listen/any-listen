@@ -51,7 +51,10 @@ export const createPicPublicPath = async (rawPath: string, filePath: string) => 
 }
 
 const readRootDir = async () => {
-  return global.anylisten.config.allowPublicDir.map((p) => ({ name: p.substring(0, p.length - 1), isFile: false }))
+  return global.anylisten.config.allowPublicDir.map((p) => ({
+    name: p.length == 1 ? p : p.substring(0, p.length - 1),
+    isFile: false,
+  }))
 }
 const readDir = async (filePath: string, isDirOnly = false, fileFilter: string[] = []): Promise<AnyListen.FileSystem.File[]> => {
   if (!checkAllowPath(filePath)) throw new Error(`Not allow path: ${filePath}`)

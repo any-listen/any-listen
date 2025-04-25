@@ -4,9 +4,7 @@ import { exposeWorker } from '../utils/worker'
 import * as list from './list'
 // import * as music from './music'
 
-
 console.log('hello main worker')
-
 
 exposeWorker({ ...list }).remote.inited()
 

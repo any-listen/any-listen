@@ -1,10 +1,10 @@
-import fs from 'fs'
-import path from 'path'
 import { EventEmitter } from 'events'
-import { performance } from 'perf_hooks'
-import { STATUS } from './util'
+import fs from 'fs'
 import type http from 'http'
+import path from 'path'
+import { performance } from 'perf_hooks'
 import { type Options as RequestOptions, request } from './request'
+import { STATUS } from './util'
 
 export interface Options {
   forceResume: boolean
@@ -162,8 +162,8 @@ class Task extends EventEmitter {
         this.emit('response', response)
         try {
           this.__initDownload(response)
-        } catch (error: any) {
-          this.__handleError(error)
+        } catch (error) {
+          this.__handleError(error as Error)
           return
         }
         this.status = STATUS.running
@@ -198,7 +198,7 @@ class Task extends EventEmitter {
       this.__handleError(new Error('Content length is 0'))
       return
     }
-    let options: any = {}
+    let options: NonNullable<Parameters<(typeof fs)['createWriteStream']>[1]> = {}
     let isResumable =
       this.options.forceResume ||
       response.headers['accept-ranges'] !== 'none' ||
@@ -227,7 +227,7 @@ class Task extends EventEmitter {
       void this.__closeWriteStream()
     })
     this.ws.on('error', (err) => {
-      fs.unlink(this.chunkInfo.path, (unlinkErr: any) => {
+      fs.unlink(this.chunkInfo.path, (unlinkErr) => {
         this.__handleError(err)
         this.chunkInfo.startByte = '0'
         this.resumeLastChunk = null
@@ -303,7 +303,7 @@ class Task extends EventEmitter {
           // this.__handleError(new Error('Resume failed, response chunk does not match.'))
           // Resume failed, response chunk does not match, remove file and restart download
           console.log('Resume failed, response chunk does not match.')
-          fs.unlink(this.chunkInfo.path, (unlinkErr: any) => {
+          fs.unlink(this.chunkInfo.path, (unlinkErr) => {
             // this.__handleError(err)
             this.chunkInfo.startByte = '0'
             this.resumeLastChunk = null

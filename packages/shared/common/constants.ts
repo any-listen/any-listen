@@ -1,5 +1,7 @@
 export const URL_SCHEME_RXP = /^anylisten:\/\//
 
+export const NATIVE_VERSION = 1
+
 export const DEV_SERVER_PORTS = {
   'view-main': 9200,
 } as const
@@ -13,7 +15,6 @@ export const SPLIT_CHAR = {
 export const STORE_NAMES = {
   APP_SETTINGS: 'config',
   DATA: 'data',
-  PLAY_INFO: 'play_info',
   LIST_SCROLL_POSITION: 'list_scroll_position',
   SYNC: 'sync',
   HOTKEY: 'hot_key',
@@ -94,7 +95,7 @@ export const DOWNLOAD_STATUS = {
 
 export const QUALITYS = ['flac24bit', 'flac', 'wav', 'ape', '320k', '192k', '128k'] as const
 
-export const MEDIA_FILE_TYPES = ['mp3', 'flac', 'ogg', 'wav'] as const
+export const MEDIA_FILE_TYPES = ['mp3', 'flac', 'ogg', 'oga', 'wav', 'm4a'] as const
 export const PIC_FILE_TYPES = ['jpg', 'jpeg', 'gif', 'png'] as const
 
 // https://developer.mozilla.org/zh-CN/docs/Web/API/CloseEvent#status_codes
@@ -131,6 +132,8 @@ export const EXTENSION_VM_IPC_FUNC_NAMES = [
   '__ext_host_call__utils_str2md5',
   '__ext_host_call__utils_aes_encrypt',
   '__ext_host_call__utils_rsa_encrypt',
+  '__ext_host_call__utils_iconv_decode',
+  '__ext_host_call__utils_iconv_encode',
 ] as const
 
 export const EXTENSION = {
@@ -140,6 +143,7 @@ export const EXTENSION = {
   dataDirName: 'datas',
   configFileName: 'extensions.json',
   mainifestName: 'manifest.json',
+  logFileName: 'output.log',
   signFileName: 'sig',
   extBundleFileName: 'ext.tgz',
   publicKeyHeader: '-----BEGIN PUBLIC KEY-----\n',

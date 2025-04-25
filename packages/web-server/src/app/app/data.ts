@@ -1,7 +1,7 @@
-import { STORE_NAMES } from '@any-listen/common/constants'
-import getStore from '@/app/shared/store'
-import migrateSetting from './config/migrateSetting'
 import defaultSetting from '@/app/shared/defaultSetting'
+import getStore from '@/app/shared/store'
+import { STORE_NAMES } from '@any-listen/common/constants'
+import migrateSetting from './config/migrateSetting'
 import { appState } from './state'
 
 const primitiveType = ['string', 'boolean', 'number']
@@ -64,7 +64,7 @@ export const mergeSetting = (
 }
 
 export const saveSetting = (setting?: Partial<AnyListen.AppSetting>, isInit = false) => {
-  const electronStoreConfig = getStore(STORE_NAMES.APP_SETTINGS)
+  const storeConfig = getStore(STORE_NAMES.APP_SETTINGS)
 
   let originSetting: AnyListen.AppSetting
   if (isInit) {
@@ -76,7 +76,7 @@ export const saveSetting = (setting?: Partial<AnyListen.AppSetting>, isInit = fa
 
   result.setting.version = defaultSetting.version
 
-  electronStoreConfig.override({ version: result.setting.version, setting: result.setting })
+  storeConfig.override({ version: result.setting.version, setting: result.setting })
   return result
 }
 
@@ -84,9 +84,9 @@ export const saveSetting = (setting?: Partial<AnyListen.AppSetting>, isInit = fa
  * 初始化设置
  */
 export const getAppSetting = async () => {
-  const electronStoreConfig = getStore(STORE_NAMES.APP_SETTINGS)
+  const storeConfig = getStore(STORE_NAMES.APP_SETTINGS)
 
-  let setting = electronStoreConfig.get('setting') as AnyListen.AppSetting | undefined
+  let setting = storeConfig.get('setting') as AnyListen.AppSetting | undefined
 
   // migrate setting
 

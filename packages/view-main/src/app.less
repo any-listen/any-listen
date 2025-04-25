@@ -29,7 +29,7 @@ body {
   transition: background-color @transition-normal;
 
   &::before {
-    .mixin-after;
+    .mixin-after();
 
     top: 0;
     left: 0;
@@ -37,8 +37,8 @@ body {
     height: 100%;
     // background-color: var(--color-main-background);
     background-color: var(--color-main-background);
-    backdrop-filter: blur(var(--background-blur));
     opacity: 0.9;
+    backdrop-filter: blur(var(--background-blur));
     // z-index: -1;
   }
 }

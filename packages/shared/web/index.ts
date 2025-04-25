@@ -30,7 +30,7 @@ export const onDomScrollSizeChanged = (dom: HTMLElement, onChanged: (scrollheigh
   observer.observe(dom, {
     childList: true, // 监听子元素的变化
     subtree: true, // 监听后代元素的变化
-    // characterData: true, // 监听文本节点的变化
+    characterData: true, // 监听文本节点的变化
   })
 
   onChanged(lastScrollHeight)

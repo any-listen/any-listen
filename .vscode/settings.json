@@ -13,7 +13,7 @@
   "i18n-ally.keystyle": "flat",
   "i18n-ally.displayLanguage": "zh-cn",
   "i18n-ally.sourceLanguage": "zh-cn",
-  "i18n-ally.translate.engines": ["google-cn", "google"],
+  "i18n-ally.translate.engines": ["deepl", "google-cn", "google", "openai", "libretranslate"],
   "i18n-ally.sortKeys": true,
   "javascript.preferences.importModuleSpecifier": "non-relative",
   "typescript.tsdk": "packages/shared/eslint/node_modules/typescript/lib",

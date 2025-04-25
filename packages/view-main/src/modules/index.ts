@@ -2,6 +2,7 @@ import { connectIPC as _connectIPC } from '@/shared/ipc/ipc'
 import { initI18n } from '@/plugins/i18n'
 import { sendConnectFailed, sendConnected, sendDesconnected, sendRelease } from './app/store/action'
 import { initApp } from './app/init'
+import { initVersion } from './version/init'
 import { initSetting } from './setting/init'
 import { initTheme } from './theme/init'
 import { initPlayer } from './player/init'
@@ -13,6 +14,7 @@ import { initHotkey } from './hotkey/init'
 
 export const registerModules = () => {
   initApp()
+  initVersion()
   initTheme()
   initSetting()
   initI18n()

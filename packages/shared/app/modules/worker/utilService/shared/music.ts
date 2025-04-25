@@ -78,7 +78,9 @@ export const createLocalMusicInfo = async (path: string): Promise<AnyListen.Musi
 
   let metadata
   try {
-    metadata = await parseFile(path)
+    metadata = await parseFile(path, {
+      skipCovers: true,
+    })
   } catch (err) {
     console.log(err)
     return null
@@ -214,7 +216,7 @@ export const getLocalMusicFileLyric = async (path: string): Promise<string | nul
 
   // 尝试读取文件内歌词
   const metadata = await getFileMetadata(path)
-  // console.log(metadata)
+  // console.log(metadata?.common)
   if (!metadata) return null
   let lyricInfo = metadata.common.lyrics?.[0]
   if (lyricInfo) {
@@ -227,10 +229,19 @@ export const getLocalMusicFileLyric = async (path: string): Promise<string | nul
   }
   // console.log(metadata)
   for (const info of Object.values(metadata.native)) {
-    const ust = info.find((i) => i.id == 'USLT')
-    if (ust) {
-      const value = ust.value as IComment
-      if (value.text && value.text.length > 10) return value.text
+    for (const ust of info) {
+      switch (ust.id) {
+        case 'LYRICS': {
+          const value = typeof ust.value == 'string' ? ust.value : (ust as IComment).text
+          if (value && value.length > 10) return value
+          break
+        }
+        case 'USLT': {
+          const value = ust.value as IComment
+          if (value.text && value.text.length > 10) return value.text
+          break
+        }
+      }
     }
   }
   return null

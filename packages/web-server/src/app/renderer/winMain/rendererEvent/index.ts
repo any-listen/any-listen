@@ -1,17 +1,17 @@
+import { socketEvent } from '@/modules/ipc/event'
+import type { ServerSocketWinMain } from '@/modules/ipc/websocket'
+import { appLog } from '@/shared/log4js'
+import { createMessage2Call } from 'message2call'
 import { createExposeApp, createServerApp } from './app'
-import { createExposePlayer, createServerPlayer } from './player'
 import { createExposeData } from './data'
+import { createExposeDislike, createServerDislike } from './dislike'
+import { createExposeExtension, createServerExtension } from './extension'
 import { createExposeHotkey, createServerHotkey } from './hotkey'
 import { createExposeList, createServerList } from './list'
 import { createExposeMusic } from './music'
-import { createExposeDislike, createServerDislike } from './dislike'
-import { createExposeTheme, createServerTheme } from './theme'
-import { createExposeExtension, createServerExtension } from './extension'
+import { createExposePlayer, createServerPlayer } from './player'
 import { createExposeSoundEffect } from './soundEffect'
-import type { ServerSocketWinMain } from '@/modules/ipc/websocket'
-import { socketEvent } from '@/modules/ipc/event'
-import { createMsg2call } from 'message2call'
-import { appLog } from '@/shared/log4js'
+import { createExposeTheme, createServerTheme } from './theme'
 
 export type ExposeServerFunctions = Omit<
   AnyListen.IPC.ClientIPCActions,
@@ -55,15 +55,14 @@ export const init = () => {
   socketEvent.on('new_socket', (socket) => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (socket.winType != 'main') return
-    const msg2call = createMsg2call<AnyListen.IPC.ClientCommonActions>({
-      funcsObj: exposeObj,
+    const msg2call = createMessage2Call<AnyListen.IPC.ClientCommonActions>({
+      exposeObj,
       timeout: 0,
       isSendErrorStack: import.meta.env.DEV,
       sendMessage(data) {
         socket.sendMessage(data)
       },
       onCallBeforeParams(rawArgs) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
         return [socket, ...rawArgs]
       },
       onError(error, path, groupName) {

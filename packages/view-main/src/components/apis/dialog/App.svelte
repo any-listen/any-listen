@@ -81,7 +81,7 @@
   </div>
   <div class="footer">
     <!-- <Btn onclick={closeModal}>{$t('btn_cancel')}</Btn> -->
-    {#each buttons as btn}
+    {#each buttons as btn (btn.text)}
       <Btn
         onclick={() => {
           handleComfirm(btn)

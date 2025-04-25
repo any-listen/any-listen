@@ -65,13 +65,13 @@
       cursor: pointer;
       color: var(--color-font-label);
       transition: background-color 0.2s ease-in-out;
-      &.active {
-        background-color: var(--color-button-background-hover);
-      }
+      // &.active {
+      //   background-color: var(--color-button-background-hover);
+      // }
       &:hover {
-        &.min {
-          background-color: var(--color-button-background-hover);
-        }
+        // &.min {
+        //   background-color: var(--color-button-background-hover);
+        // }
         &.close {
           background-color: var(--color-btn-close);
         }
@@ -79,7 +79,7 @@
     }
   }
 
-  .svg {
-    height: 16px;
-  }
+  // .svg {
+  //   height: 16px;
+  // }
 </style>

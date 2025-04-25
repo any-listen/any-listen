@@ -34,9 +34,9 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
   removeLoginDevice: (id: string) => void
 
   /** 获取上一次启动的版本号 */
-  getLastStartInfo: () => string | null
+  getLastStartInfo: () => AnyListen.LastStartInfo | null
   /** 保存上一次启动的版本号 */
-  saveLastStartInfo: (version: string) => void
+  saveLastStartInfo: () => void
   /** 获取上一次选中的列表id */
   getListPrevSelectId: () => string | null
   /** 保存上一次选中的列表id */
@@ -45,6 +45,7 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
   getSearchHistoryList: () => AnyListen.List.SearchHistoryList | null
   /** 保存搜索历史列表 */
   saveSearchHistoryList: (list: AnyListen.List.SearchHistoryList) => void
+  saveIgnoreVersion: (ver: string | null) => void
 
   /** 文件系统操作 */
   fileSystemAction: <T extends keyof AnyListen.FileSystem.Actions>(
@@ -53,8 +54,10 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
 
   messageBoxConfirm: (key: string, result: unknown) => void
 
+  /** 获取当前版本信息 */
+  getCurrentVersionInfo: () => AnyListen.CurrentVersionInfo
   /** 检查软件更新 */
-  checkUpdate: () => void
+  checkUpdate: () => boolean
   /** 下载更新 */
   downloadUpdate: () => void
   /** 重启更新 */

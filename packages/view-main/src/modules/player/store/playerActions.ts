@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 // import { checkMusicFileAvailable } from '@renderer/utils/music'
 
-import { getRandom } from '@any-listen/common/utils'
-import { playerState } from './state'
-import { i18n } from '@/plugins/i18n'
-import { settingState } from '@/modules/setting/store/state'
-import { isEmpty, releasePlayer, setPause, setPlay, setResource, setStop } from '@/plugins/player'
-import { playerEvent } from './event'
-import * as commit from './commit'
-import { addListMusics, removeListMusics } from '@/modules/musicLibrary/store/actions'
-import { LIST_IDS } from '@any-listen/common/constants'
-import { parseInterval } from '@/shared'
-import { removePlayListMusic, setPlayListMusic, setPlayListMusicPlayed, setPlayListMusicUnplayedAll } from './listRemoteAction'
-import { createPlayMusicInfoList } from '@any-listen/common/tools'
-import { addPlayHistoryList, getMusicLyric, getMusicPic, getMusicUrl, setPlayHistoryList } from './playerRemoteAction'
 import { addInfo } from '@/modules/dislikeList/actions'
+import { addListMusics, removeListMusics } from '@/modules/musicLibrary/store/actions'
+import { settingState } from '@/modules/setting/store/state'
+import { i18n } from '@/plugins/i18n'
+import { isEmpty, releasePlayer, setPause, setPlay, setResource, setStop } from '@/plugins/player'
+import { parseInterval } from '@/shared'
+import { LIST_IDS } from '@any-listen/common/constants'
+import { createPlayMusicInfoList } from '@any-listen/common/tools'
+import { getRandom } from '@any-listen/common/utils'
+import * as commit from './commit'
+import { playerEvent } from './event'
+import { removePlayListMusic, setPlayListMusic, setPlayListMusicPlayed, setPlayListMusicUnplayedAll } from './listRemoteAction'
+import { addPlayHistoryList, getMusicLyric, getMusicPic, getMusicUrl, setPlayHistoryList } from './playerRemoteAction'
+import { playerState } from './state'
 
 let gettingUrlId = ''
 const createDelayNextTimeout = (delay: number) => {
@@ -88,11 +88,11 @@ const getMusicPlayUrl = async (
   commit.setStatusText(i18n.t('player__geting_url'))
   if (settingState.setting['player.autoSkipOnError']) addLoadTimeout()
 
-  // const type = getPlayType(settingState.setting['player.highQuality'], musicInfo)
+  // const type = getPlayType(settingState.setting['player.playQuality'], musicInfo)
 
   return getMusicUrl({ musicInfo, isRefresh })
     .then(({ url }) => {
-      if (!playerState.playing || diffCurrentMusicInfo(musicInfo)) return null
+      if (diffCurrentMusicInfo(musicInfo)) return null
       // console.log(url)
       return url
     })
@@ -112,7 +112,7 @@ const getMusicPlayUrl = async (
 
 export const setMusicUrl = (musicInfo: AnyListen.Music.MusicInfo, isRefresh?: boolean) => {
   // if (settingState.setting['player.autoSkipOnError']) addLoadTimeout()
-  if (!diffCurrentMusicInfo(musicInfo)) return
+  if (!playerState.playing || !diffCurrentMusicInfo(musicInfo)) return
   if (cancelDelayRetry) cancelDelayRetry()
   gettingUrlId = musicInfo.id
   void getMusicPlayUrl(musicInfo, isRefresh)
@@ -205,12 +205,12 @@ export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null, in
       .then((lyricInfo) => {
         if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
         commit.setMusicInfo({
-          lrc: lyricInfo.lyric,
-          tlrc: lyricInfo.tlyric,
-          awlrc: lyricInfo.awlyric,
-          rlrc: lyricInfo.rlyric,
+          lrc: lyricInfo.info.lyric,
+          tlrc: lyricInfo.info.tlyric,
+          awlrc: lyricInfo.info.awlyric,
+          rlrc: lyricInfo.info.rlyric,
         })
-        playerEvent.lyricUpdated(lyricInfo)
+        playerEvent.lyricUpdated(lyricInfo.info)
       })
       .catch((err) => {
         console.log(err)
@@ -250,7 +250,7 @@ const handlePlay = () => {
   if (!playMusicInfo) return
 
   setStop()
-  playerEvent.pause()
+  // playerEvent.pause()
 
   clearDelayNextTimeout()
   clearLoadTimeout()
@@ -275,19 +275,24 @@ const handlePlayList = async (
       setPlayMusicInfo(targetPlayMusicInfo!, index)
     }
   } else {
-    commit.setPlayListId(listId)
+    commit.setPlayListId(listId, isOnline)
   }
   if (targetPlayMusicInfo == null) {
-    const newList = createPlayMusicInfoList(targetList, listId, isOnline, false)
-    await setPlayListMusic({ list: newList, listId })
+    const newList = createPlayMusicInfoList({
+      musicInfos: targetList,
+      listId,
+      isOnline,
+      playLater: false,
+    })
+    await setPlayListMusic({ list: newList, listId, isOnline })
     targetPlayMusicInfo = newList.find((m) => m.musicInfo.id == targetMusicInfo.id)
     setPlayMusicInfo(targetPlayMusicInfo!, index)
   }
   commit.setPlaying(true)
+  handlePlay()
   if (settingState.setting['player.isAutoCleanPlayedList'] || prevListId != listId || isClianHistory) {
     await Promise.all([setPlayListMusicUnplayedAll(), setPlayHistoryList([])])
   }
-  handlePlay()
 }
 /**
  * 播放列表内歌曲
@@ -697,7 +702,15 @@ export const setVolume = (value: number) => {
 export const setVolumeMute = (value: boolean) => {
   playerEvent.setVolumeIsMute(value)
 }
+
+export const setCollectStatus = (status: boolean) => {
+  commit.setMusicInfo({ collect: status })
+}
+
 export const release = async () => {
   stop()
+  commit.setPlayMusicInfo(null)
+  commit.setMusicInfo(null)
+  commit.updatePlayIndex(-1, -1)
   await releasePlayer()
 }

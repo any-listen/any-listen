@@ -17,6 +17,7 @@
     height = 'auto',
     title,
     onafterleave,
+    onclose,
     children,
   }: {
     visible: boolean
@@ -31,6 +32,7 @@
     height?: string
     title?: string
     minheight?: string
+    onclose?: (() => void) | (() => boolean | undefined | Promise<boolean | undefined>)
     onafterleave?: () => void
     children: Snippet
   } = $props()
@@ -45,7 +47,9 @@
   )
   let isAddedClass = false
 
-  const close = () => {
+  const close = async () => {
+    const result = onclose?.()
+    if (result === false || (result instanceof Promise && (await result) === false)) return
     visible = false
   }
   let parentNode: HTMLElement | null = null
@@ -103,7 +107,7 @@
       transition:fly={{ y: -30 }}
       class:filter
       onclick={() => {
-        if (bgclose) close()
+        if (bgclose) void close()
       }}
       onoutroend={handleAfterLeave}
     >
@@ -118,7 +122,7 @@
         }}
         onkeydown={(e) => {
           if (e.key == 'Escape' && (e.target as HTMLElement)?.tagName != 'INPUT' && keyclose) {
-            close()
+            void close()
           }
         }}
       >
@@ -165,7 +169,7 @@
     }
 
     // &:before {
-    //   .mixin-after;
+    //   .mixin-after();
     //   position: absolute;
     //   left: 0;
     //   top: 0;

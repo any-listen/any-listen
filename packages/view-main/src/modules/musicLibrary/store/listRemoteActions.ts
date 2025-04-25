@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { onListAction, sendListAction } from '@/shared/ipc/list'
 // import { PLAYER_EVENT_NAME } from '@/shared/ipcNames'
+import { settingState } from '@/modules/setting/store/state'
 import {
   listDataOverwrite,
   listMusicAdd,
@@ -15,19 +16,17 @@ import {
   userListsRemove,
   userListsUpdate,
   userListsUpdatePosition,
-  // userListsUpdatePlayCount,
 } from './commit'
-import { settingState } from '@/modules/setting/store/state'
 
 export {
+  checkListExistMusic,
   getAllList,
   getListMusics,
-  checkListExistMusic,
-  getMusicExistListIds,
-  getListScrollPosition,
-  saveListScrollPosition,
   getListPrevSelectId,
+  getListScrollPosition,
+  getMusicExistListIds,
   saveListPrevSelectId,
+  saveListScrollPosition,
 } from '@/shared/ipc/list'
 
 /**
@@ -165,7 +164,7 @@ export const registerListAction = () => {
     listMusicMove(fromId, toId, musicInfos, addMusicLocationType)
   }
   const list_music_remove = ({ listId, ids }: AnyListen.IPCList.ListActionMusicRemove) => {
-    // console.log(listId, ids)
+    console.log(listId, ids)
     listMusicRemove(listId, ids)
   }
   const list_music_update = (musicInfos: AnyListen.IPCList.ListActionMusicUpdate) => {

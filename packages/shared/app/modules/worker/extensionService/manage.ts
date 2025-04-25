@@ -1,5 +1,8 @@
+import { arrUnshift } from '@any-listen/common/utils'
+import { checkAndCreateDir, removePath } from '@any-listen/nodejs'
 import fs from 'node:fs'
 import path from 'node:path'
+import { extensionEvent } from './event'
 import {
   backupExtension,
   buildExtensionI18nMessage,
@@ -13,9 +16,7 @@ import {
   stopRunExtension,
   unpackExtension,
 } from './shared'
-import { extensionEvent } from './event'
 import { extensionState } from './state'
-import { checkAndCreateDir, removePath } from '@any-listen/nodejs'
 
 /**
  * 加载已安装扩展
@@ -42,6 +43,7 @@ export const loadLocalExtensions = async () => {
   ])
   const settingMap = new Map(settings.map((ext) => [ext.id, ext]))
   extensionState.extensions = []
+  const tempList: AnyListen.Extension.Extension[] = []
   const removedExtension: AnyListen.Extension.Extension[] = []
   for (const ext of extensions) {
     const setting = settingMap.get(ext.id)
@@ -50,13 +52,21 @@ export const loadLocalExtensions = async () => {
           ...ext,
           enabled: setting.enabled,
           installedTimestamp: setting.installedTimestamp,
+          updatedTimestamp: setting.updatedTimestamp,
           removed: setting.removed,
         }
       : ext
 
     if (extension.removed) removedExtension.push(extension)
-    else extensionState.extensions.push(extension)
+    else tempList.push(extension)
   }
+  for (const s of settings) {
+    const idx = tempList.findIndex((ext) => ext.id == s.id)
+    if (idx < 0) continue
+    extensionState.extensions.push(tempList[idx])
+    tempList.splice(idx, 1)
+  }
+  if (tempList.length) arrUnshift(extensionState.extensions, tempList)
   extensionEvent.listSet(extensionState.extensions)
 
   void saveExtensionsSetting(extensionState.extensions)
@@ -140,22 +150,26 @@ export const updateExtension = async (tempExtension: AnyListen.Extension.Extensi
   }
 
   const targetExtension = extensionState.extensions[targetExtensionIndex]
-  if (targetExtension.loaded) throw new Error(`Will update extension does running: ${tempExtension.id}`)
+  // if (targetExtension.loaded) throw new Error(`Will update extension does running: ${tempExtension.id}`)
   if (targetExtension.publicKey != tempExtension.publicKey) throw new Error('Signature does not match')
 
-  const backupPath = await backupExtension(targetExtension.dataDirectory)
+  if (targetExtension.loaded) await stopRunExtension(targetExtension)
+  const backupPath = await backupExtension(targetExtension.directory)
   try {
-    const extensionPath = await mvExtension(tempExtension.directory)
+    const extensionPath = await mvExtension(tempExtension)
     const extension = await parseExtension(extensionPath)
     if (!extension) {
       void removePath(extensionPath)
       console.error('Extension perse failed: ', extensionPath)
       throw new Error('Extension perse failed')
     }
+    extension.enabled = targetExtension.enabled
+    extension.installedTimestamp = targetExtension.installedTimestamp
     extension.updatedTimestamp = Date.now()
     extensionState.extensions.splice(targetExtensionIndex, 1, extension)
     extensionEvent.listUpdate(extension)
     await saveExtensionsSetting(extensionState.extensions)
+    if (extension.enabled) await loadExtension(extension)
     return extension
   } catch (err) {
     await restoreExtension(backupPath)
@@ -169,7 +183,7 @@ export const installExtension = async (tempExtension: AnyListen.Extension.Extens
     throw new Error(`Repeated expansion: ${tempExtension.id}`)
   }
 
-  const extensionPath = await mvExtension(tempExtension.directory)
+  const extensionPath = await mvExtension(tempExtension)
   const extension = await parseExtension(extensionPath)
   if (!extension) {
     void removePath(extensionPath)
@@ -177,11 +191,12 @@ export const installExtension = async (tempExtension: AnyListen.Extension.Extens
     throw new Error('Extension perse failed')
   }
 
-  extension.updatedTimestamp = extension.installedTimestamp = Date.now()
+  extension.installedTimestamp = Date.now()
   extensionState.extensions.unshift(extension)
   extensionEvent.listAdd(extension)
 
   await saveExtensionsSetting(extensionState.extensions)
+  if (extension.enabled) await loadExtension(extension)
 
   return extension
 }

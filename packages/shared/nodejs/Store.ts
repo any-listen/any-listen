@@ -43,7 +43,7 @@ export default class Store {
     return key in this.store
   }
 
-  set(key: string, value: unknown) {
+  set<V = unknown>(key: string, value: V) {
     this.store[key] = value
     this.writeFile()
   }

@@ -1,11 +1,11 @@
+import { onConnected, onRelease } from '@/modules/app/shared'
 import { getEnvLocale, i18n } from '@/plugins/i18n'
 import { createUnsubscriptionSet } from '@/shared'
-import { onConnected, onRelease } from '@/modules/app/shared'
+import { handleConfigChange } from '@/shared/browser/widnow'
+import { appState } from '../app/store/state'
 import { getSetting, registerRemoteSettingAction, updateSetting } from './store/action'
 import { initSetting as overwriteSetting } from './store/commit'
 import { settingEvent } from './store/event'
-import { appState } from '../app/store/state'
-import { handleConfigChange } from '@/shared/browser/widnow'
 
 const init = async () => {
   const setting = await getSetting()
@@ -18,7 +18,7 @@ const init = async () => {
     console.log('Set lang', setting['common.langId'])
   }
 
-  if (import.meta.env.VITE_IS_ELECTRON) {
+  if (import.meta.env.VITE_IS_DESKTOP) {
     if (
       !setting['common.startInFullscreen'] &&
       (document.body.clientHeight > window.screen.availHeight || document.body.clientWidth > window.screen.availWidth) &&

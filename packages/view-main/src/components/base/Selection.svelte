@@ -67,7 +67,7 @@
   }
 </script>
 
-<div class="select" class:active={visible}>
+<div class={['select', { active: visible }]}>
   <button bind:this={domBtn} class="button" onclick={handleShow}>
     <span class="label">{label}</span>
     <div class="icon">
@@ -137,7 +137,7 @@
 
     span {
       flex: auto;
-      .mixin-ellipsis-1;
+      .mixin-ellipsis-1();
     }
     .icon {
       flex: none;
@@ -183,7 +183,7 @@
     // outline: none;
     transition: background-color @transition-normal;
     background-color: transparent;
-    .mixin-ellipsis-1;
+    .mixin-ellipsis-1();
     border: none;
     display: block;
     width: 100%;

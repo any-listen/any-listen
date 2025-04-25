@@ -2,13 +2,14 @@
   "name": "@shared/nodejs",
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
-    "undici": "^7.1.0",
-    "tunnel": "^0.0.6"
+    "tar": "^7.4.3",
+    "tunnel": "^0.0.6",
+    "undici": "^7.4.0"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "@types/node": "^18.19.44",
+    "@types/node": "^22.13.7",
     "@types/tunnel": "^0.0.7"
   }
 }

@@ -10,7 +10,8 @@
   const viewList = $derived.by(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     langId.val
-    return [viewTypes[0]].map((t) => {
+    return viewTypes.map((t) => {
+      // return { id: t, label: i18n.t(`settings__type_logs`) }
       return { id: t, label: i18n.t(`settings__type_${t}`) }
     })
   })

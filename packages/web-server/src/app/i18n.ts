@@ -1,5 +1,5 @@
-import { fillMessage, messages } from '@any-listen/i18n'
 import type { Langs, Locale, Message, TranslateValues } from '@any-listen/i18n'
+import { fillMessage, messages } from '@any-listen/i18n'
 import { appEvent, appState } from './app'
 
 export const i18n = {

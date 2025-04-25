@@ -175,6 +175,9 @@ export const createClientApp = (ipcSocket: IPCSocket) => {
         ipcPreloadEvent.off('closeMessageBox', listener)
       }
     },
+    async getCurrentVersionInfo() {
+      return ipcSocket.remote.getCurrentVersionInfo()
+    },
     async checkUpdate() {
       return ipcSocket.remote.checkUpdate()
     },

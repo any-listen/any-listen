@@ -79,6 +79,9 @@ export const messageBoxConfirm: AnyListen.IPC.ServerIPC['messageBoxConfirm'] = a
   return ipc.messageBoxConfirm(key, result)
 }
 
+export const getCurrentVersionInfo: AnyListen.IPC.ServerIPC['getCurrentVersionInfo'] = async () => {
+  return ipc.getCurrentVersionInfo()
+}
 export const onUpdateInfo: AnyListen.IPC.ServerIPC['onUpdateInfo'] = (listener) => {
   return ipc.onUpdateInfo(listener)
 }

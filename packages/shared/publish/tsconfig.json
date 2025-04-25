@@ -1,0 +1,14 @@
+{
+  "extends": "./node_modules/@any-listen/eslint/tsconfig.node.json",
+  "compilerOptions": {
+    // "typeRoots": [
+    //   "./types"
+    // ],
+    "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
+    "checkJs": true,
+    "types": ["@any-listen/types", "@any-listen/nodejs/node_modules/@types/node"]
+  },
+  "include": ["**/*.d.ts", "**/*.ts", "**/*.js"]
+}

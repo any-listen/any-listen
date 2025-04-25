@@ -1,9 +1,10 @@
-import { init as initRendererEvent, rendererIPC } from './rendererEvent'
 import { appEvent } from '@/app/app'
+import { extensionEvent } from '@/app/modules/extension'
 import { hotKeyEvent } from '@/app/modules/hotKey'
 import { themeEvent } from '@/app/modules/theme'
-import { extensionEvent } from '@/app/modules/extension'
+import { playerEvent } from '@any-listen/app/modules/player'
 import { initUpdate } from './autoUpdate'
+import { init as initRendererEvent, rendererIPC } from './rendererEvent'
 // import { initUpdate } from './autoUpdate'
 
 export const initWinMain = () => {
@@ -24,5 +25,8 @@ export const initWinMain = () => {
   })
   extensionEvent.on('extensionEvent', (event) => {
     void rendererIPC.extensionEvent(event)
+  })
+  playerEvent.on('collectStatus', (status) => {
+    void rendererIPC.playerAction({ action: 'collectStatus', data: status })
   })
 }

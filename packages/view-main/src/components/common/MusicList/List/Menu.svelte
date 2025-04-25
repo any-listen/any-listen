@@ -52,7 +52,7 @@
       { action: 'dislike', disabled: dislike, label: $t('user_list_music_menu__dislike') },
       local && { action: 'remove', label: $t('user_list_music_menu__remove') },
     ]
-    if (import.meta.env.VITE_IS_ELECTRON) {
+    if (import.meta.env.VITE_IS_DESKTOP) {
       if (selectInfo.musicInfo.isLocal) {
         newMenu.splice(6, 0, { action: 'locate', label: $t('user_list_music_menu__locate') })
       }
