@@ -79,6 +79,9 @@ mkdir data
 node index.cjs
 ```
 
+## 贡献指南
+请将 PR 提交到 `dev` 分支
+
 ## 许可证
 
 本项目基于 Affero 通用公共许可证（AGPL）v3.0 授权，并附加以下条款：
