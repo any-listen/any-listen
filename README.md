@@ -79,6 +79,9 @@ mkdir data
 node index.cjs
 ```
 
+## Contribution Guide
+Please submit the PR to the `dev` branch.
+
 ## License
 
 This project is licensed under the Affero General Public License (AGPL) v3.0 with the following additional terms:
