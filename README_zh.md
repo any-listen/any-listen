@@ -1,6 +1,6 @@
 # Any Listen
 
-[English](README.md) | 中文
+[English](README.md) | 中文 | [日本語](README_jp.md)
 
 一个跨平台的私人音乐播放服务。
 
