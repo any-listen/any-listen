@@ -24,29 +24,29 @@
 
 1. `data/config.cjs` ファイルを作成します。
 
- ```js
-    const config = {
-      // port: '9500', // 绑固定ポート
-      // bindIp: '127.0.0.1', // IP アドレスのバインド
-      // httpLog: true, // HTTP リクエストログを有効にしていますか？
-      // 'cors.enabled': false, // クロスオリジンリソース共有を有効にしますか？
-      // 'cors.whitelist': [ // ドメインにまたがるドメイン名を許可します空の配列はすべてのドメイン名を許可します
-      //   // 'www.xxx.com',
-      // ],
-      // 'upstreamProxy.enabled': false, // 代理を使用してリクエストを転送しますか？
-      // 'upstreamProxy.header': '', // 代理転送リクエストヘッダー（例：`x-real-ip`）
-      // 'extension.ghMirrorHosts': [], // 拡張ストアのGitHubミラーのアドレス
+   ```js
+   const config = {
+     // port: '9500', // 绑固定ポート
+     // bindIp: '127.0.0.1', // IP アドレスのバインド
+     // httpLog: true, // HTTP リクエストログを有効にしていますか？
+     // 'cors.enabled': false, // クロスオリジンリソース共有を有効にしますか？
+     // 'cors.whitelist': [ // ドメインにまたがるドメイン名を許可します空の配列はすべてのドメイン名を許可します
+     //   // 'www.xxx.com',
+     // ],
+     // 'upstreamProxy.enabled': false, // 代理を使用してリクエストを転送しますか？
+     // 'upstreamProxy.header': '', // 代理転送リクエストヘッダー（例：`x-real-ip`）
+     // 'extension.ghMirrorHosts': [], // 拡張ストアのGitHubミラーのアドレス
 
-      // アクセス許可されたローカルディレクトリ
-      // allowPublicDir: ['G:', 'E:\\music'], // Windowsの例
-      // allowPublicDir: ['/music'], // Linuxの例
-      password: '123456a', // ログインパスワード 
+     // アクセス許可されたローカルディレクトリ
+     // allowPublicDir: ['G:', 'E:\\music'], // Windowsの例
+     // allowPublicDir: ['/music'], // Linuxの例
+     password: '123456a', // ログインパスワード 
     }
 
     module.exports = config
     ```
 
-    2. Dockerコンテナを実行します
+2. Dockerコンテナを実行します
 
     **注意：以下のコマンドは例示のため、直接使用しないでください！**
 
