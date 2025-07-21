@@ -12,7 +12,7 @@
 
 [https://hub.docker.com/r/lyswhut/any-listen-web-server](https://hub.docker.com/r/lyswhut/any-listen-web-server)
 
-### ディレクトリ
+### 直接配備します
 
 最新バージョンをダウンロードして、目標ディレクトリに解凍してください：[https://github.com/any-listen/any-listen-web-server/releases](https://github.com/any-listen/any-listen-web-server/releases)
 
@@ -26,7 +26,7 @@
 
    ```js
    const config = {
-     // port: '9500', // 绑固定ポート
+     // port: '9500', // ポートをバインド
      // bindIp: '127.0.0.1', // IP アドレスのバインド
      // httpLog: true, // HTTP リクエストログを有効にしていますか？
      // 'cors.enabled': false, // クロスオリジンリソース共有を有効にしますか？
