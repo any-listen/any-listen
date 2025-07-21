@@ -1,6 +1,6 @@
 # Any Listen
 
-English | [中文](README_zh.md)
+English | [中文](README_zh.md) | [日本語](README_jp.md)
 
 A cross-platform private music playback service.
 
