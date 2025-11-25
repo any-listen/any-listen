@@ -1,7 +1,7 @@
 const builder = require('electron-builder')
 const beforePack = require('./build-before-pack.cjs')
 const afterPack = require('./build-after-pack.cjs')
-const fs = require('node:fs')
+// const fs = require('node:fs')
 const path = require('node:path')
 const { rmSourceModule } = require('./native-module.cjs')
 
@@ -37,7 +37,8 @@ const options = {
     '!node_modules/**/*',
     'node_modules/font-list',
     {
-      from: fs.realpathSync(path.join(__dirname, '../node_modules/better-sqlite3/build/Release')),
+      // from: fs.realpathSync(path.join(__dirname, '../node_modules/better-sqlite3/build/Release')),
+      from: 'node_modules/better-sqlite3/build/Release',
       to: 'dist/electron/native',
       filter: ['better_sqlite3.node'],
     },
