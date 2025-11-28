@@ -22,9 +22,16 @@ export const setLyric = (lrcStr: string, extLrc: string[]) => {
 
 let sources = new Set<string>()
 let prevDisabled = false
-export const setDisabledAutoPause = (disabled: boolean, source: 'statusBarLyric' | 'titleLyric' | 'mediaSessionLyric') => {
-  sources[disabled ? 'add' : 'delete'](source)
-  const currentDisabled = sources.size > 0
+let tempEnabled = false
+export const setDisabledAutoPause = (disabled: boolean, source?: 'statusBarLyric' | 'titleLyric' | 'mediaSessionLyric') => {
+  let currentDisabled: boolean
+  if (source) {
+    sources[disabled ? 'add' : 'delete'](source)
+    currentDisabled = !tempEnabled && sources.size > 0
+  } else {
+    currentDisabled = disabled
+    tempEnabled = !disabled
+  }
   if (prevDisabled == currentDisabled) return
   prevDisabled = currentDisabled
   if (!currentDisabled) {
@@ -55,7 +62,7 @@ export const setDisabledAutoPause = (disabled: boolean, source: 'statusBarLyric'
   }
 }
 export const getDisabledAutoPause = () => {
-  return prevDisabled
+  return sources.size > 0
 }
 export const getDisabledAutoPauseSize = () => {
   return sources.size

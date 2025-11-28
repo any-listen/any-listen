@@ -25,6 +25,10 @@ class Event extends WebEvent {
     this.emitEvent('fullscreen', isFullscreen)
   }
 
+  visible(visible: boolean) {
+    this.emitEvent('visible', visible)
+  }
+
   focus() {
     this.emitEvent('focus')
   }

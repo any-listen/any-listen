@@ -1,4 +1,5 @@
 import { winShowEvent } from '@/shared/ipc/app/event'
+import { appEvent } from '../app/store/event'
 import { playerEvent } from '../player/store/event'
 import { playerState } from '../player/store/state'
 import { settingEvent } from '../setting/store/event'
@@ -73,11 +74,22 @@ export const initTitleLyric = () => {
       resetLyric()
     }
   })
+  const handleVisibleChanged = (show: boolean) => {
+    if (!getDisabledAutoPauseSize()) return
+    if (show) {
+      setDisabledAutoPause(false)
+    } else {
+      setDisabledAutoPause(true)
+    }
+  }
+  const unsub5 = appEvent.on('visible', handleVisibleChanged)
+  handleVisibleChanged(!document.hidden)
 
   return () => {
     unsub()
     unsub2()
     unsub3()
     unsub4()
+    unsub5()
   }
 }

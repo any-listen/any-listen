@@ -65,6 +65,9 @@ export const initApp = () => {
   window.addEventListener('blur', () => {
     appEvent.blur()
   })
+  window.addEventListener('visibilitychange', () => {
+    appEvent.visible(!document.hidden)
+  })
   keyboardEvent.on('mod+a_down', (evt) => {
     if (evt.inputing) return
     evt.event?.preventDefault()
