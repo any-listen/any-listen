@@ -8,6 +8,14 @@
 
 本專案仍在積極開發中，目前提供 **「桌面版」** 及 **「網頁版服務」**。
 
+### 特性
+
+- 新增並播放本機歌曲（普通清單、本機清單）
+- 新增並播放 WebDAV 上的歌曲（遠端清單）
+- 線上匹配歌曲資訊（封面、歌詞，需至擴充管理安裝對應擴充）
+- 實驗性音效
+- 卡拉 OK 歌詞、標題列歌詞
+
 ## 桌面版
 
 下載最新版本安裝即可：[https://github.com/any-listen/any-listen-desktop/releases](https://github.com/any-listen/any-listen-desktop/releases)
@@ -25,14 +33,6 @@
 下載最新版本並解壓到目標目錄：[https://github.com/any-listen/any-listen-web-server/releases](https://github.com/any-listen/any-listen-web-server/releases)
 
 參考 [https://github.com/lyswhut/lx-music-sync-server](https://github.com/lyswhut/lx-music-sync-server) 的部署方式，配置文件說明見下方。
-
-### 特性
-
-- 新增並播放本機歌曲（普通清單、本機清單）
-- 新增並播放 WebDAV 上的歌曲（遠端清單）
-- 線上匹配歌曲資訊（封面、歌詞，需至擴充管理安裝對應擴充）
-- 實驗性音效
-- 卡拉 OK 歌詞、標題列歌詞
 
 ---
 

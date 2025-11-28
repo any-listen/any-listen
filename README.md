@@ -8,6 +8,14 @@ English | [简体中文](./docs/README_zh.md) | [繁體中文](./docs/README_zh-
 
 This project is under active development and currently provides both a **Desktop version** and a **Web service version**.
 
+### Features
+
+- Add and play local songs (standard playlists and local lists)
+- Add and play songs stored on WebDAV (remote lists)
+- Online song metadata matching (cover, lyrics; install the relevant extension via Extension Manager)
+- Experimental audio effects
+- Karaoke lyrics and title bar lyrics
+
 ## Desktop Version
 
 Download the latest version and install: [https://github.com/any-listen/any-listen-desktop/releases](https://github.com/any-listen/any-listen-desktop/releases)
@@ -25,14 +33,6 @@ Image release: [https://hub.docker.com/r/lyswhut/any-listen-web-server](https://
 Download the latest version and extract it to your target directory: [https://github.com/any-listen/any-listen-web-server/releases](https://github.com/any-listen/any-listen-web-server/releases)
 
 Refer to [https://github.com/lyswhut/lx-music-sync-server](https://github.com/lyswhut/lx-music-sync-server) for deployment methods. See below for configuration file instructions.
-
-### Features
-
-- Add and play local songs (standard playlists and local lists)
-- Add and play songs stored on WebDAV (remote lists)
-- Online song metadata matching (cover, lyrics; install the relevant extension via Extension Manager)
-- Experimental audio effects
-- Karaoke lyrics and title bar lyrics
 
 ---
 
