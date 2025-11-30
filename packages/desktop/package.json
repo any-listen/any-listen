@@ -57,7 +57,7 @@
     "@any-listen/i18n": "workspace:@shared/i18n@*",
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
     "@any-listen/theme": "workspace:@shared/theme@*",
-    "better-sqlite3": "^12.4.6",
+    "better-sqlite3": "^12.5.0",
     "electron-log": "5.4.3",
     "electron-updater": "^6.7.2",
     "font-list": "^2.0.1",

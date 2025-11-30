@@ -17,7 +17,7 @@ export interface WebDAVClientOptions {
   path: string
 }
 
-export type { WebDAVFileItem, WebDAVItem } from '@any-listen/nodejs/webdav-client'
+export type { WebDAVClient, WebDAVFileItem, WebDAVItem } from '@any-listen/nodejs/webdav-client'
 
 export const createWebDAVClient = (options: WebDAVClientOptions) => {
   return new WebDAVClient({
@@ -102,15 +102,21 @@ const nextLenMap = {
   [192 * 1024 - 1]: 256 * 1024 - 1,
 }
 const MAX_META_LENGTH = 128 * 1024
-const requestParseMetadata = async ( {
-  webDAVClient, path, mimeType, isMetaOnly = false, needCache = false, data = Buffer.alloc(0), preLength = 0
-} : {
-  webDAVClient: WebDAVClient,
-  path: string,
-  mimeType: string,
-  isMetaOnly?: boolean,
-  needCache?: boolean,
-  data?: Buffer,
+const requestParseMetadata = async ({
+  webDAVClient,
+  path,
+  mimeType,
+  isMetaOnly = false,
+  needCache = false,
+  data = Buffer.alloc(0),
+  preLength = 0,
+}: {
+  webDAVClient: WebDAVClient
+  path: string
+  mimeType: string
+  isMetaOnly?: boolean
+  needCache?: boolean
+  data?: Buffer
   preLength?: number
 }) => {
   if (cache.has(path)) return cache.get<ReturnType<typeof parseBufferMetadata>>(path)!
@@ -130,7 +136,13 @@ const requestParseMetadata = async ( {
   return requestParseMetadata({ webDAVClient, path, mimeType, isMetaOnly, needCache, data, preLength: nextLength })
 }
 let requestParseMetadataPromises = new Map<string, ReturnType<typeof requestParseMetadata>>()
-const handleParseMetadata = async (opts: { webDAVClient: WebDAVClient, path: string, mimeType: string, isMetaOnly?: boolean, needCache?: boolean }) => {
+const handleParseMetadata = async (opts: {
+  webDAVClient: WebDAVClient
+  path: string
+  mimeType: string
+  isMetaOnly?: boolean
+  needCache?: boolean
+}) => {
   if (cache.has(opts.path)) return cache.get<ReturnType<typeof parseBufferMetadata>>(opts.path)!
   if (requestParseMetadataPromises.has(opts.path)) return requestParseMetadataPromises.get(opts.path)!
   const promise = requestParseMetadata(opts).finally(() => {

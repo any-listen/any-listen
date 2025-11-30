@@ -25,7 +25,6 @@
 
 <style lang="less">
   .settings-item-checkbox {
-    margin-left: 16px;
     :global {
       .checkbox {
         margin-bottom: 5px;

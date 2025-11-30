@@ -7,15 +7,79 @@ import {
   createWebDAVClient,
   parseMusicMetadata,
   testDir,
+  type WebDAVClient,
   type WebDAVClientOptions,
   type WebDAVFileItem,
   type WebDAVItem,
 } from './webdav'
 
-const listCache = new Map<string, Map<string, WebDAVFileItem>>()
+const listCache = new Map<string, WebDAVItem[]>()
+const musicCache = new Map<string, WebDAVFileItem>()
+const MAX_DEEP = 5
 
 const generateId = (extId: string, source: string, options: WebDAVClientOptions, item: WebDAVItem) => {
   return `${extId}_${source}_${options.username}_${options.url}_${item.path}`
+}
+
+const getDirFileIds = async (
+  opts: {
+    webDAVClient: WebDAVClient
+    webDAVClientOptions: WebDAVClientOptions
+    extId: string
+    source: string
+    path: string
+    isIncludeDir: boolean
+    useCache?: boolean
+  },
+  deep = 0
+) => {
+  const buildMusicIds = async (list: WebDAVItem[]) => {
+    const dirs: string[] = []
+    let ids: string[] = []
+    for (const item of list) {
+      if (item.isDir) {
+        if (opts.isIncludeDir && deep < MAX_DEEP) dirs.push(item.path)
+      } else if (item.size > 0 && isMusicFile(item.name)) {
+        const path = generateId(opts.extId, opts.source, opts.webDAVClientOptions, item)
+        musicCache.set(path, item)
+        ids.push(path)
+      }
+    }
+    if (dirs.length) {
+      for (const dir of dirs) {
+        const subIds = await getDirFileIds({ ...opts, path: dir }, deep + 1)
+        ids = ids.concat(subIds)
+      }
+    }
+    return ids
+  }
+
+  const list =
+    opts.useCache && listCache.has(opts.path)
+      ? listCache.get(opts.path)!
+      : await opts.webDAVClient
+          .ls(opts.path)
+          .then((list) => {
+            listCache.set(opts.path, list)
+            return list
+          })
+          .catch((err: Error) => {
+            logcat.error('WebDAV list error', err)
+            throw buildWebDAVError(opts.webDAVClientOptions, err)
+          })
+
+  return buildMusicIds(list)
+}
+const getListMusicIds = async (
+  webDAVClientOptions: WebDAVClientOptions,
+  extId: string,
+  source: string,
+  path: string,
+  isIncludeDir: boolean,
+  useCache = false
+) => {
+  const webDAVClient = createWebDAVClient(webDAVClientOptions)
+  return getDirFileIds({ webDAVClient, webDAVClientOptions, extId, source, path, isIncludeDir, useCache })
 }
 export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
   async createList(params) {
@@ -31,43 +95,60 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
   },
   async getListMusicIds({ extensionId, data }) {
     const options = await getWebDAVOptionsByListInfo(data.meta)
-    const webDAVClient = createWebDAVClient(options)
-    const list = await webDAVClient.ls(options.path).catch((err: Error) => {
-      logcat.error('WebDAV list error', err)
-      throw buildWebDAVError(options, err)
-    })
-    const map = new Map<string, WebDAVFileItem>()
-    listCache.set(data.id, map)
-    const extId = data.meta.extensionId
-    const source = data.meta.source
-    return (list.filter((item) => !item.isDir && item.size > 0 && isMusicFile(item.name)) as WebDAVFileItem[]).map((item) => {
-      const path = generateId(extId, source, options, item)
-      map.set(path, item)
-      return path
-    })
+    const list = await getListMusicIds(
+      options,
+      data.meta.extensionId,
+      data.meta.source,
+      options.path,
+      (data.meta.includeSubDir as boolean | undefined) || false,
+      false
+    )
+    return list
+    // const webDAVClient = createWebDAVClient(options)
+    // const list = await webDAVClient.ls(options.path).catch((err: Error) => {
+    //   logcat.error('WebDAV list error', err)
+    //   throw buildWebDAVError(options, err)
+    // })
+    // const map = new Map<string, WebDAVFileItem>()
+    // listCache.set(data.id, map)
+    // const extId = data.meta.extensionId
+    // const source = data.meta.source
+    // return (list.filter((item) => !item.isDir && item.size > 0 && isMusicFile(item.name)) as WebDAVFileItem[]).map((item) => {
+    //   const path = generateId(extId, source, options, item)
+    //   map.set(path, item)
+    //   return path
+    // })
   },
   async getMusicInfoByIds({ data }) {
-    let listMap = listCache.get(data.list.id)
     const options = await getWebDAVOptionsByListInfo(data.list.meta)
-    if (!listMap) {
-      const webDAVClient = createWebDAVClient(options)
-      const list = await webDAVClient.ls(options.path)
-      const extId = data.list.meta.extensionId
-      const source = data.list.meta.source
-      listCache.set(
-        data.list.id,
-        new Map(
-          (list.filter((item) => !item.isDir && item.size > 0 && isMusicFile(item.name)) as WebDAVFileItem[]).map((item) => [
-            generateId(extId, source, options, item),
-            item,
-          ])
-        )
-      )
-    }
+    await getListMusicIds(
+      options,
+      data.list.meta.extensionId,
+      data.list.meta.source,
+      options.path,
+      (data.list.meta.includeSubDir as boolean | undefined) || false,
+      true
+    )
+    // let listMap = listCache.get(data.list.id)
+    // if (!listMap) {
+    //   const webDAVClient = createWebDAVClient(options)
+    //   const list = await webDAVClient.ls(options.path)
+    //   const extId = data.list.meta.extensionId
+    //   const source = data.list.meta.source
+    //   listCache.set(
+    //     data.list.id,
+    //     new Map(
+    //       (list.filter((item) => !item.isDir && item.size > 0 && isMusicFile(item.name)) as WebDAVFileItem[]).map((item) => [
+    //         generateId(extId, source, options, item),
+    //         item,
+    //       ])
+    //     )
+    //   )
+    // }
     return {
       musics: data.ids
         .map((id) => {
-          const item = listMap!.get(id)
+          const item = musicCache.get(id)
           if (!item) return null
           return {
             id,

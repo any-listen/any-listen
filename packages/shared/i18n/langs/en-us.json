@@ -82,6 +82,7 @@
   "exts.webdav.form.error.no_password_prompt": "The server requires a password, set the login password",
   "exts.webdav.form.error.test_invalid_password": "Invalid account or password",
   "exts.webdav.form.error.test_no_password": "You have not set a login password",
+  "exts.webdav.form.include_sub_dir.name": "Contains subdirectories (up to 5 directories deep)",
   "exts.webdav.form.input.password_placeholder": "Please enter password",
   "exts.webdav.form.input.password_title": "Login password settings",
   "exts.webdav.form.message.save_password_success": "✔️ The password has been saved in Settings-Extended Settings-WebDAV Configuration",

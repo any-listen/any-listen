@@ -82,6 +82,7 @@
   "exts.webdav.form.error.no_password_prompt": "该服务器需要密码，设置登录密码",
   "exts.webdav.form.error.test_invalid_password": "无效的账号或密码",
   "exts.webdav.form.error.test_no_password": "你未设置登录密码",
+  "exts.webdav.form.include_sub_dir.name": "包含子目录（最多5层目录深度）",
   "exts.webdav.form.input.password_placeholder": "请输入密码",
   "exts.webdav.form.input.password_title": "登录密码设置",
   "exts.webdav.form.message.save_password_success": "✔️ 密码已保存到 设置-扩展设置-WebDAV 配置中",

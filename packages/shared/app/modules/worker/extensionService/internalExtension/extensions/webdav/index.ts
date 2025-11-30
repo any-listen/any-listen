@@ -67,6 +67,13 @@ export const pkg: AnyListen.Extension.Manifest = {
             type: 'input',
             default: '',
           },
+          {
+            field: 'includeSubDir',
+            name: 't(exts.webdav.form.include_sub_dir.name)',
+            description: '',
+            type: 'boolean',
+            default: false,
+          },
         ],
       },
     ],
