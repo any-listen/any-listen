@@ -1,3 +1,4 @@
+import { createCache } from '@any-listen/common/cache'
 import { sizeFormate } from '@any-listen/common/utils'
 import { isMusicFile } from '@any-listen/nodejs/music'
 import { logcat } from './shared'
@@ -13,8 +14,8 @@ import {
   type WebDAVItem,
 } from './webdav'
 
-const listCache = new Map<string, WebDAVItem[]>()
-const musicCache = new Map<string, WebDAVFileItem>()
+const listCache = createCache<WebDAVItem[]>()
+const musicCache = createCache<WebDAVFileItem>()
 const MAX_DEEP = 5
 
 const generateId = (extId: string, source: string, options: WebDAVClientOptions, item: WebDAVItem) => {

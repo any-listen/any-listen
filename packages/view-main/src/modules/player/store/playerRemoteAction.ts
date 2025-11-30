@@ -1,5 +1,6 @@
 import { getMusicPic as getMusicPicFromRemote, getMusicUrl as getMusicUrlFromRemote } from '@/shared/ipc/music'
 import { sendPlayerEvent, sendPlayHistoryListAction } from '@/shared/ipc/player'
+import { createCache } from '@any-listen/common/cache'
 import * as commit from './commit'
 
 import { lyricEvent } from '@/modules/lyric/store/event'
@@ -12,7 +13,7 @@ export { getPlayInfo } from '@/shared/ipc/player'
 
 export { getMusicLyric } from '@/shared/ipc/music'
 
-const picCache = new Map<string, AnyListen.IPCMusic.MusicPicInfo>()
+const picCache = createCache<AnyListen.IPCMusic.MusicPicInfo>()
 const picCacheQueue: string[] = []
 
 const checkUrl = async (url: string) => {
