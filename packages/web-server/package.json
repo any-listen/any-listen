@@ -17,7 +17,7 @@
     "@any-listen/theme": "workspace:@shared/theme@*",
     "@any-listen/web": "workspace:@shared/web@*",
     "@koa/cors": "^5.0.0",
-    "better-sqlite3": "^12.4.6",
+    "better-sqlite3": "^12.5.0",
     "jsonwebtoken": "^9.0.2",
     "koa": "^3.1.1",
     "@koa/router": "^14.0.0",

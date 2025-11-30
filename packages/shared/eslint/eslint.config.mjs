@@ -40,6 +40,7 @@ export const baseRule = {
   'prefer-template': 'error',
   yoda: 'error',
   'no-console': 'off',
+  'no-await-in-loop': 'off',
   'promise/avoid-new': 'off',
   // 'no-magic-numbers': 'off',
   // 'prefer-destructuring': 'off',
