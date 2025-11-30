@@ -101,17 +101,21 @@ const nextLenMap = {
   [128 * 1024 - 1]: 192 * 1024 - 1,
   [192 * 1024 - 1]: 256 * 1024 - 1,
 }
-const requestParseMetadata = async (
+const MAX_META_LENGTH = 128 * 1024
+const requestParseMetadata = async ( {
+  webDAVClient, path, mimeType, isMetaOnly = false, needCache = false, data = Buffer.alloc(0), preLength = 0
+} : {
   webDAVClient: WebDAVClient,
   path: string,
   mimeType: string,
-  needCache = false,
-  data = Buffer.from([]),
-  preLength = 0
-) => {
+  isMetaOnly?: boolean,
+  needCache?: boolean,
+  data?: Buffer,
+  preLength?: number
+}) => {
   if (cache.has(path)) return cache.get<ReturnType<typeof parseBufferMetadata>>(path)!
   let nextLength = nextLenMap[preLength]
-  if (!nextLength) return null
+  if (!nextLength || (isMetaOnly && nextLength > MAX_META_LENGTH)) return null
   data = Buffer.concat([data, await webDAVClient.getPartial(path, preLength, nextLength)]) // first 8k
   const metaHead = await parseBufferMetadata(data, mimeType).catch(() => {
     // logcat.error('parseBufferMetadata error', err)
@@ -123,23 +127,23 @@ const requestParseMetadata = async (
     return metaHead
   }
   // logcat.info('try next length', nextLenMap[nextLength])
-  return requestParseMetadata(webDAVClient, path, mimeType, needCache, data, nextLength)
+  return requestParseMetadata({ webDAVClient, path, mimeType, isMetaOnly, needCache, data, preLength: nextLength })
 }
 let requestParseMetadataPromises = new Map<string, ReturnType<typeof requestParseMetadata>>()
-const handleParseMetadata = async (webDAVClient: WebDAVClient, path: string, mimeType: string, needCache = false) => {
-  if (cache.has(path)) return cache.get<ReturnType<typeof parseBufferMetadata>>(path)!
-  if (requestParseMetadataPromises.has(path)) return requestParseMetadataPromises.get(path)!
-  const promise = requestParseMetadata(webDAVClient, path, mimeType, needCache).finally(() => {
-    requestParseMetadataPromises.delete(path)
+const handleParseMetadata = async (opts: { webDAVClient: WebDAVClient, path: string, mimeType: string, isMetaOnly?: boolean, needCache?: boolean }) => {
+  if (cache.has(opts.path)) return cache.get<ReturnType<typeof parseBufferMetadata>>(opts.path)!
+  if (requestParseMetadataPromises.has(opts.path)) return requestParseMetadataPromises.get(opts.path)!
+  const promise = requestParseMetadata(opts).finally(() => {
+    requestParseMetadataPromises.delete(opts.path)
   })
-  requestParseMetadataPromises.set(path, promise)
+  requestParseMetadataPromises.set(opts.path, promise)
   return promise
 }
 
 export const parseMusicMetadata = async (options: WebDAVClientOptions, path: string, fileSize?: number) => {
   const webDAVClient = createWebDAVClient(options)
   const mimeType = getMimeType(basename(path))
-  const metaHead = await handleParseMetadata(webDAVClient, path, mimeType)
+  const metaHead = await handleParseMetadata({ webDAVClient, path, mimeType, isMetaOnly: true })
   // logcat.info('metaHead', metaHead)
   if (metaHead?.name || metaHead?.singer || metaHead?.albumName) return metaHead
   if (!fileSize) {
@@ -204,7 +208,7 @@ export const getMusicPic = async (options: WebDAVClientOptions, path: string) =>
   if (pic) return pic
 
   const mimeType = getMimeType(basename(path))
-  const metaHead = await handleParseMetadata(webDAVClient, path, mimeType, true)
+  const metaHead = await handleParseMetadata({ webDAVClient, path, mimeType, isMetaOnly: false, needCache: true })
   if (metaHead?.pic) {
     const filePath = new RegExp(`\\${extname(path)}$`)
     const [type, ext] = metaHead.pic.format.split('/')
@@ -230,6 +234,6 @@ export const getMusicLyric = async (options: WebDAVClientOptions, path: string) 
   }
 
   const mimeType = getMimeType(basename(path))
-  const metaHead = await handleParseMetadata(webDAVClient, path, mimeType, true)
+  const metaHead = await handleParseMetadata({ webDAVClient, path, mimeType, isMetaOnly: false, needCache: true })
   return metaHead?.lyric || null
 }

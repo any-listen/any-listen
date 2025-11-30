@@ -1,9 +1,9 @@
 ### Improved
 
-- Optimized the font selection logic so you can configure up to two fonts at once.
+- Improved **WebDAV Track Parsing** speed for faster _WebDAV_ metadata extraction.
 
 ---
 
 ### 优化
 
-- 优化字体选择逻辑，现在允许最多选择两种字体。
+- 优化 **WebDAV 歌曲解析** 速度，加快 _WebDAV_ 元数据读取。
