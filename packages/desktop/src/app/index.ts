@@ -1,4 +1,4 @@
-import { URL_SCHEME_RXP } from '@any-listen/common/constants'
+import { DEFAULT_LANG, URL_SCHEME_RXP } from '@any-listen/common/constants'
 import { app, nativeTheme, screen, shell, webContents } from 'electron'
 import { existsSync, mkdirSync } from 'node:fs'
 import path from 'node:path'
@@ -218,6 +218,9 @@ const listenerAppEvent = () => {
     appEvent.proxy_changed(host, port, buildElectronProxyConfig(host, port))
   }
   appEvent.on('updated_config', (keys, setting) => {
+    if (keys.includes('common.langId')) {
+      appEvent.locale_change(setting['common.langId'] ?? DEFAULT_LANG)
+    }
     if (
       keys.includes('network.proxy.enable') ||
       (appState.appSetting['network.proxy.enable'] && keys.some((k) => k.includes('network.proxy.')))

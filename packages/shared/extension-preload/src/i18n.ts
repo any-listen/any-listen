@@ -1,3 +1,5 @@
+import { DEFAULT_LANG } from '@any-listen/common/constants'
+
 const fillMessage = (message: string, vals: Record<string, string | number | null | undefined>): string => {
   for (const [key, val] of Object.entries(vals)) {
     message = message.replaceAll(`{${key}}`, String(val))
@@ -6,7 +8,7 @@ const fillMessage = (message: string, vals: Record<string, string | number | nul
 }
 
 const i18n = {
-  locale: 'zh-cn' as string,
+  locale: DEFAULT_LANG as string,
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   message: {} as Record<string, string>,
   setMessage(message: Record<string, string>) {

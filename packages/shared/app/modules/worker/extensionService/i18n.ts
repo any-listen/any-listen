@@ -1,14 +1,15 @@
+import { DEFAULT_LANG } from '@any-listen/common/constants'
 import type { Langs, Locale, Message, TranslateValues } from '@any-listen/i18n'
 import { fillMessage, messages } from '@any-listen/i18n'
 import { extensionEvent } from './event'
 import { extensionState } from './state'
 
 export const i18n = {
-  locale: 'zh-cn' as Locale,
-  fallbackLocale: 'zh-cn' as Langs,
+  locale: DEFAULT_LANG as Locale,
+  fallbackLocale: DEFAULT_LANG as Langs,
   availableLocales: Object.keys(messages) as Langs[],
   messages,
-  message: messages['zh-cn'],
+  message: messages[DEFAULT_LANG],
   setLanguage(locale?: Locale | null) {
     this.message = locale && locale in messages ? messages[locale as Langs] : messages[this.fallbackLocale]
   },

@@ -1,18 +1,19 @@
 import { settingEvent } from '@/modules/setting/store/event'
+import { DEFAULT_LANG } from '@any-listen/common/constants'
 import { type Langs, type Locale, type Message, type TranslateValues, fillMessage, langList, messages } from '@any-listen/i18n'
 import SingleEvent from '@any-listen/web/SimpleSingleEvent'
 import { derived, writable } from 'svelte/store'
 
-const $locale = writable<Locale>('zh-cn')
+const $locale = writable<Locale>(DEFAULT_LANG)
 
 export const languageChangeEvent = new SingleEvent<[Langs]>()
 
 const i18n = {
-  locale: 'zh-cn' as Locale,
-  fallbackLocale: 'zh-cn' as Langs,
+  locale: DEFAULT_LANG as Locale,
+  fallbackLocale: DEFAULT_LANG as Langs,
   availableLocales: Object.keys(messages) as Langs[],
   messages,
-  message: messages['zh-cn'],
+  message: messages[DEFAULT_LANG],
   setLanguage(_locale: Langs) {
     if (!(_locale in messages)) {
       _locale = this.fallbackLocale

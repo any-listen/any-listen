@@ -1,8 +1,10 @@
+import { DEFAULT_LANG } from '@any-listen/common/constants'
+
 const empty = {}
 export const extensionState = {
   version: '1.0.0',
   clientType: '' as AnyListen.ClientType,
-  locale: 'zh-cn' as AnyListen.Locale,
+  locale: DEFAULT_LANG as AnyListen.Locale,
   onlineExtensionHost: '',
   extensionI18nMessage: empty as Record<string, string>,
   proxy: {
