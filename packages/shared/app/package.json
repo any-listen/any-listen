@@ -20,6 +20,6 @@
     "@any-listen/types": "workspace:@shared/types@*",
     "@types/better-sqlite3": "^7.6.13",
     "@types/tar": "^6.1.13",
-    "vite": "^7.2.4"
+    "vite": "^7.2.6"
   }
 }
