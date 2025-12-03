@@ -1,28 +1,28 @@
 <p align="center"><a href="https://github.com/any-listen/any-listen"><img height="110" src="./images/header-logo.svg" alt="any-listen logo"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/any-listen/any-listen"><img height="86" src="./images/header-name.svg" alt="any-listen name"></a></p>
 
-<p align="center">一個跨平台的私人音樂播放服務</p>
+<p align="center">一款跨平台的私人音樂播放服務</p>
 
 <br />
 
 [English](../README.md) | [简体中文](README_zh.md) | 繁體中文
 
-本專案仍在積極開發中，目前提供 **「桌面版」** 及 **「網頁版服務」**。
+專案仍在積極開發中，目前提供 **桌面版** 與 **網頁版服務**。
 
-### 特性
+## 特性
 
 - 新增並播放本機歌曲（普通清單、本機清單）
-- 新增並播放 WebDAV 上的歌曲（遠端清單）
+- 新增並播放儲存在 WebDAV 的歌曲（遠端清單）
 - 線上匹配歌曲資訊（封面、歌詞，需至擴充管理安裝對應擴充）
 - 實驗性音效
 - 卡拉 OK 歌詞、標題列歌詞
 
 ## 桌面版
 
-下載最新版本安裝即可：[https://github.com/any-listen/any-listen-desktop/releases](https://github.com/any-listen/any-listen-desktop/releases)
+前往 Release 下載最新版本並安裝即可：[https://github.com/any-listen/any-listen-desktop/releases](https://github.com/any-listen/any-listen-desktop/releases)
 
 ## 網頁版
 
-你可以直接部署到伺服器，或使用 Docker 部署。
+可以直接部署到伺服器，或使用 Docker 部署。
 
 ### Docker 部署
 
@@ -30,9 +30,17 @@
 
 ### 直接部署
 
+> 要求：Node.js 20+
+
 下載最新版本並解壓到目標目錄：[https://github.com/any-listen/any-listen-web-server/releases](https://github.com/any-listen/any-listen-web-server/releases)
 
 參考 [https://github.com/lyswhut/lx-music-sync-server](https://github.com/lyswhut/lx-music-sync-server) 的部署方式，配置文件說明見下方。
+
+升級方式：
+
+1. 刪除舊版本專案目錄下的 `public` 與 `server` 資料夾
+2. 將新版本的 `public` 與 `server` 資料夾上傳到專案目錄
+3. 重新啟動服務
 
 ---
 
@@ -65,13 +73,13 @@
 
 2. 執行 Docker 容器
 
-    **注意：以下命令僅為範例，請勿直接使用！**
+    > 注意：以下命令僅為範例，請勿直接使用！
 
     ```bash
     docker run --volume=/home/music:/music --volume=/data:/server/data -p 8080:9500 -d test:latest
     ```
 
-環境變數說明
+#### 環境變數
 
 |           變數名            | 描述                                                                                     |
 | :-------------------------: | ---------------------------------------------------------------------------------------- |
@@ -99,7 +107,7 @@ node index.cjs
 
 ## 貢獻
 
-歡迎 PR！為了讓你的 PR 能順利合併，請注意以下事項：
+歡迎貢獻 PR。為了讓 PR 更順利合併，請留意以下事項：
 
 - 新功能建議先建立 Issue 討論需求。
 - 修復 bug 請提供修復前後的說明及重現方式。

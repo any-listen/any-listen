@@ -8,7 +8,7 @@ English | [简体中文](./docs/README_zh.md) | [繁體中文](./docs/README_zh-
 
 This project is under active development and currently provides both a **Desktop version** and a **Web service version**.
 
-### Features
+## Features
 
 - Add and play local songs (standard playlists and local lists)
 - Add and play songs stored on WebDAV (remote lists)
@@ -18,7 +18,7 @@ This project is under active development and currently provides both a **Desktop
 
 ## Desktop Version
 
-Download the latest version and install: [https://github.com/any-listen/any-listen-desktop/releases](https://github.com/any-listen/any-listen-desktop/releases)
+Grab the latest release and install it from: [https://github.com/any-listen/any-listen-desktop/releases](https://github.com/any-listen/any-listen-desktop/releases)
 
 ## Web Version
 
@@ -30,9 +30,17 @@ Image release: [https://hub.docker.com/r/lyswhut/any-listen-web-server](https://
 
 ### Direct Deployment
 
+> Requirement: Node.js 20+
+
 Download the latest version and extract it to your target directory: [https://github.com/any-listen/any-listen-web-server/releases](https://github.com/any-listen/any-listen-web-server/releases)
 
 Refer to [https://github.com/lyswhut/lx-music-sync-server](https://github.com/lyswhut/lx-music-sync-server) for deployment methods. See below for configuration file instructions.
+
+Upgrade steps:
+
+1. Delete the `public` and `server` folders in the old project directory
+2. Upload the new version's `public` and `server` folders to the project directory
+3. Restart the service
 
 ---
 
@@ -65,13 +73,13 @@ Refer to [https://github.com/lyswhut/lx-music-sync-server](https://github.com/ly
 
 2. Run the Docker container
 
-    **Note: The following command is for example only and cannot be used directly!**
+    > Note: The following command is for example only and cannot be used directly!
 
     ```bash
     docker run --volume=/home/music:/music --volume=/data:/server/data -p 8080:9500 -d test:latest
     ```
 
-Environment variable description
+#### Environment Variables
 
 |        Variable Name        | Description                                                                                  |
 | :-------------------------: | -------------------------------------------------------------------------------------------- |

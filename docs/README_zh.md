@@ -1,28 +1,28 @@
 <p align="center"><a href="https://github.com/any-listen/any-listen"><img height="110" src="./images/header-logo.svg" alt="any-listen logo"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/any-listen/any-listen"><img height="86" src="./images/header-name.svg" alt="any-listen name"></a></p>
 
-<p align="center">一个跨平台的私人音乐播放服务</p>
+<p align="center">一款跨平台的私人音乐播放服务</p>
 
 <br />
 
 [English](../README.md) | 简体中文 | [繁體中文](README_zh-tw.md)
 
-该项目仍在积极开发中，目前提供 **「桌面版」** 及 **「网页版服务」** 。
+项目仍在积极开发中，目前提供 **桌面版** 与 **网页版服务**。
 
 ## 特性
 
 - 添加并播放本地歌曲（普通列表、本地列表）
-- 添加并播放 WebDAV 上的歌曲（远程列表）
-- 在线匹配歌曲信息（封面、歌词，需到扩展管理安装对应扩展）
+- 添加并播放存储于 WebDAV 的歌曲（远程列表）
+- 在线匹配歌曲信息（封面、歌词等，需到扩展管理安装对应扩展）
 - 实验性音效
-- 卡拉OK歌词、标题栏歌词
+- 卡拉 OK 歌词与标题栏歌词
 
 ## 桌面版
 
-下载最新版本安装即可：[https://github.com/any-listen/any-listen-desktop/releases](https://github.com/any-listen/any-listen-desktop/releases)
+前往 Release 下载最新版本并安装即可：[https://github.com/any-listen/any-listen-desktop/releases](https://github.com/any-listen/any-listen-desktop/releases)
 
 ## 网页版
 
-你可以直接部署到服务器，或使用 Docker 部署。
+可以直接部署到服务器，或使用 Docker 部署。
 
 ### Docker 部署
 
@@ -30,9 +30,17 @@
 
 ### 直接部署
 
+> 要求：Node.js 20+
+
 下载最新版本并解压到目标目录：[https://github.com/any-listen/any-listen-web-server/releases](https://github.com/any-listen/any-listen-web-server/releases)
 
 参考 [https://github.com/lyswhut/lx-music-sync-server](https://github.com/lyswhut/lx-music-sync-server) 的部署方式，配置文件说明见下方。
+
+升级方式：
+
+1. 删除旧版本项目目录下的 `public` 与 `server` 文件夹
+2. 将新版本的 `public` 与 `server` 文件夹上传到项目目录
+3. 重启服务
 
 ---
 
@@ -65,13 +73,13 @@
 
 2. 运行 Docker 容器
 
-    **注意：以下命令仅为示例，不能直接使用！**
+    > 注意：以下命令仅为示例，不能直接使用！
 
     ```bash
     docker run --volume=/home/music:/music --volume=/data:/server/data -p 8080:9500 -d test:latest
     ```
 
-环境变量说明
+#### 环境变量
 
 |           变量名            | 描述                                                                                     |
 | :-------------------------: | ---------------------------------------------------------------------------------------- |
@@ -99,13 +107,13 @@ node index.cjs
 
 ## 贡献代码
 
-本项目欢迎 PR，但为了 PR 能顺利合并，需要注意以下几点：
+欢迎贡献 PR。为确保顺利合并，请注意以下几点：
 
 - 对于添加新功能的 PR，建议在提交 PR 前先创建 Issue 进行说明，以确认该功能是否确实需要。
 - 对于修复 bug 的 PR，请提供修复前后的说明及重现方式。
 - 对于其他类型的 PR，则适当附上说明。
 
-贡献代码步骤：
+贡献步骤：
 
 1. 克隆本仓库代码并切换至 `dev` 分支进行开发；
 2. 提交 PR 至 `dev` 分支。
