@@ -25,6 +25,8 @@ export const runServer = (onLog: (data: Buffer, color: 'red' | 'blue') => void) 
     cwd: projectPath,
     env: {
       NODE_OPTIONS: '--enable-source-maps',
+      // reference https://maxschmitt.me/posts/error-spawn-node-enoent-node-js-child-process
+      PATH: process.env.PATH,
     },
   })
 
@@ -98,8 +100,8 @@ export const buildConfig = (mode: string): UserConfig => {
       watch: isProd
         ? null
         : {
-            buildDelay: 500,
-          },
+          buildDelay: 500,
+        },
       commonjsOptions: {
         // dynamicRequireTargets: ['*.js'],
         ignoreDynamicRequires: true,
