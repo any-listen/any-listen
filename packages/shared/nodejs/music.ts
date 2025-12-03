@@ -80,8 +80,9 @@ export const parseFileMetadata = async (path: string) => {
     metadata = await parseFile(path, {
       skipCovers: true,
     })
-  } catch {
-    // console.log(err)
+  } catch (err) {
+    console.log(`Error parsing file metadata: ${path}`)
+    console.error(err)
     return null
   }
 
