@@ -236,6 +236,7 @@ export default class LinePlayer {
 
   setTimeoutTools(tools) {
     timeoutTools.clear()
+    // console.log('set', tools)
     if (tools) {
       timeoutTools.setTimeout = tools.setTimeout
       timeoutTools.clearTimeout = tools.clearTimeout

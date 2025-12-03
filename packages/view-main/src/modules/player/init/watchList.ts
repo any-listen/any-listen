@@ -163,9 +163,7 @@ export const initWatchList = () => {
               // 歌曲被移除
               console.log('current music removed')
               void skipNext(true)
-            } else {
-              if (index != playerState.playInfo.index) updatePlayIndex(index)
-            }
+            } else if (index != playerState.playInfo.index) updatePlayIndex(index)
 
             checkLinkedAndApply()
 

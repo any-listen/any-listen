@@ -70,7 +70,7 @@ declare global {
       type ServerIPC = ServerAllActions
 
       interface NodeEnv {
-        setTimeout: (callback: () => void, delay: number) => number
+        setTimeout: (callback: () => void, delay?: number) => number
         clearTimeout: (id: number) => void
       }
     }

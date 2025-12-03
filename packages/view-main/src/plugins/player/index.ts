@@ -87,13 +87,14 @@ export const createAudio = () => {
   audio.crossOrigin = 'anonymous'
 
   // https://developer.chrome.com/blog/autoplay
-  audio.addEventListener(
-    'playing',
-    () => {
-      if (audioContext?.state == 'suspended') void audioContext.resume()
-    },
-    { once: true }
-  )
+  audio.addEventListener('playing', () => {
+    if (audioContext?.state == 'suspended') {
+      void audioContext.resume().catch((err) => {
+        console.error('Resume audio context failed:', err)
+        throw err
+      })
+    }
+  })
 }
 export const releasePlayer = async () => {
   if (!audio) return
@@ -101,7 +102,7 @@ export const releasePlayer = async () => {
   audio = null
 
   if (audioContext) {
-    await audioContext.close()
+    await audioContext.close().catch(() => {})
     // eslint-disable-next-line require-atomic-updates
     audioContext = null
     convolver!.disconnect()
@@ -189,6 +190,12 @@ const initAdvancedAudioFeatures = () => {
   convolverDynamicsCompressor!.connect(panner!)
   panner!.connect(gainNode!)
   gainNode!.connect(audioContext.destination)
+}
+
+export const suspendAudioContext = async () => {
+  if (audioContext?.state !== 'running') return
+  await audioContext.suspend()
+  console.log('AudioContext suspended to save CPU')
 }
 
 export const getAudioContext = () => {

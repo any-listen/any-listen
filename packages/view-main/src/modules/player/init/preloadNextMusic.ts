@@ -1,12 +1,12 @@
-import { getNextPlayMusicInfo, resetRandomNextMusicInfo } from '../store/playerActions'
-import { playerState } from '../store/state'
-import { createUnsubscriptionSet } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
-import { onPlayerCreated } from '../shared'
-import { playerEvent } from '../store/event'
 import { settingEvent } from '@/modules/setting/store/event'
 import { getCurrentTime, onTimeupdate } from '@/plugins/player'
+import { createUnsubscriptionSet } from '@/shared'
+import { onPlayerCreated } from '../shared'
+import { playerEvent } from '../store/event'
+import { getNextPlayMusicInfo, resetRandomNextMusicInfo } from '../store/playerActions'
 import { getMusicUrl } from '../store/playerRemoteAction'
+import { playerState } from '../store/state'
 
 let audio: HTMLAudioElement
 const initAudio = () => {
@@ -32,10 +32,12 @@ const checkMusicUrl = async (url: string): Promise<boolean> => {
     }
     const handleErr = () => {
       clear()
-      if (audio.error?.code !== 1) {
-        resolve(false)
-      } else {
+      // https://developer.mozilla.org/en-US/docs/Web/API/MediaError/code
+      // MediaError.MEDIA_ERR_ABORTED
+      if (audio.error?.code === 1) {
         resolve(true)
+      } else {
+        resolve(false)
       }
     }
     const handlePlay = () => {

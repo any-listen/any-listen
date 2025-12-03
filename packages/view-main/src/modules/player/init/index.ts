@@ -1,17 +1,18 @@
 import { createAudio } from '@/plugins/player'
-import { initPlayerEvent } from './playerEvent'
 import { initMediaDevice } from './mediaDevice'
+import { initPlayerEvent } from './playerEvent'
 // import usePlayStatus from './usePlayStatus'
-import { initProgress } from './progress'
 import { initMediaSessionInfo } from './mediaSessionInfo'
-import { initPlayErrorHandler } from './playErrorHandler'
-import { initPlayStatus } from './playStatus'
-import { initPlayKeyboardAction } from './playKeyboardAction'
-import { initVolume } from './volume'
 import { initPlaybackRate } from './playbackRate'
-import { initSoundEffect } from './soundEffect'
-import { initWatchList } from './watchList'
+import { initPlayerAudioContext } from './playerAudioContext'
+import { initPlayErrorHandler } from './playErrorHandler'
+import { initPlayKeyboardAction } from './playKeyboardAction'
+import { initPlayStatus } from './playStatus'
 import { initPreloadNextMusic } from './preloadNextMusic'
+import { initProgress } from './progress'
+import { initSoundEffect } from './soundEffect'
+import { initVolume } from './volume'
+import { initWatchList } from './watchList'
 
 export const initPlayer = () => {
   createAudio()
@@ -21,6 +22,7 @@ export const initPlayer = () => {
   initMediaSessionInfo()
   initPlayErrorHandler()
   initPlayStatus()
+  initPlayerAudioContext()
   initPlayKeyboardAction()
   initVolume()
   initPlaybackRate()

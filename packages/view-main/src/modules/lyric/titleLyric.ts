@@ -75,7 +75,6 @@ export const initTitleLyric = () => {
     }
   })
   const handleVisibleChanged = (show: boolean) => {
-    if (!getDisabledAutoPauseSize()) return
     if (show) {
       setDisabledAutoPause(false)
     } else {

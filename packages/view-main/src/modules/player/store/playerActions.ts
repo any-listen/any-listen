@@ -402,7 +402,7 @@ export const getNextPlayMusicInfo = async (): Promise<AnyListen.Player.PlayMusic
     const curItemId = playerState.playMusicInfo?.itemId
     const unPlayedList = playList.filter((m) => !m.played && m.itemId != curItemId)
     let nextPlayMusicInfo: AnyListen.Player.PlayMusicInfo
-    let isEnd = false
+    let isEnd: boolean
     if (unPlayedList.length) {
       nextPlayMusicInfo = unPlayedList[getRandom(0, unPlayedList.length)]
       isEnd = false
@@ -533,10 +533,12 @@ export const skipNext = async (isAutoSktp = false): Promise<void> => {
     case 'singleLoop':
       break
     default:
-      nextIndex = -1
       return
   }
-  if (nextIndex < 0) return
+  if (nextIndex < 0) {
+    if (!playerState.playerPlaying) commit.setPlaying(false)
+    return
+  }
 
   handlePlayMusicInfo(playList[nextIndex])
 }
@@ -614,7 +616,6 @@ export const skipPrev = async (isAutoSktp = false): Promise<void> => {
     case 'singleLoop':
       break
     default:
-      nextIndex = -1
       return
   }
   if (nextIndex < 0) return
