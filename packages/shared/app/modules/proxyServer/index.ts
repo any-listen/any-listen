@@ -1,3 +1,4 @@
+import { buildPublicPath } from '@any-listen/common/tools'
 import { checkAndCreateDir, checkFile, extname, joinPath, toSha256 } from '@any-listen/nodejs'
 import { request, type Options } from '@any-listen/nodejs/request'
 import fs from 'node:fs/promises'
@@ -34,7 +35,7 @@ export const createProxy = async (url: string, reqOptions: Options) => {
     requestOptions: reqOptions,
     url,
   })
-  return `${proxyServerState.proxyBaseUrl}/${name}`
+  return buildPublicPath(proxyServerState.proxyBaseUrl, name)
 }
 
 export const checkProxyCache = async (url: string) => {
@@ -46,7 +47,7 @@ export const writeProxyCache = async (fileName: string, data: Uint8Array) => {
   const name = generateName(fileName)
   const filePath = joinPath(proxyServerState.cacheDir, name)
   await fs.writeFile(filePath, data)
-  return `${proxyServerState.proxyBaseUrl}/${name}`
+  return buildPublicPath(proxyServerState.proxyBaseUrl, name)
 }
 
 export const initProxyServer = async (proxyBaseUrl: string, cacheDir: string) => {

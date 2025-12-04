@@ -22,4 +22,4 @@ export const File = {
   clientInfoJSON: 'clientInfo.json',
 } as const
 
-export const PUBLIC_RESOURCE_PATH = '/public/medias/'
+export const PUBLIC_RESOURCE_PATH = '/public/medias'

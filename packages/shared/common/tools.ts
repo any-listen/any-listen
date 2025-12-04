@@ -147,3 +147,7 @@ export const singerFormat = (name: string) => {
         .join('、')
     : name || ''
 }
+
+export const buildPublicPath = (basePath: string, name: string) => {
+  return `${basePath.startsWith('/') ? basePath.substring(1) : basePath}/${name}`
+}

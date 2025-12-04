@@ -10,7 +10,7 @@ import { initTheme } from './theme'
 
 import getStore from '@/app/shared/store'
 import { initProxyServer } from '@any-listen/app/modules/proxyServer'
-import { PROXY_SERVER_PATH, STORE_NAMES } from '@any-listen/common/constants'
+import { API_PREFIX, PROXY_SERVER_PATH, STORE_NAMES } from '@any-listen/common/constants'
 import { appState } from '../app'
 import { initExtension } from './extension'
 import { initResources } from './resources'
@@ -33,7 +33,7 @@ export const initModules = async () => {
     initExtension(),
     initResources(),
     initProxyServer(
-      import.meta.env.DEV ? `http://localhost:9500/api${PROXY_SERVER_PATH}` : `/api${PROXY_SERVER_PATH}`,
+      import.meta.env.DEV ? `http://localhost:9500${API_PREFIX}${PROXY_SERVER_PATH}` : `${API_PREFIX}${PROXY_SERVER_PATH}`,
       appState.cacheDataPath
     ),
   ])
