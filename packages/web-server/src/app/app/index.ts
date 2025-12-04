@@ -1,7 +1,7 @@
 import { setProxyByHost } from '@/app/shared/request'
 import { startCheckUpdateTimeout, update } from '@/app/shared/update'
 import { socketEvent } from '@/modules/ipc/event'
-import { appLog } from '@/shared/log4js'
+import { appLog, logger } from '@/shared/log4js'
 import { checkAndCreateDir, removePath } from '@/shared/utils'
 import { initCommon } from '@any-listen/app/common'
 import { initDeviceId } from '@any-listen/app/common/deviceId'
@@ -132,6 +132,7 @@ export const initAppEnv = async () => {
       })
     },
     translate: (key, val) => i18n.t(key, val),
+    logger,
   })
 }
 

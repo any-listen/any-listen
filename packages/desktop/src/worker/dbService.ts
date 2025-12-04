@@ -23,7 +23,7 @@ const initServices = async (dataPath: string) => {
     })
     backupDB(dataPath, backupPath)
     openDirInExplorer(backupPath)
-    dbFileExists = await workers.dbService.init(dataPath, nativeBindingPath)
+    await workers.dbService.init(dataPath, nativeBindingPath)
   }
 }
 

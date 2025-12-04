@@ -17,7 +17,7 @@ const initServices = async (dataPath: string) => {
     appLog.warn(i18n.t('database_verify_failed'))
     appLog.warn(i18n.t('database_verify_failed_detail', { backupPath }))
     backupDB(dataPath, backupPath)
-    dbFileExists = await workers.dbService.init(dataPath, nativeBindingPath)
+    await workers.dbService.init(dataPath, nativeBindingPath)
   }
 }
 

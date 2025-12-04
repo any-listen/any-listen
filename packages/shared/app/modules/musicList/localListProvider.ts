@@ -9,12 +9,12 @@ import { proxyCallback } from '../worker/utils'
 import { musicListEvent } from './event'
 
 export const verifyLocalListCreate = async (info: AnyListen.List.LocalListInfo) => {
-  await checkPath(info.meta.path)
+  await checkPath(info.meta.path, true)
 }
 
 export const verifyLocalListUpdate = async (info: AnyListen.List.LocalListInfo) => {
   if (info.meta.deviceId !== getDeviceId()) return
-  await checkPath(info.meta.path)
+  await checkPath(info.meta.path, true)
 }
 
 const watcherMap = new Map<string, [string, () => Promise<void>]>() // listId => [watchPath, unwatch]
@@ -144,7 +144,7 @@ const syncList = async (list: AnyListen.List.LocalListInfo) => {
     if (targetWatch[0] === list.meta.path) return
     await removeWatcher(list.id)
   }
-  await checkPath(list.meta.path)
+  await checkPath(list.meta.path, true)
   let promiseFuncs: [() => void, (err: Error) => void]
   const promise = new Promise<void>((resolve, reject) => {
     promiseFuncs = [resolve, reject]

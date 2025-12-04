@@ -1,11 +1,9 @@
-### Improved
+### Fixed
 
-- The player releases hardware resources after extended pauses to avoid unnecessary device occupation.
-- Added error log output for local track parsing failures.
+- Fixed the file validation logic so read-only scenarios no longer require write permission checks.
 
 ---
 
-### 优化
+### 修复
 
-- 播放器在长时间暂停后会释放硬件资源，避免不必要的设备占用。
-- 添加本地歌曲解析失败时的错误日志输出。
+- 修复文件检查逻辑，在只读场景不再检查是否可写

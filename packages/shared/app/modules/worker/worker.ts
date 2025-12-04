@@ -1,4 +1,9 @@
-import { createDBServiceWorker, createExtensionServiceWorker, createUtilServiceWorker } from './utils'
+import {
+  createDBServiceWorker,
+  createExtensionServiceWorker,
+  createUtilServiceWorker,
+  type UtilServiceWorkerExposedFuncs,
+} from './utils'
 
 let dbService: ReturnType<typeof createDBServiceWorker>
 let utilService: ReturnType<typeof createUtilServiceWorker>
@@ -25,8 +30,8 @@ export const startDBServiceWorker = async (onWorkerInited: () => void) => {
   dbService = createDBServiceWorker(onWorkerInited)
 }
 
-export const startUtilServiceWorker = async (onWorkerInited: () => void) => {
-  utilService = createUtilServiceWorker(onWorkerInited)
+export const startUtilServiceWorker = async (onWorkerInited: () => void, exposedFuncs: UtilServiceWorkerExposedFuncs) => {
+  utilService = createUtilServiceWorker(onWorkerInited, exposedFuncs)
 }
 
 export const startExtensionServiceWorker = async (

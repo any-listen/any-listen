@@ -27,7 +27,7 @@ import {
   resetOnlineData,
 } from './onlineExtension'
 import { resetI18n } from './onlineExtension/i18n'
-import { buildExtensionSettings, getExtensionLastLogs, updateExtensionSettings, updateResourceListDeounce } from './shared'
+import { buildExtensionSettings, getExtensionLastLogs, updateExtensionSettings, updateResourceListThrottle } from './shared'
 import { extensionState } from './state'
 import { listProviderAction, resourceAction, updateI18nMessage, updateLocale } from './vm'
 
@@ -172,10 +172,10 @@ void exposeWorker<
     void remote.onExtensionEvent(action)
   })
   extensionEvent.on('loaded', () => {
-    updateResourceListDeounce()
+    updateResourceListThrottle()
   })
   extensionEvent.on('stopped', () => {
-    updateResourceListDeounce()
+    updateResourceListThrottle()
   })
   extensionEvent.on('listAdd', () => {
     extensionState.extensionSettings = null

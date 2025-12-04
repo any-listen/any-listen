@@ -1,3 +1,4 @@
+import { logger } from '@/shared/log'
 import { startUtilServiceWorker as _startUtilServiceWorker } from '@any-listen/app/modules/worker'
 
 // const registerExtensionServiceEvent = () => {
@@ -13,7 +14,10 @@ import { startUtilServiceWorker as _startUtilServiceWorker } from '@any-listen/a
 //   })
 // }
 
-export const startUtilServiceWorker = async () =>
-  new Promise<void>((resolve, reject) => {
-    void _startUtilServiceWorker(resolve).catch(reject)
+export const startUtilServiceWorker = async () => {
+  return new Promise<void>((resolve, reject) => {
+    void _startUtilServiceWorker(resolve, {
+      logger,
+    }).catch(reject)
   })
+}

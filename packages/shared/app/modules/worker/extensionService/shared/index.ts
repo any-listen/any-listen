@@ -503,7 +503,7 @@ export const updateResourceList = () => {
   extensionState.resourceList = resourceList
   extensionEvent.resourceUpdated(resourceList)
 }
-export const updateResourceListDeounce = throttle(updateResourceList, 500)
+export const updateResourceListThrottle = throttle(updateResourceList, 500)
 
 export const buildExtensionSettings = async () => {
   if (extensionState.extensionSettings) return extensionState.extensionSettings

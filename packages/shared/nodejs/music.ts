@@ -3,7 +3,7 @@ import { singerFormat } from '@any-listen/common/tools'
 import { formatPlayTime, isLikelyGarbage, sizeFormate } from '@any-listen/common/utils'
 import type { IAudioMetadata } from 'music-metadata'
 import type { IComment } from 'music-metadata/lib/type'
-import { basename, checkPath, extname, getFileStats } from './index'
+import { basename, checkFile, extname, getFileStats } from './index'
 
 export const bitrateFormat = (formate: IAudioMetadata['format']) => {
   if (formate.lossless) {
@@ -72,7 +72,7 @@ export const parseBufferMetadata = async (buffer: Buffer, mimeType: string) => {
 }
 
 export const parseFileMetadata = async (path: string) => {
-  if (!(await checkPath(path))) return null
+  if (!(await checkFile(path))) return null
   const { parseFile } = await import('music-metadata')
 
   let metadata
@@ -119,7 +119,7 @@ let prevFileInfo: {
 const getFileMetadata = async (path: string) => {
   if (prevFileInfo.path == path) return prevFileInfo.promise
   prevFileInfo.path = path
-  return (prevFileInfo.promise = checkPath(path).then(async (isExist) => {
+  return (prevFileInfo.promise = checkFile(path).then(async (isExist) => {
     return isExist
       ? import('music-metadata')
           .then(async ({ parseFile }) => parseFile(path))

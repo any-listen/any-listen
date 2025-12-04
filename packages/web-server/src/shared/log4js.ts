@@ -1,5 +1,5 @@
-import path from 'node:path'
 import log4js from 'log4js'
+import path from 'node:path'
 
 const buildLogConfig = (logPath: string) => {
   return {
@@ -59,3 +59,18 @@ export const startupLog = log4js.getLogger('startup')
 export const httpLog = log4js.getLogger('http')
 export const appLog = log4js.getLogger('app')
 export const extensionLog = log4js.getLogger('extension')
+
+export const logger: AnyListen.Logger = {
+  debug(message, ...args) {
+    appLog.debug(message, ...args)
+  },
+  info(message, ...args) {
+    appLog.info(message, ...args)
+  },
+  warn(message, ...args) {
+    appLog.warn(message, ...args)
+  },
+  error(message, ...args) {
+    appLog.error(message, ...args)
+  },
+}

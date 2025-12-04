@@ -20,11 +20,12 @@ export const tmpdir = () => os.tmpdir()
 
 /**
  * 检查路径是否存在
- * @param {*} path 路径
+ * @param path 路径
+ * @param read 只检查读取
  */
-export const checkPath = async (path: string) =>
+export const checkPath = async (path: string, read = false) =>
   fs.promises
-    .access(path, fs.constants.R_OK | fs.constants.W_OK)
+    .access(path, read ? fs.constants.R_OK : fs.constants.R_OK | fs.constants.W_OK)
     .then(() => true)
     .catch(() => false)
 

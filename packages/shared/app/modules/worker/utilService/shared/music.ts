@@ -1,5 +1,5 @@
 import { isLikelyGarbage } from '@any-listen/common/utils'
-import { checkFile, checkPath, dirname, extname, getFileStats, joinPath, readFile } from '@any-listen/nodejs'
+import { checkFile, dirname, extname, getFileStats, joinPath, readFile } from '@any-listen/nodejs'
 import { decodeString } from '@any-listen/nodejs/char'
 import { getFileLyric, getFilePic, parseFileMetadata } from '@any-listen/nodejs/music'
 
@@ -7,12 +7,12 @@ export const checkDownloadFileAvailable = async (musicInfo: AnyListen.Download.L
   return (
     musicInfo.isComplate &&
     !musicInfo.metadata.fileName.endsWith('.ape') &&
-    ((await checkPath(musicInfo.metadata.filePath)) || (await checkPath(joinPath(savePath, musicInfo.metadata.fileName))))
+    ((await checkFile(musicInfo.metadata.filePath)) || (await checkFile(joinPath(savePath, musicInfo.metadata.fileName))))
   )
 }
 
 export const checkLocalFileAvailable = async (musicInfo: AnyListen.Music.MusicInfoLocal): Promise<boolean> => {
-  return checkPath(musicInfo.meta.filePath)
+  return checkFile(musicInfo.meta.filePath)
 }
 
 /**
@@ -32,15 +32,15 @@ export const checkMusicFileAvailable = async (musicInfo: AnyListen.Music.MusicIn
 
 export const getDownloadFilePath = async (musicInfo: AnyListen.Download.ListItem, savePath: string): Promise<string> => {
   if (musicInfo.isComplate && !musicInfo.metadata.fileName.endsWith('.ape')) {
-    if (await checkPath(musicInfo.metadata.filePath)) return musicInfo.metadata.filePath
+    if (await checkFile(musicInfo.metadata.filePath)) return musicInfo.metadata.filePath
     const path = joinPath(savePath, musicInfo.metadata.fileName)
-    if (await checkPath(path)) return path
+    if (await checkFile(path)) return path
   }
   return ''
 }
 
 export const getLocalFilePath = async (musicInfo: AnyListen.Music.MusicInfoLocal): Promise<string> => {
-  return (await checkPath(musicInfo.meta.filePath)) ? musicInfo.meta.filePath : ''
+  return (await checkFile(musicInfo.meta.filePath)) ? musicInfo.meta.filePath : ''
 }
 
 /**

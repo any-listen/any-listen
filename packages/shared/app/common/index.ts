@@ -5,6 +5,7 @@ let commonOptions: {
   getSettings: () => AnyListen.AppSetting
   showMessageBox: (key: string, options: AnyListen.IPCCommon.MessageDialogOptions) => Promise<number>
   translate: (key: keyof Message, val?: TranslateValues) => string
+  logger: AnyListen.Logger
 }
 
 export const initCommon = (options: typeof commonOptions) => {
@@ -21,4 +22,19 @@ export const showMessageBox = async (options: AnyListen.IPCCommon.MessageDialogO
 
 export const t = (key: keyof Message, val?: TranslateValues) => {
   return commonOptions.translate(key, val)
+}
+
+export const logger: AnyListen.Logger = {
+  debug(message, ...args) {
+    commonOptions.logger.debug(message, ...args)
+  },
+  info: (message, ...args) => {
+    commonOptions.logger.info(message, ...args)
+  },
+  warn: (message, ...args) => {
+    commonOptions.logger.warn(message, ...args)
+  },
+  error: (message, ...args) => {
+    commonOptions.logger.error(message, ...args)
+  },
 }
