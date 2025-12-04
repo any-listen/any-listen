@@ -126,8 +126,8 @@ export class WebDAVClient {
     if (!path.startsWith('/')) path = `/${path}`
     const res = await this.request<Ls>('PROPFIND', { headers: { Depth: '1' }, path })
     // console.log(JSON.stringify(res.multistatus.response))
-    if (path == '/') return buildFileItems(res.multistatus.response, '')
     res.multistatus.response.shift()
+    if (path == '/') return buildFileItems(res.multistatus.response, '')
     return buildFileItems(res.multistatus.response, path)
   }
 

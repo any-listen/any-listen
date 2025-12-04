@@ -1,9 +1,9 @@
 ### Fixed
 
-- Fixed the file validation logic so read-only scenarios no longer require write permission checks.
+- Fixed an issue where song scanning failed when the WebDAV directory list was set to empty or `/` while **Include Subdirectories** was selected.
 
 ---
 
 ### 修复
 
-- 修复文件检查逻辑，在只读场景不再检查是否可写
+- 修复当 WebDAV 列表目录设置为空或 `/` 且勾选 **包含子目录** 时导致歌曲扫描失败的问题
