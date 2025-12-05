@@ -18,7 +18,7 @@
     "@any-listen/web": "workspace:@shared/web@*",
     "@koa/cors": "^5.0.0",
     "better-sqlite3": "^12.5.0",
-    "jsonwebtoken": "^9.0.2",
+    "jsonwebtoken": "^9.0.3",
     "koa": "^3.1.1",
     "@koa/router": "^15.0.0",
     "log4js": "6.9.1",
