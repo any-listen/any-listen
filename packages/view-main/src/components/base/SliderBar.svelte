@@ -7,6 +7,7 @@
     min,
     max,
     disabled = false,
+    deltaStep,
     onchange,
   }: {
     value: number
@@ -14,8 +15,41 @@
     max: number
     step?: number
     disabled?: boolean
+    deltaStep?: number
     onchange: (val: number) => void
   } = $props()
+
+  const getDefaultStep = () => {
+    const range = max - min
+    return range === 0 ? 0 : range / 100
+  }
+  const getSlideStep = () => step ?? getDefaultStep()
+  const getDeltaStep = () => deltaStep ?? step ?? getDefaultStep()
+  const clamp = (val: number) => Math.min(max, Math.max(min, val))
+  const snapToSlideStep = (val: number) => {
+    const slideStep = getSlideStep()
+    if (!slideStep) return clamp(val)
+    const snapped = min + Math.round((val - min) / slideStep) * slideStep
+    return clamp(snapped)
+  }
+  const countDecimals = (num: number) => {
+    if (!isFinite(num) || num === 0) return 6
+    const str = num.toString().toLowerCase()
+    if (str.includes('e-')) {
+      const [base, exp] = str.split('e-')
+      const extra = Number(exp)
+      return (base.split('.')[1]?.length ?? 0) + (Number.isFinite(extra) ? extra : 0)
+    }
+    return str.split('.')[1]?.length ?? 0
+  }
+  const formatValue = (val: number, refStep?: number) => {
+    const decimals = countDecimals(refStep ?? getSlideStep())
+    const precision = Math.min(8, Math.max(decimals, 6))
+    return parseFloat(val.toFixed(precision))
+  }
+  const emitChange = (val: number, refStep?: number) => {
+    onchange(formatValue(val, refStep))
+  }
 
   const sliderEvent = {
     isMsDown: false,
@@ -25,37 +59,29 @@
   let domSliderBar: HTMLElement
 
   const handleDown = (clientX: number, offsetX: number) => {
-    // if (disabled) return
     sliderEvent.isMsDown = true
     sliderEvent.msDownX = clientX
 
     sliderEvent.msDownValue = offsetX / domSliderBar.clientWidth
-    let val = sliderEvent.msDownValue * (max - min) + min
-    if (val < min) val = min
-    if (val > max) val = max
-    onchange(val)
-
-    // if (isMute.value) window.app_event.setSliderIsMute(false)
+    const val = snapToSlideStep(sliderEvent.msDownValue * (max - min) + min)
+    emitChange(val, getSlideStep())
   }
   const handleSliderMsUp = () => {
     sliderEvent.isMsDown = false
   }
   const handleMove = (clientX: number) => {
-    // if (!sliderEvent.isMsDown || disabled) return
-    let value = (sliderEvent.msDownValue + (clientX - sliderEvent.msDownX) / domSliderBar.clientWidth) * (max - min) + min
-    if (value > max) value = max
-    else if (value < min) value = min
-    onchange(value)
+    const value = snapToSlideStep(
+      (sliderEvent.msDownValue + (clientX - sliderEvent.msDownX) / domSliderBar.clientWidth) * (max - min) + min
+    )
+    emitChange(value, getSlideStep())
   }
   const handleWheel = (event: WheelEvent) => {
-    const _step = step ?? (max - min) / 100
-    let val = value - (event.deltaY / 100) * _step
-    if (val < min) val = min
-    if (val > max) val = max
-    onchange(val)
+    const _step = getDeltaStep()
+    let val = clamp(value - (event.deltaY / 100) * _step)
+    emitChange(val, _step)
   }
   const handleKeydown = (event: KeyboardEvent) => {
-    let _step = step ?? (max - min) / 100
+    let _step = getDeltaStep()
     switch (event.key) {
       case 'ArrowLeft':
       case 'ArrowDown':
@@ -69,10 +95,8 @@
       default:
         return
     }
-    let val = value + _step
-    if (val < min) val = min
-    if (val > max) val = max
-    onchange(val)
+    const val = clamp(value + _step)
+    emitChange(val, _step)
   }
 
   const handleMouseDown = (event: MouseEvent) => {
@@ -80,7 +104,6 @@
     handleDown(event.clientX, event.offsetX)
   }
   const handleTouchDown = (event: TouchEvent) => {
-    console.log('down')
     if (event.changedTouches.length) {
       if (disabled) return
       event.preventDefault()

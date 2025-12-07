@@ -50,7 +50,7 @@
           onchange={handleUpdateVolumeMute}
         />
       </div>
-      <SliderBar step={0.02} value={$volume} min={0} max={1} onchange={handleUpdateVolume} />
+      <SliderBar step={0.01} deltaStep={0.02} value={$volume} min={0} max={1} onchange={handleUpdateVolume} />
     </div>
   {/snippet}
 </PopupBtn>
