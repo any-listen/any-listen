@@ -1,5 +1,6 @@
+import { LIST_IDS } from '@any-listen/common/constants'
 import _Event, { type EventType } from '@any-listen/nodejs/Event'
-import { verifyListCreate, verifyListDelete, verifyListUpdate } from '../extension/listProvider'
+import { verifyListCreate, verifyListDelete, verifyListUpdate, verifyMusicRemove } from '../extension/listProvider'
 import type { DBSeriveTypes } from '../worker/utils'
 import { verifyLocalListCreate, verifyLocalListDelete, verifyLocalListUpdate } from './localListProvider'
 
@@ -238,6 +239,24 @@ export class Event extends _Event {
    * @param isRemote 是否属于远程操作
    */
   async list_music_remove(listId: string, ids: string[], isRemote = false) {
+    if (!isRemote) {
+      switch (listId) {
+        case LIST_IDS.DEFAULT:
+        case LIST_IDS.LOVE:
+        case LIST_IDS.LAST_PLAYED:
+          break
+        default: {
+          const listInfo = await dbService.getUserListById(listId)
+          if (!listInfo) throw new Error('list not found')
+          if (listInfo.type === 'remote') {
+            await verifyMusicRemove(
+              listInfo,
+              (await dbService.getListMusicsByIds(listId, ids)) as AnyListen.Music.MusicInfoOnline[]
+            )
+          }
+        }
+      }
+    }
     await dbService.musicsRemove(listId, ids)
     this.emitEvent('list_music_remove', listId, ids, isRemote)
     this.list_music_changed([listId])

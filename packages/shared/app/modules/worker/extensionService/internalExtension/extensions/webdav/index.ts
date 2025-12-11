@@ -70,7 +70,14 @@ export const pkg: AnyListen.Extension.Manifest = {
           {
             field: 'includeSubDir',
             name: 't(exts.webdav.form.include_sub_dir.name)',
-            description: '',
+            description: 't(exts.webdav.form.include_sub_dir.description)',
+            type: 'boolean',
+            default: false,
+          },
+          {
+            field: 'enabledRemove',
+            name: 't(exts.webdav.form.enabled_remove.name)',
+            description: 't(exts.webdav.form.enabled_remove.description)',
             type: 'boolean',
             default: false,
           },

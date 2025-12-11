@@ -1,9 +1,9 @@
-### Fixed
+### Added
 
-- Fixed an issue where song scanning failed when the WebDAV directory list was set to empty or `/` while **Include Subdirectories** was selected.
+- Added a **Remove Remote Songs** option for **WebDAV List**. When enabled, removing a song from the list will also delete the corresponding remote file.
 
 ---
 
-### 修复
+### 新增
 
-- 修复当 WebDAV 列表目录设置为空或 `/` 且勾选 **包含子目录** 时导致歌曲扫描失败的问题
+- 新增 **WebDAV 列表** 是否移除远程歌曲选项，启用后移除列表内歌曲时会同步删除对应远程文件。

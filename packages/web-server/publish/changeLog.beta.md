@@ -1,9 +1,9 @@
-### Improved
+### Added
 
-- Optimized **external asset path handling** so the service no longer has to be deployed at the domain root path ([#95](https://github.com/any-listen/any-listen/issues/95)).
+- Added a **Remove Remote Songs** option for **WebDAV List**. When enabled, removing a song from the list will also delete the corresponding remote file.
 
 ---
 
-### 优化
+### 新增
 
-- 优化 **对外资源路径处理**，服务不再需要部署在域名根路径（[#95](https://github.com/any-listen/any-listen/issues/95)）。
+- 新增 **WebDAV 列表** 是否移除远程歌曲选项，启用后移除列表内歌曲时会同步删除对应远程文件。

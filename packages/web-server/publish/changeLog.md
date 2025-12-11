@@ -1,6 +1,7 @@
 ### Added
 
-- Added a **WebDAV list** option to control whether subdirectories are scanned, supporting up to five nested levels.
+- Added a **WebDAV List** option to control whether to scan subdirectories, supporting up to five nested levels.
+- Added a **Remove Remote Songs** option for **WebDAV List**. When enabled, removing a song from the list will also delete the corresponding remote file.
 
 ### Improved
 
@@ -15,7 +16,8 @@
 
 ### 新增
 
-- 新增 **WebDAV 列表** 是否扫描子目录选项，最多包含 5 层目录深度。
+- 新增 **WebDAV 列表** 是否扫描子目录选项，支持最多 5 层目录深度。
+- 新增 **WebDAV 列表** 是否移除远程歌曲选项，启用后移除列表内歌曲时会同步删除对应远程文件。
 
 ### 优化
 
@@ -24,4 +26,4 @@
 
 ### 修复
 
-- 修复当 WebDAV 列表目录设置为空或 `/` 且勾选 **包含子目录** 时导致歌曲扫描失败的问题
+- 修复当 WebDAV 列表目录设置为空或 `/` 且勾选 **包含子目录** 时导致歌曲扫描失败的问题。

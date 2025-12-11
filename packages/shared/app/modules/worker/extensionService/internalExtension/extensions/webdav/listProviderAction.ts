@@ -94,6 +94,18 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
     logcat.info(`ListProviderAction updateList`, params)
     await testDir(await getWebDAVOptionsByListInfo(params.data.meta))
   },
+  async removeListMusics(params) {
+    logcat.info(`ListProviderAction removeListMusics`, params)
+    const options = await getWebDAVOptionsByListInfo(params.data.list.meta)
+    const webDAVClient = createWebDAVClient(options)
+    for (const musicInfo of params.data.musics) {
+      if (!musicInfo.meta.path || typeof musicInfo.meta.path !== 'string') continue
+      await webDAVClient.rm(musicInfo.meta.path).catch((err: Error) => {
+        logcat.error('WebDAV remove file error', err)
+        throw buildWebDAVError(options, err)
+      })
+    }
+  },
   async getListMusicIds({ extensionId, data }) {
     const options = await getWebDAVOptionsByListInfo(data.meta)
     const list = await getListMusicIds(

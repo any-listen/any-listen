@@ -103,6 +103,12 @@ declare namespace AnyListen {
       createList: (params: ListProviderActionParams) => Promise<void>
       updateList: (params: ListProviderActionParams) => Promise<void>
       deleteList: (params: ListProviderActionParams) => Promise<void>
+      removeListMusics: (
+        params: BuildListProviderActionCommonParams<{
+          list: List.RemoteListInfo
+          musics: Music.MusicInfoOnline[]
+        }>
+      ) => Promise<void>
       /** 获取列表中的音乐文件 ID */
       getListMusicIds: (params: ListProviderActionParams) => Promise<string[]>
       /** 通过音乐文件 ID 获取音乐信息 */

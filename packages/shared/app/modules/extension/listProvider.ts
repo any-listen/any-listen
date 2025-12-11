@@ -29,6 +29,18 @@ export const verifyListDelete = async (info: AnyListen.List.RemoteListInfo) => {
   })
 }
 
+export const verifyMusicRemove = async (listInfo: AnyListen.List.RemoteListInfo, musics: AnyListen.Music.MusicInfoOnline[]) => {
+  if (!listInfo.meta.enabledRemove) return
+  await workers.extensionService.listProviderAction('removeListMusics', {
+    data: {
+      list: listInfo,
+      musics,
+    },
+    extensionId: listInfo.meta.extensionId,
+    source: listInfo.meta.source,
+  })
+}
+
 const state = {
   initing: false,
   loadedExtensions: [] as string[],
@@ -77,6 +89,7 @@ export const syncList = async (list: AnyListen.List.RemoteListInfo) => {
       data: {
         listId: list.id,
         ids: Array.from(removedMusicIds),
+        sync: true,
       },
     })
   }

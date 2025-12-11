@@ -63,6 +63,8 @@ declare namespace AnyListen {
     interface ListActionMusicRemove {
       listId: string
       ids: string[]
+      /** 是否是同步操作导致的歌曲移除 */
+      sync?: boolean
     }
 
     type ListActionMusicUpdate = Array<{

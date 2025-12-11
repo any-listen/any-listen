@@ -27,7 +27,6 @@
   .settings-item-checkbox {
     :global {
       .checkbox {
-        margin-bottom: 5px;
         font-size: 14px;
       }
     }
@@ -36,7 +35,6 @@
   //   font-size: 15px;
   // }
   .settings-item-desc {
-    margin-top: -3px;
     margin-bottom: 6px;
     font-size: 12px;
     opacity: 0.7;

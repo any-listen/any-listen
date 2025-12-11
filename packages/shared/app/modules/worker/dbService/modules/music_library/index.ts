@@ -187,6 +187,11 @@ export const getAllUserLists = (): AnyListen.List.MyAllList => {
   }
 }
 
+export const getUserListById = (id: string) => {
+  initListInfo()
+  return userLists.find((l) => l.id === id)
+}
+
 /**
  * 获取用户列表
  * @returns
@@ -348,6 +353,13 @@ export const getListMusics = (listId: string): AnyListen.Music.MusicInfo[] => {
   }
 
   return targetList
+}
+
+export const getListMusicsByIds = (listId: string, ids: string[]) => {
+  const list = musicLists.get(listId)
+  if (!list) return []
+  const idSet = new Set(ids)
+  return list.filter((m) => idSet.has(m.id))
 }
 
 /**

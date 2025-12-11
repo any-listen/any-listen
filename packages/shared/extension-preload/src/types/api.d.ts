@@ -413,6 +413,7 @@ declare namespace AnyListen {
     interface ListActionMusicRemove {
       listId: string
       ids: string[]
+      sync?: boolean
     }
 
     type ListActionMusicUpdate = Array<{

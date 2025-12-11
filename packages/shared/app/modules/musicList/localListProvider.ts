@@ -100,6 +100,7 @@ const handleReadyWatcher = async (listId: string, files: string[]) => {
       data: {
         listId,
         ids: Array.from(removedMusicIds),
+        sync: true,
       },
     })
   }
@@ -125,6 +126,7 @@ const handleMusicRemove = async (listId: string, paths: string[]) => {
     data: {
       listId,
       ids: removedIds,
+      sync: true,
     },
   })
 }
