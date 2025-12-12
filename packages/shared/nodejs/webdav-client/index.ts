@@ -69,6 +69,7 @@ export class WebDAVClient {
       attributeNamePrefix: '',
       parseTagValue: false,
       removeNSPrefix: true,
+      trimValues: false,
     })
   }
 
@@ -126,9 +127,10 @@ export class WebDAVClient {
     if (!path.startsWith('/')) path = `/${path}`
     const res = await this.request<Ls>('PROPFIND', { headers: { Depth: '1' }, path })
     // console.log(JSON.stringify(res.multistatus.response))
-    res.multistatus.response.shift()
-    if (path == '/') return buildFileItems(res.multistatus.response, '')
-    return buildFileItems(res.multistatus.response, path)
+    const responses = Array.isArray(res.multistatus.response) ? res.multistatus.response.slice() : [res.multistatus.response]
+    responses.shift()
+    if (path == '/') return buildFileItems(responses, '')
+    return buildFileItems(responses, path)
   }
 
   async rm(path: string) {
