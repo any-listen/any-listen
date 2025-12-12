@@ -2,7 +2,6 @@ import qs from 'node:querystring'
 import {
   FormData,
   getGlobalDispatcher,
-  interceptors,
   request as nodeRrequest,
   ProxyAgent,
   setGlobalDispatcher,
@@ -17,45 +16,20 @@ const defaultOptions: Options = {
   },
   maxRedirect: 5,
 } as const
-const redirectDispatcher = interceptors.redirect({ maxRedirections: defaultOptions.maxRedirect })
-const dispatchers = [
-  interceptors.retry({
-    maxRetries: 3,
-    minTimeout: 1000,
-    maxTimeout: 10000,
-    timeoutFactor: 2,
-    retryAfter: true,
-  }),
-  // interceptors.responseError(),
-] as const
 let proxyAgent: ProxyAgent | null = null
 let globalDispatcher = getGlobalDispatcher()
-const buildDispatcher = (redirectDispatcher: Dispatcher.DispatcherComposeInterceptor | null, retryNum = 3) => {
-  const otherInterceptors =
-    retryNum == 3
-      ? dispatchers
-      : [
-          interceptors.retry({
-            maxRetries: retryNum,
-            minTimeout: 1000,
-            maxTimeout: 6000,
-            timeoutFactor: 2,
-            retryAfter: true,
-          }),
-        ]
-  if (redirectDispatcher) {
-    return (proxyAgent ?? globalDispatcher).compose(redirectDispatcher, ...otherInterceptors)
-  }
-  return (proxyAgent ?? globalDispatcher).compose(...otherInterceptors)
+const buildDispatcher = () => {
+  return proxyAgent ?? globalDispatcher
 }
 
-setGlobalDispatcher(buildDispatcher(redirectDispatcher))
+setGlobalDispatcher(buildDispatcher())
 
 export const setProxy = (url?: string) => {
   proxyAgent = url ? new ProxyAgent(url) : null
-  setGlobalDispatcher(buildDispatcher(redirectDispatcher))
+  setGlobalDispatcher(buildDispatcher())
 }
 export const setProxyByHost = (host?: string, port?: string) => {
+  console.log(host)
   setProxy(host ? `http://${host}:${port}` : undefined)
 }
 const CONTENT_TYPE = {
@@ -69,19 +43,19 @@ const CONTENT_TYPE = {
 type ParamsData = Record<string, string | number | null | undefined | boolean>
 export interface Options {
   method?:
-    | 'GET'
-    | 'HEAD'
-    | 'POST'
-    | 'PUT'
-    | 'DELETE'
-    | 'OPTIONS'
-    | 'PATCH'
-    | 'PROPFIND'
-    | 'COPY'
-    | 'MOVE'
-    | 'MKCOL'
-    | 'PROPPATCH'
-    | 'QUOTA'
+  | 'GET'
+  | 'HEAD'
+  | 'POST'
+  | 'PUT'
+  | 'DELETE'
+  | 'OPTIONS'
+  | 'PATCH'
+  | 'PROPFIND'
+  | 'COPY'
+  | 'MOVE'
+  | 'MKCOL'
+  | 'PROPPATCH'
+  | 'QUOTA'
   query?: ParamsData
   headers?: Record<string, string | string[]>
   timeout?: number
@@ -206,22 +180,11 @@ const buildRequestBody = (options: Options) => {
 }
 
 const buildRequestDispatcher = (options: Options) => {
-  let dispatcher: Dispatcher.ComposedDispatcher | undefined
-
-  if (options.maxRedirect != null) {
-    if (options.maxRedirect != defaultOptions.maxRedirect) {
-      if (options.maxRedirect) {
-        dispatcher = buildDispatcher(interceptors.redirect({ maxRedirections: options.maxRedirect }), options.retryNum)
-      } else {
-        dispatcher = buildDispatcher(null, options.retryNum)
-      }
-    }
-  }
-  return dispatcher
+  return buildDispatcher()
 }
 
 export const request = async <T = unknown>(url: string, options: Options = {}): Promise<Response<T>> => {
-  const method = options.method?.toUpperCase() ?? 'GET'
+  const method = (options.method?.toUpperCase() ?? 'GET') as Dispatcher.RequestOptions['method']
   const timeout = options.timeout ?? defaultOptions.timeout
   const [headers, body] = buildRequestBody(options)
   // console.log(url, {
@@ -243,7 +206,7 @@ export const request = async <T = unknown>(url: string, options: Options = {}): 
     body,
     signal: options.signal,
     dispatcher: buildRequestDispatcher(options),
-  }).then(async (response) => {
+  }).then(async(response) => {
     if (options.needBody) {
       return {
         headers: response.headers,
@@ -255,8 +218,8 @@ export const request = async <T = unknown>(url: string, options: Options = {}): 
       return {
         headers: response.headers,
         statusCode: response.statusCode,
-        raw: await response.body.bytes(),
-      } satisfies Omit<Response<T>, 'body'> as Response<T>
+        raw: new Uint8Array(await response.body.arrayBuffer()),
+      } satisfies Omit<Response<T>, 'body'> as unknown as Response<T>
     }
     // console.log(response)
     let body = (await response.body.text()) as T

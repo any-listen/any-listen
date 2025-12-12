@@ -64,16 +64,22 @@ export const buildConfig = (mode: string): UserConfig => {
     commit_date: '',
   }
   try {
-    if (!execSync('git status --porcelain').toString().trim()) {
+    let isClean = !execSync('git status --porcelain').toString().trim()
+    if (process.env.BUILD_WIN7) {
+      console.warn('BUILD_WIN7 is set, skipping git status check.')
+      console.log('Workspace status:', execSync('git status --porcelain').toString().trim())
+      isClean = true
+    }
+    if (isClean) {
       gitInfo.commit_id = execSync('git log -1 --pretty=format:"%H"').toString().trim()
       gitInfo.commit_date = execSync('git log -1 --pretty=format:"%ad" --date=iso-strict').toString().trim()
     } else if (process.env.IS_CI) {
       console.error('Working directory is not clean')
       process.exit(1)
     }
-  } catch {
+  } catch (err) {
     if (process.env.IS_CI) {
-      throw new Error('Getting git commit info failed.')
+      throw new Error('Getting git commit info failed.', { cause: err })
     }
   }
 

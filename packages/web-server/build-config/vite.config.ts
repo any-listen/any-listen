@@ -57,13 +57,12 @@ export const buildConfig = (mode: string): UserConfig => {
       console.error('Working directory is not clean')
       process.exit(1)
     }
-  } catch {
-    /* empty */
+  } catch (err) {
     if (process.env.IS_CI) {
       const commitId = process.env.GIT_COMMIT_ID
       const commitDate = process.env.GIT_COMMIT_DATE
       if (!commitId || !commitDate) {
-        throw new Error('GIT_COMMIT_ID and GIT_COMMIT_DATE environment variables are required in CI')
+        throw new Error('GIT_COMMIT_ID and GIT_COMMIT_DATE environment variables are required in CI', { cause: err })
       }
       gitInfo.commit_id = commitId
       gitInfo.commit_date = commitDate
@@ -100,8 +99,8 @@ export const buildConfig = (mode: string): UserConfig => {
       watch: isProd
         ? null
         : {
-          buildDelay: 500,
-        },
+            buildDelay: 500,
+          },
       commonjsOptions: {
         // dynamicRequireTargets: ['*.js'],
         ignoreDynamicRequires: true,
