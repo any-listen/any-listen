@@ -13,7 +13,7 @@
     "@any-listen/common": "workspace:@shared/common@*",
     "@any-listen/i18n": "workspace:@shared/i18n@*",
     "@any-listen/web": "workspace:@shared/web@*",
-    "dompurify": "^3.3.0",
+    "dompurify": "^3.3.1",
     "hast-util-to-html": "^9.0.5",
     "marked": "^17.0.1",
     "message2call": "^2.0.3",
@@ -37,11 +37,11 @@
     "stylelint-config-recess-order": "^7.4.0",
     "stylelint-config-standard-less": "^3.0.1",
     "stylelint-order": "^7.0.0",
-    "svelte": "^5.45.6",
+    "svelte": "^5.45.10",
     "svelte-check": "^4.3.4",
     "svelte-eslint-parser": "^1.4.1",
     "svelte-preprocess": "^6.0.3",
-    "vite": "^7.2.6",
+    "vite": "^7.2.7",
     "vite-plugin-svg-icons": "^2.0.1"
   }
 }
