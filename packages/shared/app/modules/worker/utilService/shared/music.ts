@@ -1,5 +1,5 @@
 import { isLikelyGarbage } from '@any-listen/common/utils'
-import { checkFile, dirname, extname, getFileStats, joinPath, readFile } from '@any-listen/nodejs'
+import { checkFile, dirname, extname, getFileStats, joinPath, readFile, removeFile } from '@any-listen/nodejs'
 import { decodeString } from '@any-listen/nodejs/char'
 import { getFileLyric, getFilePic, parseFileMetadata } from '@any-listen/nodejs/music'
 
@@ -41,6 +41,15 @@ export const getDownloadFilePath = async (musicInfo: AnyListen.Download.ListItem
 
 export const getLocalFilePath = async (musicInfo: AnyListen.Music.MusicInfoLocal): Promise<string> => {
   return (await checkFile(musicInfo.meta.filePath)) ? musicInfo.meta.filePath : ''
+}
+
+export const removeMusicFile = async (path: string) => {
+  if (!path) return
+  try {
+    await removeFile(path)
+  } catch (err) {
+    console.error(`Remove file error: ${path}`, err)
+  }
 }
 
 /**

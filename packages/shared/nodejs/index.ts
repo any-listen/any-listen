@@ -72,22 +72,24 @@ export const removePath = async (path: string) =>
     if (err.code !== 'ENOENT') throw err
   })
 
-export const removeFile = async (path: string) =>
-  new Promise<void>((resolve, reject) => {
-    fs.access(path, fs.constants.F_OK, (err) => {
-      if (err) {
-        err.code == 'ENOENT' ? resolve() : reject(err)
-        return
-      }
-      fs.unlink(path, (err) => {
-        if (err) {
-          reject(err)
-          return
-        }
-        resolve()
-      })
-    })
-  })
+export const removeFile = async (path: string) => {
+  return fs.promises.unlink(path)
+}
+// new Promise<void>((resolve, reject) => {
+//   fs.access(path, fs.constants.F_OK, (err) => {
+//     if (err) {
+//       err.code == 'ENOENT' ? resolve() : reject(err)
+//       return
+//     }
+//     fs.unlink(path, (err) => {
+//       if (err) {
+//         reject(err)
+//         return
+//       }
+//       resolve()
+//     })
+//   })
+// })
 
 export const readFile = async (path: string) => fs.promises.readFile(path)
 

@@ -17,6 +17,14 @@ export const verifyLocalListUpdate = async (info: AnyListen.List.LocalListInfo) 
   await checkPath(info.meta.path, true)
 }
 
+export const verifyLocalListMusicRemove = async (
+  listInfo: AnyListen.List.LocalListInfo,
+  musics: AnyListen.Music.MusicInfoLocal[]
+) => {
+  if (!listInfo.meta.enabledRemove || listInfo.meta.deviceId !== getDeviceId()) return
+  await workers.utilService.removeMusicFiles(musics.map((m) => m.meta.filePath))
+}
+
 const watcherMap = new Map<string, [string, () => Promise<void>]>() // listId => [watchPath, unwatch]
 const removeWatcher = async (listId: string) => {
   const unwatch = watcherMap.get(listId)

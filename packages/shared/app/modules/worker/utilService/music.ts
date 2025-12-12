@@ -1,6 +1,6 @@
 import { isValidLyric } from '@any-listen/common/tools'
 import { parseLyrics } from '@any-listen/nodejs/lrcTool'
-import { createLocalMusicInfo, getLocalMusicFileLyric, getLocalMusicFilePic } from './shared/music'
+import { createLocalMusicInfo, getLocalMusicFileLyric, getLocalMusicFilePic, removeMusicFile } from './shared/music'
 
 interface PicBuffer {
   format: string
@@ -39,6 +39,12 @@ export const createLocalMusicInfos = async (filePaths: string[]): Promise<AnyLis
   }
 
   return list
+}
+
+export const removeMusicFiles = async (paths: string[]) => {
+  for (const path of paths) {
+    await removeMusicFile(path)
+  }
 }
 
 export { scanFolderMusics, stopFolderMusicsScan } from './scanMusics'

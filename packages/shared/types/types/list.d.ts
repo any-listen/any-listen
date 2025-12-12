@@ -13,6 +13,7 @@ declare namespace AnyListen {
       deviceId: string
       path: string
       includeSubDir: boolean
+      enabledRemove?: boolean
     }
     interface UserListInfoByOnlineMeta extends UserListInfoBaseMeta {
       extensionId: string

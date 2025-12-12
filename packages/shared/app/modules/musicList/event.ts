@@ -2,7 +2,12 @@ import { LIST_IDS } from '@any-listen/common/constants'
 import _Event, { type EventType } from '@any-listen/nodejs/Event'
 import { verifyListCreate, verifyListDelete, verifyListUpdate, verifyMusicRemove } from '../extension/listProvider'
 import type { DBSeriveTypes } from '../worker/utils'
-import { verifyLocalListCreate, verifyLocalListDelete, verifyLocalListUpdate } from './localListProvider'
+import {
+  verifyLocalListCreate,
+  verifyLocalListDelete,
+  verifyLocalListMusicRemove,
+  verifyLocalListUpdate,
+} from './localListProvider'
 
 let dbService: DBSeriveTypes
 
@@ -248,11 +253,21 @@ export class Event extends _Event {
         default: {
           const listInfo = await dbService.getUserListById(listId)
           if (!listInfo) throw new Error('list not found')
-          if (listInfo.type === 'remote') {
-            await verifyMusicRemove(
-              listInfo,
-              (await dbService.getListMusicsByIds(listId, ids)) as AnyListen.Music.MusicInfoOnline[]
-            )
+          switch (listInfo.type) {
+            case 'local':
+              await verifyLocalListMusicRemove(
+                listInfo,
+                (await dbService.getListMusicsByIds(listId, ids)) as AnyListen.Music.MusicInfoLocal[]
+              )
+              break
+            case 'remote':
+              await verifyMusicRemove(
+                listInfo,
+                (await dbService.getListMusicsByIds(listId, ids)) as AnyListen.Music.MusicInfoOnline[]
+              )
+              break
+            default:
+              break
           }
         }
       }
