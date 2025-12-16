@@ -20,7 +20,7 @@
     "better-sqlite3": "^12.5.0",
     "jsonwebtoken": "^9.0.3",
     "koa": "^3.1.1",
-    "@koa/router": "^15.0.0",
+    "@koa/router": "^15.1.0",
     "log4js": "6.9.1",
     "message2call": "^2.0.3",
     "ws": "^8.18.3"
@@ -33,6 +33,6 @@
     "@types/koa__router": "^12.0.5",
     "@types/koa__cors": "^5.0.1",
     "@types/ws": "8.18.1",
-    "vite": "^7.2.7"
+    "vite": "^7.3.0"
   }
 }

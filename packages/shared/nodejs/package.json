@@ -14,7 +14,7 @@
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "@types/node": "^22.19.2",
+    "@types/node": "^22.19.3",
     "@types/tunnel": "^0.0.7"
   }
 }
