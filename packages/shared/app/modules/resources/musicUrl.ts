@@ -25,8 +25,8 @@ export const getMusicUrlByExtensionSource = async ({
     })
     .then((result) => {
       // console.log(result)
-      if (!result.url) throw new Error('Get music pic failed')
-      if (!allowedUrl(result.url)) throw new Error('Get music pic failed, url not allowed')
+      if (!result.url) throw new Error('Get music url failed')
+      if (!allowedUrl(result.url)) throw new Error('Get music url failed, url not allowed')
       return result
     })
 }

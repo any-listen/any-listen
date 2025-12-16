@@ -11,8 +11,9 @@
 ### Fixed
 
 - Fixed the **tray menu** language not updating immediately after switching the app language ([#88](https://github.com/any-listen/any-listen/issues/88)).
-- Fixed an issue where song scanning failed when the WebDAV directory list was set to empty or `/` while **Include Subdirectories** was selected.
+- Fixed an issue where song scanning failed when the _WebDAV List_ directory was set to empty or `/` while **Include Subdirectories** was selected.
 - Fixed an issue where scanning subdirectories in the _WebDAV List_ could fail in certain cases.
+- Fixed an issue where album cover links would not refresh when they became invalid.
 
 ---
 
@@ -31,3 +32,4 @@
 - 修复切换语言时 **托盘菜单** 语言无法立即更新的问题（[#88](https://github.com/any-listen/any-listen/issues/88)）。
 - 修复当 _WebDAV 列表_ 目录设置为空或 `/` 且勾选 **包含子目录** 时导致歌曲扫描失败的问题。
 - 修复 _WebDAV 列表_ 在某些情况下扫描子目录失败的问题。
+- 修复歌曲封面链接失效时未能自动刷新的问题。

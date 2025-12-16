@@ -10,6 +10,7 @@ import { parseInterval } from '@/shared'
 import { LIST_IDS } from '@any-listen/common/constants'
 import { createPlayMusicInfoList } from '@any-listen/common/tools'
 import { getRandom } from '@any-listen/common/utils'
+import { checkPicUrl } from '@any-listen/web'
 import * as commit from './commit'
 import { playerEvent } from './event'
 import { removePlayListMusic, setPlayListMusic, setPlayListMusicPlayed, setPlayListMusicUnplayedAll } from './listRemoteAction'
@@ -190,23 +191,33 @@ const buildPlayerMusicInfo = (musicInfo: AnyListen.Music.MusicInfo | AnyListen.D
     album: '',
   }
 }
+const loadImageUrl = async (info: AnyListen.Player.PlayMusicInfo, refresh?: boolean) => {
+  return getMusicPic({ musicInfo: info.musicInfo, listId: info.listId, isRefresh: refresh })
+    .then(({ url }) => {
+      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+      commit.setMusicInfo({ pic: url })
+      playerEvent.picUpdated(url)
+      return url
+    })
+    .catch(() => {
+      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+      commit.setMusicInfo({ pic: null })
+      playerEvent.picUpdated(null)
+    })
+}
 export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null, index?: number | null, historyListIndex = -1) => {
   const oldInfo = playerState.playMusicInfo
   const oldHistoryIdx = playerState.playInfo.historyIndex
   if (info) {
     commit.setPlayMusicInfo(info)
     commit.setMusicInfo(buildPlayerMusicInfo(info.musicInfo))
-    void getMusicPic({ musicInfo: info.musicInfo, listId: info.listId })
-      .then(({ url }) => {
+    void loadImageUrl(info).then((url) => {
+      if (!url) return
+      void checkPicUrl(url).catch(() => {
         if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-        commit.setMusicInfo({ pic: url })
-        playerEvent.picUpdated(url)
+        void loadImageUrl(info, true)
       })
-      .catch(() => {
-        if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-        commit.setMusicInfo({ pic: null })
-        playerEvent.picUpdated(null)
-      })
+    })
 
     void getMusicLyric({ musicInfo: info.musicInfo })
       .then((lyricInfo) => {

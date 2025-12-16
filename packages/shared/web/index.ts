@@ -97,3 +97,26 @@ export const onVisibilityChange = (callback: (hidden: boolean) => void) => {
     document.removeEventListener('visibilitychange', handleVisibilityChange)
   }
 }
+
+export const checkPicUrl = async (picUrl: string | null | undefined) => {
+  if (!picUrl) return true
+  return new Promise<void>((resolve, reject) => {
+    const image = new Image(1, 1)
+    image.addEventListener(
+      'load',
+      () => {
+        resolve()
+      },
+      { once: true }
+    )
+    image.addEventListener(
+      'error',
+      () => {
+        reject(new Error(`Error loading image at ${picUrl}`))
+      },
+      { once: true }
+    )
+    image.alt = ''
+    image.src = picUrl
+  })
+}

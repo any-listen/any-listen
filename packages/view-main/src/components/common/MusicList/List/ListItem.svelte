@@ -45,12 +45,24 @@
     }
   }
 
-  onMount(() => {
-    return getMusicPicDelay({ musicInfo: musicinfo, listId: listid }, (url) => {
+  let cancelLoadPic: (() => void) | undefined = undefined
+  let retryedLoadPic = false
+  const loadPic = () => {
+    cancelLoadPic?.()
+    cancelLoadPic = getMusicPicDelay({ musicInfo: musicinfo, listId: listid, isRefresh: retryedLoadPic }, (url) => {
+      cancelLoadPic = undefined
       void tick().then(() => {
         picUrl = url
       })
     })
+  }
+
+  onMount(() => {
+    retryedLoadPic = false
+    loadPic()
+    return () => {
+      cancelLoadPic?.()
+    }
   })
 </script>
 
@@ -73,7 +85,14 @@
         </svg>
       </div>
     {/if}
-    <Image src={picUrl} />
+    <Image
+      src={picUrl}
+      onerror={() => {
+        if (retryedLoadPic) return
+        retryedLoadPic = true
+        loadPic()
+      }}
+    />
   </div>
   <div class="list-item-cell auto name">
     <div class="select name" aria-label={musicinfo.name}>{musicinfo.name}</div>

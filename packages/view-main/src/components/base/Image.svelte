@@ -7,6 +7,7 @@
     height = '100%',
     loading = 'lazy',
     decoding = 'async',
+    onerror,
   }: {
     src?: string | null
     icon?: string
@@ -15,6 +16,7 @@
     height?: number | string
     decoding?: 'async' | 'auto' | 'sync'
     loading?: 'lazy' | 'eager'
+    onerror?: () => void
   } = $props()
   let isError = $state(false)
 
@@ -34,6 +36,7 @@
     {decoding}
     onerror={() => {
       isError = true
+      onerror?.()
     }}
   />
 {:else}
