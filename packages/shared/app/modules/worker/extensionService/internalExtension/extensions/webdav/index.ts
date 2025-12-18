@@ -8,13 +8,13 @@ export const pkg: AnyListen.Extension.Manifest = {
   version: '0.0.1',
   contributes: {
     settings: [
-      // {
-      //   field: 'test1',
-      //   name: 't(exts.webdav.test1.name)',
-      //   description: 't(exts.webdav.test1.description)',
-      //   type: 'input',
-      //   default: '',
-      // },
+      {
+        field: 'enabledCache',
+        name: 't(exts.webdav.cache.name)',
+        description: 't(exts.webdav.cache.description)',
+        type: 'boolean',
+        default: false,
+      },
       {
         field: 'servers',
         name: 't(exts.webdav.servers.name)',

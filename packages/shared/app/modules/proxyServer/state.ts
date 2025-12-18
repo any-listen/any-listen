@@ -8,6 +8,7 @@ export const proxyServerState = {
   proxyMap: createCache<{
     requestOptions: Options
     url: string
+    enabledCache?: boolean
   }>({
     max: 1000,
     ttl: 1000 * 60 * 60 * 6,

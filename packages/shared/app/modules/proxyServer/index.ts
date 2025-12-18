@@ -27,13 +27,14 @@ export const generateName = (url: string) => {
   return (toSha256(url) + ext).toLocaleLowerCase()
 }
 
-export const createProxy = async (url: string, reqOptions: Options) => {
+export const createProxy = async (url: string, reqOptions: Options, enabledCache?: boolean) => {
   await verifyOptions(url, reqOptions)
 
   const name = generateName(url)
   proxyServerState.proxyMap.set(name, {
     requestOptions: reqOptions,
     url,
+    enabledCache,
   })
   return buildPublicPath(proxyServerState.proxyBaseUrl, name)
 }

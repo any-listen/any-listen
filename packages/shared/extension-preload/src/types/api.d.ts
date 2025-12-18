@@ -1,3 +1,6 @@
+type WithUndefined<T extends readonly unknown[]> = {
+  [K in keyof T]: T[K] | undefined
+}
 declare namespace AnyListen {
   interface IPCActionBase<A> {
     action: A
@@ -1030,12 +1033,12 @@ declare global {
       encode: (data: string, encoding: string) => Uint8Array
     }
     interface Configuration {
-      getConfigs: (key: string[]) => Promise<string[]>
+      getConfigs: <T extends unknown[] = []>(keys: string[]) => Promise<WithUndefined<T>>
       setConfigs: (datas: Array<[string, string]>) => Promise<void>
       onConfigChanged: (callback: (keys: string[], configuration: Record<string, unknown>) => void) => () => void
     }
     interface MusicUtils {
-      createProxyUrl: (url: string, options: RequestOptions) => Promise<string>
+      createProxyUrl: (url: string, options: RequestOptions, enabledCache?: boolean) => Promise<string>
       writeProxyCache: (fileName: string, data: Uint8Array) => Promise<string>
     }
     interface API {

@@ -74,6 +74,8 @@
   "extension__type_installed": "已安装",
   "extension__type_online": "扩展商店",
   "extenstion": "扩展管理",
+  "exts.webdav.cache.description": "播放 WebDAV 内的歌曲时，同时将歌曲缓存到 Any Listen 缓存目录，下次播放时将直接从缓存目录读取播放，这有助于节省 WebDAV 服务的流量",
+  "exts.webdav.cache.name": "启用歌曲缓存",
   "exts.webdav.description": "连接到你的 WebDAV 服务",
   "exts.webdav.form.directory.description": "使用的文件目录路径",
   "exts.webdav.form.directory.name": "文件目录",

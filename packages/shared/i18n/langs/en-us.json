@@ -74,6 +74,7 @@
   "extension__type_installed": "Installed",
   "extension__type_online": "Extension Store",
   "extenstion": "Extenstion",
+  "exts.webdav.cache.name": "Enable song caching",
   "exts.webdav.description": "Connect to your WebDAV service",
   "exts.webdav.form.directory.description": "File directory path used",
   "exts.webdav.form.directory.name": "File Directory",

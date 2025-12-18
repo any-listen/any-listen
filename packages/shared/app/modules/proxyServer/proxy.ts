@@ -88,7 +88,7 @@ export const proxyRequest = async (name: string, rangeHeader?: string): Promise<
   }
 
   let tee: PassThrough | undefined
-  if (range && !range.start && !range.end && !proxyServerState.activeWriteStreams.has(name)) {
+  if (proxyInfo.enabledCache && range && !range.start && !range.end && !proxyServerState.activeWriteStreams.has(name)) {
     // If the range is not specified, we can cache the entire file
     const filePath = joinPath(proxyServerState.cacheDir, name)
     const tempPath = `${filePath}.tmp`

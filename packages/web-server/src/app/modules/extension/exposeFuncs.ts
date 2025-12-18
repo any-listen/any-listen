@@ -14,8 +14,8 @@ export const exposedFuncs: AnyListen.IPCExtension.MainIPCActions = {
   async onExtensionEvent(action) {
     extensionEvent.extensionEvent(action)
   },
-  async createProxyUrl(url, options) {
-    return createProxy(url, options as Options)
+  async createProxyUrl(url, options, enabledCache) {
+    return createProxy(url, options as Options, enabledCache)
   },
   async checkProxyCache(url) {
     return checkProxyCache(url)

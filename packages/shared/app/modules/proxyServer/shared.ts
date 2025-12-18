@@ -6,9 +6,10 @@ export const checkAllowedExt = (ext: string) => {
   return ALLOWED_EXT.includes(ext)
 }
 
+const RANGE_REGEX = /bytes=(?:\d*)-(?:\d*)/
 export const parseRange = (range?: string) => {
   if (!range) return undefined
-  const matches = /bytes=(\d*)-(\d*)/.exec(range)
+  const matches = RANGE_REGEX.exec(range)
   if (!matches) return null
   let start: number | undefined
   if (matches[1]) {

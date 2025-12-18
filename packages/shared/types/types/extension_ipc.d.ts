@@ -1,3 +1,7 @@
+type WithUndefined<T extends readonly unknown[]> = {
+  [K in keyof T]: T[K] | undefined
+}
+
 declare namespace AnyListen {
   namespace IPCExtension {
     interface EventExtensionLoadError {
@@ -257,7 +261,7 @@ declare namespace AnyListen {
       onExtensionEvent: (action: EventExtension) => Promise<void>
       // getConnectedClients: () => Promise<string[]>
       // showMessage: (message: string) => Promise<string[]>
-      createProxyUrl: (url: string, reqOptions: unknown) => Promise<string>
+      createProxyUrl: (url: string, reqOptions: unknown, enabledCache?: boolean) => Promise<string>
       checkProxyCache: (url: string) => Promise<boolean>
       writeProxyCache: (fileName: string, data: Uint8Array) => Promise<string>
 
@@ -338,7 +342,7 @@ declare namespace AnyListen {
       setItems: <T extends Array<[string, string]>>(datas: T) => Promise<void>
       removeItems: (keys: string[]) => Promise<void>
       clearItems: () => Promise<void>
-      getConfigs: (key: string[]) => Promise<string[]>
+      getConfigs: <T extends unknown[] = []>(keys: string[]) => Promise<WithUndefined<T>>
       setConfigs: (datas: Array<[string, string]>) => Promise<void>
       // getConnectedClients: () => Promise<string[]>
 
@@ -351,7 +355,7 @@ declare namespace AnyListen {
       getListMusics: (listId: string) => Promise<Music.MusicInfo[]>
       listAction: (action: IPCList.ActionList) => Promise<void>
 
-      createProxyUrl: (url: string, options: RequestOptions) => Promise<string>
+      createProxyUrl: (url: string, options: RequestOptions, enabledCache?: boolean) => Promise<string>
       writeProxyCache: (fileName: string, data: Uint8Array) => Promise<string>
     }
 

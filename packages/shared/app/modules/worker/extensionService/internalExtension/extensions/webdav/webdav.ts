@@ -6,7 +6,7 @@ import { decodeString } from '@any-listen/nodejs/char'
 import { parseBufferMetadata } from '@any-listen/nodejs/music'
 import { WebDAVClient } from '@any-listen/nodejs/webdav-client'
 import { hostContext, logcat } from './shared'
-import { savePassword } from './utils'
+import { getEnabledCache, savePassword } from './utils'
 
 const cache = createCache({ max: 10, ttl: 60 * 1000 })
 
@@ -187,7 +187,7 @@ export const getMusicUrl = async (options: WebDAVClientOptions, path: string) =>
   if (!path || typeof path !== 'string') throw new Error('invalid path')
   const webDAVClient = createWebDAVClient(options)
   const [url, reqOpts] = webDAVClient.getRequestOptions(path)
-  return hostContext.createProxyUrl(url, reqOpts).catch((err) => {
+  return hostContext.createProxyUrl(url, reqOpts, await getEnabledCache()).catch((err) => {
     logcat.error('create proxy url error', err)
     throw err
   })
@@ -199,7 +199,7 @@ const getDirCoverPic = async (webDAVClient: WebDAVClient, path: string) => {
   for await (const ext of tryPicExt) {
     const picPath = path.replace(filePath, ext)
     const [url, reqOpts] = webDAVClient.getRequestOptions(picPath)
-    const picUrl = await hostContext.createProxyUrl(url, reqOpts).catch(() => null)
+    const picUrl = await hostContext.createProxyUrl(url, reqOpts, await getEnabledCache()).catch(() => null)
     if (picUrl) return picPath
   }
   return null
@@ -209,7 +209,7 @@ const getDirNamePic = async (webDAVClient: WebDAVClient, path: string) => {
   for await (const ext of tryPicExt) {
     const picPath = path.replace(filePath, ext)
     const [url, reqOpts] = webDAVClient.getRequestOptions(picPath)
-    const picUrl = await hostContext.createProxyUrl(url, reqOpts).catch(() => null)
+    const picUrl = await hostContext.createProxyUrl(url, reqOpts, await getEnabledCache()).catch(() => null)
     if (picUrl) return picPath
   }
   return null

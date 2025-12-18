@@ -74,6 +74,7 @@
   "extension__type_installed": "已安裝",
   "extension__type_online": "擴展商店",
   "extenstion": "擴充管理",
+  "exts.webdav.cache.name": "啟用歌曲緩存",
   "exts.webdav.description": "連接到你的 WebDAV 服務",
   "exts.webdav.form.directory.description": "使用的文件目錄路徑",
   "exts.webdav.form.directory.name": "文件目錄",
