@@ -74,6 +74,7 @@
   "extension__type_installed": "Installed",
   "extension__type_online": "Extension Store",
   "extenstion": "Extenstion",
+  "exts.webdav.cache.description": "When playing songs in WebDAV, the songs will be cached to the Any Listen cache directory at the same time. The next time they are played, they will be read and played directly from the cache directory, which helps to save the traffic of the WebDAV service.",
   "exts.webdav.cache.name": "Enable song caching",
   "exts.webdav.debugLog.description": "Used to troubleshoot WebDAV problems. It does not need to be turned on under normal circumstances.",
   "exts.webdav.debugLog.name": "Enable debug logging",

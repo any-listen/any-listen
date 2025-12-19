@@ -74,6 +74,7 @@
   "extension__type_installed": "已安裝",
   "extension__type_online": "擴展商店",
   "extenstion": "擴充管理",
+  "exts.webdav.cache.description": "播放 WebDAV 內的歌曲時，同時將歌曲緩存到 Any Listen 緩存目錄，下次播放時將直接從緩存目錄讀取播放，這有助於節省 WebDAV 服務的流量",
   "exts.webdav.cache.name": "啟用歌曲緩存",
   "exts.webdav.debugLog.description": "用於排查 WebDAV 問題，正常情況不需要開啟",
   "exts.webdav.debugLog.name": "啟用調試日誌記錄",
