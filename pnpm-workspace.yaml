@@ -8,6 +8,12 @@ packages:
   # exclude packages that are inside test directories
   - '!**/test/**'
 
+onlyBuiltDependencies:
+  - 'better-sqlite3'
+  - 'electron'
+  - 'esbuild'
+  - 'svelte-preprocess'
+
 overrides:
   '@types/ws': '8.5.4'
   # 'vite': 'npm:rolldown-vite@latest'

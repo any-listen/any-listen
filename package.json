@@ -22,15 +22,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "pnpm": {
-    "ignoredBuiltDependencies": [],
-    "onlyBuiltDependencies": [
-      "better-sqlite3",
-      "electron",
-      "esbuild",
-      "svelte-preprocess"
-    ]
-  },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@^",
     "prettier": "^3.7.4",
