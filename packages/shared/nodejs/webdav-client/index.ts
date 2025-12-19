@@ -91,6 +91,7 @@ export class WebDAVClient {
     const headers = options.headers || {}
     if (this.authHeader) headers.Authorization = this.authHeader
     const url = path ? `${this.baseUrl}${path}` : this.baseUrl
+    this.options.onDebugLog?.(`request: [${method} ${url}]`)
     const res = await request<string>(url, {
       method,
       headers,
