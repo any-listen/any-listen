@@ -30,6 +30,7 @@
     overflow: hidden;
   }
   .settings-list {
+    position: relative;
     display: flex;
     flex: auto;
     flex-flow: column nowrap;
