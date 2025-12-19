@@ -80,7 +80,7 @@
       cmpContent?.toBottom(false)
     }}
     onclear={() => {
-      clearExtensionLogs().then(() => {
+      void clearExtensionLogs(avtiveLog.id).then(() => {
         const logItem = logs.find((item) => item.id === avtiveLog.id)
         if (logItem) logItem.log = ''
         avtiveLog.log = ''
