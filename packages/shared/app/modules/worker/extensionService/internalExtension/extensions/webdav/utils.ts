@@ -1,5 +1,5 @@
 import { generateId, isUrl } from '@any-listen/common/utils'
-import { hostContext } from './shared'
+import { hostContext, logcat } from './shared'
 import type { WebDAVClientOptions } from './webdav'
 
 const getServers = async () => {
@@ -40,6 +40,11 @@ const getPassword = async (url: string, username: string) => {
 export const getEnabledCache = async () => {
   const enabledCache = (await hostContext.getConfigs<[boolean]>(['enabledCache']))[0]
   return enabledCache == true
+}
+
+export const getEnabledDebugLog = async () => {
+  const enabledDebugLog = (await hostContext.getConfigs<[boolean]>(['enabledDebugLog']))[0]
+  return enabledDebugLog == true
 }
 
 export const savePassword = async (url: string, username: string, password: string) => {
@@ -84,4 +89,11 @@ export const getWebDAVOptionsByMusicInfo = async (musicInfo: AnyListen.Music.Mus
   options.password = await getPassword(options.url, options.username)
   options.path = musicInfo.meta.path
   return options
+}
+
+export const debugLog = async (logMessage: string) => {
+  try {
+    if (!(await getEnabledDebugLog())) return
+    logcat.debug('WebDAVClient', logMessage)
+  } catch {}
 }

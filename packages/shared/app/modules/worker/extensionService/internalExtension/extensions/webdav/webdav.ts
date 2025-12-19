@@ -6,7 +6,7 @@ import { decodeString } from '@any-listen/nodejs/char'
 import { parseBufferMetadata } from '@any-listen/nodejs/music'
 import { WebDAVClient } from '@any-listen/nodejs/webdav-client'
 import { hostContext, logcat } from './shared'
-import { getEnabledCache, savePassword } from './utils'
+import { debugLog, getEnabledCache, savePassword } from './utils'
 
 const cache = createCache({ max: 10, ttl: 60 * 1000 })
 
@@ -26,6 +26,9 @@ export const createWebDAVClient = (options: WebDAVClientOptions) => {
     password: options.password,
     onError(err) {
       logcat.error('WebDAVClient', err)
+    },
+    async onDebugLog(logMessage) {
+      void debugLog(logMessage)
     },
   })
 }

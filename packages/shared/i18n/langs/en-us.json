@@ -75,6 +75,8 @@
   "extension__type_online": "Extension Store",
   "extenstion": "Extenstion",
   "exts.webdav.cache.name": "Enable song caching",
+  "exts.webdav.debugLog.description": "Used to troubleshoot WebDAV problems. It does not need to be turned on under normal circumstances.",
+  "exts.webdav.debugLog.name": "Enable debug logging",
   "exts.webdav.description": "Connect to your WebDAV service",
   "exts.webdav.form.directory.description": "File directory path used",
   "exts.webdav.form.directory.name": "File Directory",

@@ -2,7 +2,7 @@ import { createCache } from '@any-listen/common/cache'
 import { sizeFormate } from '@any-listen/common/utils'
 import { isMusicFile } from '@any-listen/nodejs/music'
 import { logcat } from './shared'
-import { getWebDAVOptionsByListInfo, getWebDAVOptionsByMusicInfo } from './utils'
+import { debugLog, getWebDAVOptionsByListInfo, getWebDAVOptionsByMusicInfo } from './utils'
 import {
   buildWebDAVError,
   createWebDAVClient,
@@ -34,6 +34,8 @@ const getDirFileIds = async (
   },
   deep = 0
 ) => {
+  void debugLog(`getDirFileIds: [${opts.path}] deep: ${deep}`)
+
   const buildMusicIds = async (list: WebDAVItem[]) => {
     const dirs: string[] = []
     let ids: string[] = []
@@ -84,18 +86,18 @@ const getListMusicIds = async (
 }
 export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
   async createList(params) {
-    logcat.info(`ListProviderAction createList`, params)
+    void debugLog(`createList: ${JSON.stringify(params)}`)
     await testDir(await getWebDAVOptionsByListInfo(params.data.meta))
   },
   async deleteList(params) {
-    logcat.info(`ListProviderAction deleteList`, params)
+    void debugLog(`deleteList: ${JSON.stringify(params)}`)
   },
   async updateList(params) {
-    logcat.info(`ListProviderAction updateList`, params)
+    void debugLog(`updateList: ${JSON.stringify(params)}`)
     await testDir(await getWebDAVOptionsByListInfo(params.data.meta))
   },
   async removeListMusics(params) {
-    logcat.info(`ListProviderAction removeListMusics`, params)
+    void debugLog(`removeListMusics: ${JSON.stringify(params)}`)
     const options = await getWebDAVOptionsByListInfo(params.data.list.meta)
     const webDAVClient = createWebDAVClient(options)
     for (const musicInfo of params.data.musics) {
@@ -133,6 +135,7 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
     // })
   },
   async getMusicInfoByIds({ data }) {
+    void debugLog(`getMusicInfoByIds: ${JSON.stringify(data)}`)
     const options = await getWebDAVOptionsByListInfo(data.list.meta)
     await getListMusicIds(
       options,

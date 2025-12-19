@@ -4,6 +4,7 @@
 - Added a **Remove Remote Tracks** option for the _WebDAV List_. When enabled, removing a track from the list will also delete the corresponding remote file.
 - Added a **Remove Local Tracks** option for the _Local List_. When enabled, removing a track from the list will also delete the corresponding local file.
 - Added an **Enable Cache** toggle for _WebDAV Tracks_, disabled by default. You can enable it at _Settings > Extension Settings > WebDAV_.
+- Added an **Enable Debug Logs** toggle in the _WebDAV_ extension settings. You can enable it at _Settings > Extension Settings > WebDAV_.
 
 ### Improved
 
@@ -30,6 +31,7 @@
 - 在 _WebDAV 列表_ 中新增 **移除远程歌曲** 选项，启用后从列表中移除歌曲时会同步删除对应的远程文件。
 - 在 _本地列表_ 中新增 **移除本地歌曲** 选项，启用后从列表中移除歌曲时会同步删除对应的本地文件。
 - 在 _WebDAV 歌曲_ 中新增 **启用缓存** 开关（默认关闭）。可在 _设置 > 扩展设置 > WebDAV_ 中手动开启。
+- 在 _WebDAV 扩展设置_ 中新增 **启用调试日志** 开关，可在 _设置 > 扩展设置 > WebDAV_ 中开启。
 
 ### 优化
 

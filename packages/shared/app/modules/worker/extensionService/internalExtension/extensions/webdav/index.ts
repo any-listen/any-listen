@@ -16,6 +16,13 @@ export const pkg: AnyListen.Extension.Manifest = {
         default: false,
       },
       {
+        field: 'enabledDebugLog',
+        name: 't(exts.webdav.debugLog.name)',
+        description: 't(exts.webdav.debugLog.description)',
+        type: 'boolean',
+        default: false,
+      },
+      {
         field: 'servers',
         name: 't(exts.webdav.servers.name)',
         description: 't(exts.webdav.servers.description)',

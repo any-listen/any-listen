@@ -9,6 +9,7 @@ export interface WebDAVClientOptions {
   username?: string
   password?: string
   onError?: (errorMessage: string) => void
+  onDebugLog?: (logMessage: string) => void
 }
 
 export interface WebDAVDirItem {
@@ -94,23 +95,39 @@ export class WebDAVClient {
       method,
       headers,
       ...options,
+    }).catch((err: Error) => {
+      this.options.onDebugLog?.(`request error: [${method} ${url}] ${err.message} ${err.stack || ''}`)
+      throw err
     })
     const contentType = res.headers['content-type']?.toString() ?? ''
     if (!res.statusCode || res.statusCode > 299) {
       if (res.body && contentType.includes('xml')) {
         const error = this.xmlParser.parse(res.body)
+        this.options.onDebugLog?.(`request error: [${method} ${url} ${res.statusCode}] ${JSON.stringify(error) || ''}`)
         throw this.handleRequestError(url, method, res.statusCode, JSON.stringify(error) || '')
       }
+      this.options.onDebugLog?.(`request error: [${method} ${url} ${res.statusCode}] ${res.body}`)
       throw this.handleRequestError(url, method, res.statusCode, res.body)
     }
-    if (method === 'HEAD') return res.headers as T
-    if (contentType.includes('xml')) {
-      return this.xmlParser.parse(res.body) as T
+    if (method === 'HEAD') {
+      this.options.onDebugLog?.(
+        `request: [${method} ${url} ${res.statusCode} ${contentType}] [${JSON.stringify(res.headers)}] ${res.body}`
+      )
+      return res.headers as T
     }
+    if (contentType.includes('xml')) {
+      const data = this.xmlParser.parse(res.body) as T
+      this.options.onDebugLog?.(`request parsed: ${JSON.stringify(data)}`)
+      return data
+    }
+    this.options.onDebugLog?.(
+      `request: [${method} ${url} ${res.statusCode} ${contentType}] [${JSON.stringify(res.headers)}] ${res.body}`
+    )
     return (options.needRaw ? res.raw : res.body) as T
   }
 
   getRequestOptions(path: string, method: Options['method'] = 'GET'): [string, Options] {
+    this.options.onDebugLog?.(`getRequestOptions: [${path}]`)
     const url = path ? `${this.baseUrl}${path}` : this.baseUrl
     return [
       url,
@@ -124,6 +141,7 @@ export class WebDAVClient {
   }
 
   async ls(path = '/'): Promise<WebDAVItem[]> {
+    this.options.onDebugLog?.(`ls: [${path}]`)
     if (!path.startsWith('/')) path = `/${path}`
     const res = await this.request<Ls>('PROPFIND', { headers: { Depth: '1' }, path })
     // console.log(JSON.stringify(res.multistatus.response))
@@ -134,31 +152,38 @@ export class WebDAVClient {
   }
 
   async rm(path: string) {
+    this.options.onDebugLog?.(`rm: [${path}]`)
     return this.request('DELETE', { path })
   }
 
   async mkdir(path: string) {
+    this.options.onDebugLog?.(`mkdir: [${path}]`)
     return this.request('MKCOL', { path })
   }
 
   async mv(src: string, dest: string) {
+    this.options.onDebugLog?.(`mv: [${src}] -> [${dest}]`)
     return this.request('MOVE', { headers: { Destination: this.baseUrl + dest }, path: src })
   }
 
   async cp(src: string, dest: string) {
+    this.options.onDebugLog?.(`cp: [${src}] -> [${dest}]`)
     return this.request('COPY', { headers: { Destination: this.baseUrl + dest }, path: src })
   }
 
   async get(path: string) {
+    this.options.onDebugLog?.(`get: [${path}]`)
     const res = await this.request<Uint8Array>('GET', { needRaw: true, path })
     return Buffer.from(res)
   }
 
   async getHead(path: string) {
+    this.options.onDebugLog?.(`getHead: [${path}]`)
     return this.request<Response<string>['headers']>('HEAD', { needRaw: true, path })
   }
 
   async put(path: string, data: Buffer | string) {
+    this.options.onDebugLog?.(`put: [${path}]`)
     return this.request('PUT', {
       path,
       binary: data instanceof Buffer ? data : await readFile(data),
@@ -166,6 +191,7 @@ export class WebDAVClient {
   }
 
   async getStream(path: string, rangeStart?: string, rangeEnd?: string) {
+    this.options.onDebugLog?.(`getStream: [${path}] ${rangeStart || ''}-${rangeEnd || ''}`)
     const res = await this.request<Readable>('GET', {
       needBody: true,
       path,
@@ -175,6 +201,7 @@ export class WebDAVClient {
   }
 
   async getPartial(path: string, start: number | null, end?: number | null) {
+    this.options.onDebugLog?.(`getPartial: ${path}] [${start || ''}-${end || ''}`)
     const res = await this.request<Uint8Array>('GET', {
       needRaw: true,
       path,
