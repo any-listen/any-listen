@@ -156,6 +156,10 @@ export const getExtensionLastLogs = async (id?: string) => {
   return workers.extensionService.getExtensionLastLogs(id)
 }
 
+export const clearExtensionLogs = async (id?: string) => {
+  return workers.extensionService.clearExtensionLogs(id)
+}
+
 export const getAllExtensionSettings = async () => {
   return workers.extensionService.getAllExtensionSettings()
 }

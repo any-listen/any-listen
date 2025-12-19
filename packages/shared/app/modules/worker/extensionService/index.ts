@@ -27,7 +27,13 @@ import {
   resetOnlineData,
 } from './onlineExtension'
 import { resetI18n } from './onlineExtension/i18n'
-import { buildExtensionSettings, getExtensionLastLogs, updateExtensionSettings, updateResourceListThrottle } from './shared'
+import {
+  buildExtensionSettings,
+  clearExtensionLogs,
+  getExtensionLastLogs,
+  updateExtensionSettings,
+  updateResourceListThrottle,
+} from './shared'
 import { extensionState } from './state'
 import { listProviderAction, resourceAction, updateI18nMessage, updateLocale } from './vm'
 
@@ -127,6 +133,9 @@ const extension = {
   },
   async getExtensionLastLogs(extId?: string) {
     return getExtensionLastLogs(extId)
+  },
+  async clearExtensionLogs(extId?: string) {
+    await clearExtensionLogs(extId)
   },
   async getAllExtensionSettings() {
     return buildExtensionSettings()

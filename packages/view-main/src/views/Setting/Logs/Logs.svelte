@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getExtensionLastLogs } from '@/shared/ipc/extension'
+  import { getExtensionLastLogs, clearExtensionLogs } from '@/shared/ipc/extension'
   import { onMount, type ComponentExports } from 'svelte'
   import type { LogItem } from './shared'
   import { extT } from '@/modules/extension/i18n'
@@ -55,6 +55,11 @@
             name: $extT(log.id, log.name),
           },
         ]
+        if (!avtiveLog.id) {
+          avtiveLog.id = log.id
+          avtiveLog.log = log.message
+          if (isBottom) cmpContent?.toBottom()
+        }
       }
     })
 
@@ -73,6 +78,13 @@
       avtiveLog.id = log.id
       avtiveLog.log = log.log
       cmpContent?.toBottom(false)
+    }}
+    onclear={() => {
+      clearExtensionLogs().then(() => {
+        const logItem = logs.find((item) => item.id === avtiveLog.id)
+        if (logItem) logItem.log = ''
+        avtiveLog.log = ''
+      })
     }}
   />
   {#await import('./Content.svelte') then { default: Content }}

@@ -67,6 +67,9 @@ export const createClientExtension = (ipcSocket: IPCSocket) => {
     async getExtensionLastLogs(extId) {
       return ipcSocket.remoteQueueExtension.getExtensionLastLogs(extId)
     },
+    async clearExtensionLogs(extId) {
+      return ipcSocket.remoteQueueExtension.clearExtensionLogs(extId)
+    },
     async getAllExtensionSettings() {
       return ipcSocket.remoteQueueExtension.getAllExtensionSettings()
     },

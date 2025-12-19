@@ -577,3 +577,26 @@ export const getExtensionLastLogs = async (extId?: string): Promise<AnyListen.IP
     },
   ]
 }
+
+export const clearExtensionLogs = async (extId?: string) => {
+  if (extId == null) {
+    await Promise.all(
+      extensionState.extensions
+        .filter((ext) => ext.enabled)
+        .map(async (ext) => {
+          const logPath = joinPath(ext.dataDirectory, EXTENSION.logFileName)
+          if (await checkFile(logPath)) {
+            await fs.promises.writeFile(logPath, '')
+          }
+        })
+    )
+    return
+  }
+
+  const ext = extensionState.extensions.find((ext) => ext.id == extId)
+  if (!ext) throw new Error('extension not found')
+  const logPath = joinPath(ext.dataDirectory, EXTENSION.logFileName)
+  if (await checkFile(logPath)) {
+    await fs.promises.writeFile(logPath, '')
+  }
+}

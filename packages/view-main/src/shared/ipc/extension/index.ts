@@ -91,3 +91,6 @@ export const listProviderAction = async <T extends keyof LPA>(
 export const getExtensionLastLogs: AnyListen.IPC.ServerIPC['getExtensionLastLogs'] = async (extId) => {
   return ipc.getExtensionLastLogs(extId)
 }
+export const clearExtensionLogs: AnyListen.IPC.ServerIPC['clearExtensionLogs'] = async (extId) => {
+  return ipc.clearExtensionLogs(extId)
+}

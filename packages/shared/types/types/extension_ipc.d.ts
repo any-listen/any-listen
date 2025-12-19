@@ -238,6 +238,7 @@ declare namespace AnyListen {
       restartExtensionHost: () => void
       getResourceList: () => Extension.ResourceList
       getExtensionLastLogs: (id?: string) => LastLog[]
+      clearExtensionLogs: (id?: string) => void
       getAllExtensionSettings: () => Promise<Extension.ExtensionSetting[]>
       updateExtensionSettings: (extId: string, config: Record<string, any>) => Promise<void>
       resourceAction: <T extends keyof ResourceAction>(

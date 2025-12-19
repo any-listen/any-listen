@@ -135,6 +135,7 @@
   "login_devices_ua": "User agent string: {ua}",
   "login_label": "Enter login password",
   "logout": "Log out",
+  "logs.btn_clear": "clear output",
   "lyric__load_error": "Failed to obtain lyrics",
   "main.app_menu.about_app": "About Any Listen",
   "main.app_menu.copy": "Copy",

@@ -136,6 +136,7 @@
   "login_devices_ua": "用户代理字符串：{ua}",
   "login_label": "输入登录密码",
   "logout": "退出登录",
+  "logs.btn_clear": "清空输出",
   "lyric__load_error": "歌词获取失败",
   "main.app_menu.about_app": "关于 Any Listen",
   "main.app_menu.copy": "复制",

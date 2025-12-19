@@ -1,4 +1,5 @@
 import {
+  clearExtensionLogs,
   disableExtension,
   downloadAndParseExtension,
   enableExtension,
@@ -80,6 +81,9 @@ export const createExposeExtension = () => {
     },
     async getExtensionLastLogs(event, extId) {
       return getExtensionLastLogs(extId)
+    },
+    async clearExtensionLogs(event, extId) {
+      return clearExtensionLogs(extId)
     },
     async getAllExtensionSettings() {
       return getAllExtensionSettings()

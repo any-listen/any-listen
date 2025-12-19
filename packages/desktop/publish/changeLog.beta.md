@@ -2,6 +2,7 @@
 
 - Added an **Enable Cache** toggle for _WebDAV Tracks_, disabled by default. You can enable it at _Settings > Extension Settings > WebDAV_.
 - Added an **Enable Debug Logs** toggle in the _WebDAV_ extension settings. You can enable it at _Settings > Extension Settings > WebDAV_.
+- Added a **Clear Output** button on the _Logs Output_ page to clear the current output logs.
 
 ### Fixed
 
@@ -18,6 +19,7 @@
 
 - 在 _WebDAV 歌曲_ 中新增 **启用缓存** 开关（默认关闭）。可在 _设置 > 扩展设置 > WebDAV_ 中手动开启。
 - 在 _WebDAV 扩展设置_ 中新增 **启用调试日志** 开关，可在 _设置 > 扩展设置 > WebDAV_ 中开启。
+- 在 _日志输出_ 界面新增 **清空输出** 按钮，用于清空当前的输出日志。
 
 ### 修复
 
