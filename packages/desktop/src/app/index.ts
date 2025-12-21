@@ -229,16 +229,20 @@ const listenerAppEvent = () => {
     }
   })
   appEvent.on('inited', () => {
-    void app.setProxy(buildElectronProxyConfig(appState.proxy.host, appState.proxy.port))
+    try {
+      void app.setProxy(buildElectronProxyConfig(appState.proxy.host, appState.proxy.port))
+    } catch {}
     handleProxyChange()
     if (process.env.NODE_ENV === 'production') void startCheckUpdateTimeout()
   })
   appEvent.on('proxy_changed', (host, port, electronProxy) => {
     setProxyByHost(host, port)
-    void app.setProxy(electronProxy)
-    for (const wc of webContents.getAllWebContents()) {
-      void wc.session.setProxy(electronProxy)
-    }
+    try {
+      void app.setProxy(electronProxy)
+      for (const wc of webContents.getAllWebContents()) {
+        void wc.session.setProxy(electronProxy)
+      }
+    } catch {}
     console.log(electronProxy)
   })
   update.on('checking_for_update', () => {

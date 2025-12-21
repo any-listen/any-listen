@@ -45,7 +45,9 @@
     } else {
       let idx = notifys.findIndex((n) => n.id == id)
       if (idx > -1) {
-        notifys = notifys.toSpliced(idx, 1)
+        const newNotifys = [...notifys]
+        newNotifys.splice(idx, 1)
+        notifys = newNotifys
         offsets.splice(idx, 1)
         offsets.push(0)
         return
@@ -65,7 +67,9 @@
         maxheight={maxItemHeight}
         onhide={() => {
           const idx = notifys.indexOf(notify)
-          notifys = notifys.toSpliced(idx, 1)
+          const newNotifys = [...notifys]
+          newNotifys.splice(idx, 1)
+          notifys = newNotifys
           offsets.splice(idx, 1)
           offsets.push(0)
         }}

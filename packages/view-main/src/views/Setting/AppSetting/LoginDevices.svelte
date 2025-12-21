@@ -23,10 +23,12 @@
 
   const removeSession = async (id: string) => {
     await removeLoginDevice(id)
-    list = list.toSpliced(
-      list.findIndex((l) => l.clientId == id),
+    const newList = [...list]
+    newList.splice(
+      newList.findIndex((l) => l.clientId == id),
       1
     )
+    list = newList
     iniList()
   }
   onMount(() => {
