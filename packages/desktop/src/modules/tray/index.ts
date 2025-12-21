@@ -66,9 +66,11 @@ export const createTray = () => {
   // tray.setToolTip(i18n.t('app_name'))
   // createMenu()
   tray.setIgnoreDoubleClickEvents(true)
-  tray.on('click', () => {
-    actions.exec('winMain.showWindow')
-  })
+  if (isWin) {
+    tray.on('click', () => {
+      actions.exec('winMain.showWindow')
+    })
+  }
 }
 
 export const destroyTray = () => {

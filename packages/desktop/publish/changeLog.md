@@ -10,6 +10,7 @@
 ### Improved
 
 - Improved **WebDAV track parsing** performance for faster metadata extraction.
+- Improved the **tray icon** behavior: on non-Windows platforms, clicking the tray icon no longer shows the main window ([#103](https://github.com/any-listen/any-listen/issues/103)).
 
 ### Fixed
 
@@ -38,6 +39,7 @@
 ### 优化
 
 - 优化 **WebDAV 歌曲解析** 性能，加快元数据读取速度。
+- 优化 **托盘图标** 行为：在非 Windows 系统中，点击托盘图标时不再显示主窗口（[#103](https://github.com/any-listen/any-listen/issues/103)）。
 
 ### 修复
 
