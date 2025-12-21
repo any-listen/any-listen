@@ -18,6 +18,7 @@
 - Fixed an issue where scanning subdirectories in the _WebDAV List_ could fail in certain cases.
 - Fixed an issue where album cover links would not refresh after becoming invalid.
 - Fixed an issue where the settings dropdown position could be calculated incorrectly.
+- Fixed an issue that prevented reading directories on some WebDAV services ([#102](https://github.com/any-listen/any-listen/issues/102)).
 
 ### Changed
 
@@ -45,6 +46,7 @@
 - 修复 _WebDAV 列表_ 在某些情况下扫描子目录失败的问题。
 - 修复歌曲封面链接失效后未能刷新显示的问题。
 - 修复设置界面下拉框位置计算异常的问题。
+- 修复在某些 WebDAV 服务上无法读取目录的问题（[#102](https://github.com/any-listen/any-listen/issues/102)）。
 
 ### 变更
 

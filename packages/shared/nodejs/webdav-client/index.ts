@@ -31,16 +31,27 @@ export type WebDAVItem = WebDAVDirItem | WebDAVFileItem
 const buildFileItems = (list: LsResp[], path: string): WebDAVItem[] => {
   return list.map((item) => {
     const isDir = item.propstat.prop.resourcetype?.collection === ''
+    let rawName: string
+    let name: string
+    if (item.propstat.prop.displayname == null) {
+      rawName = item.href.endsWith('/') ? item.href.slice(0, -1) : item.href
+      rawName = rawName.substring(rawName.lastIndexOf('/') + 1)
+      name = decodeURIComponent(rawName)
+    } else {
+      rawName = encodeURIComponent(item.propstat.prop.displayname)
+      name = item.propstat.prop.displayname
+    }
+
     return isDir
       ? ({
-          path: `${path}/${item.propstat.prop.displayname}`,
+          path: `${path}/${rawName}`,
           isDir: true,
-          name: item.propstat.prop.displayname,
+          name,
           lastModified: new Date(item.propstat.prop.getlastmodified).getTime(),
         } satisfies WebDAVDirItem)
       : ({
-          path: `${path}/${item.propstat.prop.displayname}`,
-          name: item.propstat.prop.displayname,
+          path: `${path}/${rawName}`,
+          name,
           isDir: false,
           lastModified: new Date(item.propstat.prop.getlastmodified).getTime(),
           contentType: item.propstat.prop.getcontenttype,

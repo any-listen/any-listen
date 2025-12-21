@@ -1,9 +1,9 @@
 ### Fixed
 
-- Fixed an issue where log cleanup unexpectedly cleared all logs.
+- Fixed an issue that prevented reading directories on some WebDAV services ([#102](https://github.com/any-listen/any-listen/issues/102)).
 
 ---
 
 ### 修复
 
-- 修复在日志清理时意外清空全部日志的问题。
+- 修复在某些 WebDAV 服务上无法读取目录的问题（[#102](https://github.com/any-listen/any-listen/issues/102)）。

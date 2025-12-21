@@ -19,7 +19,7 @@ export interface Propstat {
 
 export interface Prop {
   getcontenttype: string
-  displayname: string
+  displayname?: string
   owner: string
   resourcetype?: Resourcetype
   getcontentlength: string
