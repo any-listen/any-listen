@@ -4,10 +4,13 @@ import { i18n, langList, type Message } from '@/plugins/i18n'
 import { windowSizeList } from '@any-listen/common/constants'
 import type { Component } from 'svelte'
 import About from './About.svelte'
+import DislikedList from './DislikedList.svelte'
 import ExtensionGHMirrorHosts from './ExtensionGHMirrorHosts.svelte'
 import Font from './Font.svelte'
 import LoginDevices from './LoginDevices.svelte'
+import MusicCache from './MusicCache.svelte'
 import Network from './Network.svelte'
+import ResourceCache from './ResourceCache.svelte'
 import Update from './Update.svelte'
 
 interface SettingBase<T = unknown> {
@@ -250,6 +253,47 @@ export const settings: SettingListSection[] = [
     ],
   },
   {
+    id: 'other',
+    name: 'settings.other',
+    list: [
+      import.meta.env.VITE_IS_DESKTOP && import.meta.env.VITE_IS_MAC
+        ? null
+        : {
+            field: 'common.transparentWindow',
+            name: 'settings.common.transparent_window',
+            description: 'settings.common.transparent_window_desc',
+            type: 'boolean',
+          },
+      import.meta.env.VITE_IS_DESKTOP
+        ? {
+            field: 'tray.themeId',
+            name: 'settings.tray.theme_id',
+            type: 'radio',
+            enum: [
+              { value: 0, name: 'settings.tray.theme_id_light' },
+              { value: 2, name: 'settings.tray.theme_id_dark' },
+              { value: 1, name: 'settings.tray.theme_id_origin' },
+            ] satisfies Array<{ value: AnyListen.AppSetting['tray.themeId']; name: keyof Message }>,
+          }
+        : null,
+      {
+        name: 'settings.other.resource_cache',
+        type: 'component',
+        component: ResourceCache,
+      },
+      {
+        name: 'settings.other.music_cache',
+        type: 'component',
+        component: MusicCache,
+      },
+      {
+        name: 'settings.other.dislike_list',
+        type: 'component',
+        component: DislikedList,
+      },
+    ],
+  },
+  {
     id: 'update',
     name: 'settings.update',
     list: [
@@ -293,7 +337,7 @@ export const settings: SettingListSection[] = [
 ]
 
 if (import.meta.env.VITE_IS_WEB) {
-  settings.splice(settings.length - 2, 0, {
+  settings.splice(settings.length - 3, 0, {
     id: 'security',
     name: 'settings__security',
     list: [
@@ -301,34 +345,6 @@ if (import.meta.env.VITE_IS_WEB) {
         name: 'settings__security_login_devices',
         type: 'component',
         component: LoginDevices,
-      },
-    ],
-  })
-}
-
-// t('settings.common.transparent_window_desc')
-if (import.meta.env.VITE_IS_DESKTOP) {
-  settings.splice(settings.length - 2, 0, {
-    id: 'other',
-    name: 'settings.other',
-    list: [
-      import.meta.env.VITE_IS_MAC
-        ? null
-        : {
-            field: 'common.transparentWindow',
-            name: 'settings.common.transparent_window',
-            description: 'settings.common.transparent_window_desc',
-            type: 'boolean',
-          },
-      {
-        field: 'tray.themeId',
-        name: 'settings.tray.theme_id',
-        type: 'radio',
-        enum: [
-          { value: 0, name: 'settings.tray.theme_id_light' },
-          { value: 2, name: 'settings.tray.theme_id_dark' },
-          { value: 1, name: 'settings.tray.theme_id_origin' },
-        ] satisfies Array<{ value: AnyListen.AppSetting['tray.themeId']; name: keyof Message }>,
       },
     ],
   })

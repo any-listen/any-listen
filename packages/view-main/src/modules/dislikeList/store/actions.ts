@@ -3,8 +3,10 @@ import { dislikeListState } from './state'
 
 export const hasDislike = (info: AnyListen.Music.MusicInfo) => {
   // if ('progress' in info) info = info.metadata.musicInfo
-  const name = info.name?.replaceAll(SPLIT_CHAR.DISLIKE_NAME, SPLIT_CHAR.DISLIKE_NAME_ALIAS).toLocaleLowerCase().trim() ?? ''
-  const singer = info.singer?.replaceAll(SPLIT_CHAR.DISLIKE_NAME, SPLIT_CHAR.DISLIKE_NAME_ALIAS).toLocaleLowerCase().trim() ?? ''
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const name = info.name?.replaceAll(SPLIT_CHAR.DISLIKE_NAME, SPLIT_CHAR.DISLIKE_NAME_ALIAS).toLocaleLowerCase().trim() || ''
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const singer = info.singer?.replaceAll(SPLIT_CHAR.DISLIKE_NAME, SPLIT_CHAR.DISLIKE_NAME_ALIAS).toLocaleLowerCase().trim() || ''
 
   return (
     dislikeListState.musicNames.has(name) ||
@@ -15,4 +17,4 @@ export const hasDislike = (info: AnyListen.Music.MusicInfo) => {
 
 export { initInfo } from './commit'
 
-export { overwirteInfo, addInfo, clearInfo, registerRemoteActions, getInfo } from './listRemoteActions'
+export { addInfo, clearInfo, getInfo, overwirteInfo, registerRemoteActions } from './listRemoteActions'

@@ -103,5 +103,11 @@ export const createClientApp = (ipcSocket: IPCSocket) => {
     async restartUpdate() {
       return ipcSocket.remote.restartUpdate()
     },
+    async getCacheSize() {
+      return ipcSocket.remote.getCacheSize()
+    },
+    async clearCache() {
+      return ipcSocket.remote.clearCache()
+    },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }

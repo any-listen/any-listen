@@ -3,6 +3,7 @@ import { fileSystemAction } from '@/app/modules/fileSystem'
 import { socketEvent } from '@/modules/ipc/event'
 import { broadcast } from '@/modules/ipc/websocket'
 import { getClientInfos } from '@/shared/data'
+import { clearCache, getCacheSize } from '@any-listen/app/cache'
 import type { ExposeClientFunctions, ExposeServerFunctions } from '.'
 import { checkUpdate, downloadUpdate, restartUpdate } from '../autoUpdate'
 
@@ -56,6 +57,12 @@ export const createExposeApp = () => {
     },
     async restartUpdate(event) {
       await restartUpdate()
+    },
+    async getCacheSize(event) {
+      return getCacheSize()
+    },
+    async clearCache(event) {
+      await clearCache()
     },
   } satisfies Partial<ExposeClientFunctions>
 }

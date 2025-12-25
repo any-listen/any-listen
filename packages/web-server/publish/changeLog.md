@@ -6,6 +6,9 @@
 - Added an **Enable Cache** toggle for _WebDAV Tracks_, disabled by default. You can enable it at _Settings > Extension Settings > WebDAV_.
 - Added an **Enable Debug Logs** toggle in the _WebDAV_ extension settings. You can enable it at _Settings > Extension Settings > WebDAV_.
 - Added a **Clear Output** button on the _Logs Output_ page to clear the current output logs.
+- Added **Resource Cache Management**, available under _Settings > Other Settings_, to view and clear cached resource sizes.
+- Added **Song Data Cache Management**, available under _Settings > Other Settings_, to view and clear cached song metadata.
+- Added **Disliked Songs Management**, available under _Settings > Other Settings_, to manage songs marked as disliked.
 
 ### Improved
 
@@ -35,6 +38,9 @@
 - 在 _WebDAV 歌曲_ 中新增 **启用缓存** 开关（默认关闭）。可在 _设置 > 扩展设置 > WebDAV_ 中手动开启。
 - 在 _WebDAV 扩展设置_ 中新增 **启用调试日志** 开关，可在 _设置 > 扩展设置 > WebDAV_ 中开启。
 - 在 _日志输出_ 界面新增 **清空输出** 按钮，用于清空当前的输出日志。
+- 新增 **资源缓存管理** 功能，位于 _设置 > 其他设置_，可查看并清理已缓存的资源大小。
+- 新增 **歌曲数据缓存管理** 功能，位于 _设置 > 其他设置_，可查看并清理已缓存的歌曲元数据。
+- 新增 **不喜欢的歌曲管理** 功能，位于 _设置 > 其他设置_，用于管理被标记为“不喜欢”的歌曲。
 
 ### 优化
 

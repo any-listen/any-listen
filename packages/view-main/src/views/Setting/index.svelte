@@ -36,6 +36,9 @@
           }
         }
       }
+      .settings-item-content {
+        margin-left: 16px;
+      }
       .settings-title {
         padding: 3px 7px;
         margin-top: 6px;

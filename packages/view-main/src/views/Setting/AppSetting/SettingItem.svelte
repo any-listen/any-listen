@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { SettingListItem } from './settings'
   import SettingCommonItem from './SettingCommonItem.svelte'
-  import SettingItemComponentItem from './SettingItemComponentItem.svelte'
 
   let {
     item,
@@ -12,7 +11,7 @@
 
 <div class="settings-item">
   {#if item.type === 'component'}
-    <SettingItemComponentItem {item} />
+    <item.component />
   {:else}
     <SettingCommonItem {item} />
   {/if}

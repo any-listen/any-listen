@@ -24,49 +24,45 @@
   }
 </script>
 
-<div class="settings-item">
-  <TitleContent name={$t('settings.extension.gh_mirror_hosts')} desc={$t('settings.extension.gh_mirror_hosts_desc')}>
-    <div class="settings-item-input">
-      <div class="gap-top code">
-        <Textarea
-          id="settings.extension.gh_mirror_hosts"
-          {value}
-          onchange={(val) => {
-            value = val
-          }}
-          disabled={!import.meta.env.VITE_IS_DESKTOP}
-          onblur={handleSave}
-        />
-      </div>
-      {#if import.meta.env.VITE_IS_DESKTOP}
-        <div class="gap-top">
-          <Btn
-            min
-            disabled={defVal == value.trim()}
-            onclick={() => {
-              value = formatVal(defVal)
-              void updateSetting({
-                'extension.ghMirrorHosts': defVal,
-              })
-            }}
-          >
-            {$t('settings.extension.gh_mirror_hosts_reset')}
-          </Btn>
-        </div>
-      {/if}
-      {#if import.meta.env.VITE_IS_WEB}
-        <div class="gap-top">
-          <p class="small">{$t('settings.extension.gh_mirror_hosts_web_tip')}</p>
-        </div>
-      {/if}
+<TitleContent name={$t('settings.extension.gh_mirror_hosts')} desc={$t('settings.extension.gh_mirror_hosts_desc')}>
+  <div class="settings-item-content">
+    <div class="gap-top code">
+      <Textarea
+        id="settings.extension.gh_mirror_hosts"
+        {value}
+        onchange={(val) => {
+          value = val
+        }}
+        disabled={!import.meta.env.VITE_IS_DESKTOP}
+        onblur={handleSave}
+      />
     </div>
-  </TitleContent>
-</div>
+    {#if import.meta.env.VITE_IS_DESKTOP}
+      <div class="gap-top">
+        <Btn
+          min
+          disabled={defVal == value.trim()}
+          onclick={() => {
+            value = formatVal(defVal)
+            void updateSetting({
+              'extension.ghMirrorHosts': defVal,
+            })
+          }}
+        >
+          {$t('settings.extension.gh_mirror_hosts_reset')}
+        </Btn>
+      </div>
+    {/if}
+    {#if import.meta.env.VITE_IS_WEB}
+      <div class="gap-top">
+        <p class="small">{$t('settings.extension.gh_mirror_hosts_web_tip')}</p>
+      </div>
+    {/if}
+  </div>
+</TitleContent>
 
 <style lang="less">
-  .settings-item-input {
-    margin-left: 16px;
-
+  .settings-item-content {
     :global {
       textarea {
         width: 100%;

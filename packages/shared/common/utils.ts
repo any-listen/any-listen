@@ -12,7 +12,7 @@ export const sizeFormate = (size: number): string => {
   // https://gist.github.com/thomseddon/3511330
   if (!size) return '0 B'
   const number = Math.floor(Math.log(size) / Math.log(1024))
-  return `${(size / Math.pow(1024, Math.floor(number))).toFixed(2)} ${units[number]}`
+  return `${(size / 1024 ** Math.floor(number)).toFixed(2)} ${units[number]}`
 }
 
 /**
@@ -155,7 +155,7 @@ export const similar = (a: string, b: string) => {
   for (i = 1; i <= al; i++) {
     ai = a.charAt(i - 1)
     lt = mp[0]
-    mp[0] = mp[0] + 1
+    mp[0] += 1
     for (j = 1; j <= bl; j++) {
       tmp = Math.min(mp[j] + 1, mp[j - 1] + 1, lt + (ai == b.charAt(j - 1) ? 0 : 1))
       lt = mp[j]
@@ -257,7 +257,7 @@ const prep = (t: string) =>
         }.`
     )
     // remove trailing "." and "0" if followed by non-numerical characters (1.0.0b);
-    .replace(/(?:\.0+)*(\.-\d+(?:\.\d+)?)\.*$/g, '$1')
+    .replace(/(?:\.0+)*(?:\.-\d+(?:\.\d+)?)\.*$/g, '$1')
     // return array
     .split('.')
 /**

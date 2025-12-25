@@ -3,7 +3,7 @@ import { extname, getFileStats, joinPath, removeFile } from '@any-listen/nodejs'
 import { request, type Response } from '@any-listen/nodejs/request'
 import fs, { type ReadStream } from 'node:fs'
 import { PassThrough } from 'node:stream'
-import { checkAllowedExt, parseRange } from './shared'
+import { checkAllowedExt, parseRange, TEMP_FILE_EXT } from './shared'
 import { proxyServerState } from './state'
 
 export interface Result {
@@ -91,7 +91,7 @@ export const proxyRequest = async (name: string, rangeHeader?: string): Promise<
   if (proxyInfo.enabledCache && range && !range.start && !range.end && !proxyServerState.activeWriteStreams.has(name)) {
     // If the range is not specified, we can cache the entire file
     const filePath = joinPath(proxyServerState.cacheDir, name)
-    const tempPath = `${filePath}.tmp`
+    const tempPath = `${filePath}${TEMP_FILE_EXT}`
     await removeFile(filePath).catch(() => {})
     // use PassThrough to pipe the response body to both the caller and the file
     tee = new PassThrough()

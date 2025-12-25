@@ -94,5 +94,11 @@ export const createClientApp = (main: MainCall) => {
     async getSystemFonts() {
       return main.getSystemFonts()
     },
+    async getCacheSize() {
+      return main.getCacheSize()
+    },
+    async clearCache() {
+      return main.clearCache()
+    },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }

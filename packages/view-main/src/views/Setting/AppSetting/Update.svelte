@@ -18,12 +18,10 @@
   const handleOpenDevTools = () => {
     if (window.performance.now() - lastClickTime > 1000) {
       if (clickNum > 0) clickNum = 0
-    } else {
-      if (clickNum > 4) {
-        void openDevTools()
-        clickNum = 0
-        return
-      }
+    } else if (clickNum > 4) {
+      void openDevTools()
+      clickNum = 0
+      return
     }
     clickNum++
     lastClickTime = window.performance.now()
@@ -44,7 +42,7 @@
   )
 </script>
 
-<div class="update-content">
+<div class="settings-item-content update-content">
   <div class="gap-top">
     {#if import.meta.env.VITE_IS_DESKTOP}
       <div class="p small" role="presentation" onclick={handleOpenDevTools}>
@@ -94,6 +92,5 @@
 <style lang="less">
   .update-content {
     margin-top: 5px;
-    margin-left: 16px;
   }
 </style>

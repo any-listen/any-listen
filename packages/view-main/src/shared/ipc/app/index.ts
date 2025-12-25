@@ -74,3 +74,10 @@ export const restartUpdate: AnyListen.IPC.ServerIPC['restartUpdate'] = async () 
 export const getSystemFonts: AnyListen.IPC.ServerIPC['getSystemFonts'] = async () => {
   return ipc.getSystemFonts()
 }
+
+export const getCacheSize: AnyListen.IPC.ServerIPC['getCacheSize'] = async () => {
+  return ipc.getCacheSize()
+}
+export const clearCache: AnyListen.IPC.ServerIPC['clearCache'] = async () => {
+  return ipc.clearCache()
+}

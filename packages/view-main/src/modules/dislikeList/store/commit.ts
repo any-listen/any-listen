@@ -1,6 +1,6 @@
 import { SPLIT_CHAR } from '@any-listen/common/constants'
-import { dislikeListState } from './state'
 import { dislikeListEvent } from './event'
+import { dislikeListState } from './state'
 
 export const initInfo = ({ musicNames, rules, names, singerNames }: AnyListen.Dislike.DislikeInfo) => {
   dislikeListState.names = new Set(names)
@@ -41,8 +41,7 @@ const initNameSet = () => {
 }
 
 export const addDislikeInfo = (infos: AnyListen.Dislike.DislikeMusicInfo[]) => {
-  dislikeListState.rules +=
-    '\n' + infos.map((info) => `${info.name ?? ''}${SPLIT_CHAR.DISLIKE_NAME}${info.singer ?? ''}`).join('\n')
+  dislikeListState.rules += `\n${infos.map((info) => `${info.name ?? ''}${SPLIT_CHAR.DISLIKE_NAME}${info.singer ?? ''}`).join('\n')}`
   initNameSet()
   dislikeListEvent.updated()
 }

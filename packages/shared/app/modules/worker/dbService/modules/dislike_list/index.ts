@@ -52,7 +52,7 @@ const initDislikeList = (): AnyListen.Dislike.DislikeInfo => {
     names: Array.from(dislikeInfo.names),
     singerNames: Array.from(dislikeInfo.singerNames),
     musicNames: Array.from(dislikeInfo.musicNames),
-    rules: '',
+    rules: dislikeInfo.rules,
   }
 }
 

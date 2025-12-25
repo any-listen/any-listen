@@ -63,5 +63,9 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
   /** 重启更新 */
   restartUpdate: () => void
   /** 获取系统字体列表 */
-  getSystemFonts: () => Promise<string[]>
+  getSystemFonts: () => string[]
+  /** 获取缓存大小 */
+  getCacheSize: () => number
+  /** 清理缓存 */
+  clearCache: () => void
 }>

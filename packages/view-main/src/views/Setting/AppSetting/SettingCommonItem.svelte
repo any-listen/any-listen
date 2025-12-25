@@ -33,58 +33,56 @@
   let setting = useSettingValue(item.field)
 </script>
 
-<div class="settings-item">
-  {#if item.type === 'input'}
-    <InputItem
-      id={`extenstion_${item.field}_${item.type}`}
-      name={$t(item.name)}
-      desc={item.description && $t(item.description)}
-      textarea={item.textarea}
-      value={setting.val as string}
-      onchange={(val) => {
-        void updateSetting({ [item.field]: val.trim() })
-        item.onChnaged?.(val.trim())
-      }}
-    />
-  {:else if item.type === 'boolean'}
-    <CheckboxItem
-      id={`extenstion_${item.field}_${item.type}`}
-      name={$t(item.name)}
-      desc={item.description && $t(item.description)}
-      checked={setting.val as boolean}
-      onchange={(val) => {
-        void updateSetting({ [item.field]: val })
-        item.onChnaged?.(val)
-      }}
-    />
-  {:else if item.type === 'radio'}
-    <RadioGroup name={$t(item.name)} desc={item.description && $t(item.description)}>
-      {#each list as radioItem (radioItem.value)}
-        <RadioItem
-          id={`extenstion_${item.field}_${item.type}_${radioItem.value}`}
-          name={$t(radioItem.name)}
-          value={radioItem.value}
-          checked={(setting.val as string) == radioItem.value}
-          onselect={(val) => {
-            void updateSetting({ [item.field]: val })
-            item.onChnaged?.(val)
-          }}
-        />
-      {/each}
-    </RadioGroup>
-  {:else if item.type === 'selection'}
-    <SelectionItem
-      name={$t(item.name)}
-      desc={item.description && $t(item.description)}
-      value={setting.val as string | number}
-      list={item.enum.map((n) => ({ label: n.name, value: n.value }))}
-      onchange={(val) => {
-        void updateSetting({ [item.field]: val })
-        item.onChnaged?.(val)
-      }}
-    />
-  {/if}
-</div>
+{#if item.type === 'input'}
+  <InputItem
+    id={`extenstion_${item.field}_${item.type}`}
+    name={$t(item.name)}
+    desc={item.description && $t(item.description)}
+    textarea={item.textarea}
+    value={setting.val as string}
+    onchange={(val) => {
+      void updateSetting({ [item.field]: val.trim() })
+      item.onChnaged?.(val.trim())
+    }}
+  />
+{:else if item.type === 'boolean'}
+  <CheckboxItem
+    id={`extenstion_${item.field}_${item.type}`}
+    name={$t(item.name)}
+    desc={item.description && $t(item.description)}
+    checked={setting.val as boolean}
+    onchange={(val) => {
+      void updateSetting({ [item.field]: val })
+      item.onChnaged?.(val)
+    }}
+  />
+{:else if item.type === 'radio'}
+  <RadioGroup name={$t(item.name)} desc={item.description && $t(item.description)}>
+    {#each list as radioItem (radioItem.value)}
+      <RadioItem
+        id={`extenstion_${item.field}_${item.type}_${radioItem.value}`}
+        name={$t(radioItem.name)}
+        value={radioItem.value}
+        checked={(setting.val as string) == radioItem.value}
+        onselect={(val) => {
+          void updateSetting({ [item.field]: val })
+          item.onChnaged?.(val)
+        }}
+      />
+    {/each}
+  </RadioGroup>
+{:else if item.type === 'selection'}
+  <SelectionItem
+    name={$t(item.name)}
+    desc={item.description && $t(item.description)}
+    value={setting.val as string | number}
+    list={item.enum.map((n) => ({ label: n.name, value: n.value }))}
+    onchange={(val) => {
+      void updateSetting({ [item.field]: val })
+      item.onChnaged?.(val)
+    }}
+  />
+{/if}
 
 <style lang="less">
   // .settings-item {
