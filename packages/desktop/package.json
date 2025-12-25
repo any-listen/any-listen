@@ -70,7 +70,7 @@
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
     "electron": "^37.10.3",
-    "electron-builder": "26.3.6",
+    "electron-builder": "26.4.0",
     "electron-debug": "^4.1.0",
     "electron-to-chromium": "^1.5.267",
     "node-abi": "^4.24.0",
