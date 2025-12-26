@@ -1,3 +1,5 @@
+<!--- @lang: en-us -->
+
 ### Added
 
 - Added a **Scan Subdirectories** option for the _WebDAV List_, supporting up to five directory levels.
@@ -14,6 +16,7 @@
 
 - Improved **WebDAV track parsing** performance for faster metadata extraction.
 - Improved the **tray icon** behavior: on non-Windows platforms, clicking the tray icon no longer shows the main window ([#103](https://github.com/any-listen/any-listen/issues/103)).
+- Improved the update popup's changelog display: it now shows the changelog in the user's selected language; if a translation for that language is not available, it falls back to English.
 
 ### Fixed
 
@@ -29,6 +32,7 @@
 - By default, _WebDAV Tracks_ are no longer cached. Caching can be enabled manually in the WebDAV extension settings.
 
 ---
+<!--- @lang: zh-cn -->
 
 ### 新增
 
@@ -46,6 +50,7 @@
 
 - 优化 **WebDAV 歌曲解析** 性能，加快元数据读取速度。
 - 优化 **托盘图标** 行为：在非 Windows 系统中，点击托盘图标时不再显示主窗口（[#103](https://github.com/any-listen/any-listen/issues/103)）。
+- 优化 **更新弹窗** 中的更新日志显示：现在会根据用户所选语言显示对应语言的更新日志；若未提供该语言的翻译，则回退为英语。
 
 ### 修复
 

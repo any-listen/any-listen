@@ -45,7 +45,7 @@ const getEnvLocale = () => {
         break
       }
     }
-    langId ??= 'en-us'
+    langId ??= DEFAULT_LANG
   }
   return langId
 }

@@ -53,6 +53,7 @@ export const baseRule = {
   'max-lines': 'off',
   'no-param-reassign': 'off',
   'no-plusplus': 'off',
+  'prefer-named-capture-group': 'off',
   radix: 'off',
 }
 export const typescriptRule = {

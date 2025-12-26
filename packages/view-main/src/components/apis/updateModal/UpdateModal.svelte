@@ -14,10 +14,12 @@
   } from '@/modules/version/store/actions'
   import { onMount } from 'svelte'
   import { showNotify } from '../notify'
-  import { i18n, t } from '@/plugins/i18n'
+  import { i18n, t, _locale } from '@/plugins/i18n'
   import { useSettingValue } from '@/modules/setting/reactive.svelte'
   import { verticalScrollbar } from '@/shared/compositions/verticalScrollbar.svelte'
   import { parseMarkdown, parseMarkdowns } from '@/shared/tools'
+  import { parseLangDesc, type VersionInfo } from './shared'
+  import { DEFAULT_LANG } from '@any-listen/common/constants'
   /* eslint svelte/no-at-html-tags: "off" */
 
   let {
@@ -42,24 +44,39 @@
   let disabledIgnoreFailBtn = $state(false)
   let visible = $state(false)
 
-  let [latest, history] = $derived.by<[AnyListen.VersionInfo | null, AnyListen.VersionInfo[]]>(() => {
+  let [latest, history] = $derived.by<[VersionInfo | null, VersionInfo[]]>(() => {
     if (!versionInfo.val.newVersion) return [null, []]
-    let history = [...(versionInfo.val.newVersion?.history ?? [])]
-    let latest: AnyListen.VersionInfo = {
+    let history: VersionInfo[] = [...(versionInfo.val.newVersion?.history ?? [])].map((v) => ({
+      version: v.version,
+      desc: v.desc,
+      time: v.time,
+      langDescs: new Map(),
+    }))
+    let latest: VersionInfo = {
       version: versionInfo.val.newVersion.version,
       desc: versionInfo.val.newVersion.desc,
       time: versionInfo.val.newVersion.time,
+      langDescs: new Map(),
     }
     if (allowPreRelease.val && versionInfo.val.newVersion.beta?.length) {
       history.unshift({
         version: versionInfo.val.newVersion.version,
         desc: versionInfo.val.newVersion.desc,
         time: versionInfo.val.newVersion.time,
+        langDescs: new Map(),
       })
-      arrUnshift(history, versionInfo.val.newVersion.beta)
+      arrUnshift<VersionInfo>(
+        history,
+        versionInfo.val.newVersion.beta.map((v) => ({
+          version: v.version,
+          desc: v.desc,
+          time: v.time,
+          langDescs: new Map(),
+        }))
+      )
       latest = history.shift()!
     }
-    let arr: AnyListen.VersionInfo[] = []
+    let arr: VersionInfo[] = []
     let currentVer = versionInfo.val.version
     for (const ver of history) {
       if (compareVersions(currentVer, ver.version) < 0) {
@@ -69,6 +86,8 @@
       } else break
     }
     latest.time &&= dateFormat(new Date(latest.time))
+    latest.langDescs = parseLangDesc(latest.desc)
+    for (const ver of history) ver.langDescs = parseLangDesc(ver.desc)
     return [latest, arr]
   })
   let progress = $derived(
@@ -78,15 +97,15 @@
         : i18n.t('update_modal.update_handing')
       : ''
   )
-  let parsedDesc = $state.raw(null as string | null)
-  let parsedHistoryDesc = $state.raw(null as Array<string | null> | null)
+  let parsedDesc = $state.raw<string | null>(null)
+  let parsedHistoryDesc = $state.raw<Array<string | null> | null>(null)
 
   $effect(() => {
     if (!latest) return
     let unmunted = false
-    void parseMarkdown(latest.desc).then((desc) => {
+    void parseMarkdown(latest.langDescs.get($_locale) ?? latest.langDescs.get(DEFAULT_LANG) ?? latest.desc).then((parsed) => {
       if (unmunted) return
-      parsedDesc = desc
+      parsedDesc = parsed
     })
     return () => {
       unmunted = true
@@ -95,10 +114,12 @@
   $effect(() => {
     if (!history.length) return
     let unmunted = false
-    void parseMarkdowns(history.map((v) => v.desc)).then((descs) => {
-      if (unmunted) return
-      parsedHistoryDesc = descs
-    })
+    void parseMarkdowns(history.map((ver) => ver.langDescs.get($_locale) ?? ver.langDescs.get(DEFAULT_LANG) ?? ver.desc)).then(
+      (descs) => {
+        if (unmunted) return
+        parsedHistoryDesc = descs
+      }
+    )
     return () => {
       unmunted = true
     }
@@ -156,7 +177,7 @@
         {#if parsedDesc}
           <div class="log" role="presentation" onclick={handleLogClick}>{@html parsedDesc}</div>
         {:else}
-          <pre class="log">{latest?.desc}</pre>
+          <pre class="log">{latest?.langDescs.get($_locale) ?? latest?.langDescs.get(DEFAULT_LANG) ?? latest?.desc}</pre>
         {/if}
       </div>
       {#if history.length}
@@ -169,7 +190,7 @@
               {#if log}
                 <div class="log" role="presentation" onclick={handleLogClick}>{@html log}</div>
               {:else}
-                <pre class="log">{latest?.desc}</pre>
+                <pre class="log">{ver?.langDescs.get($_locale) ?? ver?.langDescs.get(DEFAULT_LANG) ?? ver?.desc}</pre>
               {/if}
             </div>
           {/each}

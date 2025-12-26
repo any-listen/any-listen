@@ -10,10 +10,13 @@ agent: edit
 - 确保中英文日志的描述方式和格式均类似于下方例子。若原始日志未遵循此格式，请调整为类似格式，例如对功能名称加粗、功能路径使用斜体等
 - 使用分隔线（---）分隔中英文内容
 - 英文日志始终置于文档开头
+- 每种语言头部均使用对应的语言标记注释（`<!--- @lang: en-us -->` 和 `<!--- @lang: zh-cn -->`）
 
 参考例子1：
 
 ```markdown
+<!--- @lang: en-us -->
+
 ### Added
 
 - Added a **Cover Style** option for the Now Playing page, located under _Settings > Now Playing Page Settings > Cover Style_, with **CD** and **Square** layouts available.
@@ -39,6 +42,8 @@ agent: edit
 - Swapped the positions of **Translated Lyrics** and **Romanized Lyrics**. You can revert to the previous order by enabling the **Swap Translated and Romanized Lyrics Positions** option.
 
 ---
+
+<!--- @lang: zh-cn -->
 
 ### 新增
 

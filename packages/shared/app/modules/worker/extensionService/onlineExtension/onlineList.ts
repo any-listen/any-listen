@@ -1,11 +1,10 @@
+import { DEFAULT_LANG } from '@any-listen/common/constants'
 import type { Locale } from '@any-listen/i18n'
 import { mirrorRequest } from '@any-listen/nodejs/mirrorReuqest'
 import { extensionState } from '../state'
 import { setMessages, t } from './i18n'
 
 const API_URL = 'https://raw.githubusercontent.com/any-listen/any-listen-extension-store/main/datas'
-
-const FALLBACK_LOCALE: Locale = 'en-us'
 
 let datas = {
   tags: null as AnyListen.IPCExtension.OnlineTagResult | null,
@@ -36,7 +35,7 @@ const initI18nMessages = async () => {
   if (!datas.i18nPromise || datas.i18nLocale != extensionState.locale) {
     const currentLocale = extensionState.locale
     datas.i18nLocale = currentLocale
-    datas.i18nPromise = Promise.all([getRemoteI18nMessages(FALLBACK_LOCALE), getRemoteI18nMessages(extensionState.locale)])
+    datas.i18nPromise = Promise.all([getRemoteI18nMessages(DEFAULT_LANG), getRemoteI18nMessages(extensionState.locale)])
       .then(([fallback, target]) => {
         if (datas.i18nLocale != currentLocale) throw new Error('Locale changed during fetching i18n messages')
         setMessages(currentLocale, { ...fallback, ...target })

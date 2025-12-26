@@ -1,4 +1,5 @@
 export const parseMarkdown = async (content: string) => {
+  if (!content) return ''
   const { marked } = await import('marked')
   try {
     // eslint-disable-next-line no-misleading-character-class

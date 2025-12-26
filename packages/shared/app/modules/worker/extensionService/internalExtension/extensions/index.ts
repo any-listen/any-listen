@@ -1,3 +1,4 @@
+import { DEFAULT_LANG } from '@any-listen/common/constants'
 import { messages } from '@any-listen/i18n'
 import { joinPath } from '@any-listen/nodejs'
 import { formatManifest } from '../../shared'
@@ -17,7 +18,7 @@ const filterExtI18nMessages = (extId: string, messages: Record<string, string>) 
 }
 
 export const buildExtensionI18nMessage = (extId: string) => {
-  const fallbackMessages = messages['en-us']
+  const fallbackMessages = messages[DEFAULT_LANG]
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   let targetPath = messages[extensionState.locale as keyof typeof messages] ?? {}
   return filterExtI18nMessages(extId, { ...fallbackMessages, ...targetPath })

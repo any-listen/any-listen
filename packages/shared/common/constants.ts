@@ -14,7 +14,7 @@ export const SPLIT_CHAR = {
   LYRIC_TYPE: '|',
 } as const
 
-export const DEFAULT_LANG = 'zh-cn'
+export const DEFAULT_LANG = 'en-us'
 export const DEVICE_ID_NAME = 'deviceid'
 export const STORE_NAMES = {
   APP_SETTINGS: 'config',
