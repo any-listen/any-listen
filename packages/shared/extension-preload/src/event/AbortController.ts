@@ -62,11 +62,11 @@ import _Event from './Event'
 //   })()
 // }
 
-const SECRET = {}
+const SECRET = Symbol('AbortControllerSecret')
 export class AbortSignal extends _Event {
   _aborted: boolean
   _onabort?: () => void
-  constructor(secret: unknown) {
+  constructor(secret: symbol) {
     if (secret !== SECRET) throw new TypeError('Illegal constructor.')
     super()
     this._aborted = false

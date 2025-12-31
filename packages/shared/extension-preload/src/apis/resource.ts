@@ -89,6 +89,7 @@ export const verifyOnlineMusicArray = (
       } else musicInfo.meta.year = Math.trunc(musicInfo.meta.year)
       if (!musicInfo.meta.qualitys) throw new Error(`${name} result.meta.qualitys is null`)
       musicInfo.meta.qualitys = qualityFilter(musicInfo.meta.qualitys)
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       musicInfo.meta.filePath &&= substrLength(String(musicInfo.meta.filePath), 2048)
       musicInfo.meta.bitrateLabel &&= substrLength(String(musicInfo.meta.bitrateLabel), 50)
       musicInfo.meta.sizeStr &&= substrLength(String(musicInfo.meta.sizeStr), 50)

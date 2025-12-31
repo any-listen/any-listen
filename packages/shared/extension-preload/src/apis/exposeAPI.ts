@@ -7,9 +7,9 @@ import { crypto } from './crypto'
 import { env } from './env'
 import { iconv } from './iconv'
 import { logcat } from './logcat'
-import { musicList } from './musicList'
+// import { musicList } from './musicList'
 import { musicUtils } from './musicUtils'
-import { player } from './player'
+// import { player } from './player'
 import { request } from './request'
 import { registerResourceAction } from './resource'
 import { storage } from './storage'
@@ -41,15 +41,13 @@ export const getAPI = () => {
         extensionAPI.request = request
         break
       case 'player':
-        extensionAPI.musicList = musicList
+        // TODO
+        // extensionAPI.musicList = musicList
         break
       case 'music_list':
-        extensionAPI.player = player
+        // TODO
+        // extensionAPI.player = player
         break
-
-      // default:
-      //   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-case-declarations
-      //   const neverValue: never = grant
     }
   }
   return extensionAPI as AnyListen_API.API
