@@ -1,5 +1,5 @@
 {
-  "version": "0.6.1-beta.0",
+  "version": "0.6.1",
   "name": "web-server",
   "main": "build-config/vite.config.ts",
   "scripts": {
