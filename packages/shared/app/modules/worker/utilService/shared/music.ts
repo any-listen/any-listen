@@ -1,7 +1,12 @@
 import { isLikelyGarbage } from '@any-listen/common/utils'
-import { checkFile, dirname, extname, getFileStats, joinPath, readFile, removeFile } from '@any-listen/nodejs'
+import { checkFile, dirname, extname, getFileStats, joinPath, removeFile as nodeRemoveFile, readFile } from '@any-listen/nodejs'
 import { decodeString } from '@any-listen/nodejs/char'
 import { getFileLyric, getFilePic, parseFileMetadata } from '@any-listen/nodejs/music'
+
+let removeFile = nodeRemoveFile
+export const setRemoveFile = (func: (filePath: string) => Promise<void>) => {
+  removeFile = func
+}
 
 export const checkDownloadFileAvailable = async (musicInfo: AnyListen.Download.ListItem, savePath: string): Promise<boolean> => {
   return (

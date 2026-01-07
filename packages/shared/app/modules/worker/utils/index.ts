@@ -37,6 +37,7 @@ export const createDBServiceWorker = (onInited: () => void): DBSeriveTypes => {
 
 export interface UtilServiceWorkerExposedFuncs {
   logger: AnyListen.Logger
+  removeFile?: (filePath: string) => Promise<void>
 }
 export const createUtilServiceWorker = (onInited: () => void, exposedFuncs: UtilServiceWorkerExposedFuncs): UtilSeriveTypes => {
   const worker: Worker = new Worker(path.join(__dirname, './util-service.worker'))

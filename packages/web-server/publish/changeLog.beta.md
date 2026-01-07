@@ -1,24 +1,21 @@
 <!--- @lang: en-us -->
 
-### Added
+### Fixed
 
-- Added **Resource Cache Management**, available under _Settings > Other Settings_, to view cached resource sizes and clear cached resources.
-- Added **Song Data Cache Management**, available under _Settings > Other Settings_, to view cached song metadata and clear cached song data.
-- Added **Disliked Songs Management**, available under _Settings > Other Settings_, to manage songs marked as disliked.
+- Fixed an issue where files in local or remote lists could be unexpectedly deleted when the **"Sync deletions"** option was enabled during list synchronization ([#107](https://github.com/any-listen/any-listen/issues/107)).
 
 ### Improved
 
-- Improved the update popup's changelog display: it now shows the changelog in the user's selected language; if a translation for that language is not available, it falls back to English.
+- Added a confirmation dialog before bulk deleting local or remote (WebDAV) song files ([#107](https://github.com/any-listen/any-listen/issues/107)).
 
 ---
+
 <!--- @lang: zh-cn -->
 
-### 新增
+### 修复
 
-- 新增 **资源缓存管理** 功能，位于 _设置 > 其他设置_，可查看并清理已缓存的资源大小。
-- 新增 **歌曲数据缓存管理** 功能，位于 _设置 > 其他设置_，可查看并清理已缓存的歌曲元数据。
-- 新增 **不喜欢的歌曲管理** 功能，位于 _设置 > 其他设置_，用于管理被标记为“不喜欢”的歌曲。
+- 修复在同步列表数据时，启用 **“同步删除”** 选项后，本地列表或远程列表的文件可能被意外删除的问题（[#107](https://github.com/any-listen/any-listen/issues/107)）。
 
 ### 优化
 
-- 优化 **更新弹窗** 中的更新日志显示：现在会根据用户所选语言显示对应语言的更新日志；若未提供该语言的翻译，则回退为英语。
+- 在批量删除本地或远程（WebDAV）歌曲文件之前新增二次确认弹窗（[#107](https://github.com/any-listen/any-listen/issues/107)）。

@@ -1,7 +1,7 @@
 import { createCache } from '@any-listen/common/cache'
 import { sizeFormate } from '@any-listen/common/utils'
 import { isMusicFile } from '@any-listen/nodejs/music'
-import { logcat } from './shared'
+import { hostContext, logcat } from './shared'
 import { debugLog, getWebDAVOptionsByListInfo, getWebDAVOptionsByMusicInfo } from './utils'
 import {
   buildWebDAVError,
@@ -98,6 +98,21 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
   },
   async removeListMusics(params) {
     void debugLog(`removeListMusics: ${JSON.stringify(params)}`)
+    if (params.data.musics.length > 1) {
+      const confirm = await hostContext.showMessage(
+        hostContext.i18n.t('exts.webdav.list_provider.local_list_remove_music_files_confirm', {
+          name: params.data.list.name,
+          count: params.data.musics.length,
+        }),
+        {
+          type: 'warning',
+          modal: true,
+          title: hostContext.i18n.t('exts.webdav.list_provider.local_list_remove_music_files_confirm_title'),
+          buttons: [{ text: hostContext.i18n.t('cancel_button_text_2') }, { text: hostContext.i18n.t('confirm_button_text') }],
+        }
+      )
+      if (confirm != 1) throw new Error(hostContext.i18n.t('exts.webdav.list_provider.local_list_remove_music_files_cancelled'))
+    }
     const options = await getWebDAVOptionsByListInfo(params.data.list.meta)
     const webDAVClient = createWebDAVClient(options)
     for (const musicInfo of params.data.musics) {

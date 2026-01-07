@@ -69,6 +69,11 @@ declare global {
       'common.showChangeLog': boolean
 
       /**
+       * 是否启用回收站功能
+       */
+      'common.enableTrash': boolean
+
+      /**
        * 启动时自动播放歌曲
        */
       'player.startupAutoPlay': boolean

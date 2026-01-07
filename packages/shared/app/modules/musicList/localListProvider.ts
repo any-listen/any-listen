@@ -22,6 +22,19 @@ export const verifyLocalListMusicRemove = async (
   musics: AnyListen.Music.MusicInfoLocal[]
 ) => {
   if (!listInfo.meta.enabledRemove || listInfo.meta.deviceId !== getDeviceId()) return
+  if (musics.length > 1) {
+    const confirm = await showMessageBox({
+      type: 'warning',
+      modal: true,
+      title: t('extension.list_provider.local_list_remove_music_files_confirm_title'),
+      detail: t('extension.list_provider.local_list_remove_music_files_confirm', {
+        name: listInfo.name,
+        count: musics.length,
+      }),
+      buttons: [{ text: t('cancel_button_text_2') }, { text: t('confirm_button_text') }],
+    })
+    if (confirm != 1) throw new Error(t('extension.list_provider.local_list_remove_music_files_cancelled'))
+  }
   await workers.utilService.removeMusicFiles(musics.map((m) => m.meta.filePath))
 }
 

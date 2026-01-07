@@ -13,6 +13,7 @@ const defaultSetting: AnyListen.AppSetting = {
   'common.tryAutoUpdate': true,
   'common.allowPreRelease': false,
   'common.showChangeLog': true,
+  'common.enableTrash': true,
 
   'player.startupAutoPlay': false,
   'player.togglePlayMethod': 'listLoop',

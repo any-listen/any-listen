@@ -11,7 +11,7 @@ import { checkAndCreateDir, isMac } from '@any-listen/nodejs/index'
 
 import { i18n } from '@/i18n'
 import { rendererIPC } from '@/renderer/winMain/rendererEvent'
-import { buildElectronProxyConfig } from '@/shared/electron'
+import { buildElectronProxyConfig, trashItem } from '@/shared/electron'
 import { log, logger } from '@/shared/log'
 import { setProxyByHost } from '@/shared/request'
 import { startCheckUpdateTimeout, update } from '@/shared/update'
@@ -303,10 +303,10 @@ export const initAppEnv = async () => {
   initCommon({
     getSettings: () => appState.appSetting,
     showMessageBox: async (key, options) => {
-      console.log(key, options)
       return rendererIPC.showMessageBox(key, '', options)
     },
     translate: (key, val) => i18n.t(key, val),
+    trashItem,
     logger,
   })
 }

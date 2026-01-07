@@ -22,7 +22,7 @@
   let extensionName = $derived.by(() => {
     if (!extId) return ''
     const ext = $extensionList.find((ext) => ext.id === extId)
-    return ext ? extI18n.t(extId, ext.name) : ''
+    return ext ? extI18n.t(extId, ext.name) : extId.replace(/^internal\./, '')
   })
 
   const closeModal = () => {

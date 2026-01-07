@@ -264,6 +264,15 @@ export const settings: SettingListSection[] = [
             description: 'settings.common.transparent_window_desc',
             type: 'boolean',
           },
+      // t('settings.common.enable_trash_desc')
+      import.meta.env.VITE_IS_DESKTOP
+        ? {
+            field: 'common.enableTrash',
+            name: 'settings.common.enable_trash',
+            description: 'settings.common.enable_trash_desc',
+            type: 'boolean',
+          }
+        : null,
       import.meta.env.VITE_IS_DESKTOP
         ? {
             field: 'tray.themeId',

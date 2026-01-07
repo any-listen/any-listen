@@ -243,8 +243,8 @@ export class Event extends _Event {
    * @param ids 要删除歌曲的id
    * @param isRemote 是否属于远程操作
    */
-  async list_music_remove(listId: string, ids: string[], isRemote = false) {
-    if (!isRemote) {
+  async list_music_remove(listId: string, ids: string[], isSync = false, isRemote = false) {
+    if (!isSync) {
       switch (listId) {
         case LIST_IDS.DEFAULT:
         case LIST_IDS.LOVE:
@@ -378,7 +378,7 @@ export class Event extends _Event {
         await this.list_music_move(action.data.fromId, action.data.toId, action.data.musicInfos, action.data.addMusicLocationType)
         break
       case 'list_music_remove':
-        await this.list_music_remove(action.data.listId, action.data.ids)
+        await this.list_music_remove(action.data.listId, action.data.ids, action.data.sync)
         break
       case 'list_music_update':
         await this.list_music_update(action.data)

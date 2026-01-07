@@ -1,4 +1,5 @@
 import { logger } from '@/shared/log'
+import { deleteFile } from '@any-listen/app/common'
 import { startUtilServiceWorker as _startUtilServiceWorker } from '@any-listen/app/modules/worker'
 
 // const registerExtensionServiceEvent = () => {
@@ -18,6 +19,9 @@ export const startUtilServiceWorker = async () => {
   return new Promise<void>((resolve, reject) => {
     void _startUtilServiceWorker(resolve, {
       logger,
+      async removeFile(filePath) {
+        await deleteFile(filePath)
+      },
     }).catch(reject)
   })
 }
