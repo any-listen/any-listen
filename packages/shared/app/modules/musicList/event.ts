@@ -241,10 +241,11 @@ export class Event extends _Event {
    * @param listId
    * @param listId 列表Id
    * @param ids 要删除歌曲的id
+   * @param isSync 是否为同步操作
    * @param isRemote 是否属于远程操作
    */
   async list_music_remove(listId: string, ids: string[], isSync = false, isRemote = false) {
-    if (!isSync) {
+    if (!isSync && !isRemote) {
       switch (listId) {
         case LIST_IDS.DEFAULT:
         case LIST_IDS.LOVE:
