@@ -13,7 +13,7 @@
     "jschardet": "^3.1.4",
     "jsonschema": "^1.5.0",
     "message2call": "^2.0.3",
-    "ws": "^8.18.3"
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
