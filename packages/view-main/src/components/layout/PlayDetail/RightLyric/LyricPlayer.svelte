@@ -106,6 +106,8 @@
     overflow: hidden;
     font-size: var(--play-detail-lrc-font-size, 16px);
     cursor: grab;
+    /* stylelint-disable-next-line property-no-vendor-prefix */
+    -webkit-mask-image: linear-gradient(transparent 0%, #fff 20%, #fff 80%, transparent 100%);
     mask-image: linear-gradient(transparent 0%, #fff 20%, #fff 80%, transparent 100%);
     &.draging {
       cursor: grabbing;
@@ -245,6 +247,8 @@
       margin-right: 8%;
       border-top: 2px dotted var(--color-primary-dark-100);
       opacity: 0.15;
+      /* stylelint-disable-next-line property-no-vendor-prefix */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 15%, #fff 100%);
       mask-image: linear-gradient(90deg, transparent 0%, transparent 15%, #fff 100%);
     }
     .label {
