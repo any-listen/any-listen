@@ -78,18 +78,18 @@
 
 <style lang="less">
   .container {
+    position: relative;
     display: flex;
     flex-flow: row nowrap;
+    gap: 5px;
     align-items: center;
     height: 100%;
     padding: 5px;
-    gap: 5px;
-    position: relative;
-    transition: 0.3s ease;
-    background-color: transparent;
-    border-radius: @radius-border;
     font-size: 13px;
+    background-color: transparent;
     border: 1px dashed transparent;
+    border-radius: @radius-border;
+    transition: 0.3s ease;
     transition-property: color, background-color, opacity, border-color;
 
     &:not(.selected) {
@@ -109,18 +109,18 @@
   }
 
   .pic {
-    flex: none;
     position: relative;
-    border-radius: @radius-border;
-    overflow: hidden;
     display: flex;
+    flex: none;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
     color: var(--color-primary-font);
+    border-radius: @radius-border;
     :global(svg) {
-      transition: opacity @transition-normal;
-      height: 100%;
       width: 100%;
+      height: 100%;
+      transition: opacity @transition-normal;
     }
   }
 

@@ -4,11 +4,10 @@
   import { t } from '@/plugins/i18n'
   import Btn from '@/components/base/Btn.svelte'
   import Input from '@/components/base/Input.svelte'
-  import { readDir, readRootDir } from '../fs'
   import { useListItemHeight } from '@/modules/app/reactive.svelte'
   import ListItem from './ListItem.svelte'
   import { onMount, tick, type ComponentExports } from 'svelte'
-  import { buildFilesPath, formatPath, getParentDir, type File } from './shared'
+  import { buildFilesPath, formatPath, getParentDir, type File, type FileExplorerOptions } from './shared'
   import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
   import SvgIcon from '@/components/base/SvgIcon.svelte'
   import { useSelect } from './useSelect.svelte'
@@ -67,7 +66,7 @@
       if (event.inputing) return
       event.event?.preventDefault()
       if (event.event?.repeat) return
-      void readRootDir().then(async (files) => {
+      void options.onReadRootDir().then(async (files) => {
         return gotoDir(getParentDir(currentDir, files))
       })
     })
@@ -84,15 +83,10 @@
   })
 
   let visible = $state(false)
-  let options = $state.raw<
-    Omit<AnyListen.OpenDialogOptions, 'filters'> & {
-      filters?: string[]
-      openFile?: boolean
-      openDir?: boolean
-      multi?: boolean
-    }
-  >({
+  let options = $state.raw<FileExplorerOptions>({
     title: '',
+    onReadDir: async () => [],
+    onReadRootDir: async () => [],
   })
   let currentDir = $state('')
   let dirInputValue = $state('')
@@ -128,7 +122,8 @@
       path = formatPath(path)
       currentDir = path
       dirInputValue = path
-      list = await readDir(path, options.filters, options.openDir)
+      list = await options
+        .onReadDir(path, refresh)
         .then((files) => {
           return files.map((file) => {
             return {
@@ -148,7 +143,8 @@
           return []
         })
     } else {
-      const rootPath = await readRootDir(refresh)
+      const rootPath = await options
+        .onReadRootDir(refresh)
         .then((files) => {
           return files.map((file) => {
             return {
@@ -182,15 +178,8 @@
     }
   )
 
-  export const show = async ({ filters = [], ...opts }: AnyListen.OpenDialogOptions) => {
-    const properties = opts.properties || []
-    options = {
-      ...opts,
-      filters: filters.map((f) => f.extensions).flat(),
-      openFile: properties.includes('openFile'),
-      openDir: properties.includes('openDirectory'),
-      multi: properties.includes('multiSelections'),
-    }
+  export const show = async (opts: FileExplorerOptions) => {
+    options = opts
     void gotoDir(options.defaultPath)
     visible = true
   }
@@ -221,7 +210,7 @@
     <Btn
       icon
       onclick={() => {
-        void readRootDir().then(async (files) => {
+        void options.onReadRootDir().then(async (files) => {
           return gotoDir(getParentDir(currentDir, files))
         })
       }}

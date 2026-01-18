@@ -34,23 +34,21 @@ export const useSelect = (props: { isShiftDown: boolean; list: File[] }) => {
         if (selectIndex < 0) {
           selectIndex = clickIndex
           this.addOrRemove(list[clickIndex])
+        } else if (selectIndex == clickIndex) {
+          selectedList = [list[clickIndex]]
         } else {
-          if (selectIndex == clickIndex) {
-            selectedList = [list[clickIndex]]
-          } else {
-            if (selectedList.length) selectedList = []
-            let _selectIndex = selectIndex
-            let isNeedReverse = false
-            if (clickIndex < _selectIndex) {
-              let temp = _selectIndex
-              _selectIndex = clickIndex
-              clickIndex = temp
-              isNeedReverse = true
-            }
-            let newSelectList = list.slice(_selectIndex, clickIndex + 1)
-            if (isNeedReverse) newSelectList.reverse()
-            selectedList = newSelectList
+          if (selectedList.length) selectedList = []
+          let _selectIndex = selectIndex
+          let isNeedReverse = false
+          if (clickIndex < _selectIndex) {
+            let temp = _selectIndex
+            _selectIndex = clickIndex
+            clickIndex = temp
+            isNeedReverse = true
           }
+          let newSelectList = list.slice(_selectIndex, clickIndex + 1)
+          if (isNeedReverse) newSelectList.reverse()
+          selectedList = newSelectList
         }
       } else {
         selectIndex = clickIndex

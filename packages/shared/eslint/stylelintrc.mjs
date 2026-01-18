@@ -10,6 +10,7 @@ export default {
     ],
     'rule-empty-line-before': null,
     'no-descending-specificity': null,
+    'declaration-property-value-no-unknown': null,
     // 'rule-empty-line-before': [
     //   'always',
     //   {

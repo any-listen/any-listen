@@ -1,6 +1,7 @@
 import { mount, tick, unmount } from 'svelte'
+import type { FileExplorerOptions } from './shared'
 
-export const showFileSelectModal: AnyListen.IPC.ServerIPC['showOpenDialog'] = async (options) => {
+export const showFileExplorerModal = async (options: FileExplorerOptions) => {
   const App = (await import('./App.svelte')).default
 
   return new Promise<AnyListen.OpenDialogResult>((resolve, reject) => {

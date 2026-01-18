@@ -2,6 +2,16 @@ export interface File extends AnyListen.FileSystem.File {
   id: string
   musicFile: boolean
 }
+export interface FileExplorerOptions {
+  title: string
+  defaultPath?: string
+  filters?: string[]
+  openFile?: boolean
+  openDir?: boolean
+  multi?: boolean
+  onReadRootDir: (refresh?: boolean) => Promise<AnyListen.FileSystem.File[]>
+  onReadDir: (path: string, refresh?: boolean) => Promise<AnyListen.FileSystem.File[]>
+}
 
 // const sep = appState.os == 'windows' ? '\\' : '/'
 const sepRxp = /\\|\//
