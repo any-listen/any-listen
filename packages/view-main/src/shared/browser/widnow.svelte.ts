@@ -3,6 +3,7 @@ import { appState } from '@/modules/app/store/state'
 import { windowSizeList } from '@any-listen/common/constants'
 
 export const handleConfigChange = (keys: Array<keyof AnyListen.AppSetting>, setting: Partial<AnyListen.AppSetting>) => {
+  if (import.meta.env.VITE_IS_WEB) return
   if (keys.includes('common.windowSizeId')) {
     if (appState.isFullscreen) return
     const targetSize = windowSizeList.find((w) => w.id == setting['common.windowSizeId'])
@@ -13,6 +14,7 @@ export const handleConfigChange = (keys: Array<keyof AnyListen.AppSetting>, sett
 }
 
 export const windowDarg = (dom: HTMLElement) => {
+  if (import.meta.env.VITE_IS_WEB) return () => {}
   const msEvent = {
     isMsDown: false,
     msDownX: 0,
