@@ -196,6 +196,15 @@ export const initWatchList = () => {
 
       unregistered.add(musicLibraryEvent.on('listMusicChanged', handleListChangeSync))
       unregistered.add(musicLibraryEvent.on('listMusicUpdated', handleListInfoUpdateSync))
+      unregistered.add(
+        musicLibraryEvent.on('listMusicRemovedBefore', (listId, musicIds) => {
+          if (!playerState.playMusicInfo) return
+          const targetListId = playerState.playMusicInfo.listId
+          if (listId != targetListId || !musicIds.includes(playerState.playMusicInfo.musicInfo.id)) return
+          console.log('current music removed by listMusicRemovedBefore')
+          void skipNext(true)
+        })
+      )
 
       unregistered.add(
         onSettingChanged('player.togglePlayMethod', (val) => {

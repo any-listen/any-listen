@@ -1,5 +1,14 @@
 import { isLikelyGarbage } from '@any-listen/common/utils'
-import { checkFile, dirname, extname, getFileStats, joinPath, removeFile as nodeRemoveFile, readFile } from '@any-listen/nodejs'
+import {
+  checkFile,
+  dirname,
+  extname,
+  getFileStats,
+  joinPath,
+  removeFile as nodeRemoveFile,
+  readFile,
+  sleep,
+} from '@any-listen/nodejs'
 import { decodeString } from '@any-listen/nodejs/char'
 import { getFileLyric, getFilePic, parseFileMetadata } from '@any-listen/nodejs/music'
 
@@ -54,6 +63,12 @@ export const removeMusicFile = async (path: string) => {
     await removeFile(path)
   } catch (err) {
     console.error(`Remove file error: ${path}`, err)
+    await sleep(500)
+    try {
+      await removeFile(path)
+    } catch (err) {
+      console.error(`Remove file error retry failed: ${path}`, err)
+    }
   }
 }
 

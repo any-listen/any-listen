@@ -35,7 +35,8 @@ export const verifyLocalListMusicRemove = async (
     })
     if (confirm != 1) throw new Error(t('extension.list_provider.local_list_remove_music_files_cancelled'))
   }
-  await workers.utilService.removeMusicFiles(musics.map((m) => m.meta.filePath))
+  // TODO: add remove failed tip
+  void workers.utilService.removeMusicFiles(musics.map((m) => m.meta.filePath))
 }
 
 const watcherMap = new Map<string, [string, () => Promise<void>]>() // listId => [watchPath, unwatch]
@@ -207,7 +208,7 @@ const syncList = async (list: AnyListen.List.LocalListInfo) => {
     if (addFiles.length) await handleMusicAdd(list.id, addFiles)
     if (changedFiles.length) await handleMusicChanged(list.id, changedFiles)
   }, 1000)
-  const onFileProxy = proxyCallback((action: FileAction, path: string) => {
+  const onFileProxy = proxyCallback((action: FileAction, path: string, ctimeMs?: number, mtimeMs?: number, size?: number) => {
     // console.log(`Local list file ${action}:`, path)
     switch (action) {
       case 'add':
@@ -309,4 +310,109 @@ export const initLocalListProvider = async () => {
 export const syncLocalList = async (list: AnyListen.List.LocalListInfo) => {
   await removeWatcher(list.id)
   await syncList(list)
+}
+
+const sortWatcherMap = new Map<string, [string, () => Promise<void>]>() // listId => [watchPath, unwatch]
+const sortMusics = (
+  musics: AnyListen.Music.MusicInfoLocal[],
+  files: Map<string, { ctimeMs: number; mtimeMs: number; size: number }>,
+  type: AnyListen.List.SortFileType
+) => {
+  const idMap = new Map<string, string>()
+  for (const music of musics) idMap.set(music.meta.filePath, music.id)
+  let sortedFiles = Array.from(files.entries())
+  const ids: string[] = []
+  switch (type) {
+    case 'ctime_asc':
+      sortedFiles.sort((a, b) => {
+        return a[1].ctimeMs - b[1].ctimeMs
+      })
+      break
+    case 'ctime_desc':
+      sortedFiles.sort((a, b) => {
+        return b[1].ctimeMs - a[1].ctimeMs
+      })
+      break
+    case 'mtime_asc':
+      sortedFiles.sort((a, b) => {
+        return a[1].mtimeMs - b[1].mtimeMs
+      })
+      break
+    case 'mtime_desc':
+      sortedFiles.sort((a, b) => {
+        return b[1].mtimeMs - a[1].mtimeMs
+      })
+      break
+    case 'size_asc':
+      sortedFiles.sort((a, b) => {
+        return a[1].size - b[1].size
+      })
+      break
+    case 'size_desc':
+      sortedFiles.sort((a, b) => {
+        return b[1].size - a[1].size
+      })
+      break
+  }
+  for (const [path] of sortedFiles) {
+    const id = idMap.get(path)
+    if (id) ids.push(id)
+  }
+
+  return ids
+}
+const removeSortWatcher = async (listId: string) => {
+  const unwatch = sortWatcherMap.get(listId)
+  if (!unwatch) return
+  await unwatch[1]()
+  sortWatcherMap.delete(listId)
+}
+export const sortLocalListMusics = async (
+  info: AnyListen.List.LocalListInfo,
+  musics: AnyListen.Music.MusicInfoLocal[],
+  type: AnyListen.List.SortFileType
+): Promise<string[]> => {
+  await removeSortWatcher(info.id).catch(() => {})
+  return new Promise<string[]>((resolve, reject) => {
+    let files = new Map<string, { ctimeMs: number; mtimeMs: number; size: number }>()
+    const onFileProxy = proxyCallback((action: FileAction, path: string, ctimeMs?: number, mtimeMs?: number, size?: number) => {
+      // console.log(`Local list file ${action}:`, path)
+      switch (action) {
+        case 'add':
+        case 'change':
+          files.set(path, { ctimeMs: ctimeMs || 0, mtimeMs: mtimeMs || 0, size: size || 0 })
+          break
+        case 'unlink':
+          files.delete(path)
+          break
+      }
+    })
+    const onReadyProxy = proxyCallback(async () => {
+      void removeSortWatcher(info.id).catch(() => {})
+      resolve(sortMusics(musics, files, type))
+    })
+    const onErrorProxy = proxyCallback(async (message: string) => {
+      void removeSortWatcher(info.id).catch(() => {})
+      const err = new Error(t('extension.list_provider.local_list_watcher_error', { name: info.name, message }))
+      reject(err)
+    })
+    void workers.utilService
+      .createMusicDirWatcher(info.meta.path, onFileProxy, onReadyProxy, onErrorProxy, {
+        recursive: info.meta.includeSubDir,
+      })
+      .then((id) => {
+        watcherMap.set(info.id, [
+          info.meta.path,
+          async () => {
+            await workers.utilService.removeMusicDirWatcher(id)
+            onFileProxy.releaseProxy()
+            onReadyProxy.releaseProxy()
+            onErrorProxy.releaseProxy()
+          },
+        ])
+      })
+      .catch((err: Error) => {
+        reject(err)
+      })
+  })
 }

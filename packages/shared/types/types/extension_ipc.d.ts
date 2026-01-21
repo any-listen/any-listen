@@ -107,6 +107,14 @@ declare namespace AnyListen {
       createList: (params: ListProviderActionParams) => Promise<void>
       updateList: (params: ListProviderActionParams) => Promise<void>
       deleteList: (params: ListProviderActionParams) => Promise<void>
+      sortListMusics: (
+        params: BuildListProviderActionCommonParams<{
+          list: List.RemoteListInfo
+          musics: Music.MusicInfoOnline[]
+          type: List.SortFileType
+        }>
+      ) => Promise<string[]>
+      /** 从列表中移除音乐文件 */
       removeListMusics: (
         params: BuildListProviderActionCommonParams<{
           list: List.RemoteListInfo

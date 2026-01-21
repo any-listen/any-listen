@@ -145,6 +145,7 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
         p.id = String(p.id)
         p.name = String(p.name)
         p.description = String(p.description)
+        if (p.fileSortable != null) p.fileSortable = Boolean(p.fileSortable)
         p.form = p.form
           .map((s) => {
             switch (s.type) {
@@ -188,9 +189,10 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
           .filter((s) => s != null)
 
         return {
-          id: String(p.id),
-          name: String(p.name),
-          description: String(p.description),
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          fileSortable: p.fileSortable,
           form: p.form,
         }
       })
@@ -496,6 +498,7 @@ export const updateResourceList = () => {
           name: provider.name,
           description: provider.description,
           form: provider.form,
+          fileSortable: provider.fileSortable,
         })
       }
     }

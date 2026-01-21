@@ -13,7 +13,7 @@
       musicInfo: AnyListen.Music.MusicInfo
     }
     onplay: () => void
-    onremove: () => void
+    onremove: () => Promise<void>
   } = $props()
 
   let nameLabel = buildMusicName(settingState.setting['download.fileName'], info.musicInfo.name, info.musicInfo.singer)

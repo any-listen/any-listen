@@ -8,6 +8,7 @@ import {
   getMusicExistListIds,
   saveListScrollPosition,
   sendMusicListAction,
+  sortListMusics,
   syncUserList,
 } from '@any-listen/app/modules/musicList'
 import type { ExposeFunctions } from '.'
@@ -45,6 +46,9 @@ export const createExposeList = () => {
     },
     async syncUserList(event, id) {
       return syncUserList(id)
+    },
+    async sortListMusics(event, id, list, type) {
+      return sortListMusics(id, list, type)
     },
   } satisfies Partial<ExposeFunctions>
 }

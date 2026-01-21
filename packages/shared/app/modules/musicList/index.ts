@@ -2,11 +2,11 @@ import { LIST_IDS } from '@any-listen/common/constants'
 import { arrPush, throttle } from '@any-listen/common/utils'
 import { getSettings } from '../../common'
 import { getDeviceId } from '../../common/deviceId'
-import { syncRemoteUserList } from '../../modules/extension'
+import { sortRemoteUserList, syncRemoteUserList } from '../../modules/extension'
 import { workers } from '../worker'
 import { proxyCallback, type DBSeriveTypes } from '../worker/utils'
 import { initMusicListEvent, musicListEvent } from './event'
-import { initLocalListProvider, syncLocalList } from './localListProvider'
+import { initLocalListProvider, sortLocalListMusics, syncLocalList } from './localListProvider'
 
 let dbService: DBSeriveTypes
 let scrollInfo: Map<string, number>
@@ -176,6 +176,28 @@ export const syncUserList = async (id: string) => {
     case 'online':
       // TODO sync online list
       throw new Error('not implemented')
+    default:
+      console.log('not sync list', targetList)
+      throw new Error('not supported list type')
+  }
+}
+
+export const sortListMusics = async (
+  id: string,
+  list: AnyListen.Music.MusicInfo[],
+  type: AnyListen.List.SortFileType
+): Promise<string[]> => {
+  const userLists = (await workers.dbService.getAllUserLists()).userList
+  const targetList = userLists.find((l) => l.id === id)
+  if (!targetList) throw new Error('list not found')
+  switch (targetList.type) {
+    case 'local':
+      if (targetList.meta.deviceId !== getDeviceId()) {
+        throw new Error('can not sync local list of other device')
+      }
+      return sortLocalListMusics(targetList, list as AnyListen.Music.MusicInfoLocal[], type)
+    case 'remote':
+      return sortRemoteUserList(targetList, list as AnyListen.Music.MusicInfoOnline[], type)
     default:
       console.log('not sync list', targetList)
       throw new Error('not supported list type')

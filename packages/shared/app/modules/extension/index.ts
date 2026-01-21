@@ -8,4 +8,4 @@ export const initExtensionModule = async () => {
 
 export { extensionEvent, extensionState }
 
-export { syncList as syncRemoteUserList } from './listProvider'
+export { sortUserList as sortRemoteUserList, syncList as syncRemoteUserList } from './listProvider'

@@ -47,5 +47,8 @@ export const createClientList = (main: MainCall) => {
     async syncUserList(id) {
       return main.syncUserList(id)
     },
+    async sortListMusics(id, list, type) {
+      return main.sortListMusics(id, list, type)
+    },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }

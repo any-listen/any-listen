@@ -47,6 +47,7 @@ declare global {
         id: string
         name: string
         description: string
+        fileSortable?: boolean
         form: FormItems[]
       }
 

@@ -14,11 +14,16 @@
     visible: boolean
     listinfo: ListInfo
   } = $props()
-  let sortField = $state<SortFieldName | ''>('')
+  type FileSortFieldName = 'fileCreateTime' | 'fileUpdateTime' | 'fileSize'
+  type ExtendedSortFieldName = SortFieldName | FileSortFieldName
+  let sortField = $state<ExtendedSortFieldName | ''>('')
   let sortType = $state<SortFieldType | ''>('')
   let disabledSortFislds = $derived(sortType == 'random')
+  let sortFileTime = $state.raw<
+    ((list: AnyListen.Music.MusicInfo[], type: AnyListen.List.SortFileType) => Promise<string[]>) | null
+  >(null)
 
-  const handleSortFieldSelect = (val: SortFieldName) => {
+  const handleSortFieldSelect = (val: ExtendedSortFieldName) => {
     sortField = val
   }
   const handleSortTypeSelect = (val: SortFieldType) => {
@@ -30,6 +35,26 @@
   const verify = $derived(!!sortType && (!!sortField || sortType == 'random'))
   const handleSort = async () => {
     if (!verify) return
+    if (sortType != 'random') {
+      switch (sortField) {
+        case 'fileCreateTime':
+        case 'fileUpdateTime':
+        case 'fileSize': {
+          const st = sortType == 'up' ? 'asc' : 'desc'
+          const stMap: Record<FileSortFieldName, AnyListen.List.SortFileType> = {
+            fileCreateTime: `ctime_${st}`,
+            fileUpdateTime: `mtime_${st}`,
+            fileSize: `size_${st}`,
+          }
+          let ids = await sortFileTime!([...(await getListMusics(listinfo.id))], stMap[sortField])
+          void updateListMusicsPosition({ listId: listinfo.id, position: 0, ids })
+          closeModal()
+          return
+        }
+        default:
+          break
+      }
+    }
     // if (!await dialog.confirm({
     //   message: t('list_sort_modal_tip_confirm'),
     //   cancelButtonText: t('cancel_button_text'),
@@ -52,6 +77,7 @@
     if (!visible) return
     sortField = ''
     sortType = ''
+    sortFileTime = listinfo.getSortTimeFn ? listinfo.getSortTimeFn() : null
   })
 </script>
 
@@ -130,6 +156,41 @@
             label={$t('list_sort_modal_by_update_time')}
           />
         </li>
+        {#if sortFileTime}
+          <li class="list-item">
+            <Radio
+              id="list_sort_modal_field_fctime"
+              checked={sortField == 'fileCreateTime'}
+              name="list_sort_modal_field"
+              value="fileCreateTime"
+              disabled={disabledSortFislds}
+              onselect={handleSortFieldSelect}
+              label={$t('list_sort_modal_by_create_time_file')}
+            />
+          </li>
+          <li class="list-item">
+            <Radio
+              id="list_sort_modal_field_futime"
+              checked={sortField == 'fileUpdateTime'}
+              name="list_sort_modal_field"
+              value="fileUpdateTime"
+              disabled={disabledSortFislds}
+              onselect={handleSortFieldSelect}
+              label={$t('list_sort_modal_by_update_time_file')}
+            />
+          </li>
+          <li class="list-item">
+            <Radio
+              id="list_sort_modal_field_fsize"
+              checked={sortField == 'fileSize'}
+              name="list_sort_modal_field"
+              value="fileSize"
+              disabled={disabledSortFislds}
+              onselect={handleSortFieldSelect}
+              label={$t('list_sort_modal_by_file_size')}
+            />
+          </li>
+        {/if}
       </ul>
     </section>
     <section>
@@ -188,7 +249,7 @@
   .main {
     display: flex;
     flex-flow: column nowrap;
-    width: 320px;
+    width: 380px;
     min-height: 0;
     padding: 0 15px;
     // max-height: 100%;

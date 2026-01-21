@@ -13,4 +13,5 @@ export interface ListInfo {
   playCount?: number
   createTime?: string
   picIcon?: string
+  getSortTimeFn?: () => ((list: AnyListen.Music.MusicInfo[], type: AnyListen.List.SortFileType) => Promise<string[]>) | null
 }

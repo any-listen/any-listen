@@ -48,5 +48,8 @@ export const createClientList = (ipcSocket: IPCSocket) => {
     async syncUserList(id) {
       return ipcSocket.remoteQueueList.syncUserList(id)
     },
+    async sortListMusics(id, list, type) {
+      return ipcSocket.remoteQueueList.sortListMusics(id, list, type)
+    },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }

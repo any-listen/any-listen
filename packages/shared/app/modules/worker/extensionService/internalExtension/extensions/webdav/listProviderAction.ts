@@ -22,7 +22,11 @@ const generateId = (extId: string, source: string, options: WebDAVClientOptions,
   return `${extId}_${source}_${options.username}_${options.url}_${item.path}`
 }
 
-const getDirFileIds = async (
+interface WebDAVItemWithId extends WebDAVFileItem {
+  id: string
+}
+
+const getDirFiles = async (
   opts: {
     webDAVClient: WebDAVClient
     webDAVClientOptions: WebDAVClientOptions
@@ -33,28 +37,28 @@ const getDirFileIds = async (
     useCache?: boolean
   },
   deep = 0
-) => {
-  void debugLog(`getDirFileIds: [${opts.path}] deep: ${deep}`)
+): Promise<WebDAVItemWithId[]> => {
+  void debugLog(`getDirFiles: [${opts.path}] deep: ${deep}`)
 
   const buildMusicIds = async (list: WebDAVItem[]) => {
     const dirs: string[] = []
-    let ids: string[] = []
+    let items: WebDAVItemWithId[] = []
     for (const item of list) {
       if (item.isDir) {
         if (opts.isIncludeDir && deep < MAX_DEEP) dirs.push(item.path)
       } else if (item.size > 0 && isMusicFile(item.name)) {
         const path = generateId(opts.extId, opts.source, opts.webDAVClientOptions, item)
         musicCache.set(path, item)
-        ids.push(path)
+        items.push({ ...item, id: path })
       }
     }
     if (dirs.length) {
       for (const dir of dirs) {
-        const subIds = await getDirFileIds({ ...opts, path: dir }, deep + 1)
-        ids = ids.concat(subIds)
+        const subItems = await getDirFiles({ ...opts, path: dir }, deep + 1)
+        items = items.concat(subItems)
       }
     }
-    return ids
+    return items
   }
 
   const list =
@@ -82,7 +86,51 @@ const getListMusicIds = async (
   useCache = false
 ) => {
   const webDAVClient = createWebDAVClient(webDAVClientOptions)
-  return getDirFileIds({ webDAVClient, webDAVClientOptions, extId, source, path, isIncludeDir, useCache })
+  const items = await getDirFiles({ webDAVClient, webDAVClientOptions, extId, source, path, isIncludeDir, useCache })
+  return items.map((item) => item.id)
+}
+const sortMusics = (musics: AnyListen.Music.MusicInfoOnline[], files: WebDAVItemWithId[], type: AnyListen.List.SortFileType) => {
+  const idMap = new Set<string>()
+  for (const music of musics) idMap.add(music.id)
+  let sortedFiles = [...files]
+  const ids: string[] = []
+  switch (type) {
+    case 'ctime_asc':
+      sortedFiles.sort((a, b) => {
+        return a.creationDate - b.creationDate
+      })
+      break
+    case 'ctime_desc':
+      sortedFiles.sort((a, b) => {
+        return b.creationDate - a.creationDate
+      })
+      break
+    case 'mtime_asc':
+      sortedFiles.sort((a, b) => {
+        return a.lastModified - b.lastModified
+      })
+      break
+    case 'mtime_desc':
+      sortedFiles.sort((a, b) => {
+        return b.lastModified - a.lastModified
+      })
+      break
+    case 'size_asc':
+      sortedFiles.sort((a, b) => {
+        return a.size - b.size
+      })
+      break
+    case 'size_desc':
+      sortedFiles.sort((a, b) => {
+        return b.size - a.size
+      })
+      break
+  }
+  for (const { id } of sortedFiles) {
+    if (idMap.has(id)) ids.push(id)
+  }
+
+  return ids
 }
 export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
   async createList(params) {
@@ -95,6 +143,21 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
   async updateList(params) {
     void debugLog(`updateList: ${JSON.stringify(params)}`)
     await testDir(await getWebDAVOptionsByListInfo(params.data.meta))
+  },
+  async sortListMusics({ data }) {
+    void debugLog('sortListMusics')
+    const webDAVClientOptions = await getWebDAVOptionsByListInfo(data.list.meta)
+    const webDAVClient = createWebDAVClient(webDAVClientOptions)
+    const items = await getDirFiles({
+      webDAVClient,
+      webDAVClientOptions,
+      extId: data.list.meta.extensionId,
+      source: data.list.meta.source,
+      path: webDAVClientOptions.path,
+      isIncludeDir: (data.list.meta.includeSubDir as boolean | undefined) || false,
+      useCache: false,
+    })
+    return sortMusics(data.musics, items, data.type)
   },
   async removeListMusics(params) {
     void debugLog(`removeListMusics: ${JSON.stringify(params)}`)

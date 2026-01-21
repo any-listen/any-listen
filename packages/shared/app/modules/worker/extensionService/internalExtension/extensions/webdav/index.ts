@@ -52,6 +52,7 @@ export const pkg: AnyListen.Extension.Manifest = {
         id: 'webdav',
         name: 't(exts.webdav.name)',
         description: 't(exts.webdav.description)',
+        fileSortable: true,
         form: [
           {
             field: 'url',

@@ -88,6 +88,8 @@ declare namespace AnyListen {
       }
     >
 
+    type SortFileType = 'ctime_desc' | 'ctime_asc' | 'mtime_desc' | 'mtime_asc' | 'size_asc' | 'size_desc'
+
     // type ListSaveType = 'myList' | 'downloadList'
     // type ListSaveInfo = {
     //   type: 'myList'

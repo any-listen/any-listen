@@ -131,6 +131,7 @@ declare namespace AnyListen {
       addFolderMusics: (listId: string, filePaths: string[], onEnd: (errorMessage?: string | null) => void) => string
       cancelAddFolderMusics: (taskId: string) => void
       syncUserList: (id: string) => Promise<void>
+      sortListMusics: (listId: string, list: Music.MusicInfo[], type: List.SortFileType) => Promise<string[]>
     }>
     type ServerIPCActions<Socket = undefined> = IPC.WarpIPCHandlerActions<Socket, ServerActions>
 

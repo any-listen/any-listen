@@ -17,12 +17,14 @@ export interface WebDAVDirItem {
   name: string
   isDir: true
   lastModified: number
+  creationDate: number
 }
 export interface WebDAVFileItem {
   path: string
   name: string
   isDir: false
   lastModified: number
+  creationDate: number
   contentType: string
   size: number
 }
@@ -42,21 +44,27 @@ const buildFileItems = (list: LsResp[], path: string): WebDAVItem[] => {
       name = item.propstat.prop.displayname
     }
 
-    return isDir
+    const file = isDir
       ? ({
           path: `${path}/${rawName}`,
           isDir: true,
           name,
           lastModified: new Date(item.propstat.prop.getlastmodified).getTime(),
+          creationDate: 0,
         } satisfies WebDAVDirItem)
       : ({
           path: `${path}/${rawName}`,
           name,
           isDir: false,
           lastModified: new Date(item.propstat.prop.getlastmodified).getTime(),
+          creationDate: 0,
           contentType: item.propstat.prop.getcontenttype,
           size: parseInt(item.propstat.prop.getcontentlength),
         } satisfies WebDAVFileItem)
+
+    file.creationDate = item.propstat.prop.creationdate ? new Date(item.propstat.prop.creationdate).getTime() : file.lastModified
+
+    return file
   })
 }
 const buildError = (statusCode?: number, error?: string) => {

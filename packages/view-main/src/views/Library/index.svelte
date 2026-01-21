@@ -6,9 +6,15 @@
   import type { ListInfo } from '@/components/common/MusicList/type'
   import { userListInited, userListsAll } from '@/modules/musicLibrary/reactive.svelte'
   import { dateFormat } from '@/shared'
-  import { getListScrollPosition, saveListScrollPosition, userListExist } from '@/modules/musicLibrary/store/actions'
+  import {
+    getListScrollPosition,
+    saveListScrollPosition,
+    userListExist,
+    sortListMusics,
+  } from '@/modules/musicLibrary/store/actions'
   import { type ComponentExports, tick } from 'svelte'
   import { LIST_IDS } from '@any-listen/common/constants'
+  import { resourceList } from '@/modules/extension/reactive.svelte'
 
   let list = $state.raw<AnyListen.Music.MusicInfo[]>([])
   let musicList = $state<ComponentExports<typeof MusicList> | null>(null)
@@ -18,7 +24,7 @@
     [LIST_IDS.LAST_PLAYED]: 'time_machine',
   } as const
 
-  const getActiveListInfo = (allList: typeof $userListsAll, activeId: string) => {
+  const getActiveListInfo = (allList: typeof $userListsAll, activeId: string, resourceList: AnyListen.Extension.ResourceList) => {
     const info = allList.find((l) => l.id == activeId)
     if (!info) return undefined
 
@@ -28,9 +34,22 @@
       createTime: info.type == 'default' ? '' : dateFormat(info.meta.createTime, 'Y-M-D'),
       playCount: info.meta.playCount,
       picIcon: pics[info.id as keyof typeof pics],
+      getSortTimeFn() {
+        if (
+          info.type === 'local' ||
+          (info.type === 'remote' &&
+            resourceList.listProvider.find((l) => l.extensionId === info.meta.extensionId && l.id === info.meta.source)
+              ?.fileSortable)
+        ) {
+          return async (list, type) => {
+            return sortListMusics(info.id, list, type)
+          }
+        }
+        return null
+      },
     } satisfies ListInfo
   }
-  const listInfo = $derived(getActiveListInfo($userListsAll, $query.id))
+  const listInfo = $derived(getActiveListInfo($userListsAll, $query.id, $resourceList))
 
   let currentId = ''
   const handleScroll = (pos: number) => {

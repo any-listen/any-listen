@@ -24,6 +24,7 @@ export interface Prop {
   resourcetype?: Resourcetype
   getcontentlength: string
   getlastmodified: string
+  creationdate?: string
   'current-user-privilege-set': CurrentUserPrivilegeSet
 }
 

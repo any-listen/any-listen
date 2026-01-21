@@ -41,6 +41,22 @@ export const verifyMusicRemove = async (listInfo: AnyListen.List.RemoteListInfo,
   })
 }
 
+export const sortUserList = async (
+  info: AnyListen.List.RemoteListInfo,
+  musics: AnyListen.Music.MusicInfoOnline[],
+  type: AnyListen.List.SortFileType
+): Promise<string[]> => {
+  return workers.extensionService.listProviderAction('sortListMusics', {
+    data: {
+      list: info,
+      musics,
+      type,
+    },
+    extensionId: info.meta.extensionId,
+    source: info.meta.source,
+  })
+}
+
 const state = {
   initing: false,
   loadedExtensions: [] as string[],

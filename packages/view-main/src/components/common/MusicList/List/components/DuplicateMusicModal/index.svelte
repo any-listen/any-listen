@@ -85,8 +85,8 @@
             onplay={() => {
               handlePlay(index)
             }}
-            onremove={() => {
-              void handleRemove(index)
+            onremove={async () => {
+              await handleRemove(index)
             }}
           />
         {/snippet}

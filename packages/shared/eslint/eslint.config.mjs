@@ -54,6 +54,8 @@ export const baseRule = {
   'no-param-reassign': 'off',
   'no-plusplus': 'off',
   'prefer-named-capture-group': 'off',
+  '@eslint-community/eslint-comments/require-description': 'off',
+  'require-unicode-regexp': 'off',
   radix: 'off',
 }
 export const typescriptRule = {

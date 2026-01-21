@@ -33,6 +33,11 @@ class Event extends _Event {
     this.emitEvent('listMusicUpdated', updateInfo)
   }
 
+  listMusicRemovedBefore(listId: string, musicIds: string[]) {
+    if (!musicIds.length) return
+    this.emitEvent('listMusicRemovedBefore', listId, musicIds)
+  }
+
   fetchingListStatusUpdated(id: string, val: boolean) {
     this.emitEvent('fetchingListStatusUpdated', id, val)
   }

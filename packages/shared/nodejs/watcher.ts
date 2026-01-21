@@ -4,7 +4,7 @@ import { isMusicFile } from './music'
 export type FileAction = 'add' | 'change' | 'unlink'
 export const watchMusicDir = (
   dir: string,
-  callback: (action: FileAction, path: string) => void,
+  callback: (action: FileAction, path: string, ctimeMs?: number, mtimeMs?: number, size?: number) => void,
   onReady: () => void,
   onError: (message: string) => void,
   options: { recursive?: boolean } = {}
@@ -26,9 +26,10 @@ export const watchMusicDir = (
     },
   })
 
-  watcher.on('all', (event, path) => {
+  watcher.on('all', (event, path, stats) => {
+    // console.log(path, stats)
     // console.log(`File ${event}: ${path}`)
-    callback(event as FileAction, path)
+    callback(event as FileAction, path, stats?.ctimeMs, stats?.mtimeMs, stats?.size)
   })
 
   watcher.on('ready', () => {
