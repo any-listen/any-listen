@@ -1,12 +1,69 @@
 <script lang="ts">
   import { t } from '@/plugins/i18n'
+  import { setFullScreen } from '@/modules/app/store/action'
+  import { useIsFullscreen } from '@/modules/app/reactive.svelte'
   // import { link, location } from '@/plugins/routes'
   import { closeWindow } from '@/shared/ipc/app'
   // import { isFullscreen } from '@/store'
+  import { onMount } from 'svelte'
 
   const handleClose = () => {
     void closeWindow()
   }
+
+  const fullscreenState = useIsFullscreen()
+  let prevBodyStyle: {
+    position: string
+    left: string
+    top: string
+    width: string
+    height: string
+  } | null = null
+
+  const clearBodyInlineSize = () => {
+    document.body.style.removeProperty('position')
+    document.body.style.removeProperty('left')
+    document.body.style.removeProperty('top')
+    document.body.style.removeProperty('width')
+    document.body.style.removeProperty('height')
+  }
+
+  const applyBodyInlineSize = () => {
+    if (!prevBodyStyle) return
+    document.body.style.position = prevBodyStyle.position
+    document.body.style.left = prevBodyStyle.left
+    document.body.style.top = prevBodyStyle.top
+    document.body.style.width = prevBodyStyle.width
+    document.body.style.height = prevBodyStyle.height
+  }
+
+  const syncFullscreen = (val: boolean) => {
+    document.documentElement.classList.toggle('fullscreen', val)
+    if (val) {
+      prevBodyStyle = {
+        position: document.body.style.position,
+        left: document.body.style.left,
+        top: document.body.style.top,
+        width: document.body.style.width,
+        height: document.body.style.height,
+      }
+      clearBodyInlineSize()
+    } else {
+      applyBodyInlineSize()
+      prevBodyStyle = null
+    }
+    setFullScreen(val)
+  }
+
+  const toggleFullscreen = () => {
+    syncFullscreen(!fullscreenState.isFullscreen)
+  }
+
+  onMount(() => {
+    if (document.documentElement.classList.contains('fullscreen')) {
+      setFullScreen(true)
+    }
+  })
 </script>
 
 <div class="control">
@@ -36,6 +93,20 @@
       <use xlink:href="#icon-setting-control" />
     </svg>
   </a> -->
+  <button
+    type="button"
+    class="btn fullscreen"
+    aria-pressed={fullscreenState.isFullscreen}
+    aria-label={fullscreenState.isFullscreen ? $t('fullscreen_exit') : $t('fullscreen')}
+    title={fullscreenState.isFullscreen ? $t('fullscreen_exit') : $t('fullscreen')}
+    onclick={toggleFullscreen}
+  >
+    <svg version="1.1" height="60%" viewBox="0 0 24 24">
+      <use
+        xlink:href={fullscreenState.isFullscreen ? '#icon-window-fullscreen-exit' : '#icon-window-fullscreen'}
+      />
+    </svg>
+  </button>
   <button type="button" class="btn close" aria-label={$t('logout')} onclick={handleClose}>
     <svg version="1.1" height="60%" viewBox="0 0 24 24">
       <use xlink:href="#icon-logout" />
@@ -69,6 +140,7 @@
       //   background-color: var(--color-button-background-hover);
       // }
       &:hover {
+        background-color: var(--color-button-background-hover);
         // &.min {
         //   background-color: var(--color-button-background-hover);
         // }

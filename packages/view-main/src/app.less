@@ -59,6 +59,22 @@ body {
   }
 }
 .web {
+  padding: @shadow-app;
+  background: transparent;
+  #body {
+    border-radius: @radius-border;
+  }
+  #root {
+    border-radius: @radius-border;
+    box-shadow: 0 0 @shadow-app rgb(0 0 0 / 30%);
+  }
+  // background-color: var(--color-content-background) !important;
+  // #right {
+  //   border-top-left-radius: 0;
+  //   border-bottom-left-radius: 0;
+  // }
+}
+.web.fullscreen {
   padding: 0;
   background: var(--color-content-background);
   #body {
