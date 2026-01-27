@@ -145,6 +145,8 @@
   "login_devices_ua": "User agent string: {ua}",
   "login_label": "Enter login password",
   "logout": "Log out",
+  "fullscreen": "Full screen",
+  "fullscreen_exit": "Exit full screen",
   "logs.btn_clear": "clear output",
   "lyric__load_error": "Failed to obtain lyrics",
   "main.app_menu.about_app": "About Any Listen",

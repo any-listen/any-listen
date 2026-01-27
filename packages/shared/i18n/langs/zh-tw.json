@@ -145,6 +145,8 @@
   "login_devices_ua": "使用者代理字串：{ua}",
   "login_label": "輸入登入密碼",
   "logout": "登出登入",
+  "fullscreen": "全螢幕",
+  "fullscreen_exit": "退出全螢幕",
   "logs.btn_clear": "清空輸出",
   "lyric__load_error": "歌詞獲取失敗",
   "main.app_menu.about_app": "關於 Any Listen",
