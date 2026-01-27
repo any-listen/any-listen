@@ -87,7 +87,7 @@
     }
     latest.time &&= dateFormat(new Date(latest.time))
     latest.langDescs = parseLangDesc(latest.desc)
-    for (const ver of history) ver.langDescs = parseLangDesc(ver.desc)
+    for (const ver of arr) ver.langDescs = parseLangDesc(ver.desc)
     return [latest, arr]
   })
   let progress = $derived(

@@ -2,7 +2,7 @@
 
 ### Fixed
 
-- Fixed an issue that caused builds to fail.
+- Fixed an issue where the **Update Popup** failed to correctly parse historical changelog entries.
 
 ---
 
@@ -10,4 +10,4 @@
 
 ### 修复
 
-- 修复导致构建失败的问题。
+- 修复 **更新弹窗** 无法正确解析历史更新日志的问题。
