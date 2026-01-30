@@ -8,7 +8,7 @@
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
     "@any-listen/theme": "workspace:@shared/theme@*",
     "@any-listen/web": "workspace:@shared/web@*",
-    "better-sqlite3": "^12.6.0",
+    "better-sqlite3": "^12.6.2",
     "iconv-lite": "^0.7.2",
     "jschardet": "^3.1.4",
     "jsonschema": "^1.5.0",

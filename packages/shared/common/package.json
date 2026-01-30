@@ -5,7 +5,7 @@
     "@any-listen/types": "workspace:@shared/types@*"
   },
   "dependencies": {
-    "lru-cache": "^11.2.4",
+    "lru-cache": "^11.2.5",
     "mime": "^4.1.0"
   }
 }

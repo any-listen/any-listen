@@ -3,18 +3,18 @@
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
     "chokidar": "^5.0.0",
-    "fast-xml-parser": "^5.3.3",
+    "fast-xml-parser": "^5.3.4",
     "iconv-lite": "^0.7.2",
     "jschardet": "^3.1.4",
-    "music-metadata": "^11.10.6",
-    "tar": "^7.5.2",
+    "music-metadata": "^11.11.1",
+    "tar": "^7.5.7",
     "tunnel": "^0.0.6",
-    "undici": "^7.18.2"
+    "undici": "^7.19.2"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "@types/node": "^22.19.6",
+    "@types/node": "^22.19.7",
     "@types/tunnel": "^0.0.7"
   }
 }

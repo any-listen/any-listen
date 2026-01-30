@@ -1,6 +1,6 @@
 export const URL_SCHEME_RXP = /^anylisten:\/\//
 
-export const NATIVE_VERSION = 6
+export const NATIVE_VERSION = 7
 
 export const DEV_SERVER_PORTS = {
   'view-main': 9200,

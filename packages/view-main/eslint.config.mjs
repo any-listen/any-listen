@@ -14,7 +14,6 @@ const config = [
     languageOptions: {
       parserOptions: {
         parser: typescriptParser,
-        // project: './tsconfig.json',
       },
     },
   },
@@ -28,7 +27,6 @@ const config = [
         svelteConfig,
         // sourceType: 'module',
         parser: typescriptParser,
-        // project: './tsconfig.json',
         extraFileExtensions: ['.svelte'],
       },
     },

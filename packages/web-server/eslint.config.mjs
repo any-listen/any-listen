@@ -8,7 +8,6 @@ export default [
     languageOptions: {
       parserOptions: {
         parser: typescriptParser,
-        project: './tsconfig.json',
       },
     },
   },

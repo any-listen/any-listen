@@ -1,37 +1,31 @@
 packages:
-  # all packages in direct subdirs of packages/
-  - 'packages/*'
-  - 'packages/shared/*'
-  - 'packages/extensions/*'
-  # all packages in subdirs of components/
-  # - 'components/**'
-  # exclude packages that are inside test directories
+  - packages/*
+  - packages/shared/*
+  - packages/extensions/*
   - '!**/test/**'
 
 onlyBuiltDependencies:
-  - 'better-sqlite3'
-  - 'electron'
-  - 'esbuild'
-  - 'svelte-preprocess'
+  - better-sqlite3
+  - electron
+  - esbuild
+  - svelte-preprocess
 
 overrides:
-  '@types/ws': '8.5.4'
-  # 'vite': 'npm:rolldown-vite@latest'
-  'depd': 'latest'
-  'node-abi': 'latest'
-  'json5': 'latest'
-  'semver': 'latest'
-  'minimatch': 'latest'
-  'micromatch': 'latest'
-  'postcss': 'latest'
-  'ws>bufferutil': '-'
-  'ws>utf-8-validate': '-'
-  'tmp@<=0.2.3': '>=0.2.4'
-  'tar-fs@>=2.0.0 <2.1.4': '>=2.1.4'
-  'js-yaml@>=4.0.0 <4.1.1': '>=4.1.1'
-  'mdast-util-to-hast@>=13.0.0 <13.2.1': '>=13.2.1'
+  '@types/ws': 8.5.4
+  depd: latest
+  diff@<4.0.4: '>=4.0.4'
+  js-yaml@>=4.0.0 <4.1.1: '>=4.1.1'
+  json5: latest
+  mdast-util-to-hast@>=13.0.0 <13.2.1: '>=13.2.1'
+  micromatch: latest
+  minimatch: latest
+  node-abi: latest
+  postcss: latest
+  semver: latest
+  tmp@<=0.2.3: '>=0.2.4'
+  ws>bufferutil: '-'
+  ws>utf-8-validate: '-'
 
-# https://github.com/pnpm/pnpm/issues/8378
 publicHoistPattern:
   - '*eslint*'
 # minimumReleaseAge: 480
