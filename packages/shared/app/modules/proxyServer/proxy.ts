@@ -1,5 +1,5 @@
 import { getMimeType } from '@any-listen/common/mime'
-import { extname, getFileStats, joinPath, removeFile } from '@any-listen/nodejs'
+import { extname, getFileStats, joinPath, removeFileIgnoreError } from '@any-listen/nodejs'
 import { request, type Response } from '@any-listen/nodejs/request'
 import fs, { type ReadStream } from 'node:fs'
 import { PassThrough } from 'node:stream'
@@ -92,7 +92,7 @@ export const proxyRequest = async (name: string, rangeHeader?: string): Promise<
     // If the range is not specified, we can cache the entire file
     const filePath = joinPath(proxyServerState.cacheDir, name)
     const tempPath = `${filePath}${TEMP_FILE_EXT}`
-    await removeFile(filePath).catch(() => {})
+    await removeFileIgnoreError(filePath)
     // use PassThrough to pipe the response body to both the caller and the file
     tee = new PassThrough()
     resp.body.pipe(tee)
@@ -101,15 +101,15 @@ export const proxyRequest = async (name: string, rangeHeader?: string): Promise<
     resp.body.on('error', (err) => {
       console.log('resp body error', err)
       writeStream.destroy()
-      void removeFile(filePath).catch(() => {})
+      void removeFileIgnoreError(filePath)
     })
     writeStream.on('finish', () => {
       fs.rename(tempPath, filePath, (err) => {
-        if (err) fs.unlink(tempPath, () => null)
+        if (err) fs.unlink(tempPath, () => {})
       })
     })
     writeStream.on('error', () => {
-      fs.unlink(filePath, () => null)
+      fs.unlink(filePath, () => {})
     })
     writeStream.on('close', () => {
       proxyServerState.activeWriteStreams.delete(name)

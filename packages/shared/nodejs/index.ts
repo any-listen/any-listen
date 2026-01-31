@@ -75,6 +75,9 @@ export const removePath = async (path: string) =>
 export const removeFile = async (path: string) => {
   return fs.promises.unlink(path)
 }
+export const removeFileIgnoreError = async (path: string) => {
+  return fs.promises.unlink(path).catch(() => {})
+}
 // new Promise<void>((resolve, reject) => {
 //   fs.access(path, fs.constants.F_OK, (err) => {
 //     if (err) {

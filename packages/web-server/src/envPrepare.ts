@@ -1,5 +1,13 @@
 import { NATIVE_VERSION } from '@any-listen/common/constants'
-import { basename, checkAndCreateDir, checkFile, getNativeName, removeFile, removePath, renamePath } from '@any-listen/nodejs'
+import {
+  basename,
+  checkAndCreateDir,
+  checkFile,
+  getNativeName,
+  removeFileIgnoreError,
+  removePath,
+  renamePath,
+} from '@any-listen/nodejs'
 import { simpleDownload } from '@any-listen/nodejs/download'
 import os from 'node:os'
 import path from 'node:path'
@@ -13,7 +21,7 @@ const downloadNativeLib = async (filePath: string) => {
   const fileNmae = basename(filePath)
   const url = `https://github.com/any-listen/any-listen-web-server-native-lib/releases/download/v${NATIVE_VERSION}/${fileNmae}`
   const tempFilePath = `${filePath}.tmp`
-  await removeFile(tempFilePath)
+  await removeFileIgnoreError(tempFilePath).catch(() => {})
   console.log('\nDownloading native lib from:', url)
   console.log('Save to:', filePath)
   console.log('\nPlease wait, it may take a while')
