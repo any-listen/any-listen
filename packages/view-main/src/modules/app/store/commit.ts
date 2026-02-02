@@ -20,9 +20,12 @@ export const setRootOffset = (x: number, y: number) => {
   appState.rootOffsetY = y
 }
 export const setFullScreen = (isFullscreen: boolean) => {
+  if (appState.isFullscreen == isFullscreen) return
   appState.isFullscreen = isFullscreen
-  const offset = window.dt || isFullscreen ? 0 : 8
-  setRootOffset(offset, offset)
+  if (import.meta.env.VITE_IS_DESKTOP) {
+    const offset = window.dt || isFullscreen ? 0 : 8
+    setRootOffset(offset, offset)
+  }
   appEvent.fullscreen(isFullscreen)
 }
 

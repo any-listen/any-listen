@@ -4,6 +4,7 @@ import { showUpdateModal } from '@/components/apis/updateModal'
 import { onConnected, onRelease } from '@/modules/app/shared'
 import { i18n } from '@/plugins/i18n'
 import { createUnsubscriptionSet } from '@/shared'
+import { getItem, LOCAL_STORE_KEYS, setItem } from '@/shared/localStore'
 import { settingState } from '../setting/store/state'
 import { getCurrentVersionInfo, initCurrentVersionInfo, registerRemoteActions } from './store/actions'
 import { versionEvent } from './store/event'
@@ -36,13 +37,13 @@ export const initVersion = () => {
       subscriptions.add(
         versionEvent.on('error', (preStatus, message) => {
           if (preStatus == 'downloading') {
-            const preTime = parseInt(localStorage.getItem('update__download_failed_tip') ?? '0')
+            const preTime = parseInt(getItem(LOCAL_STORE_KEYS.updateDownloadFailedTip) ?? '0')
             showNotify(i18n.t('update_download_failed_tip', { msg: message }))
             void showUpdateModal()
             if (Date.now() - preTime < 7 * 86400_000) return
             setTimeout(() => {
               void showSimpleModal(i18n.t('update_failed_tip')).finally(() => {
-                localStorage.setItem('update__download_failed_tip', String(Date.now()))
+                setItem(LOCAL_STORE_KEYS.updateDownloadFailedTip, String(Date.now()))
               })
             }, 400)
           } else if (preStatus == 'checking') {

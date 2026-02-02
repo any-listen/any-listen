@@ -9,7 +9,7 @@
     restartUpdate,
     downloadUpdate,
     ignoreFailTip,
-    isIgnoreFileTip,
+    isIgnoreFailTip,
     saveIgnoreVersion,
   } from '@/modules/version/store/actions'
   import { onMount } from 'svelte'
@@ -141,7 +141,7 @@
   }
 
   onMount(() => {
-    disabledIgnoreFailBtn = isIgnoreFileTip()
+    disabledIgnoreFailBtn = isIgnoreFailTip()
   })
 
   const handleCheckUpdate = () => {

@@ -161,6 +161,8 @@
   "main.app_menu.window_minimize": "Minimize",
   "main_window__hide": "Hide main window",
   "main_window__show": "Show main window",
+  "maximized": "Maximize",
+  "maximized_exit": "Exit maximization",
   "min": "Minimize",
   "music_add_modal__add_title": "Add {name} to...",
   "music_add_modal__move_title": "Move {name} to...",

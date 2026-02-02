@@ -3,6 +3,7 @@
 ### Added
 
 - Added **Song list sort options**: **File created time**, **File updated time**, and **File size**. These sorting options are available in both the _Local List_ and _WebDAV List_.
+- Added a **Maximize Window** feature that allows the application interface to be maximized for a larger or full-screen display.
 
 ### Fixed
 
@@ -16,6 +17,7 @@
 ### 新增
 
 - 新增 **歌曲列表排序方式**：**文件创建时间**、**文件更新时间**、**文件大小**，这些排序方式可在 _本地列表_ 与 _WebDAV 列表_ 使用。
+- 新增 **界面最大化** 功能，允许将应用界面最大化以获得更大的显示区域。
 
 ### 修复
 

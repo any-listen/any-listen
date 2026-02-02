@@ -161,6 +161,8 @@
   "main.app_menu.window_minimize": "最小化",
   "main_window__hide": "隐藏主界面",
   "main_window__show": "显示主界面",
+  "maximized": "最大化",
+  "maximized_exit": "退出最大化",
   "min": "最小化",
   "music_add_modal__add_title": "添加 {name} 到...",
   "music_add_modal__move_title": "移动 {name} 到...",

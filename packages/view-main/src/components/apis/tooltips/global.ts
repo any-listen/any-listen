@@ -1,12 +1,14 @@
+import { appEvent } from '@/modules/app/store/event'
+import { debounce } from '@/shared'
 import { mount, tick, type ComponentExports } from 'svelte'
 import App from './App.svelte'
-import { debounce } from '@/shared'
-import { appEvent } from '@/modules/app/store/event'
 let instance: ComponentExports<typeof App> | null
 let prevTips = ''
 let prevX = 0
 let prevY = 0
 let isDraging = false
+let updateTimeout: number | null = null
+let visible = false
 
 const getTipText = (el: HTMLElement) => {
   return el.getAttribute('aria-label') && el.getAttribute('data-ignore-tip') == null ? el.getAttribute('aria-label') : null
@@ -22,8 +24,8 @@ const getTips = (el: HTMLElement | null): string | null => {
   return null
 }
 
-const showTips = debounce((event: MouseEvent) => {
-  if (isDraging) return
+const debounceShowTips = debounce((event: MouseEvent) => {
+  if (isDraging || !visible) return
   let msg = getTips(event.target as HTMLElement)?.trim()
   if (!msg) return
   prevTips = msg
@@ -42,10 +44,19 @@ const showTips = debounce((event: MouseEvent) => {
     )
   })
 }, 300)
+const showTips = (event: MouseEvent) => {
+  visible ||= true
+  debounceShowTips(event)
+}
 
 const hideTips = () => {
-  if (!instance) return
+  if (!instance || !visible) return
+  visible = false
   instance.hide()
+  if (updateTimeout) {
+    clearTimeout(updateTimeout)
+    updateTimeout = null
+  }
 }
 
 const setTips = (tips: string) => {
@@ -54,12 +65,13 @@ const setTips = (tips: string) => {
 }
 
 const updateTips = (event: MouseEvent) => {
-  if (isDraging) return
+  if (isDraging || !visible) return
   if (!instance) {
     showTips(event)
     return
   }
-  setTimeout(() => {
+  if (updateTimeout) clearTimeout(updateTimeout)
+  updateTimeout = setTimeout(() => {
     let msg = getTips(event.target as HTMLElement)
     if (!msg || prevTips === msg) return
     setTips(msg)
@@ -80,6 +92,7 @@ export const initTooltips = () => {
     document.body.addEventListener('click', updateTips)
     document.body.addEventListener('contextmenu', updateTips)
     document.body.addEventListener('wheel', updateTips)
+    document.body.addEventListener('mouseout', hideTips)
     appEvent.on('focus', () => {
       hideTips()
     })

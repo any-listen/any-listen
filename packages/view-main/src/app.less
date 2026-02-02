@@ -58,15 +58,21 @@ body {
     box-shadow: 0 0 @shadow-app rgb(0 0 0 / 50%);
   }
 }
-.web {
-  padding: @shadow-app;
-  background: transparent;
-  #body {
-    border-radius: @radius-border;
+html.web {
+  &:not(.fullscreen) {
+    padding: @shadow-app;
+    background: transparent;
+    #body {
+      border-radius: @radius-border;
+    }
+    #root {
+      border-radius: @radius-border;
+      box-shadow: 0 0 @shadow-app rgb(0 0 0 / 30%);
+    }
   }
-  #root {
-    border-radius: @radius-border;
-    box-shadow: 0 0 @shadow-app rgb(0 0 0 / 30%);
+  &.fullscreen {
+    min-width: 650px;
+    min-height: 400px;
   }
   // background-color: var(--color-content-background) !important;
   // #right {
@@ -82,7 +88,7 @@ body {
     border: 1px solid var(--color-primary-light-500);
   }
 }
-.fullscreen {
+html.fullscreen:not(.web) {
   background-color: var(--color-content-background);
 
   // #right {
