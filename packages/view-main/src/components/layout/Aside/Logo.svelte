@@ -31,7 +31,7 @@
 {/snippet}
 
 {#if import.meta.env.VITE_IS_DESKTOP}
-  <div class="aside-logo" bind:this={contentDom}>
+  <div class="aside-logo drag" bind:this={contentDom}>
     {@render logo()}
   </div>
 {/if}
@@ -50,7 +50,6 @@
     padding: 20px;
     // font-weight: bold;
     color: var(--color-primary-dark-100-alpha-200);
-    -webkit-app-region: drag;
     svg {
       filter: drop-shadow(0 0 4px rgb(0 0 0 / 16%));
     }

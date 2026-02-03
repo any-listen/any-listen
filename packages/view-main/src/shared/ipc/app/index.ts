@@ -25,6 +25,9 @@ export const closeWindow = async () => {
 export const closeWindowForce = async () => {
   return ipc.closeWindow(true)
 }
+export const fullscreenWindow = async (isFull: boolean) => {
+  return ipc.fullscreenWindow(isFull)
+}
 export const showOpenDialog: AnyListen.IPC.ServerIPC['showOpenDialog'] = async (opts) => {
   if (import.meta.env.VITE_IS_WEB) {
     return showFileSelectModal(opts)

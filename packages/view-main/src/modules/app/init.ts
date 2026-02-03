@@ -10,6 +10,7 @@ import { settingState } from '../setting/store/state'
 import { onConnected, onRelease } from './shared'
 import { getMachineId, sendInitedEvent, setFullScreen, setMachineId, setWorkerInitPromise } from './store/action'
 import { appEvent } from './store/event'
+import { appState } from './store/state'
 
 const init = async () => {
   const machineId = await getMachineId()
@@ -90,6 +91,18 @@ export const initApp = () => {
     if (evt.inputing) return
     evt.event?.preventDefault()
   })
+  if (import.meta.env.VITE_IS_DESKTOP) {
+    keyboardEvent.on('f11_down', (evt) => {
+      if (evt.inputing || evt.event?.repeat) return
+      evt.event?.preventDefault()
+      setFullScreen(!appState.isFullscreen)
+    })
+    keyboardEvent.on('escape_down', (evt) => {
+      if (evt.inputing || evt.event?.repeat || !appState.isFullscreen) return
+      evt.event?.preventDefault()
+      setFullScreen(false)
+    })
+  }
   if (import.meta.env.VITE_IS_WEB) {
     onRelease(() => {
       handleRelease()

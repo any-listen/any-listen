@@ -16,7 +16,7 @@ console.log('preload win main')
 export type ExposeFunctions = AnyListen.IPC.ClientIPCActions<IPCSocket>
 export type ExposeServerFunctions = Omit<
   AnyListen.IPC.ServerIPC,
-  'showOpenDialog' | 'showSaveDialog' | 'openDirInExplorer' | 'openDevTools' | 'getSystemFonts'
+  'showOpenDialog' | 'showSaveDialog' | 'openDirInExplorer' | 'openDevTools' | 'getSystemFonts' | 'minWindow' | 'fullscreenWindow'
 >
 export type ClientCall = AnyListen.IPC.ClientIPC
 

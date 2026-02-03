@@ -7,6 +7,8 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
   minWindow: () => void
   /** 关闭窗口 */
   closeWindow: (isForce?: boolean) => void
+  /** 全屏窗口 */
+  fullscreenWindow: (isFull: boolean) => void
 
   showOpenDialog: (options: AnyListen.OpenDialogOptions) => Promise<AnyListen.OpenDialogResult>
   showSaveDialog: (options: AnyListen.SaveDialogOptions) => Promise<AnyListen.SaveDialogResult>

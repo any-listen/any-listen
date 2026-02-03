@@ -10,6 +10,7 @@ import {
   closeWindow,
   getCacheSize as getAppCacheSize,
   minimize,
+  setFullScreen,
   showOpenDialog,
   showSaveDialog,
   toggleDevTools,
@@ -39,6 +40,9 @@ export const createExposeApp = () => {
         return
       }
       closeWindow()
+    },
+    async fullscreenWindow(event, isFull) {
+      setFullScreen(isFull)
     },
 
     async showOpenDialog(event, opts) {

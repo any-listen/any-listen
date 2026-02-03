@@ -8,7 +8,7 @@
 </script>
 
 {#if import.meta.env.VITE_IS_DESKTOP}
-  <div class="toolbar" class:fullscreen={isFullscreen}>
+  <div class="toolbar drag" class:fullscreen={isFullscreen}>
     <div class="left">
       <SearchInput />
     </div>
@@ -40,12 +40,8 @@
     align-items: center;
     height: @height-toolbar;
     // justify-content: space-between;
-    -webkit-app-region: drag;
     // background-color: var(--background-color);
     // border-bottom: 1px solid var(--color-border);
-    &.fullscreen {
-      -webkit-app-region: no-drag;
-    }
 
     // &:before {
     //   .mixin-after();
@@ -67,7 +63,6 @@
     height: 100%;
     margin-left: 12px;
     :global(.search-input) {
-      -webkit-app-region: no-drag;
       // background-color: transparent;
       // border-bottom: 2px solid var(--color-primary-background);
       &::placeholder {
@@ -86,10 +81,8 @@
   //   text-align: center;
   //   line-height: @height-toolbar;
   //   font-weight: bold;
-  //   // -webkit-app-region: no-drag;
   // }
   // .search {
-  //   -webkit-app-region: no-drag;
   //   margin-left: 20px;
   //   :global(.searchInput) {
   //     background-color: transparent;

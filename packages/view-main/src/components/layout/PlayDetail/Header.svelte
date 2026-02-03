@@ -42,7 +42,7 @@
 </script>
 
 {#snippet content()}
-  <div bind:this={domBtns} class="control-btn">
+  <div bind:this={domBtns} class="control-btn no-drag">
     <button
       type="button"
       class="hide"
@@ -61,7 +61,7 @@
 {/snippet}
 
 {#if import.meta.env.VITE_IS_DESKTOP}
-  <div class="header" class:fullscreen={isFullscreen}>
+  <div class="header drag" class:fullscreen={isFullscreen}>
     {@render content()}
   </div>
 {/if}
@@ -74,7 +74,6 @@
 <style lang="less">
   :global(.fullscreen) {
     .header {
-      -webkit-app-region: no-drag;
       align-self: flex-start;
       // .control-btn {
       //   .close,
@@ -93,14 +92,12 @@
     flex: 0 0 @height-toolbar;
     align-self: flex-start;
     width: 100%;
-    -webkit-app-region: drag;
 
     .control-btn {
       position: absolute;
       top: 0;
       right: 0;
       display: flex;
-      -webkit-app-region: no-drag;
 
       button {
         position: relative;

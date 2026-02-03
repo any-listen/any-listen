@@ -99,7 +99,7 @@
   }
 </script>
 
-<div class="search-input">
+<div class="search-input no-drag">
   <div class={['content', { active: isFocus, small, big }]}>
     <div class="form">
       <input
@@ -193,7 +193,6 @@
     position: relative;
     width: var(--width, 35%);
     height: @height-toolbar * 0.52;
-    -webkit-app-region: no-drag;
   }
   .content {
     position: absolute;

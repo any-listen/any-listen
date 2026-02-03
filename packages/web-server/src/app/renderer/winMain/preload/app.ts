@@ -53,9 +53,9 @@ export const createClientApp = (ipcSocket: IPCSocket) => {
     async inited() {
       return ipcSocket.remote.inited()
     },
-    async minWindow() {
-      // return ipcSocket.remote.minWindow()
-    },
+    // async minWindow() {
+    //   return ipcSocket.remote.minWindow()
+    // },
     async closeWindow(isForce) {
       await ipcSocket.logout()
       if (isForce) window.close()

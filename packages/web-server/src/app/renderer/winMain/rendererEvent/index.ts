@@ -22,6 +22,7 @@ export type ExposeClientFunctions = Omit<
   AnyListen.IPC.ServerIPCActions<ServerSocketWinMain>,
   | 'closeWindow'
   | 'minWindow'
+  | 'fullscreenWindow'
   | 'getHotkeyStatus'
   | 'createDesktopLyricProcess'
   | 'showOpenDialog'

@@ -1,3 +1,4 @@
+import { fullscreenWindow } from '@/shared/ipc/app'
 import { appEvent } from './event'
 import { appState } from './state'
 
@@ -25,6 +26,7 @@ export const setFullScreen = (isFullscreen: boolean) => {
   if (import.meta.env.VITE_IS_DESKTOP) {
     const offset = window.dt || isFullscreen ? 0 : 8
     setRootOffset(offset, offset)
+    void fullscreenWindow(isFullscreen)
   }
   appEvent.fullscreen(isFullscreen)
 }

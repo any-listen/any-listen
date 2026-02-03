@@ -66,7 +66,6 @@
     flex: none;
     align-self: flex-start;
     height: 30px;
-    -webkit-app-region: no-drag;
 
     .btn {
       position: relative;

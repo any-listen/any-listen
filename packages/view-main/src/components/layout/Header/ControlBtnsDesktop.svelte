@@ -40,7 +40,7 @@
   })
 </script>
 
-<div class="control" bind:this={domBtns}>
+<div class="control no-drag" bind:this={domBtns}>
   <!-- <a
     tabindex="0"
     role="button"
@@ -85,7 +85,6 @@
     flex: none;
     align-self: flex-start;
     height: 30px;
-    -webkit-app-region: no-drag;
 
     .btn {
       position: relative;

@@ -71,11 +71,9 @@
     contain: strict;
     color: var(--color-font);
     background-color: var(--color-content-background);
-    // -webkit-app-region: drag;
     // overflow: hidden;
     border-radius: @radius-border;
     // border-left: 12px solid var(--color-primary-alpha-900);
-    -webkit-app-region: no-drag;
     // will-change: transform;
 
     &.dybg {

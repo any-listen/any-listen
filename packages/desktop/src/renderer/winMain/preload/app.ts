@@ -58,6 +58,9 @@ export const createClientApp = (main: MainCall) => {
     async closeWindow(isForce) {
       return main.closeWindow(isForce)
     },
+    async fullscreenWindow(isFull) {
+      return main.fullscreenWindow(isFull)
+    },
     async showOpenDialog(opts) {
       return main.showOpenDialog(opts)
     },

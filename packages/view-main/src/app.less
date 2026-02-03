@@ -2,6 +2,67 @@
 
 html {
   height: 100vh;
+
+  &.desktop {
+    &.transparent:not(.fullscreen) {
+      padding: @shadow-app;
+      background: transparent;
+      #body {
+        border-radius: @radius-border;
+      }
+      #root {
+        border-radius: @radius-border;
+        box-shadow: 0 0 @shadow-app rgb(0 0 0 / 50%);
+      }
+    }
+    &.disable-transparent {
+      &:not(.mac) #body {
+        border: 1px solid var(--color-primary-light-500);
+      }
+    }
+    &.fullscreen {
+      background-color: var(--color-content-background);
+
+      .drag {
+        -webkit-app-region: no-drag;
+      }
+    }
+
+    .drag {
+      -webkit-app-region: drag;
+    }
+    .no-drag {
+      -webkit-app-region: no-drag;
+    }
+  }
+
+  &.web {
+    &:not(.fullscreen) {
+      padding: @shadow-app;
+      background: transparent;
+      #body {
+        border-radius: @radius-border;
+      }
+      #root {
+        border-radius: @radius-border;
+        box-shadow: 0 0 @shadow-app rgb(0 0 0 / 30%);
+      }
+    }
+    &.fullscreen {
+      min-width: 650px;
+      min-height: 400px;
+    }
+    // background-color: var(--color-content-background) !important;
+    // #right {
+    //   border-top-left-radius: 0;
+    //   border-bottom-left-radius: 0;
+    // }
+  }
+
+  &.disable-animation * {
+    transition: none !important;
+    animation: none !important;
+  }
 }
 // html, body {
 //   // overflow: hidden;
@@ -40,61 +101,6 @@ body {
     backdrop-filter: blur(var(--background-blur));
     // z-index: -1;
   }
-}
-
-.disable-animation * {
-  transition: none !important;
-  animation: none !important;
-}
-
-.transparent {
-  padding: @shadow-app;
-  background: transparent;
-  #body {
-    border-radius: @radius-border;
-  }
-  #root {
-    border-radius: @radius-border;
-    box-shadow: 0 0 @shadow-app rgb(0 0 0 / 50%);
-  }
-}
-html.web {
-  &:not(.fullscreen) {
-    padding: @shadow-app;
-    background: transparent;
-    #body {
-      border-radius: @radius-border;
-    }
-    #root {
-      border-radius: @radius-border;
-      box-shadow: 0 0 @shadow-app rgb(0 0 0 / 30%);
-    }
-  }
-  &.fullscreen {
-    min-width: 650px;
-    min-height: 400px;
-  }
-  // background-color: var(--color-content-background) !important;
-  // #right {
-  //   border-top-left-radius: 0;
-  //   border-bottom-left-radius: 0;
-  // }
-}
-
-.disable-transparent {
-  background-color: var(--color-content-background);
-
-  &:not(.mac) #body {
-    border: 1px solid var(--color-primary-light-500);
-  }
-}
-html.fullscreen:not(.web) {
-  background-color: var(--color-content-background);
-
-  // #right {
-  //   border-top-left-radius: 0;
-  //   border-bottom-left-radius: 0;
-  // }
 }
 
 // #container {
