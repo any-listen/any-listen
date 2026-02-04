@@ -111,6 +111,8 @@
   "exts.webdav.servers.name": "WebDAV Service List",
   "find_music": "Song search",
   "find_music_exit": "Exit search",
+  "fullscreen": "Full screen",
+  "fullscreen_exit": "Exit full screen",
   "is_enabled": "Enabled",
   "list_name__default": "Listening list",
   "list_name__last_play": "Play history",

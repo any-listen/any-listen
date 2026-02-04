@@ -1,10 +1,11 @@
 <script lang="ts">
   import { setMaximized, windowDarg } from '@/shared/browser/widnow.svelte'
   import { t } from '@/plugins/i18n'
-  import { setShowPlayDetail } from '@/modules/playDetail/store/commit'
+  import { setShowPlayDetail } from '@/modules/playDetail/store/action'
   import { onMount } from 'svelte'
   import { appEvent } from '@/modules/app/store/event'
   import { useIsFullscreen } from '@/modules/app/reactive.svelte'
+  import { setFullScreen } from '@/modules/app/store/action'
 
   const fullscreenState = useIsFullscreen()
 
@@ -46,11 +47,26 @@
 
 {#snippet content()}
   <div bind:this={domBtns} class="control-btn no-drag">
+    {#if import.meta.env.VITE_IS_DESKTOP}
+      {#if fullscreenState.isFullscreen}
+        <button
+          type="button"
+          class="fullscreen"
+          aria-label={$t('fullscreen_exit')}
+          onclick={() => {
+            setFullScreen(false)
+          }}
+        >
+          <svg version="1.1" height="60%" viewBox="0 0 24 24">
+            <use xlink:href="#icon-window-fullscreen-exit" />
+          </svg>
+        </button>
+      {/if}
+    {/if}
     {#if import.meta.env.VITE_IS_WEB}
       <button
         type="button"
         class="fullscreen"
-        aria-pressed={fullscreenState.isFullscreen}
         aria-label={fullscreenState.isFullscreen ? $t('maximized_exit') : $t('maximized')}
         onclick={() => {
           setMaximized(!fullscreenState.isFullscreen)

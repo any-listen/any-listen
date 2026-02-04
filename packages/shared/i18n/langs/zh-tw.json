@@ -111,6 +111,8 @@
   "exts.webdav.servers.name": "WebDAV服務列表",
   "find_music": "歌曲查找",
   "find_music_exit": "退出查找",
+  "fullscreen": "全螢幕",
+  "fullscreen_exit": "退出全屏",
   "is_enabled": "啟用",
   "list_name__default": "試聽列表",
   "list_name__last_play": "播放歷史",
