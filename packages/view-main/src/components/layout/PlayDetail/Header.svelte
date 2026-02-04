@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { windowDarg } from '@/shared/browser/widnow.svelte'
+  import { setMaximized, windowDarg } from '@/shared/browser/widnow.svelte'
   import { t } from '@/plugins/i18n'
   import { setShowPlayDetail } from '@/modules/playDetail/store/commit'
   import { onMount } from 'svelte'
   import { appEvent } from '@/modules/app/store/event'
+  import { useIsFullscreen } from '@/modules/app/reactive.svelte'
+
+  const fullscreenState = useIsFullscreen()
 
   let domBtns = $state<HTMLDivElement>()
 
@@ -43,6 +46,21 @@
 
 {#snippet content()}
   <div bind:this={domBtns} class="control-btn no-drag">
+    {#if import.meta.env.VITE_IS_WEB}
+      <button
+        type="button"
+        class="fullscreen"
+        aria-pressed={fullscreenState.isFullscreen}
+        aria-label={fullscreenState.isFullscreen ? $t('maximized_exit') : $t('maximized')}
+        onclick={() => {
+          setMaximized(!fullscreenState.isFullscreen)
+        }}
+      >
+        <svg version="1.1" height="60%" viewBox="0 0 24 24">
+          <use xlink:href={fullscreenState.isFullscreen ? '#icon-window-restore' : '#icon-window-maximize'} />
+        </svg>
+      </button>
+    {/if}
     <button
       type="button"
       class="hide"
