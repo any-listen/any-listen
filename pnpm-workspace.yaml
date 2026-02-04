@@ -11,6 +11,7 @@ onlyBuiltDependencies:
   - svelte-preprocess
 
 overrides:
+  '@isaacs/brace-expansion@<=5.0.0': '>=5.0.1'
   '@types/ws': 8.5.4
   depd: latest
   diff@<4.0.4: '>=4.0.4'
