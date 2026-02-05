@@ -48,6 +48,9 @@ export const createClientList = (ipcSocket: IPCSocket) => {
     async syncUserList(id) {
       return ipcSocket.remoteQueueList.syncUserList(id)
     },
+    async parseMusicMetadata(listId, musicInfo) {
+      return ipcSocket.remoteQueueList.parseMusicMetadata(listId, musicInfo)
+    },
     async sortListMusics(id, list, type) {
       return ipcSocket.remoteQueueList.sortListMusics(id, list, type)
     },

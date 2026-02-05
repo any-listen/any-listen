@@ -77,6 +77,7 @@ export const typescriptRule = {
   '@typescript-eslint/no-unsafe-assignment': 'off',
   '@typescript-eslint/no-unnecessary-type-conversion': 'off',
   '@typescript-eslint/no-explicit-any': 'warn',
+  '@typescript-eslint/strict-void-return': 'off',
 
   '@typescript-eslint/no-confusing-void-expression': [
     'error',

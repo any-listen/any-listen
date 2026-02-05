@@ -13,6 +13,7 @@ declare namespace AnyListen {
       deviceId: string
       path: string
       includeSubDir: boolean
+      lazzyParseMeta?: boolean
       enabledRemove?: boolean
     }
     interface UserListInfoByOnlineMeta extends UserListInfoBaseMeta {
@@ -25,6 +26,7 @@ declare namespace AnyListen {
     interface UserListInfoByRemoteMeta extends UserListInfoBaseMeta {
       extensionId: string
       source: string
+      lazzyParseMeta?: boolean
       syncTime: number
       [key: string]: unknown
     }

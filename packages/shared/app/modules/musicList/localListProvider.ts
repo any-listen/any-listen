@@ -54,11 +54,31 @@ const state = {
   syncing: false,
   waitingSyncLists: [] as AnyListen.List.LocalListInfo[],
 }
-const handleAddMusics = async (listId: string, filePaths: string[], index = -1) => {
+const handleMusicsParse = async (listId: string, list: AnyListen.Music.MusicInfoLocal[], index = -1) => {
+  // console.log(index + 1, index + 101)
+  const musics = list.slice(index + 1, index + 101)
+  let musicInfos = await workers.utilService.parseLocalMusicInfosMetadata(musics)
+  if (musicInfos.length) {
+    await musicListEvent.listAction({
+      action: 'list_music_update',
+      data: musicInfos.map((music) => {
+        return {
+          id: listId,
+          musicInfo: music,
+        }
+      }),
+    })
+  }
+  index += 100
+  if (list.length - 1 > index) {
+    musicInfos = [...musicInfos, ...(await handleMusicsParse(listId, list, index))]
+  }
+  return musicInfos
+}
+const handleCreateAndAddMusics = async (listId: string, filePaths: string[], index = -1) => {
   // console.log(index + 1, index + 101)
   const paths = filePaths.slice(index + 1, index + 101)
-  const musicInfos = await workers.utilService.createLocalMusicInfos(paths)
-  let failedCount = paths.length - musicInfos.length
+  let musicInfos = await workers.utilService.createLocalMusicInfos(paths, false)
   if (musicInfos.length) {
     const addMusicLocationType = index > -1 ? 'bottom' : getSettings()['list.addMusicLocationType']
     await musicListEvent.listAction({
@@ -72,14 +92,34 @@ const handleAddMusics = async (listId: string, filePaths: string[], index = -1) 
   }
   index += 100
   if (filePaths.length - 1 > index) {
-    failedCount += await handleAddMusics(listId, filePaths, index)
+    musicInfos = [...musicInfos, ...(await handleCreateAndAddMusics(listId, filePaths, index))]
   }
-  return failedCount
+  return musicInfos
+}
+export const handleAddMusics = async (listId: string, filePaths: string[], parseMetadata: boolean) => {
+  const musics = await handleCreateAndAddMusics(listId, filePaths)
+  if (parseMetadata) {
+    const parsedMusicInfos = await handleMusicsParse(listId, musics)
+    if (musics.length !== parsedMusicInfos.length) {
+      const failedIds = new Set<string>(musics.map((m) => m.id))
+      for (const m of parsedMusicInfos) failedIds.delete(m.id)
+      await musicListEvent.listAction({
+        action: 'list_music_remove',
+        data: {
+          listId,
+          ids: Array.from(failedIds),
+          sync: true,
+        },
+      })
+    }
+    return parsedMusicInfos.length
+  }
+  return musics.length
 }
 const handleChangeMusics = async (listId: string, filePaths: string[], index = -1) => {
   // console.log(index + 1, index + 101)
   const paths = filePaths.slice(index + 1, index + 101)
-  const musicInfos = await workers.utilService.createLocalMusicInfos(paths)
+  const musicInfos = await workers.utilService.createLocalMusicInfos(paths, true)
   let failedCount = paths.length - musicInfos.length
   if (musicInfos.length) {
     await musicListEvent.listAction({
@@ -98,8 +138,8 @@ const handleChangeMusics = async (listId: string, filePaths: string[], index = -
   }
   return failedCount
 }
-const handleReadyWatcher = async (listId: string, files: string[]) => {
-  const musics = await workers.dbService.getListMusics(listId)
+const handleReadyWatcher = async (listId: string, files: string[], parseMetadata: boolean) => {
+  const musics = (await workers.dbService.getListMusics(listId)) as AnyListen.Music.MusicInfoLocal[]
   const remoteIds = new Set(files)
   const newMusicIds = new Set<string>()
   const removedMusicIds = new Set<string>()
@@ -126,14 +166,19 @@ const handleReadyWatcher = async (listId: string, files: string[]) => {
       },
     })
   }
-  await handleAddMusics(listId, Array.from(newMusicIds))
+  if (newMusicIds.size) await handleAddMusics(listId, Array.from(newMusicIds), parseMetadata)
+  if (parseMetadata) {
+    const unparsedMusics = musics.filter((m) => m.meta.unparsed)
+    if (!unparsedMusics.length) return
+    await handleMusicsParse(listId, unparsedMusics)
+  }
 }
-const handleMusicAdd = async (listId: string, paths: string[]) => {
+const handleMusicAdd = async (listId: string, paths: string[], parseMetadata: boolean) => {
   const musics = await workers.dbService.getListMusics(listId)
   const musicIds = new Set(musics.map((m) => m.id))
   const newIds = paths.filter((p) => !musicIds.has(p))
   if (!newIds.length) return
-  await handleAddMusics(listId, newIds)
+  await handleAddMusics(listId, newIds, parseMetadata)
 }
 const handleMusicRemove = async (listId: string, paths: string[]) => {
   const musics = await workers.dbService.getListMusics(listId)
@@ -205,7 +250,7 @@ const syncList = async (list: AnyListen.List.LocalListInfo) => {
     //   change: changedFiles.length,
     // })
     if (removedFiles.length) await handleMusicRemove(list.id, removedFiles)
-    if (addFiles.length) await handleMusicAdd(list.id, addFiles)
+    if (addFiles.length) await handleMusicAdd(list.id, addFiles, list.meta.lazzyParseMeta !== true)
     if (changedFiles.length) await handleMusicChanged(list.id, changedFiles)
   }, 1000)
   const onFileProxy = proxyCallback((action: FileAction, path: string, ctimeMs?: number, mtimeMs?: number, size?: number) => {
@@ -231,7 +276,7 @@ const syncList = async (list: AnyListen.List.LocalListInfo) => {
       const idx = addFiles.indexOf(id)
       if (idx !== -1) addFiles.splice(idx, 1)
     }
-    await handleReadyWatcher(list.id, addFiles)
+    await handleReadyWatcher(list.id, addFiles, list.meta.lazzyParseMeta !== true)
     ready = true
     // console.log(`Local list watcher ready: ${list.name} (${list.id})`)
     promiseFuncs[0]()
@@ -415,4 +460,20 @@ export const sortLocalListMusics = async (
         reject(err)
       })
   })
+}
+
+export const parseLocalMusicInfoMetadata = async (
+  musicInfo: AnyListen.Music.MusicInfoLocal
+): Promise<AnyListen.Music.MusicInfoLocal | null> => {
+  const info = await workers.utilService.parseLocalMusicInfoMetadata(musicInfo.meta.filePath)
+  if (!info) return null
+  const { meta, ...base } = info
+  return {
+    ...musicInfo,
+    ...base,
+    meta: {
+      ...musicInfo.meta,
+      ...meta,
+    },
+  }
 }

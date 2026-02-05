@@ -103,27 +103,27 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
           switch (s.type) {
             case 'input':
               return {
+                type: s.type,
                 field: String(s.field),
                 name: String(s.name),
                 description: String(s.description),
-                type: s.type,
                 textarea: Boolean(s.textarea),
                 default: String(s.default),
               }
             case 'boolean':
               return {
+                type: s.type,
                 field: String(s.field),
                 name: String(s.name),
                 description: String(s.description),
-                type: s.type,
                 default: Boolean(s.default),
               }
             case 'selection':
               return {
+                type: s.type,
                 field: String(s.field),
                 name: String(s.name),
                 description: String(s.description),
-                type: s.type,
                 default: String(s.default),
                 enum: s.enum.map((e) => String(e)),
                 enumName: s.enumName.map((e) => String(e)),
@@ -151,30 +151,35 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
             switch (s.type) {
               case 'input':
                 return {
+                  type: s.type,
                   field: String(s.field),
                   name: String(s.name),
                   description: String(s.description),
-                  type: s.type,
                   textarea: Boolean(s.textarea),
                   default: String(s.default),
                 }
               case 'boolean':
                 return {
+                  type: s.type,
                   field: String(s.field),
                   name: String(s.name),
                   description: String(s.description),
-                  type: s.type,
                   default: Boolean(s.default),
                 }
               case 'selection':
                 return {
+                  type: s.type,
                   field: String(s.field),
                   name: String(s.name),
                   description: String(s.description),
-                  type: s.type,
                   default: String(s.default),
                   enum: s.enum.map((e) => String(e)),
                   enumName: s.enumName.map((e) => String(e)),
+                }
+              case 'lazzyParseMeta':
+                return {
+                  type: s.type,
+                  default: Boolean(s.default),
                 }
               // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
               default:

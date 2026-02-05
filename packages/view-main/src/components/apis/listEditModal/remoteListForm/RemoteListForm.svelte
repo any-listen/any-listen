@@ -41,6 +41,16 @@
     const extId = provider.extensionId
     return (
       provider.form.map((s) => {
+        if (s.type == 'lazzyParseMeta') {
+          return {
+            type: 'boolean',
+            default: s.default,
+            value: listInfo.meta.lazzyParseMeta ?? false,
+            name: i18n.t('edit_list_modal.lazzy_parse_meta'),
+            description: i18n.t('edit_list_modal.lazzy_parse_meta_tip'),
+            field: 'lazzyParseMeta',
+          } satisfies AnyListen.Extension.FormValueItem
+        }
         const ss = {
           ...s,
           value: listInfo.meta[s.field] as any,

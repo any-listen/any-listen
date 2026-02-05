@@ -26,6 +26,7 @@ export {
   getListPrevSelectId,
   getListScrollPosition,
   getMusicExistListIds,
+  parseMusicMetadata,
   saveListPrevSelectId,
   saveListScrollPosition,
   sortListMusics,

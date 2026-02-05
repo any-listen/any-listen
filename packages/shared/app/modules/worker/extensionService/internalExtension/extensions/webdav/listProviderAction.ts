@@ -251,6 +251,7 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
             isLocal: false,
             interval: null,
             meta: {
+              unparsed: true,
               createTime: 0,
               musicId: id,
               albumName: '',
@@ -275,7 +276,7 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
     if (!url || typeof url !== 'string' || !musicInfo.meta.path || typeof musicInfo.meta.path !== 'string') return musicInfo
     const options = await getWebDAVOptionsByMusicInfo(musicInfo)
     const meta = await parseMusicMetadata(options, options.path, (musicInfo.meta.size as number) || 0)
-    if (!meta) throw new Error('No metadata found')
+    if (!meta) return { ...musicInfo, meta: { ...musicInfo.meta, unparsed: false } }
     return {
       ...musicInfo,
       name: meta.name || musicInfo.name,
@@ -283,6 +284,7 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
       interval: meta.interval || musicInfo.interval,
       meta: {
         ...musicInfo.meta,
+        unparsed: false,
         albumName: meta.albumName || musicInfo.meta.albumName || '',
         year: meta.year || musicInfo.meta.year || 0,
         bitrateLabel: meta.bitrateLabel || musicInfo.meta.bitrateLabel || '',

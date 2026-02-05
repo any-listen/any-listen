@@ -30,6 +30,8 @@
   "desktop_lyric__unlock": "Unlock desktop lyrics",
   "donate": "Donate ❤️",
   "duplicate_music": "Duplicate song",
+  "edit_list_modal.lazzy_parse_meta": "Delayed parsing of song tag information",
+  "edit_list_modal.lazzy_parse_meta_tip": "When enabled, songs will be quickly added to the list, but the song name will be temporarily displayed using the file name, and the song tag information will be parsed when needed.",
   "edit_list_modal.local_list_form.path_device_diff": "The list is not created natively, so the list data is not synchronized natively",
   "edit_list_modal.local_list_form.path_edit": "Select a folder",
   "edit_list_modal.local_list_form.path_empty": "Please select the song folder",

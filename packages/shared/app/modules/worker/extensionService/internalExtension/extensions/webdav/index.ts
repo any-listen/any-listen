@@ -89,6 +89,10 @@ export const pkg: AnyListen.Extension.Manifest = {
             type: 'boolean',
             default: false,
           },
+          {
+            type: 'lazzyParseMeta',
+            default: false,
+          },
         ],
       },
     ],

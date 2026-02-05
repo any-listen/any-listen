@@ -1,5 +1,14 @@
-export const extensionState = {
+export const extensionState: {
+  extensionDir: string
+  crashMessage: string | null
+  // extensionList: AnyListen.Extension.Extension[]
+  resources: AnyListen.Extension.ResourceList
+} = {
   extensionDir: '',
-  crashMessage: null as string | null,
-  // extensionList: [] as AnyListen.Extension.Extension[],
+  crashMessage: null,
+  // extensionList: [],
+  resources: {
+    resources: {},
+    listProvider: [],
+  },
 }

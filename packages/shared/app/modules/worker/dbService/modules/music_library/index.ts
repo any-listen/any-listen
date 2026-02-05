@@ -540,17 +540,24 @@ export const musicPicUpdate = (listId: string, musicId: string, picUrl: string) 
  * 更新歌曲基本信息
  * @param musicInfos 歌曲&列表信息
  */
-export const musicBaseInfoUpdate = (listId: string, musicInfo: AnyListen.Music.MusicInfo) => {
+export const musicBaseInfosUpdate = (listId: string, musicInfos: AnyListen.Music.MusicInfo[]) => {
   let targetList = musicLists.get(listId)
   if (!targetList) {
     targetList = getListMusics(listId)
     musicLists.set(listId, targetList)
   }
-  const targetInfo = targetList.find((item) => item.id == musicInfo.id)
-  if (!targetInfo) return
-  musicInfo.meta.picUrl = targetInfo.meta.picUrl
-  musicsUpdate([{ id: listId, musicInfo }])
-  return musicInfo
+  const infosMap = new Map<string, AnyListen.Music.MusicInfo>()
+  for (const item of musicInfos) infosMap.set(item.id, item)
+  let updatedInfos: AnyListen.Music.MusicInfo[] = []
+  for (const targetInfo of targetList) {
+    const musicInfo = infosMap.get(targetInfo.id)
+    if (musicInfo) {
+      musicInfo.meta.picUrl ||= targetInfo.meta.picUrl
+      updatedInfos.push(musicInfo)
+    }
+  }
+  musicsUpdate(updatedInfos.map((musicInfo) => ({ id: listId, musicInfo })))
+  return updatedInfos
 }
 
 /**

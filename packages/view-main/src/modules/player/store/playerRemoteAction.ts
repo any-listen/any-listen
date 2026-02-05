@@ -4,6 +4,7 @@ import { createCache } from '@any-listen/common/cache'
 import * as commit from './commit'
 
 import { lyricEvent } from '@/modules/lyric/store/event'
+import { musicLibraryEvent } from '@/modules/musicLibrary/store/event'
 import { playerActionEvent, playHistoryListActionEvent } from '@/shared/ipc/player/event'
 import { playerEvent } from './event'
 import { pause, play, playId, seekTo, setCollectStatus, skipNext, skipPrev, togglePlay } from './playerActions'
@@ -55,12 +56,60 @@ export const getMusicPic = async (info: AnyListen.IPCMusic.GetMusicPicInfo) => {
   return urlInfo
 }
 
+// const runDelayPicTimeout = (info: AnyListen.IPCMusic.GetMusicPicInfo, onUrl: (url: string) => void, isCanceled: () => boolean, ) => {
+//   let timeout: number | null = setTimeout(() => {
+//     timeout = null
+//     void handleGetMusicPicFromRemote(info).then((urlInfo) => {
+//       picCache.set(info.musicInfo.id, urlInfo)
+//       picCacheQueue.push(info.musicInfo.id)
+//       if (picCacheQueue.length > 100) {
+//         picCache.delete(picCacheQueue.shift()!)
+//       }
+//       if (isCanceled) return
+//       onUrl(urlInfo.url)
+//     })
+//   }, 1000)
+// }
+const findUpdatedMusic = (targetId: string, infos: Map<string, AnyListen.Music.MusicInfo[]>) => {
+  for (const list of infos.values()) {
+    for (const m of list) {
+      if (m.id === targetId) {
+        return m
+      }
+    }
+  }
+  return null
+}
 export const getMusicPicDelay = (info: AnyListen.IPCMusic.GetMusicPicInfo, onUrl: (url: string) => void) => {
   if (picCache.has(info.musicInfo.id)) {
     onUrl(picCache.get(info.musicInfo.id)!.url)
     return
   }
   let isCanceled = false
+  const unsub = musicLibraryEvent.on('listMusicUpdated', (infos) => {
+    if (isCanceled) return
+    let targetMusic = findUpdatedMusic(info.musicInfo.id, infos)
+    if (!targetMusic) return
+    if (targetMusic.meta.picUrl) onUrl(targetMusic.meta.picUrl)
+    else if (targetMusic.meta.unparsed != info.musicInfo.meta.unparsed) {
+      // Metadata has been parsed, fetch the pic again
+      void handleGetMusicPicFromRemote(info).then((urlInfo) => {
+        picCache.set(info.musicInfo.id, urlInfo)
+        picCacheQueue.push(info.musicInfo.id)
+        if (picCacheQueue.length > 100) {
+          picCache.delete(picCacheQueue.shift()!)
+        }
+        if (isCanceled) return
+        onUrl(urlInfo.url)
+      })
+    }
+  })
+  if (info.musicInfo.meta.unparsed) {
+    return () => {
+      unsub()
+      isCanceled = true
+    }
+  }
   let timeout: number | null = setTimeout(() => {
     timeout = null
     void handleGetMusicPicFromRemote(info).then((urlInfo) => {
@@ -74,8 +123,9 @@ export const getMusicPicDelay = (info: AnyListen.IPCMusic.GetMusicPicInfo, onUrl
     })
   }, 1000)
   return () => {
-    if (!timeout) return
+    unsub()
     isCanceled = true
+    if (!timeout) return
     clearTimeout(timeout)
   }
 }

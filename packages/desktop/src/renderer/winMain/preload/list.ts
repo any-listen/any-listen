@@ -47,6 +47,9 @@ export const createClientList = (main: MainCall) => {
     async syncUserList(id) {
       return main.syncUserList(id)
     },
+    async parseMusicMetadata(listId, musicInfo) {
+      return main.parseMusicMetadata(listId, musicInfo)
+    },
     async sortListMusics(id, list, type) {
       return main.sortListMusics(id, list, type)
     },

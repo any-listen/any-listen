@@ -10,7 +10,7 @@ import {
   sleep,
 } from '@any-listen/nodejs'
 import { decodeString } from '@any-listen/nodejs/char'
-import { getFileLyric, getFilePic, parseFileMetadata } from '@any-listen/nodejs/music'
+import { buildFileMetadata, getFileLyric, getFilePic } from '@any-listen/nodejs/music'
 
 let removeFile = nodeRemoveFile
 export const setRemoveFile = (func: (filePath: string) => Promise<void>) => {
@@ -91,12 +91,16 @@ export const getMusicFilePath = async (musicInfo: AnyListen.Music.MusicInfo, sav
 /**
  * 创建本地音乐信息对象
  * @param path 文件路径
+ * @param parseMetadata 是否解析元数据
  * @returns
  */
-export const createLocalMusicInfo = async (path: string): Promise<AnyListen.Music.MusicInfoLocal | null> => {
-  let result = await parseFileMetadata(path)
+export const createLocalMusicInfo = async (
+  path: string,
+  parseMetadata: boolean
+): Promise<AnyListen.Music.MusicInfoLocal | null> => {
+  let result = await buildFileMetadata(path, parseMetadata)
   if (!result) return null
-  const { name, singer, interval, albumName, sizeStr, ext, bitrateLabel, year } = result
+  const { unparsed, name, singer, interval, albumName, sizeStr, ext, bitrateLabel, year } = result
 
   const now = Date.now()
 
@@ -108,6 +112,7 @@ export const createLocalMusicInfo = async (path: string): Promise<AnyListen.Musi
     interval,
     meta: {
       musicId: path,
+      unparsed,
       albumName,
       filePath: path,
       picUrl: '',
@@ -120,6 +125,25 @@ export const createLocalMusicInfo = async (path: string): Promise<AnyListen.Musi
       posTime: now,
     },
   } satisfies AnyListen.Music.MusicInfoLocal
+}
+export const parseLocalMusicInfoMetadata = async (path: string) => {
+  let result = await buildFileMetadata(path, true)
+  if (!result) return null
+  const { name, singer, interval, albumName, sizeStr, ext, bitrateLabel, year } = result
+  return {
+    name,
+    singer,
+    interval,
+    meta: {
+      unparsed: false,
+      albumName,
+      ext,
+      bitrateLabel,
+      sizeStr,
+      year,
+      updateTime: Date.now(),
+    },
+  }
 }
 
 const tryPicExt = ['.jpg', '.jpeg', '.png'] as const

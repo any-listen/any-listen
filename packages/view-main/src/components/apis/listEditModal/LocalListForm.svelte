@@ -24,6 +24,7 @@
       deviceId: '',
       path: '',
       includeSubDir: false,
+      lazzyParseMeta: false,
       createTime: 0,
       updateTime: 0,
       desc: '',
@@ -129,6 +130,17 @@
       label={$t('edit_list_modal.local_list_form.path_enabled_remove')}
     />
     <p class="tip">{$t('edit_list_modal.local_list_form.path_enabled_remove_tip')}</p>
+  </FormItem>
+  <FormItem>
+    <Checkbox
+      id="lazzy_parse_meta"
+      checked={listInfo.meta.lazzyParseMeta || false}
+      onchange={(checked) => {
+        listInfo.meta.lazzyParseMeta = checked
+      }}
+      label={$t('edit_list_modal.lazzy_parse_meta')}
+    />
+    <p class="tip">{$t('edit_list_modal.lazzy_parse_meta_tip')}</p>
   </FormItem>
 </main>
 

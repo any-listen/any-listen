@@ -4,6 +4,7 @@ import { winMainReadyEvent } from '../../common/event'
 import { musicListEvent, sendMusicListAction, updateMusicBaseInfo } from '../../modules/musicList'
 import { workers } from '../worker'
 import { extensionEvent } from './event'
+import { extensionState } from './state'
 
 export const verifyListCreate = async (info: AnyListen.List.RemoteListInfo) => {
   await workers.extensionService.listProviderAction('createList', {
@@ -55,6 +56,58 @@ export const sortUserList = async (
     extensionId: info.meta.extensionId,
     source: info.meta.source,
   })
+}
+
+export const parseMusicInfoMetadata = async (musicInfo: AnyListen.Music.MusicInfoOnline) => {
+  for (const p of extensionState.resources.listProvider) {
+    if (p.id === musicInfo.meta.source) {
+      try {
+        return await workers.extensionService.listProviderAction('parseMusicInfoMetadata', {
+          extensionId: p.extensionId,
+          source: p.id,
+          data: musicInfo,
+        })
+      } catch {}
+    }
+  }
+  return null
+}
+const handleMusicsParse = async (extId: string, source: string, list: AnyListen.Music.MusicInfoOnline[]) => {
+  return (
+    await Promise.all(
+      list.map(async (m) =>
+        workers.extensionService
+          .listProviderAction('parseMusicInfoMetadata', {
+            extensionId: extId,
+            source,
+            data: m,
+          })
+          .catch(() => {
+            return null
+            // console.error('Parse music metadata error:', err)
+          })
+      )
+    )
+  ).filter((m) => m != null)
+}
+const handleMusicsParseBatch = async (
+  extId: string,
+  source: string,
+  listId: string,
+  list: AnyListen.Music.MusicInfoOnline[],
+  index = -1
+) => {
+  // console.log(index + 1, index + 21)
+  const musics = list.slice(index + 1, index + 11)
+  let musicInfos = await handleMusicsParse(extId, source, musics)
+  if (musicInfos.length) {
+    await updateMusicBaseInfo(listId, musicInfos)
+  }
+  index += 10
+  if (list.length - 1 > index) {
+    musicInfos = [...musicInfos, ...(await handleMusicsParseBatch(extId, source, listId, list, index))]
+  }
+  return musicInfos
 }
 
 const state = {
@@ -119,23 +172,14 @@ export const syncList = async (list: AnyListen.List.RemoteListInfo) => {
         musicInfos: newMusics,
       },
     })
-    if (waitingParseMetadata) {
-      for (const music of newMusics) {
-        await workers.extensionService
-          .listProviderAction('parseMusicInfoMetadata', {
-            extensionId: list.meta.extensionId,
-            source: list.meta.source,
-            data: music,
-          })
-          .then(async (newInfo) => {
-            // console.log('Parsed music metadata:', newInfo.name, newInfo.singer, newInfo.meta)
-            await updateMusicBaseInfo(list.id, newInfo)
-          })
-          .catch(() => {
-            // console.error('Parse music metadata error:', err)
-          })
-      }
+    if (waitingParseMetadata && list.meta.lazzyParseMeta !== true) {
+      await handleMusicsParseBatch(list.meta.extensionId, list.meta.source, list.id, newMusics)
     }
+  }
+  if (list.meta.lazzyParseMeta !== true) {
+    const unparsedMusics = musics.filter((m) => m.meta.unparsed) as AnyListen.Music.MusicInfoOnline[]
+    if (!unparsedMusics.length) return
+    await handleMusicsParseBatch(list.meta.extensionId, list.meta.source, list.id, unparsedMusics)
   }
 }
 const handleSyncList = async () => {

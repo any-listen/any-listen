@@ -309,9 +309,9 @@ export class Event extends _Event {
    * @param listId
    * @param musicInfo
    */
-  async list_music_base_info_update(listId: string, musicInfo: AnyListen.Music.MusicInfo) {
-    const newInfo = await dbService.musicBaseInfoUpdate(listId, musicInfo)
-    const info: AnyListen.IPCList.ListActionMusicUpdate = [{ id: listId, musicInfo: newInfo || musicInfo }]
+  async list_music_base_info_update(listId: string, musicInfos: AnyListen.Music.MusicInfo[]) {
+    const newInfos = await dbService.musicBaseInfosUpdate(listId, musicInfos)
+    const info: AnyListen.IPCList.ListActionMusicUpdate = newInfos.map((musicInfo) => ({ id: listId, musicInfo }))
     this.emitEvent('list_music_update', info, false)
     this.list_changed()
     this.emitEvent('listAction', { action: 'list_music_update', data: info })

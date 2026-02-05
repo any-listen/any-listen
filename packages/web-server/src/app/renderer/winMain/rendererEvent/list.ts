@@ -9,6 +9,7 @@ import {
   getListScrollInfo,
   getMusicExistListIds,
   onMusicListAction,
+  parseMusicMetadata,
   saveListScrollPosition,
   sendMusicListAction,
   sortListMusics,
@@ -48,6 +49,9 @@ export const createExposeList = () => {
     },
     async syncUserList(event, id) {
       return syncUserList(id)
+    },
+    async parseMusicMetadata(event, listId, musicInfo) {
+      return parseMusicMetadata(listId, musicInfo)
     },
     async sortListMusics(event, id, list, type) {
       return sortListMusics(id, list, type)

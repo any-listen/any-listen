@@ -60,7 +60,7 @@
   // })
 </script>
 
-<Modal bind:visible teleport="#root" bgclose={false} {onafterleave}>
+<Modal bind:visible teleport="#root" bgclose={false} {onafterleave} maxheight="84%">
   <main class="main">
     <div class="header">
       <h2>{isEdit ? $t('edit_list_modal__edit_title') : $t('edit_list_modal__new_title')}</h2>
@@ -87,7 +87,7 @@
     display: flex;
     flex: auto;
     flex-flow: column nowrap;
-    width: 450px;
+    width: 480px;
     min-height: 0;
     padding: 0 15px;
     // max-height: 100%;

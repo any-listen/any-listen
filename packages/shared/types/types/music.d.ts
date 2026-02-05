@@ -22,6 +22,8 @@ declare namespace AnyListen {
       createTime: number
       updateTime: number
       posTime: number
+      /** Whether the metadata has been parsed */
+      unparsed?: boolean
     }
 
     interface MusicInfoMeta_online extends MusicInfoMetaBase {

@@ -23,7 +23,7 @@ import {
 } from './listRemoteActions'
 
 export { getSubUserLists, setFetchingListStatus, setUserListInited, userListExist } from './commit'
-export { removeUserList, sortListMusics, syncUserList, updateListMusicsPosition } from './listRemoteActions'
+export { parseMusicMetadata, removeUserList, sortListMusics, syncUserList, updateListMusicsPosition } from './listRemoteActions'
 
 /**
  * 获取所有列表

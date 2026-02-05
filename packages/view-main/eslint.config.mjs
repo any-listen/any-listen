@@ -38,6 +38,7 @@ const config = [
       '@typescript-eslint/no-unsafe-argument': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/no-confusing-void-expression': 'off',
+      '@typescript-eslint/no-useless-default-assignment': 'off',
     },
   },
 ]

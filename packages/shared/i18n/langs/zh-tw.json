@@ -30,6 +30,8 @@
   "desktop_lyric__unlock": "解鎖桌面歌詞",
   "donate": "捐贈 ❤️",
   "duplicate_music": "重複歌曲",
+  "edit_list_modal.lazzy_parse_meta": "延遲解析歌曲標籤信息",
+  "edit_list_modal.lazzy_parse_meta_tip": "啟用時，歌曲將被快速添加到列表，但歌曲名字將暫時使用文件名顯示，歌曲標籤信息將會在需要時才解析",
   "edit_list_modal.local_list_form.path_device_diff": "該列表非本機創建的，因此不會在本機上同步列表數據",
   "edit_list_modal.local_list_form.path_edit": "選擇文件夾",
   "edit_list_modal.local_list_form.path_empty": "請選擇歌曲文件夾",

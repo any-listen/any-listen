@@ -2,7 +2,7 @@
 // import { checkMusicFileAvailable } from '@renderer/utils/music'
 
 import { addInfo } from '@/modules/dislikeList/actions'
-import { addListMusics, removeListMusics } from '@/modules/musicLibrary/store/actions'
+import { addListMusics, parseMusicMetadata, removeListMusics, updateListMusic } from '@/modules/musicLibrary/store/actions'
 import { settingState } from '@/modules/setting/store/state'
 import { i18n } from '@/plugins/i18n'
 import { getSrc, isEmpty, releasePlayer, setPause, setPlay, setResource, setStop } from '@/plugins/player'
@@ -58,30 +58,30 @@ const diffCurrentMusicInfo = (curMusicInfo: AnyListen.Music.MusicInfo): boolean 
   )
 }
 
-let cancelDelayRetry: (() => void) | null = null
-const delayRetry = async (musicInfo: AnyListen.Music.MusicInfo, isRefresh = false): Promise<string | null> => {
-  // if (cancelDelayRetry) cancelDelayRetry()
-  return new Promise<string | null>((resolve, reject) => {
-    const time = getRandom(2, 6)
-    commit.setStatusText(i18n.t('player__geting_url_delay_retry', { time }))
-    const tiemout = setTimeout(() => {
-      getMusicPlayUrl(musicInfo, isRefresh, true)
-        .then((result) => {
-          cancelDelayRetry = null
-          resolve(result)
-        })
-        .catch(async (err: Error) => {
-          cancelDelayRetry = null
-          reject(err)
-        })
-    }, time * 1000)
-    cancelDelayRetry = () => {
-      clearTimeout(tiemout)
-      cancelDelayRetry = null
-      resolve(null)
-    }
-  })
-}
+// let cancelDelayRetry: (() => void) | null = null
+// const delayRetry = async (musicInfo: AnyListen.Music.MusicInfo, isRefresh = false): Promise<string | null> => {
+//   // if (cancelDelayRetry) cancelDelayRetry()
+//   return new Promise<string | null>((resolve, reject) => {
+//     const time = getRandom(2, 6)
+//     commit.setStatusText(i18n.t('player__geting_url_delay_retry', { time }))
+//     const tiemout = setTimeout(() => {
+//       getMusicPlayUrl(musicInfo, isRefresh, true)
+//         .then((result) => {
+//           cancelDelayRetry = null
+//           resolve(result)
+//         })
+//         .catch(async (err: Error) => {
+//           cancelDelayRetry = null
+//           reject(err)
+//         })
+//     }, time * 1000)
+//     cancelDelayRetry = () => {
+//       clearTimeout(tiemout)
+//       cancelDelayRetry = null
+//       resolve(null)
+//     }
+//   })
+// }
 const getMusicPlayUrl = async (
   musicInfo: AnyListen.Music.MusicInfo,
   isRefresh = false,
@@ -117,7 +117,7 @@ const getMusicPlayUrl = async (
 export const setMusicUrl = (musicInfo: AnyListen.Music.MusicInfo, isRefresh?: boolean) => {
   // if (settingState.setting['player.autoSkipOnError']) addLoadTimeout()
   if (!playerState.playing || !diffCurrentMusicInfo(musicInfo)) return
-  if (cancelDelayRetry) cancelDelayRetry()
+  // if (cancelDelayRetry) cancelDelayRetry()
   gettingUrlId = musicInfo.id
   void getMusicPlayUrl(musicInfo, isRefresh)
     .then((url) => {
@@ -205,36 +205,48 @@ const loadImageUrl = async (info: AnyListen.Player.PlayMusicInfo, refresh?: bool
       playerEvent.picUpdated(null)
     })
 }
+const setMetadata = async (info: AnyListen.Player.PlayMusicInfo) => {
+  if (info.musicInfo.meta.unparsed) {
+    const newInfo = await parseMusicMetadata(info.listId, info.musicInfo)
+    // console.log(newInfo)
+    if (newInfo) {
+      info.musicInfo = newInfo
+      commit.setMusicInfo(buildPlayerMusicInfo(info.musicInfo))
+      void updateListMusic(info.listId, newInfo)
+    }
+  }
+  void loadImageUrl(info).then((url) => {
+    if (!url) return
+    void checkPicUrl(url).catch(() => {
+      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+      void loadImageUrl(info, true)
+    })
+  })
+
+  void getMusicLyric({ musicInfo: info.musicInfo })
+    .then((lyricInfo) => {
+      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+      commit.setMusicInfo({
+        lrc: lyricInfo.info.lyric,
+        tlrc: lyricInfo.info.tlyric,
+        awlrc: lyricInfo.info.awlyric,
+        rlrc: lyricInfo.info.rlyric,
+      })
+      playerEvent.lyricUpdated(lyricInfo.info)
+    })
+    .catch((err) => {
+      console.log(err)
+      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+      commit.setStatusText(i18n.t('lyric__load_error'))
+    })
+}
 export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null, index?: number | null, historyListIndex = -1) => {
   const oldInfo = playerState.playMusicInfo
   const oldHistoryIdx = playerState.playInfo.historyIndex
   if (info) {
     commit.setPlayMusicInfo(info)
     commit.setMusicInfo(buildPlayerMusicInfo(info.musicInfo))
-    void loadImageUrl(info).then((url) => {
-      if (!url) return
-      void checkPicUrl(url).catch(() => {
-        if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-        void loadImageUrl(info, true)
-      })
-    })
-
-    void getMusicLyric({ musicInfo: info.musicInfo })
-      .then((lyricInfo) => {
-        if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-        commit.setMusicInfo({
-          lrc: lyricInfo.info.lyric,
-          tlrc: lyricInfo.info.tlyric,
-          awlrc: lyricInfo.info.awlyric,
-          rlrc: lyricInfo.info.rlyric,
-        })
-        playerEvent.lyricUpdated(lyricInfo.info)
-      })
-      .catch((err) => {
-        console.log(err)
-        if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-        commit.setStatusText(i18n.t('lyric__load_error'))
-      })
+    void setMetadata(info)
     playerEvent.setProgress(0, parseInterval(info.musicInfo.interval))
     const idx = index == null ? playerState.playList.findIndex((m) => m.itemId == info.itemId) : index
     historyListIndex =

@@ -98,6 +98,7 @@ export const parseFileMetadata = async (path: string) => {
   let sizeStr = sizeFormate((await getFileStats(path))?.size ?? 0)
 
   return {
+    unparsed: false,
     name,
     singer,
     interval,
@@ -106,6 +107,22 @@ export const parseFileMetadata = async (path: string) => {
     ext: ext.replace(/^\./, ''),
     bitrateLabel: bitrateFormat(metadata.format),
     year: metadata.common.year ?? 0,
+  }
+}
+export const buildFileMetadata = async (path: string, parseMetadata = true) => {
+  if (parseMetadata) return parseFileMetadata(path)
+  const ext = extname(path)
+  const name = basename(path, ext)
+  return {
+    unparsed: true,
+    name,
+    singer: '',
+    interval: null,
+    albumName: '',
+    sizeStr: sizeFormate((await getFileStats(path))?.size ?? 0),
+    ext: ext.replace(/^\./, ''),
+    bitrateLabel: '',
+    year: 0,
   }
 }
 
