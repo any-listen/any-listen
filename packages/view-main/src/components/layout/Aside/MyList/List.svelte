@@ -8,7 +8,8 @@
   import { verticalScrollbar } from '@/shared/compositions/verticalScrollbar.svelte'
   import { defaultLists, useUserList } from '@/modules/musicLibrary/reactive.svelte'
   import type { ComponentExports } from 'svelte'
-  // import { sortable } from '@/shared/compositions/sortable'
+  import { sortable } from '@/shared/compositions/sortable.svelte'
+  import { updateUserListPosition } from './action'
   // console.log(params)
   const listItemHeight = useListItemHeight(3.2)
   // const picStyle = $derived(`height:${listItemHeight.val * 0.64}px; width:${listItemHeight.val * 0.64}px;`)
@@ -30,8 +31,9 @@
     <div class="list-container tip">Loading...</div>
   {:then _}
     <div
-      class="list-container"
+      class="list-container my-list-container"
       role="list"
+      tabindex="-1"
       {@attach scrollPointerEvents}
       {@attach verticalScrollbar({ offset: '0.15rem', scrollbarWidth: '0.4rem' })}
       oncontextmenu={(event) => {
@@ -41,9 +43,18 @@
         showMenu(null, { x: event.pageX, y: event.pageY })
       }}
     >
-      <ul class="list">
+      <ul
+        class="list"
+        {@attach sortable({
+          onupdate: (parentId, id, toTargetId, position) => {
+            void updateUserListPosition(id, position - $defaultLists.length)
+          },
+          filter: 'default-list',
+          activeElement: 'my-list-container',
+        })}
+      >
         {#each lists as item, index (item.id)}
-          <li class="list-item draggable-item" data-id={item.id}>
+          <li class="list-item draggable-item" class:default-list={item.type == 'default'} data-id={item.id}>
             <ListItem
               listInfo={item}
               active={activeIndex == index}
