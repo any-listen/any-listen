@@ -28,7 +28,7 @@
       </mask>
     </defs>
 
-    <circle cx="50" cy="50" r="50" fill="var(--color-primary-light-300)" mask="url(#play-detail-cd-hole)" />
+    <circle cx="50" cy="50" r="50" fill="var(--color-primary-light-400)" mask="url(#play-detail-cd-hole)" />
     <foreignObject style="mix-blend-mode: multiply" x="2" y="2" width="96" height="96" mask="url(#play-detail-cd-hole)">
       <Image src={pic} />
     </foreignObject>
@@ -45,12 +45,12 @@
       cy="50"
       r="11"
       fill="none"
-      stroke="var(--color-primary-light-200)"
+      stroke="var(--color-primary-light-300)"
       stroke-width="1.2"
       style="mix-blend-mode: exclusion"
       filter="drop-shadow(0 0 1 rgba(0,0,0,0.5))"
     />
-    <circle cx="50" cy="50" r="11.6" fill="none" stroke="var(--color-primary-light-200)" stroke-width="0.4" />
+    <circle cx="50" cy="50" r="11.6" fill="none" stroke="var(--color-primary-light-300)" stroke-width="0.4" />
   </svg>
 </div>
 
@@ -109,7 +109,7 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    box-shadow: 0 0 4px var(--color-primary-alpha-200);
+    box-shadow: 0 0 4px var(--color-primary-alpha-400);
     animation: spin 120s linear infinite;
     animation-play-state: paused; /* 默认暂停 */
 
