@@ -11,6 +11,7 @@
 
 - Improved window position handling: the app now remembers the window position from the previous session.
 - Improved song-adding performance for local lists by adopting an **"add-first-then-parse"** strategy, significantly improving the speed of adding songs.
+- Improved the **Now Playing** page cover art display ([#122](https://github.com/any-listen/any-listen/issues/122)).
 
 ### Fixed
 
@@ -32,6 +33,7 @@
 
 - 优化窗口位置处理：现在会记住上一次打开时的窗口位置。
 - 优化本地列表歌曲添加性能，现在采用 **先添加再解析** 的策略，可以极大提高添加速度。
+- 优化 **播放详情页** 的封面显示（[#122](https://github.com/any-listen/any-listen/issues/122)）。
 
 ### 修复
 

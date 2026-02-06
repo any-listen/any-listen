@@ -24,7 +24,7 @@
     border: 1px solid var(--color-primary-alpha-800);
     border-radius: 6px;
     box-shadow: 0 0 6px var(--color-primary-dark-200-alpha-600);
-    opacity: 0.8;
+    // opacity: 0.8;
     // backdrop-filter: blur(4px);
 
     :global {

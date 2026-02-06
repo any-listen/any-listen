@@ -19,12 +19,39 @@
 <div class="cover">
   <span class="top-dot"></span>
   <span class="bottom-dot"></span>
-  <div class="cover-cd" class:playing={$playerPlaying && visible}>
-    <Image src={pic} />
-    <div class="cover-cd-center"></div>
-    <div class="cover-cd-center-border"></div>
-  </div>
-  <!-- <div class="cover-cd-decorate"></div> -->
+
+  <svg class="cover-cd" class:playing={$playerPlaying && visible} viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+      <mask id="play-detail-cd-hole">
+        <rect width="100" height="100" fill="white" />
+        <circle cx="50" cy="50" r="11.6" fill="black" />
+      </mask>
+    </defs>
+
+    <circle cx="50" cy="50" r="50" fill="var(--color-primary-light-300)" mask="url(#play-detail-cd-hole)" />
+    <foreignObject style="mix-blend-mode: multiply" x="2" y="2" width="96" height="96" mask="url(#play-detail-cd-hole)">
+      <Image src={pic} />
+    </foreignObject>
+    <circle
+      cx="50"
+      cy="50"
+      r="20"
+      style="mix-blend-mode: multiply"
+      fill="var(--color-primary-light-300-alpha-600)"
+      mask="url(#play-detail-cd-hole)"
+    />
+    <circle
+      cx="50"
+      cy="50"
+      r="11"
+      fill="none"
+      stroke="var(--color-primary-light-200)"
+      stroke-width="1.2"
+      style="mix-blend-mode: exclusion"
+      filter="drop-shadow(0 0 1 rgba(0,0,0,0.5))"
+    />
+    <circle cx="50" cy="50" r="11.6" fill="none" stroke="var(--color-primary-light-200)" stroke-width="0.4" />
+  </svg>
 </div>
 
 <style lang="less">
@@ -79,34 +106,20 @@
     }
   }
   .cover-cd {
-    position: relative;
     width: 100%;
     height: 100%;
-    padding: 6px;
-    contain: strict;
-    overflow: hidden;
-    background: radial-gradient(circle, transparent 0%, transparent 15%, var(--color-primary-light-100) 15%);
     border-radius: 50%;
-    box-shadow: 0 0 6px var(--color-primary-alpha-200);
-    // border: 6px solid var(--color-primary-light-100);
+    box-shadow: 0 0 4px var(--color-primary-alpha-200);
     animation: spin 120s linear infinite;
     animation-play-state: paused; /* 默认暂停 */
+
     &.playing {
       animation-play-state: running;
     }
 
-    :global {
-      .pic {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-        mask-image: radial-gradient(circle, transparent 0%, transparent 16%, black 16%);
-
-        &.empty-pic {
-          background-color: var(--color-primary-light-300-alpha-700);
-        }
-      }
+    :global(.pic) {
+      border-radius: 50%;
+      box-shadow: none;
     }
   }
 
@@ -118,36 +131,4 @@
       transform: rotate(360deg);
     }
   }
-  .cover-cd-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 40%;
-    aspect-ratio: 1 / 1;
-    background-color: var(--color-primary-alpha-800);
-    // border: 2px solid var(--color-primary-dark-200-alpha-900);
-    border-radius: 50%;
-    mask-image: radial-gradient(circle, transparent 0%, transparent 37%, black 37%);
-    transform: translate(-50%, -50%);
-  }
-  .cover-cd-center-border {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 23%;
-    aspect-ratio: 1 / 1;
-    border: 4px solid var(--color-primary-light-100);
-    border-radius: 50%;
-    box-shadow: inset 0 0 4px var(--color-primary-dark-900);
-    transform: translate(-50%, -50%);
-  }
-
-  // .cover-cd-decorate {
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   width: 100%;
-  //   height: 100%;
-  //   z-index: -1;
-  // }
 </style>
