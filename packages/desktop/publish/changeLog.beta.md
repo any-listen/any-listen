@@ -7,6 +7,7 @@
 ### Fixed
 
 - Fixed incorrect storage of playback history in _Shuffle_ playback mode.
+- Fixed incorrect playback history when playing songs queued as **Play Later**.
 
 ---
 
@@ -19,3 +20,4 @@
 ### 修复
 
 - 修复在 _随机播放_ 模式下播放记录存储不正确的问题。
+- 修复在播放 **稍后播放** 队列中的歌曲时，播放历史记录不正确的问题。

@@ -13,7 +13,7 @@ import { getRandom } from '@any-listen/common/utils'
 import { checkPicUrl } from '@any-listen/web'
 import * as commit from './commit'
 import { playerEvent } from './event'
-import { removePlayListMusic, setPlayListMusic, setPlayListMusicPlayed, setPlayListMusicUnplayedAll } from './listRemoteAction'
+import { setPlayListMusic, setPlayListMusicPlayed, setPlayListMusicUnplayedAll } from './listRemoteAction'
 import { addPlayHistoryList, getMusicLyric, getMusicPic, getMusicUrl, setPlayHistoryList } from './playerRemoteAction'
 import { playerState } from './state'
 
@@ -259,9 +259,7 @@ export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null, in
     commit.updatePlayIndex(-1, -1)
   }
   if (oldInfo) {
-    if (oldInfo.playLater) {
-      void removePlayListMusic([oldInfo.itemId])
-    } else if (settingState.setting['player.togglePlayMethod'] == 'random') {
+    if (!oldInfo.playLater && settingState.setting['player.togglePlayMethod'] == 'random') {
       if (!oldInfo.played) void setPlayListMusicPlayed([oldInfo.itemId])
       if (
         oldInfo.listId == playerState.playInfo?.listId &&

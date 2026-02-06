@@ -3,10 +3,12 @@ import { workers } from '@/app/worker'
 import { musicListEvent, sendMusicListAction } from '@any-listen/app/modules/musicList'
 import {
   getPlayInfo as getPlayInfoRaw,
+  getPlayMusicInfo,
   initPlayer as initPlayerModule,
   playerEvent,
   setPlayInfo,
   setPlayMusic,
+  setPlayMusicInfo,
   setPlayTime,
 } from '@any-listen/app/modules/player'
 import { LIST_IDS } from '@any-listen/common/constants'
@@ -75,8 +77,9 @@ export const initPlayer = async () => {
   let prevCollectStatus = false
   playerEvent.on('musicChanged', async (index, historyIndex) => {
     void setPlayMusic(index, historyIndex)
-
+    const prevMusic = getPlayMusicInfo()
     const targetMusic = await getPlayerMusic()
+    setPlayMusicInfo(targetMusic)
     if (targetMusic) {
       void updateLatestPlayList(targetMusic)
       void checkCollect(targetMusic).then((isCollect) => {
@@ -88,6 +91,9 @@ export const initPlayer = async () => {
       // workers.dbService.playCountAdd({ name: mInfo.name, singer: mInfo.singer })
       // await musicListEvent.list_update_play_count(targetMusic.listId, targetMusic.musicInfo.name, targetMusic.musicInfo.singer)
       // workers.dbService.updateMetadataPlayCount()
+    }
+    if (prevMusic) {
+      void playerEvent.playListAction({ action: 'remove', data: [prevMusic.itemId] })
     }
   })
   playerEvent.on('playInfoUpdated', (info) => {

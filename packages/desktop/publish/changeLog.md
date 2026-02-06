@@ -15,6 +15,7 @@
 ### Fixed
 
 - Fixed an issue where the **Update Popup** failed to correctly parse historical changelog entries.
+- Fixed incorrect playback history when playing songs queued as **Play Later**.
 - Fixed incorrect storage of playback history in _Shuffle_ playback mode.
 
 ---
@@ -36,4 +37,5 @@
 ### 修复
 
 - 修复 **更新弹窗** 无法正确解析历史更新日志的问题。
+- 修复在播放 **稍后播放** 队列中的歌曲时，播放历史记录不正确的问题。
 - 修复在 _随机播放_ 模式下播放记录存储不正确的问题。
