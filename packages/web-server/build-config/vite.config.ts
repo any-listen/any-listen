@@ -78,6 +78,7 @@ export const buildConfig = (mode: string): UserConfig => {
     resolve: {
       alias: {
         '@': path.join(projectPath, 'src'),
+        'node:sqlite': path.join(projectPath, 'build-config/sqlite.js'),
       },
       conditions: ['module', 'node', 'default', 'development|production'],
       mainFields: ['module', 'jsnext:main', 'jsnext'],
@@ -109,7 +110,7 @@ export const buildConfig = (mode: string): UserConfig => {
         external: [
           // /node_modules/,
           // 'better-sqlite3',
-          ...builtinModules.flatMap((m) => [m, `node:${m}`]),
+          ...builtinModules.flatMap((m) => [m, `node:${m}`]).filter((m) => m != 'node:sqlite'),
         ],
         input: {
           index: path.join(projectPath, 'src/index.ts'),

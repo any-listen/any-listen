@@ -54,7 +54,7 @@ let external = [
   // 'better-sqlite3',
   'font-list',
   // 'electron-font-manager',
-  ...builtinModules.flatMap((m) => [m, `node:${m}`]),
+  ...builtinModules.flatMap((m) => [m, `node:${m}`]).filter((m) => m != 'node:sqlite'),
 ]
 // if (!isProd) external = [...external, 'undici']
 
@@ -92,6 +92,7 @@ export const buildConfig = (mode: string): UserConfig => {
     resolve: {
       alias: {
         '@': path.join(projectPath, 'src'),
+        'node:sqlite': path.join(projectPath, 'build-config/sqlite.js'),
       },
       conditions: ['module', 'node', 'default', 'development|production'],
       mainFields: ['module', 'jsnext:main', 'jsnext'],
