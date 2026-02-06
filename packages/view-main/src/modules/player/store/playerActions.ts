@@ -263,7 +263,11 @@ export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null, in
       void removePlayListMusic([oldInfo.itemId])
     } else if (settingState.setting['player.togglePlayMethod'] == 'random') {
       if (!oldInfo.played) void setPlayListMusicPlayed([oldInfo.itemId])
-      if (oldInfo.listId == info?.listId && oldHistoryIdx < 0 && playerState.playHistoryList.at(-1)?.id != oldInfo.itemId) {
+      if (
+        oldInfo.listId == playerState.playInfo?.listId &&
+        oldHistoryIdx < 0 &&
+        playerState.playHistoryList.at(-1)?.id != oldInfo.itemId
+      ) {
         void addPlayHistoryList([{ id: oldInfo.itemId, time: Date.now() }])
       }
     }
