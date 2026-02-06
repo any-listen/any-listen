@@ -92,7 +92,7 @@ export const initPlayer = async () => {
       // await musicListEvent.list_update_play_count(targetMusic.listId, targetMusic.musicInfo.name, targetMusic.musicInfo.singer)
       // workers.dbService.updateMetadataPlayCount()
     }
-    if (prevMusic) {
+    if (prevMusic?.playLater) {
       void playerEvent.playListAction({ action: 'remove', data: [prevMusic.itemId] })
     }
   })
