@@ -74,8 +74,8 @@ export const sortable = (options: { onupdate: OnUpdate; filter?: string; activeE
     const unsub = keyboardEvent.on('mod_down', (evt) => {
       if (evt.inputing || evt.event?.repeat) return
       if (!(!activeElement || activeElement === document.activeElement || activeElement.contains(document.activeElement))) return
-      void enableSortable()
       isEnabled = true
+      void enableSortable()
     })
     const unsub2 = keyboardEvent.on('mod_up', () => {
       if (!isEnabled) return

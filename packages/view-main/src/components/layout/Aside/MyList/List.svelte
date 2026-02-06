@@ -96,6 +96,7 @@
   }
   .list-item {
     padding: 0 12px;
+    -webkit-user-drag: revert-layer;
   }
   .tip {
     align-items: center;
