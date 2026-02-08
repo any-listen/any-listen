@@ -1,6 +1,6 @@
-import type { ExposeClientFunctions } from '.'
+import { getLyricInfo, getMusicPic, getMusicUrl } from '@/app/modules/music'
 import { workers } from '@/app/worker'
-import { getLyricInfo, getMusicUrl, getMusicPic } from '@/app/modules/music'
+import type { ExposeClientFunctions } from '.'
 
 // 暴露给前端的方法
 export const createExposeMusic = () => {
@@ -33,7 +33,7 @@ export const createExposeMusic = () => {
       return workers.dbService.rawLyricClear()
     },
     async createLocalMusicInfos(event, paths) {
-      return workers.utilService.createLocalMusicInfos(paths)
+      return workers.utilService.createLocalMusicInfos(paths, true)
     },
   } satisfies Partial<ExposeClientFunctions>
 }

@@ -1,8 +1,7 @@
 import { workers } from '@/worker'
 
-import type { ExposeFunctions } from '.'
 import { getLyricInfo, getMusicPic, getMusicUrl } from '@/modules/music'
-
+import type { ExposeFunctions } from '.'
 
 // 暴露给前端的方法
 export const createExposeMusic = () => {
@@ -36,7 +35,7 @@ export const createExposeMusic = () => {
     },
 
     async createLocalMusicInfos(event, paths) {
-      return workers.utilService.createLocalMusicInfos(paths)
+      return workers.utilService.createLocalMusicInfos(paths, true)
     },
   } satisfies Partial<ExposeFunctions>
 }

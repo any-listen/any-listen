@@ -17,6 +17,7 @@ import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
 const handleAddMusics = async (listId: string, filePaths: string[], index = -1) => {
   // console.log(index + 1, index + 101)
   const paths = filePaths.slice(index + 1, index + 101)
+  // TODO optimize: createLocalMusicInfos delay parseing music info, just get basic info first, then parse detail info when needed
   const musicInfos = await createLocalMusicInfos(paths)
   let failedCount = paths.length - musicInfos.length
   if (musicInfos.length) await addListMusics(listId, musicInfos)
