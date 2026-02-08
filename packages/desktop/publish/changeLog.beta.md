@@ -2,7 +2,7 @@
 
 ### Fixed
 
-- Fixed incorrect storage of playback history in _Shuffle_ playback mode.
+- Fixed an issue where local songs with identical filenames could display incorrect cover art ([#125](https://github.com/any-listen/any-listen/issues/125)).
 
 ---
 
@@ -10,4 +10,4 @@
 
 ### 修复
 
-- 修复在 _随机播放_ 模式下播放记录存储不正确的问题。
+- 修复了同名本地歌曲可能显示错误封面的问题（[#125](https://github.com/any-listen/any-listen/issues/125)）。

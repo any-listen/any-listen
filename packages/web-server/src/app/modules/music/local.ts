@@ -3,7 +3,6 @@ import { workers } from '@/app/worker'
 import { getLocalFilePath } from '@any-listen/app/modules/music/utils'
 import { writeProxyCache } from '@any-listen/app/modules/proxyServer'
 import { isUrl } from '@any-listen/common/utils'
-import { basename } from 'node:path'
 import { buildLyricInfo, getCachedLyricInfo } from './shared'
 
 export const getMusicUrl = async ({
@@ -28,17 +27,15 @@ export const getMusicUrl = async ({
             isFromCache: false,
           }
         }
-      } else {
-        if (checkAllowPath(filePath)) {
-          const url = await createMediaPublicPath(filePath)
-          if (url) {
-            return {
-              url,
-              // toggleSource: false,
-              quality: '128k',
-              // quality: (musicInfo.meta.bitrateLabel as AnyListen.Music.Quality | null) ?? '128k',
-              isFromCache: false,
-            }
+      } else if (checkAllowPath(filePath)) {
+        const url = await createMediaPublicPath(filePath)
+        if (url) {
+          return {
+            url,
+            // toggleSource: false,
+            quality: '128k',
+            // quality: (musicInfo.meta.bitrateLabel as AnyListen.Music.Quality | null) ?? '128k',
+            isFromCache: false,
           }
         }
       }
@@ -78,7 +75,7 @@ export const getMusicPicUrl = async ({
         }
       } else {
         return {
-          url: await writeProxyCache(`${basename(musicInfo.meta.filePath)}.${pic.format}`, pic.data),
+          url: await writeProxyCache(`${musicInfo.meta.filePath}.${pic.format}`, pic.data),
           isFromCache: false,
         }
       }
