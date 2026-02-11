@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { createUnsubscriptionSet } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
+import { onSettingChanged } from '@/modules/setting/shared'
 import { updateSetting } from '@/modules/setting/store/action'
 import { settingState } from '@/modules/setting/store/state'
 import { setMediaDeviceId } from '@/plugins/player'
-import { playerState } from '../store/state'
-import { pause } from '../store/actions'
-import { onSettingChanged } from '@/modules/setting/shared'
+import { createUnsubscriptionSet } from '@/shared'
 import { onPlayerCreated } from '../shared'
+import { pause } from '../store/actions'
+import { playerState } from '../store/state'
 
 let unregistered = createUnsubscriptionSet()
 
@@ -73,8 +73,8 @@ const setMediaDevice = async (deviceId: string, label: string) => {
 }
 const handleDeviceChangeStopPlay = (label: string) => {
   // console.log(device)
-  // console.log(appSetting['player.isMediaDeviceRemovedStopPlay'], isPlay.value, label, prevDeviceLabel)
-  if (settingState.setting['player.isMediaDeviceRemovedStopPlay'] && playerState.playing && label != prevDeviceLabel) pause()
+  // console.log(appSetting['player.isMediaDeviceChangedPausePlay'], isPlay.value, label, prevDeviceLabel)
+  if (settingState.setting['player.isMediaDeviceChangedPausePlay'] && playerState.playing && label != prevDeviceLabel) pause()
 }
 const handleMediaListChange = async () => {
   const mediaDeviceId = settingState.setting['player.mediaDeviceId']

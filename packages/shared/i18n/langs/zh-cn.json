@@ -337,6 +337,7 @@
   "settings.player.lyric_roma": "显示歌词罗马音（如果可用）",
   "settings.player.lyric_trans_roma_swap": "调换歌词翻译与歌词罗马音位置",
   "settings.player.lyric_transition": "显示歌词翻译（如果可用）",
+  "settings.player.media_device_changed_pause_play": "输出设备改变时暂停播放",
   "settings.player.media_session_lyric": "显示媒体控制界面歌词",
   "settings.player.play_awlrc": "播放卡拉OK歌词（如果可用）",
   "settings.player.status_bar_lyric": "显示状态栏歌词（需启用系统托盘）",

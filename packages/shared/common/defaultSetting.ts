@@ -24,7 +24,7 @@ const defaultSetting: AnyListen.AppSetting = {
   'player.playbackRate': 1,
   'player.preservesPitch': true,
   'player.mediaDeviceId': 'default',
-  'player.isMediaDeviceRemovedStopPlay': false,
+  'player.isMediaDeviceChangedPausePlay': false,
   'player.isShowLyricTranslation': false,
   'player.isShowLyricRoma': false,
   'player.isSwapLyricTranslationAndRoma': false,
@@ -65,61 +65,12 @@ const defaultSetting: AnyListen.AppSetting = {
   'playDetail.isDynamicBackground': true,
   'playDetail.coverStyle': 'cd',
 
-  'desktopLyric.enable': false,
-  'desktopLyric.isLock': false,
-  'desktopLyric.isAlwaysOnTop': false,
-  'desktopLyric.isAlwaysOnTopLoop': false,
-  'desktopLyric.isShowTaskbar': false,
-  'desktopLyric.audioVisualization': false,
-  'desktopLyric.fullscreenHide': true,
-  'desktopLyric.width': 450,
-  'desktopLyric.height': 300,
-  'desktopLyric.x': null,
-  'desktopLyric.y': null,
-  'desktopLyric.isLockScreen': false,
-  'desktopLyric.isDelayScroll': true,
-  'desktopLyric.scrollAlign': 'center',
-  'desktopLyric.isHoverHide': false,
-  'desktopLyric.direction': 'horizontal',
-  'desktopLyric.style.align': 'center',
-  'desktopLyric.style.font': '',
-  'desktopLyric.style.fontSize': 20,
-  'desktopLyric.style.lineGap': 15,
-  'desktopLyric.style.lyricUnplayColor': 'rgba(255, 255, 255, 1)',
-  'desktopLyric.style.lyricPlayedColor': 'rgba(7, 197, 86, 1)',
-  'desktopLyric.style.lyricShadowColor': 'rgba(0, 0, 0, 0.18)',
-  // 'desktopLyric.style.fontWeight': false,
-  'desktopLyric.style.opacity': 95,
-  'desktopLyric.style.ellipsis': false,
-  'desktopLyric.style.isZoomActiveLrc': false,
-  'desktopLyric.style.isFontWeightFont': true,
-  'desktopLyric.style.isFontWeightLine': true,
-  'desktopLyric.style.isFontWeightExtended': true,
-
-  'list.isClickPlayList': false,
   'list.isShowSource': true,
   'list.isSaveScrollLocation': true,
   'list.addMusicLocationType': 'top',
-  'list.actionButtonsVisible': false,
 
-  'download.enable': false,
   'download.savePath': '',
   'download.fileName': '%name% - %singer%',
-  'download.maxDownloadNum': 3,
-  'download.skipExistFile': true,
-  'download.isDownloadLrc': false,
-  'download.isDownloadTLrc': false,
-  'download.isDownloadRLrc': false,
-  'download.lrcFormat': 'utf8',
-  'download.isEmbedPic': true,
-  'download.isEmbedLyric': false,
-  'download.isEmbedLyricT': false,
-  'download.isEmbedLyricR': false,
-  'download.isUseOtherSource': false,
-
-  'search.isShowHotSearch': false,
-  'search.isShowHistorySearch': false,
-  'search.isFocusSearchBox': false,
 
   'network.proxy.enable': false,
   'network.proxy.host': '',
@@ -129,19 +80,8 @@ const defaultSetting: AnyListen.AppSetting = {
   // 'tray.isToTray': false,
   'tray.themeId': 1,
 
-  'sync.mode': 'server',
-  'sync.enable': false,
-  'sync.server.port': '23332',
-  'sync.server.maxSsnapshotNum': 5,
-  'sync.client.host': '',
-
   // 'theme.id': 'blue_plus',
   'theme.id': 'blue2',
-  'theme.lightId': 'blue2',
-  'theme.darkId': 'black',
-
-  'odc.isAutoClearSearchInput': false,
-  'odc.isAutoClearSearchList': false,
 
   'extension.onlineExtensionHost': '',
   'extension.ghMirrorHosts': 'https://ghproxy.net\nhttps://gh-proxy.com\nhttps://ghproxy.cn\nhttps://github.moeyy.xyz',
@@ -150,7 +90,7 @@ const defaultSetting: AnyListen.AppSetting = {
 // 使用新年皮肤
 if (new Date().getMonth() < 2) {
   defaultSetting['theme.id'] = 'happy_new_year'
-  defaultSetting['desktopLyric.style.lyricPlayedColor'] = 'rgba(255, 57, 71, 1)'
+  // defaultSetting['desktopLyric.style.lyricPlayedColor'] = 'rgba(255, 57, 71, 1)'
 }
 
 export default defaultSetting

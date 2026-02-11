@@ -157,7 +157,7 @@ export const settings: SettingListSection[] = [
         name: 'settings.player.lyric_trans_roma_swap',
         type: 'boolean',
       },
-      // t('settings.player.media_session_lyric')
+      // t('settings.player.media_device_changed_pause_play')
       {
         field: 'player.isPlayAwlrc',
         name: 'settings.player.play_awlrc',
@@ -173,6 +173,13 @@ export const settings: SettingListSection[] = [
         name: 'settings.player.media_session_lyric',
         type: 'boolean',
       },
+      import.meta.env.VITE_IS_DESKTOP
+        ? {
+            field: 'player.isMediaDeviceChangedPausePlay',
+            name: 'settings.player.media_device_changed_pause_play',
+            type: 'boolean',
+          }
+        : null,
       import.meta.env.VITE_IS_MAC
         ? {
             field: 'player.isShowStatusBarLyric',

@@ -1,10 +1,10 @@
 import defaultSetting from '@any-listen/common/defaultSetting'
 import { isMac, isWin } from '@any-listen/nodejs/index'
-import os from 'node:os'
-import path from 'node:path'
+// import os from 'node:os'
+// import path from 'node:path'
 
 if (isWin) {
-  defaultSetting['desktopLyric.isLockScreen'] = true
+  // defaultSetting['desktopLyric.isLockScreen'] = true
 } else {
   defaultSetting['player.isPlayAwlrc'] = false
   if (isMac) {
@@ -13,6 +13,6 @@ if (isWin) {
   }
 }
 
-defaultSetting['download.savePath'] = path.join(os.homedir(), 'Desktop')
+// defaultSetting['download.savePath'] = path.join(os.homedir(), 'Desktop')
 
 export default defaultSetting

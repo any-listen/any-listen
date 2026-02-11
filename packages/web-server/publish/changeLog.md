@@ -6,6 +6,7 @@
 - Added a **Maximize Window** feature that lets the application interface be maximized for larger or full‑screen display ([#112](https://github.com/any-listen/any-listen/issues/112), @lswxcs).
 - Added a **Delayed Metadata Parsing** option for Local and WebDAV lists. Songs are added to lists quickly and their titles temporarily display the filename; metadata (tags) will be parsed on demand ([#111](https://github.com/any-listen/any-listen/issues/111)).
 - Added a **List Reordering** feature for *My Lists*. When the lists area is focused, hold Ctrl (Command on macOS) to enter list reordering mode, then drag lists to rearrange their order.
+- Added a **Pause on Output Device Change** option under _Settings > Playback Settings_. Disabled by default.
 
 ### Improved
 
@@ -32,6 +33,7 @@
 - 新增 **界面最大化** 功能，允许将应用界面最大化以获得更大或全屏显示（[#112](https://github.com/any-listen/any-listen/issues/112), @lswxcs）。
 - 新增 **延迟解析歌曲信息** 选项（适用于本地列表与 WebDAV 列表）。歌曲将被快速加入列表，暂以文件名显示；标签元数据将在需要时按需解析（[#111](https://github.com/any-listen/any-listen/issues/111)）。
 - 新增 **我的列表顺序调整** 功能：在列表区域获得焦点时，按住 Ctrl（macOS 上为 Command）进入列表重排模式，然后拖动列表以调整顺序。
+- 新增 **输出设备改变时暂停播放** 选项，位于 _设置 > 播放设置_，默认关闭。
 
 ### 优化
 

@@ -6,6 +6,7 @@
 - Added **Fullscreen Mode**: Press F11 to toggle fullscreen; press Esc to exit fullscreen ([#118](https://github.com/any-listen/any-listen/issues/118)).
 - Added a **Delayed Metadata Parsing** option for _Local_ and _WebDAV_ lists. Songs are added to lists quickly and their titles temporarily display the filename; metadata (tags) are parsed on demand ([#111](https://github.com/any-listen/any-listen/issues/111)).
 - Added **List Reordering** for _My Lists_. When the lists area is focused, hold Ctrl (Command on macOS) to enter reordering mode, then drag lists to rearrange their order.
+- Added a **Pause on Output Device Change** option under _Settings > Playback Settings_. Disabled by default.
 
 ### Improved
 
@@ -30,6 +31,7 @@
 - 新增 **全屏模式**：按 F11 可切换全屏，按 Esc 可退出全屏（[#118](https://github.com/any-listen/any-listen/issues/118)）。
 - 新增 **延迟解析歌曲信息** 选项，适用于 _本地列表_ 与 _WebDAV 列表_。歌曲会被快速添加到列表，名称将暂时显示为文件名；歌曲标签信息将在需要时才解析（[#111](https://github.com/any-listen/any-listen/issues/111)）。
 - 新增 **我的列表顺序调整** 功能：在列表区域获得焦点时，按住 Ctrl（macOS 上为 Command）即可进入顺序调整模式，拖动列表以调整顺序。
+- 新增 **输出设备改变时暂停播放** 选项，位于 _设置 > 播放设置_，默认关闭。
 
 ### 优化
 

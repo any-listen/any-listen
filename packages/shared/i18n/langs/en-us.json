@@ -338,6 +338,7 @@
   "settings.player.lyric_roma": "Show lyrics Roman tones (if available)",
   "settings.player.lyric_trans_roma_swap": "Swap lyric translation and roman",
   "settings.player.lyric_transition": "Show lyrics translation (if available)",
+  "settings.player.media_device_changed_pause_play": "Pause playback when output device changes",
   "settings.player.media_session_lyric": "Show media control interface lyrics",
   "settings.player.play_awlrc": "Play karaoke lyrics (if available)",
   "settings.player.status_bar_lyric": "Display status bar lyrics (need to enable system tray)",

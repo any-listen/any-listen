@@ -23,9 +23,9 @@ let isExistMainWindow: null | (() => boolean) = null
 let isShowMainWindow: null | (() => boolean) = null
 
 const watchConfigKeys = [
-  'desktopLyric.enable',
-  'desktopLyric.isLock',
-  'desktopLyric.isAlwaysOnTop',
+  // 'desktopLyric.enable',
+  // 'desktopLyric.isLock',
+  // 'desktopLyric.isAlwaysOnTop',
   'player.isShowStatusBarLyric',
   'tray.themeId',
   'tray.enable',
