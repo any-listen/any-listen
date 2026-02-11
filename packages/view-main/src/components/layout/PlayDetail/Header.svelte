@@ -52,6 +52,7 @@
         <button
           type="button"
           class="fullscreen"
+          data-click-hide
           aria-label={$t('fullscreen_exit')}
           onclick={() => {
             setFullScreen(false)
@@ -67,6 +68,7 @@
       <button
         type="button"
         class="fullscreen"
+        data-click-hide
         aria-label={fullscreenState.isFullscreen ? $t('maximized_exit') : $t('maximized')}
         onclick={() => {
           setMaximized(!fullscreenState.isFullscreen)
@@ -80,9 +82,8 @@
     <button
       type="button"
       class="hide"
-      data-ignore-tip
+      data-click-hide
       aria-label={$t('play_detail.hide_tip')}
-      title={$t('play_detail.hide_tip')}
       onclick={() => {
         setShowPlayDetail(false)
       }}

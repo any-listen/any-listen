@@ -67,12 +67,12 @@
       <use xlink:href="#icon-setting-control" />
     </svg>
   </a> -->
-  <button type="button" class="btn min" aria-label={$t('min')} onclick={minWindow}>
+  <button type="button" class="btn min" data-click-hide aria-label={$t('min')} onclick={minWindow}>
     <svg version="1.1" class="svg" viewBox="0 0 24 24">
       <use xlink:href="#icon-window-minimize-2" />
     </svg>
   </button>
-  <button type="button" class="btn close" aria-label={$t('close')} onclick={closeWindow}>
+  <button type="button" class="btn close" data-click-hide aria-label={$t('close')} onclick={closeWindow}>
     <svg version="1.1" class="svg" viewBox="0 0 24 24">
       <use xlink:href="#icon-window-close-2" />
     </svg>

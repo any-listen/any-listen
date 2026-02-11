@@ -3,21 +3,38 @@ import { debounce } from '@/shared'
 import { mount, tick, type ComponentExports } from 'svelte'
 import App from './App.svelte'
 let instance: ComponentExports<typeof App> | null
-let prevTips = ''
+let prevTips: TipInfo | null = null
 let prevX = 0
 let prevY = 0
 let isDraging = false
 let updateTimeout: number | null = null
 let visible = false
 
-const getTipText = (el: HTMLElement) => {
-  return el.getAttribute('aria-label') && el.getAttribute('data-ignore-tip') == null ? el.getAttribute('aria-label') : null
+interface TipInfo {
+  text: string
+  clickHide: boolean
+  el: HTMLElement
+}
+const getTipTextInfo = (el: HTMLElement) => {
+  return el.getAttribute('aria-label') && el.getAttribute('data-ignore-tip') == null
+    ? ({
+        text: el.getAttribute('aria-label')!.trim(),
+        clickHide: el.hasAttribute('data-click-hide'),
+        el,
+      } as const)
+    : null
 }
 
-const getTips = (el: HTMLElement | null): string | null => {
+const equalTips = (a: TipInfo | null, b: TipInfo | null) => {
+  if (a === b) return true
+  if (!a || !b) return false
+  return a.text === b.text && a.clickHide === b.clickHide && a.el === b.el
+}
+
+const getTips = (el: HTMLElement | null): TipInfo | null => {
   if (el) {
-    const text = getTipText(el)
-    if (text) return text
+    const info = getTipTextInfo(el)
+    if (info) return info
     else if (el.parentNode === document.documentElement) return null
     return getTips(el.parentNode as HTMLElement | null)
   }
@@ -26,9 +43,9 @@ const getTips = (el: HTMLElement | null): string | null => {
 
 const debounceShowTips = debounce((event: MouseEvent) => {
   if (isDraging || !visible) return
-  let msg = getTips(event.target as HTMLElement)?.trim()
-  if (!msg) return
-  prevTips = msg
+  const tips = getTips(event.target as HTMLElement)
+  if (!tips?.text) return
+  prevTips = tips
 
   instance ||= mount(App, {
     target: document.getElementById('root')!,
@@ -39,7 +56,7 @@ const debounceShowTips = debounce((event: MouseEvent) => {
         y: event.y + 12,
         x: event.x + 8,
       },
-      msg,
+      tips.text,
       5000
     )
   })
@@ -72,10 +89,14 @@ const updateTips = (event: MouseEvent) => {
   }
   if (updateTimeout) clearTimeout(updateTimeout)
   updateTimeout = setTimeout(() => {
-    let msg = getTips(event.target as HTMLElement)
-    if (!msg || prevTips === msg) return
-    setTips(msg)
-    prevTips = msg
+    let tips = getTips(event.target as HTMLElement)
+    if (equalTips(prevTips, tips)) return
+    if (tips) {
+      setTips(tips.text)
+    } else {
+      hideTips()
+    }
+    prevTips = tips
   })
 }
 
@@ -89,7 +110,13 @@ export const initTooltips = () => {
       showTips(event)
     })
 
-    document.body.addEventListener('click', updateTips)
+    document.body.addEventListener('click', (event) => {
+      if (prevTips?.clickHide) {
+        hideTips()
+        return
+      }
+      updateTips(event)
+    })
     document.body.addEventListener('contextmenu', updateTips)
     document.body.addEventListener('wheel', updateTips)
     document.body.addEventListener('mouseout', hideTips)

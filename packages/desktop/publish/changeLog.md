@@ -11,6 +11,7 @@
 
 - Improved local list song-adding performance by adopting an **"add-first-then-parse"** strategy, significantly speeding up list population.
 - Improved the **Now Playing** page cover display ([#122](https://github.com/any-listen/any-listen/issues/122)).
+- Improved the tooltip display for the **control buttons** ([#127](https://github.com/any-listen/any-listen/issues/127)).
 
 ### Fixed
 
@@ -34,6 +35,7 @@
 
 - 优化本地列表歌曲添加性能，采用 **“先添加再解析”** 策略，显著提升添加速度。
 - 优化 **播放详情页** 封面显示（[#122](https://github.com/any-listen/any-listen/issues/122)）。
+- 优化 **控制按钮** 的工具提示文本显示效果（[#127](https://github.com/any-listen/any-listen/issues/127)）。
 
 ### 修复
 

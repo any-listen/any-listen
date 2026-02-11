@@ -43,6 +43,7 @@
   <button
     type="button"
     class="btn fullscreen"
+    data-click-hide
     aria-pressed={fullscreenState.isFullscreen}
     aria-label={fullscreenState.isFullscreen ? $t('maximized_exit') : $t('maximized')}
     onclick={() => {
@@ -53,7 +54,7 @@
       <use xlink:href={fullscreenState.isFullscreen ? '#icon-window-restore' : '#icon-window-maximize'} />
     </svg>
   </button>
-  <button type="button" class="btn close" aria-label={$t('logout')} onclick={handleClose}>
+  <button type="button" class="btn close" data-click-hide aria-label={$t('logout')} onclick={handleClose}>
     <svg version="1.1" height="60%" viewBox="0 0 24 24">
       <use xlink:href="#icon-logout" />
     </svg>
