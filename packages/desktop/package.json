@@ -61,7 +61,7 @@
     "@any-listen/theme": "workspace:@shared/theme@*",
     "better-sqlite3": "^12.6.2",
     "electron-log": "5.4.3",
-    "electron-updater": "^6.8.2",
+    "electron-updater": "^6.8.3",
     "font-list": "^2.0.2",
     "message2call": "^2.0.3"
   },
@@ -69,7 +69,7 @@
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
     "electron": "^37.10.3",
-    "electron-builder": "26.7.0",
+    "electron-builder": "26.8.0",
     "electron-debug": "^4.1.0",
     "electron-to-chromium": "^1.5.286",
     "node-abi": "^4.26.0",

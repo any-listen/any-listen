@@ -8,7 +8,7 @@
     "@typescript-eslint/eslint-plugin": "^8.55.0",
     "@typescript-eslint/parser": "^8.55.0",
     "eslint": "^9.39.2",
-    "eslint-config-love": "^149.0.0",
+    "eslint-config-love": "^150.0.0",
     "globals": "^17.3.0",
     "typescript": "^5.9.3"
   }
