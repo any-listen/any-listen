@@ -251,12 +251,17 @@ export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null, in
     const idx = index == null ? playerState.playList.findIndex((m) => m.itemId == info.itemId) : index
     historyListIndex =
       historyListIndex >= 0 && info.itemId == playerState.playHistoryList[historyListIndex]?.id ? historyListIndex : -1
-    commit.updatePlayIndex(idx, historyListIndex)
-    playerEvent.musicChanged(idx, historyListIndex)
+    if (info.playLater) {
+      commit.updatePlayIndex(idx, historyListIndex)
+      playerEvent.musicChanged(idx, historyListIndex)
+    } else {
+      commit.updatePlayIndex(idx, historyListIndex, info.musicInfo.id)
+      playerEvent.musicChanged(idx, historyListIndex, info.musicInfo.id)
+    }
   } else {
     commit.setPlayMusicInfo(null)
     commit.setMusicInfo(null)
-    commit.updatePlayIndex(-1, -1)
+    commit.updatePlayIndex(-1, -1, null)
   }
   if (oldInfo) {
     if (!oldInfo.playLater && settingState.setting['player.togglePlayMethod'] == 'random') {
@@ -506,8 +511,6 @@ export const skipNext = async (isAutoSktp = false): Promise<void> => {
     return
   }
 
-  let nextIndex = playerState.playInfo.index
-
   let togglePlayMethod = settingState.setting['player.togglePlayMethod']
   if (togglePlayMethod == 'random') {
     if (randomNextMusicInfo.info) {
@@ -548,6 +551,9 @@ export const skipNext = async (isAutoSktp = false): Promise<void> => {
         togglePlayMethod = 'listLoop'
     }
   }
+  let nextIndex = playerState.playInfo.lastTrackId
+    ? playList.findIndex((m) => m.musicInfo.id == playerState.playInfo.lastTrackId)
+    : -1
   switch (togglePlayMethod) {
     case 'listLoop':
       nextIndex = nextIndex == playList.length - 1 ? 0 : nextIndex + 1
@@ -605,8 +611,6 @@ export const skipPrev = async (isAutoSktp = false): Promise<void> => {
     return
   }
 
-  let nextIndex = playerState.playInfo.index
-
   let togglePlayMethod = settingState.setting['player.togglePlayMethod']
   if (togglePlayMethod == 'random') {
     if (playerState.playHistoryList.length) {
@@ -633,6 +637,15 @@ export const skipPrev = async (isAutoSktp = false): Promise<void> => {
         togglePlayMethod = 'listLoop'
     }
   }
+  let nextIndex: number
+  if (playerState.playInfo.lastTrackId) {
+    nextIndex = playList.findIndex((m) => m.musicInfo.id == playerState.playInfo.lastTrackId)
+    if (playerState.playMusicInfo?.playLater) {
+      if (nextIndex === playList.length - 1) nextIndex = 0
+      else nextIndex += 1
+    }
+  } else nextIndex = -1
+
   switch (togglePlayMethod) {
     case 'listLoop':
     case 'list':
@@ -742,6 +755,6 @@ export const release = async () => {
   stop()
   commit.setPlayMusicInfo(null)
   commit.setMusicInfo(null)
-  commit.updatePlayIndex(-1, -1)
+  commit.updatePlayIndex(-1, -1, null)
   await releasePlayer()
 }

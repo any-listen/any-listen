@@ -13,7 +13,7 @@ export const createExposePlayer = () => {
     async playerEvent(event, pEvent): Promise<void> {
       switch (pEvent.action) {
         case 'musicChanged':
-          playerEvent.musicChanged(pEvent.data.index, pEvent.data.historyIndex)
+          playerEvent.musicChanged(pEvent.data.index, pEvent.data.historyIndex, pEvent.data.lastTrackId)
           break
         case 'musicInfoUpdated':
           playerEvent.musicInfoUpdated(pEvent.data)

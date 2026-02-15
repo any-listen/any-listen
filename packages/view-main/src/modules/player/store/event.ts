@@ -46,9 +46,9 @@ class Event extends _Event {
     this.emitEvent('playbackRateUpdated', rate)
   }
 
-  musicChanged(index: number, historyListIndex: number) {
+  musicChanged(index: number, historyListIndex: number, lastTrackId?: string | null) {
     // console.warn('musicChanged', index, historyListIndex)
-    this.emitEvent('musicChanged', index, historyListIndex)
+    this.emitEvent('musicChanged', index, historyListIndex, lastTrackId)
   }
 
   musicInfoChanged(musicInfo: Partial<InitState['musicInfo']>) {

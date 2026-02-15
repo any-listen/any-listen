@@ -47,7 +47,10 @@ declare namespace AnyListen {
       index: number
       listId: string | null
       isOnline: boolean
+      /** 播放列表历史索引，随机模式下使用 */
       historyIndex: number
+      /** 上一首播放的歌曲ID */
+      lastTrackId: string | null
     }
 
     interface TempPlayListItem {
@@ -69,7 +72,10 @@ declare namespace AnyListen {
       time: number
       maxTime: number
       index: number
+      /** 播放列表历史索引，随机模式下使用 */
       historyIndex: number
+      /** 上一首播放的歌曲ID */
+      lastTrackId: string | null
     }
   }
 }

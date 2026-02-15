@@ -75,8 +75,8 @@ const checkCollect = async (minfo: AnyListen.Player.PlayMusicInfo) => {
 export const initPlayer = async () => {
   initPlayerModule(workers.dbService, appState.dataPath)
   let prevCollectStatus = false
-  playerEvent.on('musicChanged', async (index, historyIndex) => {
-    void setPlayMusic(index, historyIndex)
+  playerEvent.on('musicChanged', async (index, historyIndex, lastTrackId) => {
+    void setPlayMusic(index, historyIndex, lastTrackId)
     const prevMusic = getPlayMusicInfo()
     const targetMusic = await getPlayerMusic()
     setPlayMusicInfo(targetMusic)
@@ -97,7 +97,7 @@ export const initPlayer = async () => {
     }
   })
   playerEvent.on('playInfoUpdated', (info) => {
-    void setPlayInfo(info.duration, info.index)
+    void setPlayInfo(info.duration, info.index, info.lastTrackId)
   })
   let unregistered: (() => void) | null = null
   if (appState.appSetting['player.isSavePlayTime']) unregistered = registerProgressSave()

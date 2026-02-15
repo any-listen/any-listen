@@ -535,7 +535,7 @@ declare namespace AnyListen {
     /** 播放器实时状态 / 用户期望的播放状态 */
     type Status = [PlayerStatus, boolean]
     type PlayerEvent =
-      | IPCAction<'musicChanged', { index: number; historyIndex: number }>
+      | IPCAction<'musicChanged', { index: number; historyIndex: number; lastTrackId?: string | null }>
       | IPCAction<'musicInfoUpdated', Partial<Player.MusicInfo>>
       | IPCAction<'playInfoUpdated', Partial<Player.PlayInfo>>
       | IPCAction<'progress', Progress>

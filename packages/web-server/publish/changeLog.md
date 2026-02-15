@@ -22,6 +22,7 @@
 - Fixed incorrect playback history when playing songs queued as **Play Later**.
 - Fixed incorrect storage of playback history in _Shuffle_ playback mode.
 - Fixed an issue where local songs with identical filenames could display incorrect cover art ([#125](https://github.com/any-listen/any-listen/issues/125)).
+- Fixed an issue where the playback queue was not managed correctly when playing songs from the **Play Later** queue ([#131](https://github.com/any-listen/any-listen/issues/131)).
 
 ---
 
@@ -49,3 +50,4 @@
 - 修复在播放 **稍后播放** 队列中的歌曲时，播放历史记录不正确的问题。
 - 修复在 _随机播放_ 模式下播放记录存储不正确的问题。
 - 修复了同名本地歌曲可能显示错误封面的问题（[#125](https://github.com/any-listen/any-listen/issues/125)）。
+- 修复在播放 **稍后播放** 队列中的歌曲时，播放队列管理不正确的问题（[#131](https://github.com/any-listen/any-listen/issues/131)）。

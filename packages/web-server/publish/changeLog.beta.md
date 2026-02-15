@@ -1,21 +1,13 @@
 <!--- @lang: en-us -->
 
-### Added
+### Fixed
 
-- Added a **Pause on Output Device Change** option under _Settings > Playback Settings_. Disabled by default.
-
-### Improved
-
-- Improved the tooltip display for the **control buttons** ([#127](https://github.com/any-listen/any-listen/issues/127)).
+- Fixed an issue where the playback queue was not managed correctly when playing songs from the **Play Later** queue ([#131](https://github.com/any-listen/any-listen/issues/131)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 新增
+### 修复
 
-- 新增 **输出设备改变时暂停播放** 选项，位于 _设置 > 播放设置_，默认关闭。
-
-### 优化
-
-- 优化 **控制按钮** 的工具提示文本显示效果（[#127](https://github.com/any-listen/any-listen/issues/127)）。
+- 修复在播放 **稍后播放** 队列中的歌曲时，播放队列管理不正确的问题（[#131](https://github.com/any-listen/any-listen/issues/131)）。

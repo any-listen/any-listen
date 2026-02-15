@@ -274,8 +274,8 @@ export const registerLocalPlayerAction = () => {
     })
   )
   unregistereds.add(
-    playerEvent.on('musicChanged', (index, historyIndex) => {
-      void sendPlayerEvent({ action: 'musicChanged', data: { index, historyIndex } })
+    playerEvent.on('musicChanged', (index, historyIndex, lastTrackId) => {
+      void sendPlayerEvent({ action: 'musicChanged', data: { index, historyIndex, lastTrackId } })
     })
   )
   unregistereds.add(

@@ -21,6 +21,7 @@ const init = () => {
     time: 0,
     maxTime: 0,
     historyIndex: -1,
+    lastTrackId: null,
   }
 }
 /**

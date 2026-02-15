@@ -16,11 +16,19 @@ export const setPlayInfo = (index: number, listId: string) => {
   playerEvent.playInfoChanged({ index, listId })
 }
 
-export const updatePlayIndex = (index: number, historyIndex?: number) => {
+export const updatePlayIndex = (index: number, historyIndex?: number, lastTrackId?: string | null) => {
   playerState.playInfo.index = index
-  if (historyIndex != null) playerState.playInfo.historyIndex = historyIndex
+  let changedInfo: Partial<AnyListen.Player.PlayInfo> = { index }
+  if (historyIndex != null) {
+    playerState.playInfo.historyIndex = historyIndex
+    changedInfo.historyIndex = historyIndex
+  }
+  if (lastTrackId !== undefined) {
+    playerState.playInfo.lastTrackId = lastTrackId
+    changedInfo.lastTrackId = lastTrackId
+  }
 
-  playerEvent.playInfoChanged(historyIndex == null ? { index } : { index, historyIndex })
+  playerEvent.playInfoChanged(changedInfo)
 }
 
 export const updatePlayHistoryIndex = (historyIndex: number) => {

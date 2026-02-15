@@ -28,20 +28,22 @@ export const setPlayTime = async (time: number) => {
   savePlayTimeThrottle()
 }
 
-export const setPlayMusic = async (index: number, historyIndex: number) => {
+export const setPlayMusic = async (index: number, historyIndex: number, lastTrackId?: string | null) => {
   await initPlayInfo()
+  if (lastTrackId === undefined) lastTrackId = playInfo.lastTrackId
   if (playInfo.index === index && playInfo.historyIndex === historyIndex) return
   playInfo = {
     index,
     time: 0,
     maxTime: 0,
     historyIndex,
+    lastTrackId,
   }
   savePlayInfoThrottle()
   savePlayTimeThrottle()
 }
 
-export const setPlayInfo = async (duration?: number, index?: number) => {
+export const setPlayInfo = async (duration?: number, index?: number, lastTrackId?: string | null) => {
   await initPlayInfo()
   let updated = false
   if (duration != null) {
@@ -53,6 +55,10 @@ export const setPlayInfo = async (duration?: number, index?: number) => {
   }
   if (index != null && playInfo.index !== index) {
     playInfo.index = index
+    updated ||= true
+  }
+  if (lastTrackId !== undefined && playInfo.lastTrackId !== lastTrackId) {
+    playInfo.lastTrackId = lastTrackId
     updated ||= true
   }
   if (!updated) return

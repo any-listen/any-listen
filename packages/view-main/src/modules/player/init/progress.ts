@@ -162,10 +162,8 @@ export const initProgress = () => {
           documentHidden = hidden
           if (documentHidden) {
             currentPlayProgress = playerState.progress.progress
-          } else {
-            if (Math.abs(playerState.progress.progress - currentPlayProgress) > 0.01) {
-              playerEvent.activePlayProgressTransition()
-            }
+          } else if (Math.abs(playerState.progress.progress - currentPlayProgress) > 0.01) {
+            playerEvent.activePlayProgressTransition()
           }
         })
       )
