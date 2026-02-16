@@ -1,5 +1,7 @@
 <!--- @lang: en-us -->
 
+Happy New Year! Let's keep working hard in the days ahead.
+
 ### Added
 
 - Added **Song list sort options**: **File Created Time**, **File Updated Time**, and **File Size**. These sorting options are available in both the _Local List_ and _WebDAV List_.
@@ -25,6 +27,8 @@
 ---
 
 <!--- @lang: zh-cn -->
+
+大家新年快乐，让我们在接下来的日子里继续努力~！
 
 ### 新增
 
