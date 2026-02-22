@@ -113,6 +113,7 @@ const requestParseMetadata = async ({
   needCache = false,
   data = Buffer.alloc(0),
   preLength = 0,
+  ext = extname(path).replace(/^\./, ''),
 }: {
   webDAVClient: WebDAVClient
   path: string
@@ -121,12 +122,13 @@ const requestParseMetadata = async ({
   needCache?: boolean
   data?: Buffer
   preLength?: number
+  ext?: string
 }) => {
   if (cache.has(path)) return cache.get<ReturnType<typeof parseBufferMetadata>>(path)!
   let nextLength = nextLenMap[preLength]
   if (!nextLength || (isMetaOnly && nextLength > MAX_META_LENGTH)) return null
   data = Buffer.concat([data, await webDAVClient.getPartial(path, preLength, nextLength)]) // first 8k
-  const metaHead = await parseBufferMetadata(data, mimeType).catch(() => {
+  const metaHead = await parseBufferMetadata(data, mimeType, ext).catch(() => {
     // logcat.error('parseBufferMetadata error', err)
     return null
   })
@@ -155,7 +157,12 @@ const handleParseMetadata = async (opts: {
   return promise
 }
 
-export const parseMusicMetadata = async (options: WebDAVClientOptions, path: string, fileSize?: number) => {
+export const parseMusicMetadata = async (
+  options: WebDAVClientOptions,
+  path: string,
+  fileSize?: number,
+  ext = extname(path).replace(/^\./, '')
+) => {
   const webDAVClient = createWebDAVClient(options)
   const mimeType = getMimeType(basename(path))
   const metaHead = await handleParseMetadata({ webDAVClient, path, mimeType, isMetaOnly: true })
@@ -170,7 +177,7 @@ export const parseMusicMetadata = async (options: WebDAVClientOptions, path: str
     }
   }
   const data = await webDAVClient.getPartial(path, fileSize - 32 * 1024) // last 32k
-  const metaTail = await parseBufferMetadata(data, mimeType).catch(() => {
+  const metaTail = await parseBufferMetadata(data, mimeType, ext).catch(() => {
     // logcat.error('parseBufferMetadata error', err)
     return null
   })
