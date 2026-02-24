@@ -40,7 +40,7 @@ export const buildConfig = (mode: string): UserConfig => {
       //   dynamicRequireTargets: ['*.js'],
       //   ignoreDynamicRequires: true,
       // },
-      rollupOptions: {
+      rolldownOptions: {
         input: {
           'view-main.ipc': path.join(projectPath, 'src/app/renderer/winMain/preload/index.ts'),
         },

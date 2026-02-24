@@ -2,8 +2,8 @@
   "extends": "./node_modules/@any-listen/eslint/tsconfig.node.json",
   "compilerOptions": {
     "composite": true,
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "checkJs": false,
     "types": ["@any-listen/nodejs/node_modules/@types/node"]
   },

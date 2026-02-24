@@ -68,12 +68,12 @@
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "electron": "^37.10.3",
+    "electron": "^39.6.1",
     "electron-builder": "26.8.1",
     "electron-debug": "^4.1.0",
     "electron-to-chromium": "^1.5.302",
     "node-abi": "^4.26.0",
     "tar": "^7.5.9",
-    "vite": "^7.3.1"
+    "vite": "^8.0.0-beta.15"
   }
 }

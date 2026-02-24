@@ -155,7 +155,7 @@ export const buildConfig = (target, port = 9200, ipcScript) => {
         : {
             buildDelay: 500,
           },
-      rollupOptions: {
+      rolldownOptions: {
         // input: {
         //   'view-main': 'index.html',
         // },
@@ -232,7 +232,7 @@ export const buildConfig = (target, port = 9200, ipcScript) => {
     },
     worker: {
       format: 'iife',
-      rollupOptions: {
+      rolldownOptions: {
         output: {
           entryFileNames: '[name][hash].js',
           inlineDynamicImports: true,

@@ -1,5 +1,5 @@
 const minor = ['electron', '@types/node', 'stylelint', '@eslint/js', 'eslint']
-const newest = ['electron-builder', 'electron-updater']
+const newest = ['electron-builder', 'electron-updater', 'vite']
 const patch = []
 
 module.exports = [

@@ -106,7 +106,7 @@ export const buildConfig = (mode: string): UserConfig => {
         // dynamicRequireTargets: ['*.js'],
         ignoreDynamicRequires: true,
       },
-      rollupOptions: {
+      rolldownOptions: {
         external: [
           // /node_modules/,
           // 'better-sqlite3',

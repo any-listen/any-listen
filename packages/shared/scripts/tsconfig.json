@@ -5,6 +5,7 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "moduleResolution": "bundler",
     "types": ["@any-listen/nodejs/node_modules/@types/node"],
     "outDir": "./dist"
   },

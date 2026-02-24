@@ -19,6 +19,6 @@
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
     "@types/better-sqlite3": "^7.6.13",
-    "vite": "^7.3.1"
+    "vite": "^8.0.0-beta.15"
   }
 }

@@ -45,7 +45,7 @@ export const buildConfig = (target: Target): UserConfig => {
         : {
             buildDelay: 500,
           },
-      rollupOptions: {
+      rolldownOptions: {
         input: {
           'extension-preload': path.join(projectPath, 'src/index.ts'),
         },

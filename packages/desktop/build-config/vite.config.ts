@@ -120,7 +120,7 @@ export const buildConfig = (mode: string): UserConfig => {
         // dynamicRequireTargets: ['*.js'],
         ignoreDynamicRequires: true,
       },
-      rollupOptions: {
+      rolldownOptions: {
         external,
         input: {
           main: path.join(projectPath, `src/${isProd ? 'index.ts' : 'index-dev.ts'}`),
