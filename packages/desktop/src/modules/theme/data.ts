@@ -1,8 +1,8 @@
-import { joinPath, encodePath, isUrl } from '@/shared/utils'
-import getStore from '@/shared/store'
-import themes from '@any-listen/theme/index.json'
-import { STORE_NAMES } from '@any-listen/common/constants'
 import { appState } from '@/app'
+import getStore from '@/shared/store'
+import { encodePath, isUrl, joinPath } from '@/shared/utils'
+import { STORE_NAMES } from '@any-listen/common/constants'
+import themes from '@any-listen/theme/index.json'
 
 let userThemes: AnyListen.Theme[]
 export const getAllThemes = () => {
@@ -45,7 +45,8 @@ export const getTheme = () => {
   let themeId =
     appState.appSetting['theme.id'] == 'auto'
       ? shouldUseDarkColors
-        ? appState.appSetting['theme.darkId']
+        ? // appState.appSetting['theme.darkId']
+          'black'
         : appState.appSetting['theme.lightId']
       : appState.appSetting['theme.id']
   // themeId = 'naruto'

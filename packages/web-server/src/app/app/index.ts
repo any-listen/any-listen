@@ -151,6 +151,12 @@ export const sendInitedEvent = () => {
   appEvent.inited()
 }
 
+export const setSystemMode = (shouldUseDarkColors: boolean) => {
+  if (appState.shouldUseDarkColors == shouldUseDarkColors) return
+  appState.shouldUseDarkColors = shouldUseDarkColors
+  appEvent.system_theme_change(shouldUseDarkColors)
+}
+
 export * as appActions from './actions'
 
 export { appEvent } from './event'

@@ -17,6 +17,7 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
   clipboardWriteText: (text: string) => void
   openDevTools: () => void
   openUrl: (url: string) => void
+  setSystemThemeMode: (isDark: boolean) => void
 
   /** 获取机器ID */
   getMachineId: () => string

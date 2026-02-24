@@ -344,6 +344,16 @@ declare global {
       'theme.id': string
 
       /**
+       * 主题id（亮色）
+       */
+      'theme.lightId': string
+
+      /**
+       * 主题id（暗色）
+       */
+      'theme.darkId': string
+
+      /**
        * 是否启用代理
        */
       'network.proxy.enable': boolean

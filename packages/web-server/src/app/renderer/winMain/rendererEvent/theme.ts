@@ -1,6 +1,6 @@
 import { getThemeList, getThemeSetting, removeTheme, saveTheme } from '@/app/modules/theme'
-import type { ExposeServerFunctions, ExposeClientFunctions } from '.'
 import { broadcast } from '@/modules/ipc/websocket'
+import type { ExposeClientFunctions, ExposeServerFunctions } from '.'
 
 // 暴露给前端的方法
 export const createExposeTheme = () => {

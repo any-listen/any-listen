@@ -53,6 +53,9 @@ export const createClientApp = (ipcSocket: IPCSocket) => {
     async inited() {
       return ipcSocket.remote.inited()
     },
+    async setSystemThemeMode(isDark) {
+      return ipcSocket.remote.setSystemThemeMode(isDark)
+    },
     // async minWindow() {
     //   return ipcSocket.remote.minWindow()
     // },

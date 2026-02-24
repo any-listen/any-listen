@@ -1,4 +1,4 @@
-import { appState, updateSetting } from '@/app/app'
+import { appState, setSystemMode, updateSetting } from '@/app/app'
 import { fileSystemAction } from '@/app/modules/fileSystem'
 import { socketEvent } from '@/modules/ipc/event'
 import { broadcast } from '@/modules/ipc/websocket'
@@ -20,6 +20,9 @@ export const createExposeApp = () => {
     async inited(event) {
       event.isInited = true
       socketEvent.new_socket_inited(event)
+    },
+    async setSystemThemeMode(event, isDark) {
+      setSystemMode(isDark)
     },
     async getMachineId(event) {
       return appState.machineId

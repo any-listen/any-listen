@@ -1,4 +1,6 @@
 import { showNotify } from '@/components/apis/notify'
+import { updateSetting } from '@/modules/setting/store/action'
+import { settingState } from '@/modules/setting/store/state'
 import { getThemeList } from '@/modules/theme/store/action'
 import { i18n, langList, type Message } from '@/plugins/i18n'
 import { windowSizeList } from '@any-listen/common/constants'
@@ -18,6 +20,7 @@ interface SettingBase<T = unknown> {
   name: keyof Message
   description?: keyof Message
   onChnaged?: (value: T) => void
+  onUpdate?: (value: T) => void
 }
 export interface EnumItem {
   name: keyof Message
@@ -76,9 +79,22 @@ export const settings: SettingListSection[] = [
         type: 'radio',
         async asyncEnum() {
           // t('settings__basic_window_size_tip')
-          const themeList = await getThemeList()
+          const themeList = (await getThemeList()).themes.map((t) => ({ name: `theme_${t.id}` as keyof Message, value: t.id }))
           // console.log(themeList)
-          return themeList.themes.map((t) => ({ name: `theme_${t.id}` as keyof Message, value: t.id }))
+          return [...themeList, { name: 'theme_auto', value: 'auto' }]
+        },
+        onUpdate(value) {
+          if (value === 'auto') {
+            void updateSetting({
+              'theme.id': value,
+              'theme.lightId': settingState.setting['theme.id'] === 'black' ? undefined : settingState.setting['theme.id'],
+            })
+          } else {
+            void updateSetting({
+              'theme.id': value as string,
+              'theme.lightId': value === 'black' ? undefined : (value as string),
+            })
+          }
         },
       },
       {

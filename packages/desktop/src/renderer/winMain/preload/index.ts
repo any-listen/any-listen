@@ -18,7 +18,7 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
 export type ExposeFunctions = AnyListen.IPC.ClientIPCActions<Electron.IpcRendererEvent>
 export type ExposeServerFunctions = Omit<
   AnyListen.IPC.ServerIPC,
-  'fileSystemAction' | 'getLoginDevices' | 'removeLoginDevice' | 'logout'
+  'fileSystemAction' | 'getLoginDevices' | 'removeLoginDevice' | 'logout' | 'setSystemThemeMode'
 >
 export type MainCall = AnyListen.IPC.ServerIPC
 export type ClientCall = AnyListen.IPC.ClientIPC

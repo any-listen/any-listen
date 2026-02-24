@@ -41,7 +41,11 @@
     textarea={item.textarea}
     value={setting.val as string}
     onchange={(val) => {
-      void updateSetting({ [item.field]: val.trim() })
+      if (item.onUpdate) {
+        item.onUpdate(val.trim())
+      } else {
+        void updateSetting({ [item.field]: val.trim() })
+      }
       item.onChnaged?.(val.trim())
     }}
   />
@@ -52,7 +56,11 @@
     desc={item.description && $t(item.description)}
     checked={setting.val as boolean}
     onchange={(val) => {
-      void updateSetting({ [item.field]: val })
+      if (item.onUpdate) {
+        item.onUpdate(val)
+      } else {
+        void updateSetting({ [item.field]: val })
+      }
       item.onChnaged?.(val)
     }}
   />
@@ -65,7 +73,11 @@
         value={radioItem.value}
         checked={(setting.val as string) == radioItem.value}
         onselect={(val) => {
-          void updateSetting({ [item.field]: val })
+          if (item.onUpdate) {
+            item.onUpdate(val)
+          } else {
+            void updateSetting({ [item.field]: val })
+          }
           item.onChnaged?.(val)
         }}
       />
@@ -78,7 +90,11 @@
     value={setting.val as string | number}
     list={item.enum.map((n) => ({ label: n.name, value: n.value }))}
     onchange={(val) => {
-      void updateSetting({ [item.field]: val })
+      if (item.onUpdate) {
+        item.onUpdate(val)
+      } else {
+        void updateSetting({ [item.field]: val })
+      }
       item.onChnaged?.(val)
     }}
   />

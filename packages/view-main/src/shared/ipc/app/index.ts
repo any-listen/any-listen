@@ -16,6 +16,10 @@ export const sendInitedEvent = async () => {
   return ipc.inited()
 }
 
+export const setSystemThemeMode = async (isDark: boolean) => {
+  return ipc.setSystemThemeMode(isDark)
+}
+
 export const minWindow = async () => {
   return ipc.minWindow()
 }

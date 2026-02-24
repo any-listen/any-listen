@@ -82,6 +82,8 @@ const defaultSetting: AnyListen.AppSetting = {
 
   // 'theme.id': 'blue_plus',
   'theme.id': 'blue2',
+  'theme.lightId': 'blue2',
+  'theme.darkId': 'black',
 
   'extension.onlineExtensionHost': '',
   'extension.ghMirrorHosts': 'https://ghproxy.net\nhttps://gh-proxy.com\nhttps://ghproxy.cn\nhttps://github.moeyy.xyz',
