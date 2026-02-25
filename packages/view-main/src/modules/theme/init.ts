@@ -1,5 +1,6 @@
 import { onConnected, onRelease } from '@/modules/app/shared'
 import { createUnsubscriptionSet } from '@/shared'
+
 import { applyTheme, getThemeSetting, registerRemoteThemeAction } from './store/action'
 import { updateTheme } from './store/commit'
 

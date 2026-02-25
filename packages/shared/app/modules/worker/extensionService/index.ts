@@ -1,5 +1,6 @@
 import { setGHMirrorHosts } from '@any-listen/nodejs/mirrorReuqest'
 import { setProxyByHost } from '@any-listen/nodejs/request'
+
 import { exposeWorker } from '../utils/worker'
 import { registerErrorHandler } from './errorHandler'
 import { extensionEvent } from './event'

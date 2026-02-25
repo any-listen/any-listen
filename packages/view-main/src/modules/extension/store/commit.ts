@@ -1,4 +1,5 @@
 import { compareVersions } from '@/shared'
+
 import { extensionEvent } from './event'
 import { type InitState, extensionState } from './state'
 

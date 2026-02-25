@@ -1,6 +1,7 @@
 import { onConnected, onRelease } from '@/modules/app/shared'
 import { getEnvLocale, i18n } from '@/plugins/i18n'
 import { createUnsubscriptionSet } from '@/shared'
+
 import { appState } from '../app/store/state'
 import { getSetting, registerRemoteSettingAction, updateSetting } from './store/action'
 import { initSetting as overwriteSetting } from './store/commit'

@@ -1,4 +1,5 @@
 import { readable } from 'svelte/store'
+
 import { playDetailEvent } from './store/event'
 import { playDetailState } from './store/state'
 

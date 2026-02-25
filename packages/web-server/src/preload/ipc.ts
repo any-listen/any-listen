@@ -1,4 +1,5 @@
 import { IPC_CODE } from '@any-listen/common/constants'
+
 import handleAuth from './auth'
 import { log, parseUrl } from './utils'
 import type { IPCSocket } from './ws'

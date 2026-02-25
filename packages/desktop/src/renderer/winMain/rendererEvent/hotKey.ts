@@ -1,6 +1,8 @@
-import { getHotKeyConfig, getHotkeyStatus, handleHotkeyConfigAction } from '@/modules/hotKey'
-import type { ExposeFunctions } from '.'
 import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+
+import { getHotKeyConfig, getHotkeyStatus, handleHotkeyConfigAction } from '@/modules/hotKey'
+
+import type { ExposeFunctions } from '.'
 
 // 暴露给前端的方法
 export const createExposeHotkey = () => {

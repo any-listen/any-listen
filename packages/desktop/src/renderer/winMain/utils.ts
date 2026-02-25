@@ -1,9 +1,11 @@
+import path from 'node:path'
+
+import { windowSizeList } from '@any-listen/common/constants'
+import { nativeImage } from 'electron'
+
 // import fs from 'fs'
 import { appState } from '@/app'
 import { i18n } from '@/i18n'
-import { windowSizeList } from '@any-listen/common/constants'
-import { nativeImage } from 'electron'
-import path from 'node:path'
 
 export const getWindowSizeInfo = (windowSizeId: number | string) => {
   return windowSizeList.find((i) => i.id == windowSizeId) ?? windowSizeList[0]

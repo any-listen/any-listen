@@ -1,6 +1,7 @@
-import { DEVICE_ID_NAME } from '@any-listen/common/constants'
 import { randomUUID } from 'node:crypto'
 import fs from 'node:fs/promises'
+
+import { DEVICE_ID_NAME } from '@any-listen/common/constants'
 let deviceId = ''
 
 export const initDeviceId = async (dataPath: string) => {

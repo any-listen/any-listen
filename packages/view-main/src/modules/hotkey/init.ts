@@ -1,5 +1,6 @@
-import { createUnsubscriptionSet } from '@/shared'
 import { onBlur, onConnected, onFocus, onRelease } from '@/modules/app/shared'
+import { createUnsubscriptionSet } from '@/shared'
+
 import { clearDownKeys, registerKeyEvent } from './keyboard'
 // import { applyTheme, getThemeSetting, registerRemoteThemeAction } from './store/action'
 // import { updateTheme } from './store/commit'

@@ -1,6 +1,7 @@
 import { showMessageBox } from '@/components/apis/dialog/messageBox'
 import { showInputBox } from '@/components/apis/inputModal/inputBox'
 import { showNotifyBox } from '@/components/apis/notify'
+
 import { closeMessageBoxEvent, deeplinkEvent, settingChangedEvent, updateInfoEvent, winShowEvent } from './event'
 
 export default {

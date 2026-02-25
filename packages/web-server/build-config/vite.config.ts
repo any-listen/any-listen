@@ -1,6 +1,7 @@
 import { execSync, spawn } from 'node:child_process'
 import { builtinModules } from 'node:module'
 import path from 'node:path'
+
 import type { UserConfig } from 'vite'
 
 export { buildConfig as buildPreloadConfig } from './vite.config.web'

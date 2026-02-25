@@ -1,5 +1,6 @@
-import { appState } from '@/modules/app/store/state'
 import { untrack } from 'svelte'
+
+import { appState } from '@/modules/app/store/state'
 
 const transition1 = 'transform, opacity'
 const transition2 = 'transform, opacity, top, left'

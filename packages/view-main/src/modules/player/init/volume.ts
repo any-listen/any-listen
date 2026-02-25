@@ -1,13 +1,14 @@
-import { createUnsubscriptionSet, debounce } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
-import { onPlayerCreated } from '../shared'
-import { setMute, setVolume } from '@/plugins/player'
 import { hotkeyEvent } from '@/modules/hotkey/store/event'
-import { playerEvent } from '../store/event'
+import { onSettingChanged } from '@/modules/setting/shared'
 import { updateSetting } from '@/modules/setting/store/action'
 import { settingState } from '@/modules/setting/store/state'
-import { onSettingChanged } from '@/modules/setting/shared'
+import { setMute, setVolume } from '@/plugins/player'
+import { createUnsubscriptionSet, debounce } from '@/shared'
+
+import { onPlayerCreated } from '../shared'
 import { setStateVolume, setStateVolumeMute } from '../store/actions'
+import { playerEvent } from '../store/event'
 
 let volume = 0
 let setVolumeCount = 0

@@ -1,5 +1,6 @@
 import { dateFormat } from '@/shared'
 import { extensionEvent as extensionEventRemote } from '@/shared/ipc/extension/event'
+
 import { extI18n } from '../i18n'
 import * as commit from './commit'
 import { extensionEvent } from './event'

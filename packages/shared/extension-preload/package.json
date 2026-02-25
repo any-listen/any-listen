@@ -1,12 +1,12 @@
 {
   "name": "@shared/extension-preload",
+  "main": "vite.config.ts",
+  "types": "./src/types/global.d.ts",
   "scripts": {
     "build:web": "vite build --mode web",
     "build:desktop": "vite build --mode desktop",
     "build:mobile": "vite --mode mobile"
   },
-  "types": "./src/types/global.d.ts",
-  "main": "vite.config.ts",
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
     "message2call": "^2.0.3"

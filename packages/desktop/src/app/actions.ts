@@ -1,4 +1,5 @@
 import { app } from 'electron'
+
 import { appState } from './state'
 
 export const setSkipTrayQuit = (isSkipTrayQuit: boolean) => {

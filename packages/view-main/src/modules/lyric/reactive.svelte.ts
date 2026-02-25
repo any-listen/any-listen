@@ -1,4 +1,5 @@
 import { readable } from 'svelte/store'
+
 import { lyricEvent } from './store/event'
 import { lyricState } from './store/state'
 

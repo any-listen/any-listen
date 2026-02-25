@@ -1,8 +1,9 @@
-import { EventEmitter } from 'events'
-import fs from 'fs'
-import type http from 'http'
-import path from 'path'
-import { performance } from 'perf_hooks'
+import { EventEmitter } from 'node:events'
+import fs from 'node:fs'
+import type http from 'node:http'
+import path from 'node:path'
+import { performance } from 'node:perf_hooks'
+
 import { type Options as RequestOptions, request } from './request'
 import { STATUS } from './util'
 
@@ -211,11 +212,9 @@ class Task extends EventEmitter {
     if (isResumable) {
       options.flags = 'a'
       if (this.progress.downloaded) this.progress.total -= 10
-    } else {
-      if (this.chunkInfo.startByte != '0') {
-        this.__handleError(new Error('The resource cannot be resumed download.'))
-        return
-      }
+    } else if (this.chunkInfo.startByte != '0') {
+      this.__handleError(new Error('The resource cannot be resumed download.'))
+      return
     }
     this.progress.total += this.progress.downloaded
     this.statsEstimate.prevBytes = this.progress.downloaded

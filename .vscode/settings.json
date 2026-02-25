@@ -1,13 +1,18 @@
 {
   "prettier.useEditorConfig": true,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSaveMode": "file",
   "editor.codeActionsOnSave": {
     "source.fixAll.stylelint": "explicit",
     "source.fixAll.eslint": "explicit"
   },
   "stylelint.validate": ["css", "less", "postcss", "svelte"],
   "eslint.validate": ["svelte", "javascript", "typescript"],
+  "svelte.enable-ts-plugin": true,
+  "[svelte]": {
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  },
   "i18n-ally.localesPaths": ["packages/shared/i18n/langs"],
   // "i18n-ally.fullReloadOnChanged": true,
   "i18n-ally.keystyle": "flat",

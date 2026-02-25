@@ -1,8 +1,9 @@
 import http from 'node:http'
 
-import { appState } from '@/app'
 import { initProxyServer as initProxyServerState, proxyRequest } from '@any-listen/app/modules/proxyServer'
 import { PROXY_SERVER_PATH } from '@any-listen/common/constants'
+
+import { appState } from '@/app'
 
 let DEFAULT_PORT = 19500
 let retryCount = 0

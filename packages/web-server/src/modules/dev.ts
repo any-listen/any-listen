@@ -1,6 +1,7 @@
-import type Router from '@koa/router'
 import fs from 'node:fs'
 import path from 'node:path'
+
+import type Router from '@koa/router'
 
 export const registerDevRouter = (router: Router<unknown, AnyListen.RequestContext>) => {
   const ipcFiles = ['view-main.ipc']

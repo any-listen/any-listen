@@ -1,3 +1,5 @@
+import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
+
 import { showNotify } from '@/components/apis/notify'
 import {
   addListMusics,
@@ -12,7 +14,6 @@ import { i18n } from '@/plugins/i18n'
 import { showOpenDialog } from '@/shared/ipc/app'
 import { addFolderMusics } from '@/shared/ipc/list'
 import { createLocalMusicInfos } from '@/shared/ipc/music'
-import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
 
 const handleAddMusics = async (listId: string, filePaths: string[], index = -1) => {
   // console.log(index + 1, index + 101)

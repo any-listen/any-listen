@@ -1,6 +1,7 @@
+import { existTimeExp } from '@any-listen/app/modules/music/utils'
+
 import { appState } from '@/app/app'
 import { workers } from '@/app/worker'
-import { existTimeExp } from '@any-listen/app/modules/music/utils'
 
 export const getCachedLyricInfo = async (musicInfo: AnyListen.Music.MusicInfo): Promise<AnyListen.Music.LyricInfo | null> => {
   let lrcInfo = await workers.dbService.getRawLyric(musicInfo.id)

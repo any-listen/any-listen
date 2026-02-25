@@ -21,11 +21,7 @@ const patchs = [
     '"default": "./lib/core.js"',
     '"default": "./lib/index.js"',
   ],
-  [
-    path.join(rootPath, './node_modules/strtok3/package.json'),
-    '"default": "./lib/core.js"',
-    '"default": "./lib/index.js"',
-  ],
+  [path.join(rootPath, './node_modules/strtok3/package.json'), '"default": "./lib/core.js"', '"default": "./lib/index.js"'],
   // [
   //   path.join(rootPath, './node_modules/@sveltejs/vite-plugin-svelte/package.json'),
   //   '"import": "./src/index.js"',
@@ -44,7 +40,7 @@ const patchs = [
   // ],
 ]
 
-;(async() => {
+;(async () => {
   for (const [filePath, fromStr, toStr] of patchs) {
     console.log(`Patching ${filePath.replace(rootPath, '')}`)
     try {
@@ -56,4 +52,3 @@ const patchs = [
   }
   console.log('\nDependencies patch finished.\n')
 })()
-

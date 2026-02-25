@@ -1,6 +1,6 @@
 import type { workerDBSeriveTypes } from '../modules/worker/dbService'
-import type { workerUtilSeriveTypes } from '../modules/worker/utilService'
 import type { workerExtensionSeriveTypes } from '../modules/worker/extensionService'
+import type { workerUtilSeriveTypes } from '../modules/worker/utilService'
 
 declare global {
   // interface WorkerDBSeriveTypes {

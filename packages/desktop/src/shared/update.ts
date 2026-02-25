@@ -1,4 +1,5 @@
 import { getLatestVersion } from '@any-listen/common/tools'
+
 import { appEvent, appState } from '../app'
 import { checkUpdate, downloadUpdate, initUpdate, restartUpdate } from './electronUpdate'
 import { request } from './request'

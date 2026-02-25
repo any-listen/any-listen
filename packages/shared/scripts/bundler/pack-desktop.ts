@@ -1,12 +1,14 @@
-import { deleteSync } from 'del'
 import path from 'node:path'
+
+import { deleteSync } from 'del'
 import colors from 'picocolors'
 import Spinnies from 'spinnies'
-import { type TaskName, runBuildWorkerStatus } from './utils'
+
 // import rendererConfig from './configs/renderer'
 import copyAssets from './copyAssets'
 import { dynamicImport } from './import-esm.cjs'
 import type { Vite } from './types'
+import { type TaskName, runBuildWorkerStatus } from './utils'
 
 // process.env.VITE_CJS_TRACE = 'true'
 

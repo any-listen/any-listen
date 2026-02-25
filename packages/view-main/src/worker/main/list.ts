@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 // import { throttle } from '@common/utils'
 
-import { arrPushByPosition, arrShuffle, escapeRegExp, similar, sortInsert } from '@/shared'
 import { SPLIT_CHAR } from '@any-listen/common/constants'
+
+import { arrPushByPosition, arrShuffle, escapeRegExp, similar, sortInsert } from '@/shared'
 // import { joinPath, saveStrToFile } from '@common/utils/nodejs'
 // import { createLocalMusicInfo } from '@/shared/music'
 

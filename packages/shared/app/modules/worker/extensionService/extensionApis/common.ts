@@ -1,4 +1,5 @@
 import { createProxyCallback } from 'message2call'
+
 import { extensionState } from '../state'
 import { cloneData } from './shared'
 

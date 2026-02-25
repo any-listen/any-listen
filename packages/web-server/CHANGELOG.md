@@ -17,7 +17,7 @@ Happy New Year! Let's keep working hard in the days ahead.
 - Added **Song list sort options**: **File Created Time**, **File Updated Time**, and **File Size**. These sorting options are available in both the _Local List_ and _WebDAV List_.
 - Added a **Maximize Window** feature that lets the application interface be maximized for larger or full‑screen display ([#112](https://github.com/any-listen/any-listen/issues/112), @lswxcs).
 - Added a **Delayed Metadata Parsing** option for Local and WebDAV lists. Songs are added to lists quickly and their titles temporarily display the filename; metadata (tags) will be parsed on demand ([#111](https://github.com/any-listen/any-listen/issues/111)).
-- Added a **List Reordering** feature for *My Lists*. When the lists area is focused, hold Ctrl (Command on macOS) to enter list reordering mode, then drag lists to rearrange their order.
+- Added a **List Reordering** feature for _My Lists_. When the lists area is focused, hold Ctrl (Command on macOS) to enter list reordering mode, then drag lists to rearrange their order.
 - Added a **Pause on Output Device Change** option under _Settings > Playback Settings_. Disabled by default.
 
 ### Improved
@@ -126,6 +126,7 @@ Happy New Year! Let's keep working hard in the days ahead.
 - By default, _WebDAV Tracks_ are no longer cached. Caching can be enabled manually in the WebDAV extension settings.
 
 ---
+
 <!--- @lang: zh-cn -->
 
 ### 新增

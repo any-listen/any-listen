@@ -1,3 +1,5 @@
+import { buildMusicName } from '@any-listen/common/tools'
+
 import { showSimpleConfirmModal } from '@/components/apis/dialog'
 import { addInfo } from '@/modules/dislikeList/actions'
 import { hasDislike } from '@/modules/dislikeList/store/actions'
@@ -7,7 +9,6 @@ import { playerState } from '@/modules/player/store/state'
 import { settingState } from '@/modules/setting/store/state'
 import { i18n } from '@/plugins/i18n'
 import { clipboardWriteText, openDirInExplorer } from '@/shared/ipc/app'
-import { buildMusicName } from '@any-listen/common/tools'
 
 export const playMusic = async (listId: string, musicInfo: AnyListen.Music.MusicInfo, isClianHistory?: boolean) => {
   const list = await getListMusics(listId)

@@ -1,7 +1,8 @@
-import { generateId } from '@any-listen/common/utils'
-import { isMusicFile } from '@any-listen/nodejs/music'
 import fs from 'node:fs'
 import path from 'node:path'
+
+import { generateId } from '@any-listen/common/utils'
+import { isMusicFile } from '@any-listen/nodejs/music'
 
 /**
  * scans a directory for music files.

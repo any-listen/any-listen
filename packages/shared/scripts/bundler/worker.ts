@@ -1,9 +1,10 @@
 import { type MessagePort, parentPort } from 'node:worker_threads'
-import { type Target, type TaskName, build } from './utils'
 
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
 import type { UserConfig } from 'vite'
+
 import { dynamicImport } from './import-esm.cjs'
+import { type Target, type TaskName, build } from './utils'
 
 if (!parentPort) throw new Error('Require run in worker')
 

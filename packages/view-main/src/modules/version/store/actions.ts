@@ -1,5 +1,6 @@
 import { saveIgnoreVersion as saveIgnoreVersionRemote } from '@/shared/ipc/data'
 import { getItem, LOCAL_STORE_KEYS, setItem } from '@/shared/localStore'
+
 import * as commit from './commit'
 
 export { initCurrentVersionInfo, setProgress, setUpdateInfo } from './commit'

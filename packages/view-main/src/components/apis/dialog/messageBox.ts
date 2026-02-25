@@ -3,6 +3,7 @@ import { mount, tick, unmount } from 'svelte'
 import { onDesconnected } from '@/modules/app/shared'
 import { i18n } from '@/plugins/i18n'
 import { closeMessageBoxEvent } from '@/shared/ipc/app/event'
+
 import App from './App.svelte'
 
 const buildDefaultButtons = () => {

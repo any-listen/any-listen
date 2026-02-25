@@ -1,4 +1,1 @@
-export {
-  getSetting,
-  setSetting,
-} from './store/action'
+export { getSetting, setSetting } from './store/action'

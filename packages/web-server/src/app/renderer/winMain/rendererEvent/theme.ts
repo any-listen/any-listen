@@ -1,5 +1,6 @@
 import { getThemeList, getThemeSetting, removeTheme, saveTheme } from '@/app/modules/theme'
 import { broadcast } from '@/modules/ipc/websocket'
+
 import type { ExposeClientFunctions, ExposeServerFunctions } from '.'
 
 // 暴露给前端的方法

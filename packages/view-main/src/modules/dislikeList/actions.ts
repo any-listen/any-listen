@@ -1,7 +1,1 @@
-export {
-  overwirteInfo,
-  addInfo,
-  clearInfo,
-} from './store/actions'
-
-
+export { overwirteInfo, addInfo, clearInfo } from './store/actions'

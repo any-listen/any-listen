@@ -1,12 +1,15 @@
+import path from 'node:path'
+
+import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
+import { getPlatform, isLinux, isWin } from '@any-listen/nodejs/index'
+import { BrowserWindow, Notification, dialog, session } from 'electron'
+
 import { appState } from '@/app'
 import { collectMusic, uncollectMusic } from '@/modules/player'
 import { themeState } from '@/modules/theme'
 import { encodePath } from '@/shared/electron'
 import { openDevTools as handleOpenDevTools, throttle } from '@/shared/utils'
-import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
-import { getPlatform, isLinux, isWin } from '@any-listen/nodejs/index'
-import { BrowserWindow, Notification, dialog, session } from 'electron'
-import path from 'node:path'
+
 import { winMainEvent } from './event'
 import { rendererIPC } from './rendererEvent'
 import { createTaskBarButtons, getWindowSizeInfo } from './utils'

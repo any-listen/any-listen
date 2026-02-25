@@ -1,5 +1,7 @@
-import { triggerTimeout } from '@/apis/global'
 import { createMessage2Call } from 'message2call'
+
+import { triggerTimeout } from '@/apis/global'
+
 import { onListProviderAction } from './apis/listProvider'
 import { onResourceAction } from './apis/resource'
 import {

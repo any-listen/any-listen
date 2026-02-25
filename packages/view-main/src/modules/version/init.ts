@@ -5,6 +5,7 @@ import { onConnected, onRelease } from '@/modules/app/shared'
 import { i18n } from '@/plugins/i18n'
 import { createUnsubscriptionSet } from '@/shared'
 import { getItem, LOCAL_STORE_KEYS, setItem } from '@/shared/localStore'
+
 import { settingState } from '../setting/store/state'
 import { getCurrentVersionInfo, initCurrentVersionInfo, registerRemoteActions } from './store/actions'
 import { versionEvent } from './store/event'

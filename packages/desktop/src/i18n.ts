@@ -2,6 +2,7 @@ import { DEFAULT_LANG } from '@any-listen/common/constants'
 import type { Langs, Locale, Message, TranslateValues } from '@any-listen/i18n'
 import { fillMessage, messages } from '@any-listen/i18n'
 import SingleEvent from '@any-listen/nodejs/SimpleSingleEvent'
+
 import { appEvent, appState } from './app'
 
 export const languageChangeEvent = new SingleEvent<[Langs]>()

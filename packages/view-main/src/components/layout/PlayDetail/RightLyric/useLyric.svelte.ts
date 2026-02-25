@@ -1,3 +1,5 @@
+import { onMount, tick } from 'svelte'
+
 import { handleScroll } from '@/components/base/utils'
 import { lyricEvent } from '@/modules/lyric/store/event'
 import { lyricState, type Line } from '@/modules/lyric/store/state'
@@ -5,7 +7,6 @@ import { play, seekTo } from '@/modules/player/actions'
 import { playerState } from '@/modules/player/store/state'
 import { settingState } from '@/modules/setting/store/state'
 import { formatPlayTime2, throttle } from '@/shared'
-import { onMount, tick } from 'svelte'
 
 export const useLyric = (options: {
   domLyric: HTMLElement | undefined

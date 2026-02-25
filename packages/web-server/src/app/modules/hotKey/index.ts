@@ -1,6 +1,7 @@
-import { getHotKeyConfig, saveHotKeyConfig } from './data'
 import { hotKeyState, hotKeyEvent } from '@any-listen/app/modules/hotkey'
 import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+
+import { getHotKeyConfig, saveHotKeyConfig } from './data'
 
 const initHotKeyState = async () => {
   const config = await getHotKeyConfig()

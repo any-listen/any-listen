@@ -2,6 +2,7 @@ import { onRelease } from '@/modules/app/shared'
 import { suspendAudioContext } from '@/plugins/player'
 import { createUnsubscriptionSet } from '@/shared'
 import { clearTimeoutBg, setTimeoutBg } from '@/shared/tools'
+
 import { onPlayerCreated } from '../shared'
 import { playerEvent } from '../store/event'
 import { playerState } from '../store/state'

@@ -1,7 +1,8 @@
-import { globalShortcut } from 'electron'
-import { log } from '@/shared/log'
 import { hotKeyEvent, hotKeyState } from '@any-listen/app/modules/hotkey'
 import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+import { globalShortcut } from 'electron'
+
+import { log } from '@/shared/log'
 
 export const handleKeyDown = (key: string) => {
   if (hotKeyState.tempDisable) return
@@ -29,11 +30,12 @@ export const registerHotkey = ({ key, info }: AnyListen.HotKey.RegisterKeyInfo<H
     }
     hotKeyState.state.set(key, targetKey)
   }
-  const status = (targetKey.status = globalShortcut.isRegistered(transKey)
+  targetKey.status = globalShortcut.isRegistered(transKey)
+  const status = targetKey.status
     ? false
     : globalShortcut.register(transKey, () => {
         handleKeyDown(key)
-      }))
+      })
   return status
 }
 

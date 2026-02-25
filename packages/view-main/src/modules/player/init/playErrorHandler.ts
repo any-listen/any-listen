@@ -2,6 +2,7 @@ import { onRelease } from '@/modules/app/shared'
 import { settingState } from '@/modules/setting/store/state'
 import { i18n } from '@/plugins/i18n'
 import { createUnsubscriptionSet } from '@/shared'
+
 import { onPlayerCreated } from '../shared'
 import { setMusicUrl, setStatusText, skipNext } from '../store/actions'
 import { playerEvent } from '../store/event'

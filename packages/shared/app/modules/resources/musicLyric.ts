@@ -1,4 +1,5 @@
 import { isValidLyric } from '@any-listen/common/tools'
+
 import { services } from './shared'
 import { findMusicByLocal, findMusicByOnline } from './tools'
 import { buildExtSourceId, getExtSource } from './utils'

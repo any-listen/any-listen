@@ -4,6 +4,7 @@ import {
   saveUserSoundEffectConvolutionPresetList,
   saveUserSoundEffectEQPresetList,
 } from '@/shared/ipc/soundEffect'
+
 import * as commit from './commit'
 import { soundEffectState } from './state'
 

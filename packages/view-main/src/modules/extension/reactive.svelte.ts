@@ -1,4 +1,5 @@
 import { readable } from 'svelte/store'
+
 import { extensionEvent } from './store/event'
 import { extensionState, type OnlineListItem } from './store/state'
 

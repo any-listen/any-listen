@@ -1,9 +1,11 @@
+import { getDocumentHidden, onVisibilityChange } from '@any-listen/web'
+
 import { onRelease } from '@/modules/app/shared'
 import { updateListMusic } from '@/modules/musicLibrary/store/actions'
 import { settingState } from '@/modules/setting/store/state'
 import { getCurrentTime, getDuration, onTimeupdate, setCurrentTime } from '@/plugins/player'
 import { createUnsubscriptionSet, formatPlayTime2, getRandom } from '@/shared'
-import { getDocumentHidden, onVisibilityChange } from '@any-listen/web'
+
 import { onPlayerCreated } from '../shared'
 import { setMaxPlayTime, setNowPlayTime, skipNext } from '../store/actions'
 import { playerEvent } from '../store/event'

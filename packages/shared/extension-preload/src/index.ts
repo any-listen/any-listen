@@ -1,9 +1,9 @@
-import { initHost } from './host'
-import { freezeEnv } from './freezeEnv'
 import { getAPI } from './apis/exposeAPI'
 import { clear_interval, clear_timeout, set_interval, set_timeout } from './apis/global'
-import { handleHostCall, msg2call } from './preload'
 import { AbortController as _AbortController } from './event/AbortController'
+import { freezeEnv } from './freezeEnv'
+import { initHost } from './host'
+import { handleHostCall, msg2call } from './preload'
 
 globalThis.env_setup = (key, extension, env) => {
   delete globalThis.env_setup

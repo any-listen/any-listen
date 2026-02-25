@@ -1,4 +1,5 @@
 import WebEvent, { type EventType } from '@any-listen/web/Event'
+
 import type { InitState } from './state'
 
 class Event extends WebEvent {

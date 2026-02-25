@@ -1,5 +1,5 @@
-import { getConfig } from '../../../shared/configStore'
 import { updateExtensionSettings } from '../../../shared'
+import { getConfig } from '../../../shared/configStore'
 
 export const createConfigurationStore = (extension: AnyListen.Extension.Extension) => {
   return {

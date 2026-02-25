@@ -1,7 +1,9 @@
+import { createMessage2Call } from 'message2call'
+
 import { socketEvent } from '@/modules/ipc/event'
 import type { ServerSocketWinMain } from '@/modules/ipc/websocket'
 import { appLog } from '@/shared/log4js'
-import { createMessage2Call } from 'message2call'
+
 import { createExposeApp, createServerApp } from './app'
 import { createExposeData } from './data'
 import { createExposeDislike, createServerDislike } from './dislike'

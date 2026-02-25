@@ -1,7 +1,9 @@
-import { arrUnshift } from '@any-listen/common/utils'
-import { checkAndCreateDir, removePath } from '@any-listen/nodejs'
 import fs from 'node:fs'
 import path from 'node:path'
+
+import { arrUnshift } from '@any-listen/common/utils'
+import { checkAndCreateDir, removePath } from '@any-listen/nodejs'
+
 import { extensionEvent } from './event'
 import {
   buildExtensionI18nMessage as buildExtensionI18nMessageByInternal,

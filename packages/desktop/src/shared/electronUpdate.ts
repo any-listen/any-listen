@@ -1,7 +1,9 @@
-import { appActions, appEvent } from '@/app'
-import { log } from '@/shared/log'
 import { isWin, sleep } from '@any-listen/nodejs/index'
 import { autoUpdater } from 'electron-updater'
+
+import { appActions, appEvent } from '@/app'
+import { log } from '@/shared/log'
+
 import type { Update } from './update'
 
 autoUpdater.logger = log

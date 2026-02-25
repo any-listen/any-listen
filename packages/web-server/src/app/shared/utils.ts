@@ -1,6 +1,9 @@
-import { log } from '@/app/shared/log'
-import { checkFile } from '@any-listen/nodejs/index'
 import fs from 'node:fs'
+
+import { checkFile } from '@any-listen/nodejs/index'
+
+import { log } from '@/app/shared/log'
+
 import { version } from '../../../package.json' with { type: 'json' }
 import { bannerMini } from './constants'
 export * from '@any-listen/common/utils'

@@ -1,4 +1,5 @@
 import _Event, { type EventType } from '@any-listen/web/Event'
+
 import type { State } from './state'
 
 class Event extends _Event {

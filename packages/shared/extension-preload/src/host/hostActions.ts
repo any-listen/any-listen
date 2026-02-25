@@ -1,6 +1,7 @@
 import { MAX_NATIVE_CALL_DATA_SIZE } from '@/constants'
-import { hostContext } from './state'
 import { checkLength } from '@/shared'
+
+import { hostContext } from './state'
 
 export const hostCallActions = <T extends keyof AnyListen.ExtensionVM.HostCallActions>(
   action: T,

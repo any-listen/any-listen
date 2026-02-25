@@ -1,5 +1,7 @@
-import chalk from 'chalk'
 import { readFile, writeFile } from 'node:fs/promises'
+
+import chalk from 'chalk'
+
 import { formatTime, jp } from './index.js'
 import { parseChangelog } from './parseChangelog.js'
 let pkgDir = ''

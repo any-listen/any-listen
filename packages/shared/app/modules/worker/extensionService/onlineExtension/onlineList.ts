@@ -1,6 +1,7 @@
 import { DEFAULT_LANG } from '@any-listen/common/constants'
 import type { Locale } from '@any-listen/i18n'
 import { mirrorRequest } from '@any-listen/nodejs/mirrorReuqest'
+
 import { extensionState } from '../state'
 import { setMessages, t } from './i18n'
 

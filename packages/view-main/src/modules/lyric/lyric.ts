@@ -1,8 +1,10 @@
 import Lyric from '@any-listen/web/lyric-font-player'
-import { setLines, setTempOffset, setText } from './store/action'
+
 // import { setStatusText } from '@/modules/player/store/actions'
 import { clearTimeoutBg, setTimeoutBg } from '@/shared/tools'
+
 import { settingState } from '../setting/store/state'
+import { setLines, setTempOffset, setText } from './store/action'
 import type { Line } from './store/state'
 
 let lrc: Lyric | null

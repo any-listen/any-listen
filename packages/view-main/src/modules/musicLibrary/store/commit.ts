@@ -1,9 +1,11 @@
-import { musicLibraryState } from './state'
+import { LIST_IDS } from '@any-listen/common/constants'
+
 // import { overwriteListPosition, overwriteListUpdateInfo, removeListPosition, removeListUpdateInfo } from '@/shared/data'
 import { arrPush, arrPushByPosition, arrUnshift } from '@/shared'
 import { workers } from '@/worker'
-import { LIST_IDS } from '@any-listen/common/constants'
+
 import { musicLibraryEvent } from './event'
+import { musicLibraryState } from './state'
 
 export const getSubUserLists = (parentId: AnyListen.List.ParentId) => {
   let targetList = musicLibraryState.userListsMap.get(parentId)

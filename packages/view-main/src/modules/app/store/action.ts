@@ -1,4 +1,5 @@
 import { getLocation, push } from '@/plugins/routes'
+
 import { appEvent } from './event'
 // import { parseUrlParams } from '@/shared'
 // import * as commit from './commit'

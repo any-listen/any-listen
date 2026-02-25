@@ -1,4 +1,5 @@
 import { IPC_CODE } from '@any-listen/common/constants'
+
 import { getAuthKey, setAuthKey } from './data'
 import { buildUrlPath, log, request, toSha256 } from './utils'
 import type { KeyInfo, UrlInfo } from './ws'

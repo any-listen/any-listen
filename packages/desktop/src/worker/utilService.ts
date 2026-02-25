@@ -1,6 +1,7 @@
-import { logger } from '@/shared/log'
 import { deleteFile } from '@any-listen/app/common'
 import { startUtilServiceWorker as _startUtilServiceWorker } from '@any-listen/app/modules/worker'
+
+import { logger } from '@/shared/log'
 
 // const registerExtensionServiceEvent = () => {
 //   workers.extensionServiceWorker.on('messageerror', (err) => {

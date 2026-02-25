@@ -1,5 +1,6 @@
 import { getLyricInfo, getMusicPic, getMusicUrl } from '@/app/modules/music'
 import { workers } from '@/app/worker'
+
 import type { ExposeClientFunctions } from '.'
 
 // 暴露给前端的方法

@@ -1,10 +1,13 @@
-import { removeClientInfo } from '@/shared/data'
-import { appLog } from '@/shared/log4js'
-import { IPC_CLOSE_CODE } from '@any-listen/common/constants'
 import type { IncomingMessage } from 'node:http'
 import type { Socket } from 'node:net'
+
+import { IPC_CLOSE_CODE } from '@any-listen/common/constants'
 import type WS from 'ws'
 import { WebSocketServer } from 'ws'
+
+import { removeClientInfo } from '@/shared/data'
+import { appLog } from '@/shared/log4js'
+
 import { authConnect } from './auth'
 import { socketEvent } from './event'
 import { decryptMsg, encryptMsg } from './tools'

@@ -3,6 +3,7 @@ import { setTitle } from '@/shared'
 import { getSystemThemeIsDark, onSystemThemeModeChanged } from '@/shared/browser/tools'
 import { handleConfigChange, handleRelease, initWindowInfo } from '@/shared/browser/widnow.svelte'
 import { setSystemThemeMode } from '@/shared/ipc/app'
+
 import { keyboardEvent } from '../hotkey/keyboard'
 import { lyricEvent } from '../lyric/store/event'
 import { playerEvent } from '../player/store/event'

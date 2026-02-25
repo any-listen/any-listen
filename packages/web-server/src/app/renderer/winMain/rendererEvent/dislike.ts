@@ -1,6 +1,8 @@
-import type { ExposeServerFunctions, ExposeClientFunctions } from '.'
 import { getDislikeListInfo, onDislikeAction, sendDislikeAction } from '@any-listen/app/modules/dislikeList'
+
 import { broadcast } from '@/modules/ipc/websocket'
+
+import type { ExposeServerFunctions, ExposeClientFunctions } from '.'
 
 // 暴露给前端的方法
 export const createExposeDislike = () => {

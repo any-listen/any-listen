@@ -1,6 +1,6 @@
+import { getLyricInfo, getMusicPic, getMusicUrl } from '@/modules/music'
 import { workers } from '@/worker'
 
-import { getLyricInfo, getMusicPic, getMusicUrl } from '@/modules/music'
 import type { ExposeFunctions } from '.'
 
 // 暴露给前端的方法

@@ -1,5 +1,6 @@
-import type { ServerSocket } from './websocket'
 import _Event, { type EventType } from '@any-listen/nodejs/Event'
+
+import type { ServerSocket } from './websocket'
 
 class Event extends _Event {
   emitEvent<K extends keyof EventMethods>(eventName: K, ...args: unknown[]) {

@@ -1,8 +1,9 @@
 // 该配置用于 Svelte for VS Code 扩展
 // 与代码构建无关
-import { sveltePreprocess } from 'svelte-preprocess'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+import { sveltePreprocess } from 'svelte-preprocess'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)

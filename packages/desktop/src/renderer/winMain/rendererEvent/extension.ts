@@ -23,6 +23,7 @@ import {
   updateExtension,
   updateExtensionSettings,
 } from '@/modules/extension'
+
 import type { ExposeFunctions } from '.'
 
 // 暴露给前端的方法

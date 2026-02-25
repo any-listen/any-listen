@@ -1,4 +1,5 @@
 import chalk from 'chalk'
+
 import { updateVersionFile } from './utils/updateChangeLog.js'
 
 const run = async () => {

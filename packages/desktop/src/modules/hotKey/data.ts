@@ -1,9 +1,11 @@
-import getStore from '@/shared/store'
-import { throttle } from '@/shared/utils'
 import { STORE_NAMES } from '@any-listen/common/constants'
-import defaultHotKey from './config/defaultHotKey'
 // import { appState } from '@/app'
 import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+
+import getStore from '@/shared/store'
+import { throttle } from '@/shared/utils'
+
+import defaultHotKey from './config/defaultHotKey'
 
 /**
  * 获取快捷键设置

@@ -1,7 +1,1 @@
-
-export {
-  setLines,
-  setOffset,
-  setTempOffset,
-  setText,
-} from './commit'
+export { setLines, setOffset, setTempOffset, setText } from './commit'

@@ -1,5 +1,6 @@
 import { hostContext } from '@/host/state'
 import { translate } from '@/i18n'
+
 import { app } from './app'
 import { buffer } from './buffer'
 import { configuration } from './configuration'

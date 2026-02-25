@@ -1,14 +1,16 @@
 import { constants, createCipheriv, createDecipheriv, privateDecrypt, publicEncrypt } from 'node:crypto'
-import { networkInterfaces } from 'node:os'
 // import { join } from 'node:path'
 // import zlib from 'node:zlib'
 import type http from 'node:http'
+import { networkInterfaces } from 'node:os'
+
+// import { saveClientKeyInfo } from './data'
+import { sign, verify } from 'jsonwebtoken'
+
 // import getStore from '@/utils/store'
 // import { appLog } from '@/shared/log4js'
 // import { getUserName } from '../user/data'
 import type { KeyInfo, Status } from './websocket'
-// import { saveClientKeyInfo } from './data'
-import { sign, verify } from 'jsonwebtoken'
 
 export const getAddress = (): string[] => {
   const nets = networkInterfaces()

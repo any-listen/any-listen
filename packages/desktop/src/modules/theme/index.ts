@@ -1,5 +1,7 @@
-import { appEvent, appState } from '@/app'
 import { themeEvent, themeState } from '@any-listen/app/modules/theme'
+
+import { appEvent, appState } from '@/app'
+
 import { getAllThemes, getTheme, removeTheme as removeThemeData, saveTheme as saveThemeData } from './data'
 
 export const initTheme = async () => {

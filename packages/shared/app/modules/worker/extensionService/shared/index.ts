@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+import fs from 'node:fs'
+import path from 'node:path'
+
 import { EXTENSION } from '@any-listen/common/constants'
 import { generateId, isUrl, throttle } from '@any-listen/common/utils'
 import {
@@ -20,8 +23,7 @@ import { simpleDownload } from '@any-listen/nodejs/download'
 import { readLastLines } from '@any-listen/nodejs/logs'
 import { eachMirror } from '@any-listen/nodejs/mirrorReuqest'
 import { verifySignature } from '@any-listen/nodejs/sign'
-import fs from 'node:fs'
-import path from 'node:path'
+
 import { extensionEvent } from '../event'
 import { loadExtension as loadExtensionByInternalExtension } from '../internalExtension'
 import { extensionState } from '../state'

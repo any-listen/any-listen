@@ -1,15 +1,16 @@
 import type { ChildProcessWithoutNullStreams } from 'node:child_process'
-import colors from 'picocolors'
+
 // import del from 'del'
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
 import { buildConfig, runServer } from '@any-listen/web-server'
+import colors from 'picocolors'
 import Spinnies from 'spinnies'
 import type { Logger } from 'vite'
-import { type TaskName, buildSuatus, runBuildWorker, runBuildWorkerStatus } from './utils'
 
 import copyAssets from './copyAssets'
 import { dynamicImport } from './import-esm.cjs'
 import type { Vite } from './types'
+import { type TaskName, buildSuatus, runBuildWorker, runBuildWorkerStatus } from './utils'
 
 let logger: Logger
 

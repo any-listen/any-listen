@@ -1,6 +1,6 @@
-import { createUnsubscriptionSet } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
-import { onPlayerCreated } from '../shared'
+import { settingEvent } from '@/modules/setting/store/event'
+import { settingState } from '@/modules/setting/store/state'
 import {
   freqs,
   getAudioContext,
@@ -14,8 +14,9 @@ import {
   startPanner,
   stopPanner,
 } from '@/plugins/player'
-import { settingState } from '@/modules/setting/store/state'
-import { settingEvent } from '@/modules/setting/store/event'
+import { createUnsubscriptionSet } from '@/shared'
+
+import { onPlayerCreated } from '../shared'
 
 const cache = new Map<string, AudioBuffer>()
 const loadBuffer = async (name: string) => {

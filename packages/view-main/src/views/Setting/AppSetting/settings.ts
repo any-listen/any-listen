@@ -1,10 +1,12 @@
+import { windowSizeList } from '@any-listen/common/constants'
+import type { Component } from 'svelte'
+
 import { showNotify } from '@/components/apis/notify'
 import { updateSetting } from '@/modules/setting/store/action'
 import { settingState } from '@/modules/setting/store/state'
 import { getThemeList } from '@/modules/theme/store/action'
 import { i18n, langList, type Message } from '@/plugins/i18n'
-import { windowSizeList } from '@any-listen/common/constants'
-import type { Component } from 'svelte'
+
 import About from './About.svelte'
 import DislikedList from './DislikedList.svelte'
 import ExtensionGHMirrorHosts from './ExtensionGHMirrorHosts.svelte'

@@ -1,12 +1,5 @@
-import {
-  clearMusicUrl,
-  countMusicUrl,
-  deleteMusicUrl,
-  inertMusicUrl,
-  queryMusicUrl,
-} from './dbHelper'
+import { clearMusicUrl, countMusicUrl, deleteMusicUrl, inertMusicUrl, queryMusicUrl } from './dbHelper'
 import type { MusicUrlInfo } from './statements'
-
 
 /**
  * 获取歌曲url
@@ -47,4 +40,3 @@ export const musicUrlClear = () => {
 export const musicUrlCount = () => {
   return countMusicUrl()
 }
-

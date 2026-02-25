@@ -1,8 +1,10 @@
-import { createRendererCall } from '@/shared/ipc/main'
-import { IPC_NAMES } from '@/shared/ipc/names'
 import { onDislikeAction } from '@any-listen/app/modules/dislikeList'
 import { onMusicListAction } from '@any-listen/app/modules/musicList'
 import { onPlayHistoryListAction, onPlayListAction } from '@any-listen/app/modules/player'
+
+import { createRendererCall } from '@/shared/ipc/main'
+import { IPC_NAMES } from '@/shared/ipc/names'
+
 import { createExposeApp } from './app'
 import { createExposeData } from './data'
 import { createExposeDislike } from './dislike'

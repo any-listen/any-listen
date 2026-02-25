@@ -1,9 +1,9 @@
-import { app } from 'electron'
-import { init, registerHotkey, unRegisterHotkey, unRegisterHotkeyAll } from './globalHotkey'
-
-import { getHotKeyConfig, saveHotKeyConfig } from './data'
 import { hotKeyEvent, hotKeyState } from '@any-listen/app/modules/hotkey'
 import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+import { app } from 'electron'
+
+import { getHotKeyConfig, saveHotKeyConfig } from './data'
+import { init, registerHotkey, unRegisterHotkey, unRegisterHotkeyAll } from './globalHotkey'
 
 const initHotKeyState = async () => {
   const config = await getHotKeyConfig()

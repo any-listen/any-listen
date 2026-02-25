@@ -1,4 +1,5 @@
 import path from 'node:path'
+
 import type { UserConfig } from 'vite'
 
 const isProd = process.env.NODE_ENV == 'production'

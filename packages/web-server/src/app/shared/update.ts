@@ -1,4 +1,5 @@
 import { getLatestVersion } from '@any-listen/common/tools'
+
 import { appState } from '../app'
 import { request } from './request'
 import { compareVersions, sleep } from './utils'

@@ -1,8 +1,9 @@
+import { STORE_NAMES } from '@any-listen/common/constants'
+import themes from '@any-listen/theme/index.json'
+
 import { appState } from '@/app'
 import getStore from '@/shared/store'
 import { encodePath, isUrl, joinPath } from '@/shared/utils'
-import { STORE_NAMES } from '@any-listen/common/constants'
-import themes from '@any-listen/theme/index.json'
 
 let userThemes: AnyListen.Theme[]
 export const getAllThemes = () => {

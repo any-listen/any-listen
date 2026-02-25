@@ -1,6 +1,8 @@
-import { appState, initAppEnv, sendInitedEvent } from '@/app'
 import { isLinux } from '@any-listen/nodejs/index'
 import { app } from 'electron'
+
+import { appState, initAppEnv, sendInitedEvent } from '@/app'
+
 import './shared/error'
 import './shared/log'
 // import registerModules from '@/modules'

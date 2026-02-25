@@ -1,4 +1,5 @@
 import { createProxyCallback } from 'message2call'
+
 import type { ClientCall, ExposeFunctions, MainCall } from '.'
 
 // 暴露给后端的方法

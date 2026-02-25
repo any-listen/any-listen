@@ -1,4 +1,5 @@
 import { SPLIT_CHAR } from '@any-listen/common/constants'
+
 import { dislikeListState } from './state'
 
 export const hasDislike = (info: AnyListen.Music.MusicInfo) => {

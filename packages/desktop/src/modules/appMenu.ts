@@ -1,7 +1,8 @@
+import { app, Menu } from 'electron'
+
 import { actions } from '@/actions'
 import { i18n, languageChangeEvent } from '@/i18n'
 import { isMac } from '@/shared/utils'
-import { app, Menu } from 'electron'
 
 export const initAppMenu = async () => {
   if (isMac) {

@@ -1,5 +1,5 @@
-import type Koa from 'koa'
 import cors from '@koa/cors'
+import type Koa from 'koa'
 
 export default () => {
   const whitelist = global.anylisten.config['cors.whitelist']

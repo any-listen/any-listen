@@ -1,6 +1,7 @@
 import { DEFAULT_LANG } from '@any-listen/common/constants'
 import { messages } from '@any-listen/i18n'
 import { joinPath } from '@any-listen/nodejs'
+
 import { formatManifest } from '../../shared'
 import { extensionState } from '../../state'
 import type { ExtensionContext, ExtensionHostContext } from './type'

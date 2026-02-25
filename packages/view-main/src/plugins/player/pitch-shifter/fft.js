@@ -1,16 +1,17 @@
 // https://github.com/indutny/fft.js
 
-
 function FFT(size) {
   this.size = size | 0
-  if (this.size <= 1 || (this.size & (this.size - 1)) !== 0) { throw new Error('FFT size must be a power of two and bigger than 1') }
+  if (this.size <= 1 || (this.size & (this.size - 1)) !== 0) {
+    throw new Error('FFT size must be a power of two and bigger than 1')
+  }
 
   this._csize = size << 1
 
   // NOTE: Use of `var` is intentional for old V8 versions
   let table = new Array(this.size * 2)
   for (let i = 0; i < table.length; i += 2) {
-    const angle = Math.PI * i / this.size
+    const angle = (Math.PI * i) / this.size
     table[i] = Math.cos(angle)
     table[i + 1] = -Math.sin(angle)
   }
@@ -18,7 +19,9 @@ function FFT(size) {
 
   // Find size's power of two
   let power = 0
-  for (let t = 1; this.size > t; t <<= 1) { power++ }
+  for (let t = 1; this.size > t; t <<= 1) {
+    power++
+  }
 
   // Calculate initial step's width:
   //   * If we are full radix-4 - it is 2x smaller to give inital len=8
@@ -42,13 +45,17 @@ function FFT(size) {
 
 FFT.prototype.fromComplexArray = function fromComplexArray(complex, storage) {
   let res = storage || new Array(complex.length >>> 1)
-  for (let i = 0; i < complex.length; i += 2) { res[i >>> 1] = complex[i] }
+  for (let i = 0; i < complex.length; i += 2) {
+    res[i >>> 1] = complex[i]
+  }
   return res
 }
 
 FFT.prototype.createComplexArray = function createComplexArray() {
   const res = new Array(this._csize)
-  for (let i = 0; i < res.length; i++) { res[i] = 0 }
+  for (let i = 0; i < res.length; i++) {
+    res[i] = 0
+  }
   return res
 }
 
@@ -71,7 +78,9 @@ FFT.prototype.completeSpectrum = function completeSpectrum(spectrum) {
 }
 
 FFT.prototype.transform = function transform(out, data) {
-  if (out === data) { throw new Error('Input and output buffers must be different') }
+  if (out === data) {
+    throw new Error('Input and output buffers must be different')
+  }
 
   this._out = out
   this._data = data
@@ -82,7 +91,9 @@ FFT.prototype.transform = function transform(out, data) {
 }
 
 FFT.prototype.realTransform = function realTransform(out, data) {
-  if (out === data) { throw new Error('Input and output buffers must be different') }
+  if (out === data) {
+    throw new Error('Input and output buffers must be different')
+  }
 
   this._out = out
   this._data = data
@@ -93,13 +104,17 @@ FFT.prototype.realTransform = function realTransform(out, data) {
 }
 
 FFT.prototype.inverseTransform = function inverseTransform(out, data) {
-  if (out === data) { throw new Error('Input and output buffers must be different') }
+  if (out === data) {
+    throw new Error('Input and output buffers must be different')
+  }
 
   this._out = out
   this._data = data
   this._inv = 1
   this._transform4()
-  for (let i = 0; i < out.length; i++) { out[i] /= this.size }
+  for (let i = 0; i < out.length; i++) {
+    out[i] /= this.size
+  }
   this._out = null
   this._data = null
 }
@@ -218,8 +233,7 @@ FFT.prototype._transform4 = function _transform4() {
 // radix-2 implementation
 //
 // NOTE: Only called for len=4
-FFT.prototype._singleTransform2 = function _singleTransform2(outOff, off,
-  step) {
+FFT.prototype._singleTransform2 = function _singleTransform2(outOff, off, step) {
   const out = this._out
   const data = this._data
 
@@ -242,8 +256,7 @@ FFT.prototype._singleTransform2 = function _singleTransform2(outOff, off,
 // radix-4
 //
 // NOTE: Only called for len=8
-FFT.prototype._singleTransform4 = function _singleTransform4(outOff, off,
-  step) {
+FFT.prototype._singleTransform4 = function _singleTransform4(outOff, off, step) {
   const out = this._out
   const data = this._data
   const inv = this._inv ? -1 : 1
@@ -397,7 +410,9 @@ FFT.prototype._realTransform4 = function _realTransform4() {
         }
 
         // Do not overwrite ourselves
-        if (i === hquarterLen) { continue }
+        if (i === hquarterLen) {
+          continue
+        }
 
         // In the flipped case:
         // MAi = -MAi
@@ -434,9 +449,7 @@ FFT.prototype._realTransform4 = function _realTransform4() {
 // radix-2 implementation
 //
 // NOTE: Only called for len=4
-FFT.prototype._singleRealTransform2 = function _singleRealTransform2(outOff,
-  off,
-  step) {
+FFT.prototype._singleRealTransform2 = function _singleRealTransform2(outOff, off, step) {
   const out = this._out
   const data = this._data
 
@@ -455,9 +468,7 @@ FFT.prototype._singleRealTransform2 = function _singleRealTransform2(outOff,
 // radix-4
 //
 // NOTE: Only called for len=8
-FFT.prototype._singleRealTransform4 = function _singleRealTransform4(outOff,
-  off,
-  step) {
+FFT.prototype._singleRealTransform4 = function _singleRealTransform4(outOff, off, step) {
   const out = this._out
   const data = this._data
   const inv = this._inv ? -1 : 1

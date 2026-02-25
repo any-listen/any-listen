@@ -1,4 +1,5 @@
 import chokidar from 'chokidar'
+
 import { isMusicFile } from './music'
 
 export type FileAction = 'add' | 'change' | 'unlink'

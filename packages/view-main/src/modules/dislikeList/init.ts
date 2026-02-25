@@ -1,7 +1,8 @@
-import { createUnsubscriptionSet } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
-import { registerRemoteActions, getInfo, initInfo } from './store/actions'
 import { onPlayerCreated } from '@/modules/player/shared'
+import { createUnsubscriptionSet } from '@/shared'
+
+import { registerRemoteActions, getInfo, initInfo } from './store/actions'
 
 const unregistered = createUnsubscriptionSet()
 
@@ -16,6 +17,6 @@ export const initDislikeList = () => {
   })
 }
 
-const init = async() => {
+const init = async () => {
   initInfo(await getInfo())
 }

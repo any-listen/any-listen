@@ -1,11 +1,12 @@
-import { appEvent, appState } from '@/app'
-import { playerEvent } from '@/modules/player'
-import { startExtensionServiceWorker } from '@/worker'
 import { extensionEvent, extensionState, initExtensionModule } from '@any-listen/app/modules/extension'
 import { musicListEvent } from '@any-listen/app/modules/musicList'
 import { workers } from '@any-listen/app/modules/worker'
 import { DEFAULT_LANG, EXTENSION, STORE_NAMES } from '@any-listen/common/constants'
 import { checkAndCreateDir, joinPath, readFile } from '@any-listen/nodejs'
+
+import { appEvent, appState } from '@/app'
+import { playerEvent } from '@/modules/player'
+import { startExtensionServiceWorker } from '@/worker'
 
 const setupExtension = async () => {
   await workers.extensionService.setExtensionState({

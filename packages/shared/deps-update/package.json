@@ -8,7 +8,7 @@
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "npm-check-updates": "^19.4.1",
-    "chalk": "^5.6.2"
+    "chalk": "^5.6.2",
+    "npm-check-updates": "^19.5.0"
   }
 }

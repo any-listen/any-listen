@@ -5,6 +5,7 @@ import { settingEvent } from '@/modules/setting/store/event'
 import { settingState } from '@/modules/setting/store/state'
 import { getCurrentTime, getDuration, getPlaybackRate } from '@/plugins/player'
 import { createUnsubscriptionSet } from '@/shared'
+
 import { onPlayerCreated } from '../shared'
 import { pause, play, seekTo, skipNext, skipPrev, stop } from '../store/actions'
 import { playerEvent } from '../store/event'

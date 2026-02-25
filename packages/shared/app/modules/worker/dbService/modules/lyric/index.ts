@@ -1,4 +1,5 @@
 import { SPLIT_CHAR } from '@any-listen/common/constants'
+
 import {
   clearEditedLyric,
   clearRawLyric,

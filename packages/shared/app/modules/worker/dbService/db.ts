@@ -1,6 +1,8 @@
+import path from 'node:path'
+
 import { DB_NAME, LIST_IDS } from '@any-listen/common/constants'
 import Database from 'better-sqlite3'
-import path from 'node:path'
+
 import migrateData from './migrate'
 import tables, { DB_VERSION } from './tables'
 import verifyDB from './verifyDB'

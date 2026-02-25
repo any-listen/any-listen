@@ -1,11 +1,13 @@
 import path from 'node:path'
-// import { log } from '@/shared/log'
-import { i18n } from '@/app/i18n'
-import { appLog } from '@/shared/log4js'
+
 import { startDBServiceWorker as _startDBServiceWorker, workers } from '@any-listen/app/modules/worker'
 import { DB_NAME } from '@any-listen/common/constants'
 import { getNativeName } from '@any-listen/nodejs'
 import { backupDB } from '@any-listen/nodejs/tools'
+
+// import { log } from '@/shared/log'
+import { i18n } from '@/app/i18n'
+import { appLog } from '@/shared/log4js'
 
 const initServices = async (dataPath: string) => {
   let nativeBindingPath = `../native/${getNativeName()}/better_sqlite3.node`

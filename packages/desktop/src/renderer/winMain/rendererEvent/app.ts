@@ -1,7 +1,9 @@
+import { clearCache, getCacheSize } from '@any-listen/app/cache'
+
 import { appState, updateSetting } from '@/app'
 import { clipboardReadText, clipboardWriteText, exitApp, openDirInExplorer, openUrl } from '@/shared/electron'
 import { getFonts } from '@/shared/fontManage'
-import { clearCache, getCacheSize } from '@any-listen/app/cache'
+
 import type { ExposeFunctions } from '.'
 import { checkUpdate, downloadUpdate, restartUpdate } from '../autoUpdate'
 import { winMainEvent } from '../event'

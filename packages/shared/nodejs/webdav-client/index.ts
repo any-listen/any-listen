@@ -1,6 +1,8 @@
-import { XMLParser } from 'fast-xml-parser'
 import { readFile } from 'node:fs/promises'
 import type { Readable } from 'node:stream'
+
+import { XMLParser } from 'fast-xml-parser'
+
 import { request, type Options, type Response } from '../request'
 import type { Ls, Response as LsResp } from './types/ls'
 

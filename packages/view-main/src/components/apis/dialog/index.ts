@@ -2,6 +2,7 @@ import { mount, tick, unmount } from 'svelte'
 
 import { onDesconnected } from '@/modules/app/shared'
 import { i18n } from '@/plugins/i18n'
+
 import App from './App.svelte'
 
 export const showConfirmModal = async (

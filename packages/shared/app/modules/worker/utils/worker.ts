@@ -1,5 +1,6 @@
-import { createMessage2Call, type ReadObj } from 'message2call'
 import { MessagePort, parentPort } from 'node:worker_threads'
+
+import { createMessage2Call, type ReadObj } from 'message2call'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const exposeWorker = async <T extends Record<string, any>>(obj: ReadObj) => {

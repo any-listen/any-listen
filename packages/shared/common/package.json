@@ -1,11 +1,11 @@
 {
   "name": "@shared/common",
-  "devDependencies": {
-    "@any-listen/eslint": "workspace:@shared/eslint@*",
-    "@any-listen/types": "workspace:@shared/types@*"
-  },
   "dependencies": {
     "lru-cache": "^11.2.6",
     "mime": "^4.1.0"
+  },
+  "devDependencies": {
+    "@any-listen/eslint": "workspace:@shared/eslint@*",
+    "@any-listen/types": "workspace:@shared/types@*"
   }
 }

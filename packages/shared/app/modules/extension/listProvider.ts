@@ -1,4 +1,5 @@
 import { throttle } from '@any-listen/common/utils'
+
 import { getSettings, showMessageBox, t } from '../../common'
 import { winMainReadyEvent } from '../../common/event'
 import { musicListEvent, sendMusicListAction, updateMusicBaseInfo } from '../../modules/musicList'

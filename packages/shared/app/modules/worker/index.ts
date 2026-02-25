@@ -1,7 +1,1 @@
-
-export {
-  startDBServiceWorker,
-  startUtilServiceWorker,
-  startExtensionServiceWorker,
-  workers,
-} from './worker'
+export { startDBServiceWorker, startUtilServiceWorker, startExtensionServiceWorker, workers } from './worker'

@@ -1,4 +1,5 @@
 import { settingState } from '@/modules/setting/store/state'
+
 import { hotkeyEvent } from '../store/event'
 import { hotkeyState } from '../store/state'
 import keyBind from './keyBind'

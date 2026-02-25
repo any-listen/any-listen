@@ -1,7 +1,9 @@
-import { appState } from '@/app'
-import { workers } from '@/worker'
 import { updateMusicPic } from '@any-listen/app/modules/musicList'
 import { buildMusicCacheId, getFileType } from '@any-listen/common/tools'
+
+import { appState } from '@/app'
+import { workers } from '@/worker'
+
 import {
   getMusicLyricByExtensionSource,
   getMusicLyric as getMusicLyricResource,

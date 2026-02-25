@@ -1,6 +1,6 @@
+import en_us from './langs/en-us.json'
 import zh_cn from './langs/zh-cn.json'
 import zh_tw from './langs/zh-tw.json'
-import en_us from './langs/en-us.json'
 
 export type Locale =
   | 'ar-sa'

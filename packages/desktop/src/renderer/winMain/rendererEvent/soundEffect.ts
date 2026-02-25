@@ -1,6 +1,8 @@
-import type { ExposeFunctions } from '.'
 import { STORE_NAMES } from '@any-listen/common/constants'
+
 import getStore from '@/shared/store'
+
+import type { ExposeFunctions } from '.'
 
 // 暴露给前端的方法
 export const createExposeSoundEffect = () => {

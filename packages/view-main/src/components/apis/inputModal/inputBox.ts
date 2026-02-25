@@ -2,6 +2,7 @@ import { mount, tick, unmount } from 'svelte'
 
 import { onDesconnected } from '@/modules/app/shared'
 import { closeMessageBoxEvent } from '@/shared/ipc/app/event'
+
 import App from './App.svelte'
 
 export const showInputBox = async (

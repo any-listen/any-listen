@@ -24,7 +24,4 @@ function tranditionalize(source) {
   return result.join('')
 }
 
-export {
-  simplify,
-  tranditionalize,
-}
+export { simplify, tranditionalize }

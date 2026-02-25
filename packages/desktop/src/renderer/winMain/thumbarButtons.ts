@@ -1,6 +1,8 @@
+import { playerEvent } from '@any-listen/app/modules/player'
+
 import { languageChangeEvent } from '@/i18n'
 import { getPlayerMusic } from '@/modules/player'
-import { playerEvent } from '@any-listen/app/modules/player'
+
 import { setThumbarButtons } from './main'
 
 const taskBarButtonFlags: AnyListen.TaskBarButtonFlags = {

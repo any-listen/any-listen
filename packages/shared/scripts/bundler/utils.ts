@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { MessageChannel, Worker } from 'node:worker_threads'
+
 import type { UserConfig } from 'vite'
 
 import { dynamicImport } from './import-esm.cjs'

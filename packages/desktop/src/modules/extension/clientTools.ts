@@ -1,6 +1,7 @@
-import { rendererIPC } from '@/renderer/winMain/rendererEvent'
 import { extensionEvent } from '@any-listen/app/modules/extension'
 import { CANCELED_ERROR_MSG } from '@any-listen/common/constants'
+
+import { rendererIPC } from '@/renderer/winMain/rendererEvent'
 
 export const boxTools = {
   datas: new Map<string, [string, () => Promise<unknown>, (result: unknown) => void, (error: Error) => void]>(),

@@ -1,5 +1,6 @@
-import { createUnsubscriptionSet } from '@/shared'
 import { onConnected, onRelease } from '@/modules/app/shared'
+import { createUnsubscriptionSet } from '@/shared'
+
 import { setUserListInited } from './store/actions'
 import { registerListAction } from './store/listRemoteActions'
 
@@ -16,6 +17,6 @@ export const initMusicLibrary = () => {
   })
 }
 
-const init = async() => {
+const init = async () => {
   setUserListInited(false)
 }

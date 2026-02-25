@@ -1,8 +1,9 @@
+import { extensionEvent } from '@any-listen/app/modules/extension'
+import { CANCELED_ERROR_MSG } from '@any-listen/common/constants'
+
 import { appEvent } from '@/app/app'
 import { rendererIPC } from '@/app/renderer/winMain/rendererEvent'
 import { getSockets, type ServerSocketWinMain } from '@/modules/ipc/websocket'
-import { extensionEvent } from '@any-listen/app/modules/extension'
-import { CANCELED_ERROR_MSG } from '@any-listen/common/constants'
 
 export const getConnectedClients = () => {
   return getSockets().filter((s) => s.isInited)

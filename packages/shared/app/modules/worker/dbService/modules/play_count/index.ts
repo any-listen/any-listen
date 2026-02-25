@@ -1,17 +1,5 @@
-import {
-  clearPlayCount,
-  countPlayCount,
-  insertPlayCount,
-  queryPlayCount,
-  updatePlayCount,
-  updatePlayTime,
-} from './dbHelper'
-import type {
-  PlayCount,
-  PlayCountKey,
-  PlayTime,
-} from './statements'
-
+import { clearPlayCount, countPlayCount, insertPlayCount, queryPlayCount, updatePlayCount, updatePlayTime } from './dbHelper'
+import type { PlayCount, PlayCountKey, PlayTime } from './statements'
 
 /**
  * 获取播放统计
@@ -28,8 +16,8 @@ export const getPlayCount = (info: PlayCountKey) => {
  */
 export const playCountAdd = (info: PlayCountKey) => {
   let count = queryPlayCount(info)
-  if (!count) insertPlayCount([{ ...info, count: 1, time: 0 }])
-  else updatePlayCount({ ...info, count: count.count + 1 })
+  if (count) updatePlayCount({ ...info, count: count.count + 1 })
+  else insertPlayCount([{ ...info, count: 1, time: 0 }])
 }
 
 /**
@@ -38,8 +26,8 @@ export const playCountAdd = (info: PlayCountKey) => {
  */
 export const playCountOverwrite = (info: PlayCount) => {
   let count = queryPlayCount(info)
-  if (!count) insertPlayCount([{ ...info, time: 0 }])
-  else updatePlayCount(info)
+  if (count) updatePlayCount(info)
+  else insertPlayCount([{ ...info, time: 0 }])
 }
 
 /**
@@ -48,8 +36,8 @@ export const playCountOverwrite = (info: PlayCount) => {
  */
 export const playTimeAdd = (info: PlayTime) => {
   let count = queryPlayCount(info)
-  if (!count) insertPlayCount([{ ...info, count: 1 }])
-  else updatePlayTime({ ...info, time: count.time + info.time })
+  if (count) updatePlayTime({ ...info, time: count.time + info.time })
+  else insertPlayCount([{ ...info, count: 1 }])
 }
 
 /**
@@ -58,10 +46,9 @@ export const playTimeAdd = (info: PlayTime) => {
  */
 export const playTimeOverwrite = (info: PlayTime) => {
   let count = queryPlayCount(info)
-  if (!count) insertPlayCount([{ ...info, count: 1 }])
-  else updatePlayTime(info)
+  if (count) updatePlayTime(info)
+  else insertPlayCount([{ ...info, count: 1 }])
 }
-
 
 /**
  * 清空播放统计
@@ -76,4 +63,3 @@ export const playCountClear = () => {
 export const playCountCount = () => {
   return countPlayCount()
 }
-

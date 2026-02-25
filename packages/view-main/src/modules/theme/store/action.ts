@@ -1,4 +1,5 @@
 import { themeChangedEvent } from '@/shared/ipc/theme/event'
+
 import * as commit from './commit'
 import { themeState } from './state'
 

@@ -1,11 +1,9 @@
 // const { getAvailableFontFamilies } = require('electron-font-manager')
 
-
 // exports.getAvailableFontFamilies = getAvailableFontFamilies
 
 import { getFonts } from 'font-list'
 // import { getAvailableFontFamilies } from 'electron-font-manager'
-
 
 // const getFonts = async() => {
 //   switch (process.platform) {
@@ -16,6 +14,4 @@ import { getFonts } from 'font-list'
 //   }
 // }
 
-export {
-  getFonts,
-}
+export { getFonts }

@@ -19,4 +19,3 @@ export const lyricState: InitState = {
   offset: 0, // 歌词延迟
   tempOffset: 0, // 歌词临时延迟
 }
-

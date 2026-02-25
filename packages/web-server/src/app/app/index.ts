@@ -1,12 +1,14 @@
+import { initCommon } from '@any-listen/app/common'
+import { initDeviceId } from '@any-listen/app/common/deviceId'
+import { DEFAULT_LANG } from '@any-listen/common/constants'
+import { parseEnvParams } from '@any-listen/nodejs/env'
+
 import { setProxyByHost } from '@/app/shared/request'
 import { startCheckUpdateTimeout, update } from '@/app/shared/update'
 import { socketEvent } from '@/modules/ipc/event'
 import { appLog, logger } from '@/shared/log4js'
 import { checkAndCreateDir, removePath } from '@/shared/utils'
-import { initCommon } from '@any-listen/app/common'
-import { initDeviceId } from '@any-listen/app/common/deviceId'
-import { DEFAULT_LANG } from '@any-listen/common/constants'
-import { parseEnvParams } from '@any-listen/nodejs/env'
+
 import { version } from '../../../package.json' with { type: 'json' }
 import { i18n } from '../i18n'
 import { boxTools } from '../modules/extension/clientTools'

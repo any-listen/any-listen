@@ -1,8 +1,9 @@
+import { LIST_IDS, MEDIA_FILE_TYPES } from '@any-listen/common/constants'
+
 import { createUserList as createUserListRemote, getSubUserLists, updateUserList } from '@/modules/musicLibrary/store/actions'
 import { musicLibraryState } from '@/modules/musicLibrary/store/state'
 import { i18n } from '@/plugins/i18n'
 import { showOpenDialog } from '@/shared/ipc/app'
-import { LIST_IDS, MEDIA_FILE_TYPES } from '@any-listen/common/constants'
 
 export const createUserList = async (listInfo: AnyListen.List.UserListInfo) => {
   const lists = getSubUserLists(null)
@@ -12,7 +13,7 @@ export const createUserList = async (listInfo: AnyListen.List.UserListInfo) => {
       position = 0
     } else {
       position = lists.findIndex((l) => l.id == listInfo.id)
-      if (position != -1) position = position + 1
+      if (position != -1) position += 1
     }
   } else {
     position = musicLibraryState.userLists.length

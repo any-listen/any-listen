@@ -1,4 +1,5 @@
 import { mount, tick, unmount } from 'svelte'
+
 import type { FileExplorerOptions } from './shared'
 
 export const showFileExplorerModal = async (options: FileExplorerOptions) => {

@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import vm from 'node:vm'
+
 import { extensionEvent } from '../event'
 import { extensionState } from '../state'
 import { createContext } from './hostContext'

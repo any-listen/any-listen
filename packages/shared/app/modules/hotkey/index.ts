@@ -12,8 +12,4 @@ export const getHotkeyStatus = () => {
   return hotKeyState.state
 }
 
-
-export {
-  hotKeyState,
-  hotKeyEvent,
-}
+export { hotKeyState, hotKeyEvent }

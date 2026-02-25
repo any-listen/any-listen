@@ -1,6 +1,7 @@
-import Router from '@koa/router'
 // import { registerDevRouter } from './dev'
 import { API_PREFIX } from '@any-listen/common/constants'
+import Router from '@koa/router'
+
 import { registerIpcRouter } from './ipc'
 import { registerProxyRouter } from './proxyServer'
 

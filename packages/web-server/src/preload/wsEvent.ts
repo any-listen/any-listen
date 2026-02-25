@@ -1,4 +1,5 @@
 import WebEvent, { type EventType } from '@any-listen/web/Event'
+
 import type { IPCSocket } from './ws'
 
 class Event extends WebEvent {

@@ -1,5 +1,3 @@
-import { appEvent, appState } from '@/app/app'
-import { workers } from '@/app/worker'
 import { musicListEvent, sendMusicListAction } from '@any-listen/app/modules/musicList'
 import {
   getPlayInfo as getPlayInfoRaw,
@@ -12,6 +10,9 @@ import {
   setPlayTime,
 } from '@any-listen/app/modules/player'
 import { LIST_IDS } from '@any-listen/common/constants'
+
+import { appEvent, appState } from '@/app/app'
+import { workers } from '@/app/worker'
 
 const registerProgressSave = () => {
   const handler = async (progress: AnyListen.IPCPlayer.Progress) => {

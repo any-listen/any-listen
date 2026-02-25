@@ -1,4 +1,5 @@
 import { fullscreenWindow } from '@/shared/ipc/app'
+
 import { appEvent } from './event'
 import { appState } from './state'
 

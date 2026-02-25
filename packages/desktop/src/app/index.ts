@@ -1,13 +1,14 @@
-import { DEFAULT_LANG, URL_SCHEME_RXP } from '@any-listen/common/constants'
-import { app, nativeTheme, screen, shell, webContents } from 'electron'
 import { existsSync, mkdirSync } from 'node:fs'
 import path from 'node:path'
-import { appEvent } from './event'
-import { appState } from './state'
+
+import { initCommon } from '@any-listen/app/common'
 // import { navigationUrlWhiteList } from '@common/config'
 import { initDeviceId } from '@any-listen/app/common/deviceId'
+import { DEFAULT_LANG, URL_SCHEME_RXP } from '@any-listen/common/constants'
+import { isUrl } from '@any-listen/common/utils'
 import { parseEnvParams } from '@any-listen/nodejs/env'
 import { checkAndCreateDir, isMac } from '@any-listen/nodejs/index'
+import { app, nativeTheme, screen, shell, webContents } from 'electron'
 
 import { i18n } from '@/i18n'
 import { rendererIPC } from '@/renderer/winMain/rendererEvent'
@@ -15,11 +16,12 @@ import { buildElectronProxyConfig, trashItem } from '@/shared/electron'
 import { log, logger } from '@/shared/log'
 import { setProxyByHost } from '@/shared/request'
 import { startCheckUpdateTimeout, update } from '@/shared/update'
-import { initCommon } from '@any-listen/app/common'
-import { isUrl } from '@any-listen/common/utils'
+
 import { version } from '../../package.json'
 import { setSkipTrayQuit } from './actions'
 import { getAppSetting, saveSetting } from './data'
+import { appEvent } from './event'
+import { appState } from './state'
 
 export const initState = () => {
   const envParams = parseEnvParams<AnyListen.CmdParams>()

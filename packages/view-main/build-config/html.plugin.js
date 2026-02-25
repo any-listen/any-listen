@@ -1,7 +1,8 @@
-import { minify } from '@swc/html'
-import { env } from 'node:process'
-import crypto from 'node:crypto'
 import { Buffer } from 'node:buffer'
+import crypto from 'node:crypto'
+import { env } from 'node:process'
+
+import { minify } from '@swc/html'
 
 /**
  * HTML plugin for Vite that allows injecting data and tags into the HTML.

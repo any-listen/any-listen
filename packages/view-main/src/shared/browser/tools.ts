@@ -1,6 +1,7 @@
+import { generateId } from '@any-listen/common/utils'
+
 import { workers } from '@/worker'
 import { proxyCallback } from '@/worker/utils'
-import { generateId } from '@any-listen/common/utils'
 
 const proxyCbs = new Map<string, () => void>()
 export const runTimeout = (cb: () => void, d?: number) => {

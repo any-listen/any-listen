@@ -1,5 +1,6 @@
 import { isValidLyric } from '@any-listen/common/tools'
 import { parseLyrics } from '@any-listen/nodejs/lrcTool'
+
 import {
   createLocalMusicInfo,
   getLocalMusicFileLyric,
@@ -37,7 +38,10 @@ export const getMusicFileLyric = async (
  * @param filePaths 文件路径
  * @param parseMetadata 是否解析元数据
  */
-export const createLocalMusicInfos = async (filePaths: string[], parseMetadata: boolean): Promise<AnyListen.Music.MusicInfoLocal[]> => {
+export const createLocalMusicInfos = async (
+  filePaths: string[],
+  parseMetadata: boolean
+): Promise<AnyListen.Music.MusicInfoLocal[]> => {
   const list: AnyListen.Music.MusicInfoLocal[] = []
   for await (const path of filePaths) {
     const musicInfo = await createLocalMusicInfo(path, parseMetadata)

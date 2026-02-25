@@ -1,4 +1,5 @@
 import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+
 import { hotKeyConfigUpdatedEvent, hotKeyDownEvent } from './event'
 
 export default {

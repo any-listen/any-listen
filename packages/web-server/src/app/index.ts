@@ -1,10 +1,11 @@
 import './shared/error'
 import { appState, initAppEnv, sendInitedEvent } from '@/app/app'
+import { appLog } from '@/shared/log4js'
+
 import { initI18n } from './i18n'
-import { startCommonWorkers, startExtensionServiceWorker } from './worker'
 import { initModules } from './modules'
 import { initRenderers } from './renderer'
-import { appLog } from '@/shared/log4js'
+import { startCommonWorkers, startExtensionServiceWorker } from './worker'
 
 // let isInited = false
 // 初始化应用

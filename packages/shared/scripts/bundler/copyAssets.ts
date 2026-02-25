@@ -1,6 +1,8 @@
-import { getNativeName } from '@any-listen/nodejs'
 import fs from 'node:fs'
 import path from 'node:path'
+
+import { getNativeName } from '@any-listen/nodejs'
+
 import type { Target } from './utils'
 
 const rootPath = path.join(__dirname, '../../../../')

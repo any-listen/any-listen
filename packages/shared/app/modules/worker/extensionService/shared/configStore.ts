@@ -1,5 +1,6 @@
 import { joinPath } from '@any-listen/nodejs'
 import Store from '@any-listen/nodejs/Store'
+
 import { extensionEvent } from '../event'
 
 const stores = new Map<string, Store>()

@@ -1,9 +1,10 @@
 import Action from '@any-listen/common/Action'
+
 import * as appActions from '@/modules/app/actions'
-import * as playerActions from '@/modules/player/actions'
-import * as musicLibraryActions from '@/modules/musicLibrary/actions'
 import * as dislikeListActions from '@/modules/dislikeList/actions'
 import * as extensionActions from '@/modules/extension/actions'
+import * as musicLibraryActions from '@/modules/musicLibrary/actions'
+import * as playerActions from '@/modules/player/actions'
 
 const ACTIONS = {
   app: appActions,

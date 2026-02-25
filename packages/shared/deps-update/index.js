@@ -1,7 +1,8 @@
-import chalk from 'chalk'
 import fs from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
+
+import chalk from 'chalk'
 import { run as runNcu } from 'npm-check-updates'
 
 const root = path.join(import.meta.dirname, '../../../')

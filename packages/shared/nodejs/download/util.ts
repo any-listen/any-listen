@@ -11,8 +11,7 @@ export const STATUS = {
   failed: 'FAILED',
 } as const
 
-const httpsRxp = /^https:/
-export const getRequestAgent = (url: string, proxy?: { host: string, port: number }) => {
+export const getRequestAgent = (url: string, proxy?: { host: string; port: number }) => {
   let options
   if (proxy) {
     options = {
@@ -22,5 +21,5 @@ export const getRequestAgent = (url: string, proxy?: { host: string, port: numbe
       },
     }
   }
-  return options ? (httpsRxp.test(url) ? httpsOverHttp : httpOverHttp)(options) : undefined
+  return options ? (url.startsWith('https:') ? httpsOverHttp : httpOverHttp)(options) : undefined
 }

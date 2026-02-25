@@ -1,6 +1,7 @@
 import { playerState } from '@/modules/player/store/state'
 import { getAnalyser } from '@/plugins/player'
 import { createDesktopLyricProcessEvent } from '@/shared/ipc/app/event'
+
 import { lyricState } from './store/state'
 
 let desktopLyricPort: MessagePort | null = null

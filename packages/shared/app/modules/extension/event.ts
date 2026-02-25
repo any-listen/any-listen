@@ -1,4 +1,5 @@
 import _Event, { type EventType } from '@any-listen/nodejs/Event'
+
 import type { ExtensionSeriveTypes } from '../worker/utils'
 import { extensionState } from './state'
 

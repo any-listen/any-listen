@@ -1,4 +1,5 @@
 import { winShowEvent } from '@/shared/ipc/app/event'
+
 import { appEvent } from '../app/store/event'
 import { playerEvent } from '../player/store/event'
 import { playerState } from '../player/store/state'

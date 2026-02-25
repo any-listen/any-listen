@@ -1,6 +1,7 @@
 import { throttle } from '@any-listen/common/utils'
 import { checkPath } from '@any-listen/nodejs'
 import type { FileAction } from '@any-listen/nodejs/watcher'
+
 import { getSettings, showMessageBox, t } from '../../common'
 import { getDeviceId } from '../../common/deviceId'
 import { winMainReadyEvent } from '../../common/event'

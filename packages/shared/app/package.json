@@ -1,7 +1,7 @@
 {
   "name": "@shared/app",
-  "types": "./types.d.ts",
   "type": "module",
+  "types": "./types.d.ts",
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
     "@any-listen/i18n": "workspace:@shared/i18n@*",

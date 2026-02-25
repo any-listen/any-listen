@@ -2,6 +2,7 @@ import { mount, type ComponentExports } from 'svelte'
 
 import { onDesconnected } from '@/modules/app/shared'
 import { closeMessageBoxEvent } from '@/shared/ipc/app/event'
+
 import App from './App.svelte'
 
 let app: ComponentExports<typeof App>

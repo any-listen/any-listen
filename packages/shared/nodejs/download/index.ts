@@ -1,5 +1,7 @@
+import type http from 'node:http'
+
 import { sizeFormate } from '@any-listen/common/utils'
-import type http from 'http'
+
 import Downloader, { type Options as DownloaderOptions } from './Downloader'
 import { getRequestAgent } from './util'
 

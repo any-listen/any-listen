@@ -1,8 +1,9 @@
-import { appState } from '@/app'
-import { workers } from '@/worker'
 import { musicListEvent } from '@any-listen/app/modules/musicList'
 import { getPlayInfo as getPlayInfoRaw } from '@any-listen/app/modules/player'
 import { LIST_IDS } from '@any-listen/common/constants'
+
+import { appState } from '@/app'
+import { workers } from '@/worker'
 
 export const checkCollect = async (minfo: AnyListen.Player.PlayMusicInfo) => {
   return minfo.listId == LIST_IDS.LOVE ? true : workers.dbService.checkListExistMusic(LIST_IDS.LOVE, minfo.musicInfo.id)

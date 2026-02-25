@@ -83,4 +83,3 @@ export const navigationUrlWhiteList: RegExp[] = []
 //   'rgb(222,222,222)',
 //   'rgb(229,229,229)',
 // ] as const
-

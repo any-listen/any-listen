@@ -1,9 +1,9 @@
 import pluginJs from '@eslint/js'
-import love from 'eslint-config-love'
-import globals from 'globals'
 // import { typescriptRule } from './eslintrc.base.mjs'
 // import tseslint from "typescript-eslint";
 import typescriptParser from '@typescript-eslint/parser'
+import love from 'eslint-config-love'
+import globals from 'globals'
 
 export { typescriptParser }
 export const baseRule = {

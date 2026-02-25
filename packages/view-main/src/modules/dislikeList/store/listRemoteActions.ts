@@ -1,5 +1,6 @@
 import { sendAction } from '@/shared/ipc/dislike'
 import { dislikeActionEvent } from '@/shared/ipc/dislike/event'
+
 import * as commit from './commit'
 
 export { getInfo } from '@/shared/ipc/dislike'

@@ -1,5 +1,6 @@
-import type { ServerSocket } from '@/modules/ipc/websocket'
 import _Event, { type EventType } from '@any-listen/nodejs/Event'
+
+import type { ServerSocket } from '@/modules/ipc/websocket'
 
 export class Event extends _Event {
   emitEvent<K extends keyof EventMethods>(eventName: K, ...args: unknown[]) {

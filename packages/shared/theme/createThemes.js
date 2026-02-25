@@ -2,6 +2,7 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
+
 import { createThemeColors } from './utils.js'
 
 const defaultThemes = [

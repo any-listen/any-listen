@@ -1,7 +1,8 @@
+import { existTimeExp } from '@any-listen/app/modules/music/utils'
+
 import { appState } from '@/app'
 import { checkAndCreateDir, joinPath, tmpdir } from '@/shared/utils'
 import { workers } from '@/worker'
-import { existTimeExp } from '@any-listen/app/modules/music/utils'
 
 export const getTempDir = async () => {
   const tempDir = joinPath(tmpdir(), 'anylisten_temp')

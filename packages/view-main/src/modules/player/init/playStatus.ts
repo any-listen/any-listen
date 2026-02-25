@@ -1,9 +1,11 @@
+import { buildMusicName } from '@any-listen/common/tools'
+
 import { onRelease } from '@/modules/app/shared'
 import { settingState } from '@/modules/setting/store/state'
 import { i18n } from '@/plugins/i18n'
 import { setPause } from '@/plugins/player'
 import { createUnsubscriptionSet } from '@/shared'
-import { buildMusicName } from '@any-listen/common/tools'
+
 import { onPlayerCreated } from '../shared'
 import { setPlayerPlaying, setStatusText, skipNext } from '../store/actions'
 import { setPlayerTitle } from '../store/commit'

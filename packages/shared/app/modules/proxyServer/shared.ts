@@ -1,6 +1,8 @@
+import fs from 'node:fs/promises'
+
 import { MEDIA_FILE_TYPES, PIC_FILE_TYPES } from '@any-listen/common/constants'
 import { joinPath } from '@any-listen/nodejs'
-import fs from 'node:fs/promises'
+
 import { proxyServerState } from './state'
 
 const ALLOWED_EXT = [...MEDIA_FILE_TYPES, ...PIC_FILE_TYPES].map((i) => `.${i}`)

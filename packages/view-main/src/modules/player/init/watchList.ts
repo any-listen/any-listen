@@ -1,3 +1,5 @@
+import { createPlayMusicInfo } from '@any-listen/common/tools'
+
 import { onRelease } from '@/modules/app/shared'
 import { dislikeListEvent } from '@/modules/dislikeList/store/event'
 import { dislikeListState } from '@/modules/dislikeList/store/state'
@@ -6,7 +8,7 @@ import { musicLibraryEvent } from '@/modules/musicLibrary/store/event'
 import { onSettingChanged } from '@/modules/setting/shared'
 import { arrPush, createUnsubscriptionSet, generateId, throttle } from '@/shared'
 import { workers } from '@/worker'
-import { createPlayMusicInfo } from '@any-listen/common/tools'
+
 import { onPlayerCreated } from '../shared'
 import {
   setDislikeIds,

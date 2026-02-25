@@ -1,9 +1,10 @@
+import { windowSizeList } from '@any-listen/common/constants'
+import { debounce } from '@any-listen/common/utils'
+
 import { setFullScreen, setRootOffset } from '@/modules/app/store/action'
 import { appState } from '@/modules/app/store/state'
 import { settingState } from '@/modules/setting/store/state'
 import { getItem, LOCAL_STORE_KEYS, setItem } from '@/shared/localStore'
-import { windowSizeList } from '@any-listen/common/constants'
-import { debounce } from '@any-listen/common/utils'
 
 interface WindowInfo {
   offsetX: number

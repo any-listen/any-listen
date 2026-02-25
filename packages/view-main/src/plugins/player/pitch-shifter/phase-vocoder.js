@@ -3,33 +3,34 @@
 import FFT from './fft'
 import OLAProcessor from './ola-processor'
 
-
 const DEFAULT_BUFFERED_BLOCK_SIZE = 4096
 
 function genHannWindow(length) {
   let win = new Float32Array(length)
   for (let i = 0; i < length; i++) {
-    win[i] = 0.8 * (1 - Math.cos(2 * Math.PI * i / length))
+    win[i] = 0.8 * (1 - Math.cos((2 * Math.PI * i) / length))
   }
   return win
 }
 
 class PhaseVocoderProcessor extends OLAProcessor {
   static get parameterDescriptors() {
-    return [{
-      name: 'pitchFactor',
-      defaultValue: 1.0,
-      automationRate: 'k-rate',
-    }, /* ,
+    return [
+      {
+        name: 'pitchFactor',
+        defaultValue: 1.0,
+        automationRate: 'k-rate',
+      } /* ,
     {
       name: 'pitchCents',
       defaultValue: 0.0,
       automationRate: 'k-rate'
-        } */]
+        } */,
+    ]
   }
 
   constructor(options) {
-    (options.processorOptions ??= {}).blockSize ??= DEFAULT_BUFFERED_BLOCK_SIZE
+    ;(options.processorOptions ??= {}).blockSize ??= DEFAULT_BUFFERED_BLOCK_SIZE
     super(options)
 
     this.fftSize = this.blockSize
@@ -49,7 +50,7 @@ class PhaseVocoderProcessor extends OLAProcessor {
 
   processOLA(inputs, outputs, parameters) {
     // k-rate automation, param arrays only have single value
-    const pitchFactor = parameters.pitchFactor[0]/*  || Math.pow(2, (parameters.pitchCents[0]/12)) */
+    const pitchFactor = parameters.pitchFactor[0] /*  || Math.pow(2, (parameters.pitchCents[0]/12)) */
 
     for (let i = 0; i < this.nbInputs; i++) {
       for (let j = 0; j < inputs[i].length; j++) {
@@ -85,7 +86,8 @@ class PhaseVocoderProcessor extends OLAProcessor {
 
   /** Compute squared magnitudes for peak finding **/
   computeMagnitudes() {
-    let i = 0; let j = 0
+    let i = 0
+    let j = 0
     while (i < this.magnitudes.length) {
       let real = this.freqComplexBuffer[j]
       let imag = this.freqComplexBuffer[j + 1]
@@ -151,7 +153,7 @@ class PhaseVocoderProcessor extends OLAProcessor {
         if (binIndexShifted >= this.magnitudes.length) break
 
         // apply phase correction
-        let omegaDelta = 2 * Math.PI * (binIndexShifted - binIndex) / this.fftSize
+        let omegaDelta = (2 * Math.PI * (binIndexShifted - binIndex)) / this.fftSize
         let phaseShiftReal = Math.cos(omegaDelta * this.timeCursor)
         let phaseShiftImag = Math.sin(omegaDelta * this.timeCursor)
 
@@ -173,4 +175,3 @@ class PhaseVocoderProcessor extends OLAProcessor {
 }
 
 globalThis.registerProcessor('phase-vocoder-processor', PhaseVocoderProcessor)
-

@@ -1,12 +1,12 @@
+import type { ComponentProps } from 'svelte'
+
 // import Vue from 'vue'
 import type Router from '@/plugins/svelte-spa-router/Router.svelte'
-
 import Extenstion from '@/views/Extenstion/index.svelte'
 import Library from '@/views/Library/index.svelte'
 import Online from '@/views/Online/index.svelte'
 import Search from '@/views/Search/index.svelte'
 import Setting from '@/views/Setting/index.svelte'
-import type { ComponentProps } from 'svelte'
 
 const routes: ComponentProps<typeof Router>['routes'] = {
   '/online': Online,

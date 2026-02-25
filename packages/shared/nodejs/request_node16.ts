@@ -1,12 +1,6 @@
 import qs from 'node:querystring'
-import {
-  FormData,
-  getGlobalDispatcher,
-  request as nodeRrequest,
-  ProxyAgent,
-  setGlobalDispatcher,
-  type Dispatcher,
-} from 'undici'
+
+import { FormData, getGlobalDispatcher, request as nodeRrequest, ProxyAgent, setGlobalDispatcher, type Dispatcher } from 'undici'
 
 const defaultOptions: Options = {
   timeout: 15000,
@@ -43,19 +37,19 @@ const CONTENT_TYPE = {
 type ParamsData = Record<string, string | number | null | undefined | boolean>
 export interface Options {
   method?:
-  | 'GET'
-  | 'HEAD'
-  | 'POST'
-  | 'PUT'
-  | 'DELETE'
-  | 'OPTIONS'
-  | 'PATCH'
-  | 'PROPFIND'
-  | 'COPY'
-  | 'MOVE'
-  | 'MKCOL'
-  | 'PROPPATCH'
-  | 'QUOTA'
+    | 'GET'
+    | 'HEAD'
+    | 'POST'
+    | 'PUT'
+    | 'DELETE'
+    | 'OPTIONS'
+    | 'PATCH'
+    | 'PROPFIND'
+    | 'COPY'
+    | 'MOVE'
+    | 'MKCOL'
+    | 'PROPPATCH'
+    | 'QUOTA'
   query?: ParamsData
   headers?: Record<string, string | string[]>
   timeout?: number
@@ -206,7 +200,7 @@ export const request = async <T = unknown>(url: string, options: Options = {}): 
     body,
     signal: options.signal,
     dispatcher: buildRequestDispatcher(options),
-  }).then(async(response) => {
+  }).then(async (response) => {
     if (options.needBody) {
       return {
         headers: response.headers,

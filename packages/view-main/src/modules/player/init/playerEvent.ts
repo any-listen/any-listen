@@ -1,6 +1,4 @@
-import { createUnsubscriptionSet } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
-import { onPlayerCreated } from '../shared'
 import {
   getErrorCode,
   onCanplay,
@@ -13,6 +11,9 @@ import {
   onPlaying,
   onWaiting,
 } from '@/plugins/player'
+import { createUnsubscriptionSet } from '@/shared'
+
+import { onPlayerCreated } from '../shared'
 import { playerEvent } from '../store/event'
 
 let unregistered = createUnsubscriptionSet()

@@ -2,6 +2,7 @@ import { onRelease } from '@/modules/app/shared'
 import { settingEvent } from '@/modules/setting/store/event'
 import { getCurrentTime, onTimeupdate } from '@/plugins/player'
 import { createUnsubscriptionSet } from '@/shared'
+
 import { onPlayerCreated } from '../shared'
 import { playerEvent } from '../store/event'
 import { getNextPlayMusicInfo, resetRandomNextMusicInfo } from '../store/playerActions'

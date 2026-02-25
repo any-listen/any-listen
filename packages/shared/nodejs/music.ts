@@ -3,6 +3,7 @@ import { singerFormat } from '@any-listen/common/tools'
 import { formatPlayTime, isLikelyGarbage, sizeFormate } from '@any-listen/common/utils'
 import type { IAudioMetadata } from 'music-metadata'
 import type { IComment } from 'music-metadata/lib/type'
+
 import { basename, checkFile, extname, getFileStats } from './index'
 
 export const bitrateFormat = (formate: IAudioMetadata['format']) => {

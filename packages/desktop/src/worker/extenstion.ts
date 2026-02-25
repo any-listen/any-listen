@@ -1,4 +1,5 @@
 import { startExtensionServiceWorker as _startExtensionServiceWorker, workers } from '@any-listen/app/modules/worker'
+
 import { extensionEvent, extensionState } from '@/modules/extension'
 
 const registerExtensionServiceEvent = () => {

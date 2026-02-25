@@ -1,8 +1,10 @@
 import { mount, tick, unmount, type ComponentExports } from 'svelte'
-import App from './App.svelte'
+
 // import type { Position } from './shared'
 import { appEvent } from '@/modules/app/store/event'
 import { debounce } from '@/shared'
+
+import App from './App.svelte'
 
 // export const showTooltips = (position: Position, message: string, autoCloseTime?: number) => {
 //   let isShow = false

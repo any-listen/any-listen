@@ -1,10 +1,12 @@
-import { appState } from '@/app/app/state'
-import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+
 import { MEDIA_FILE_TYPES, PIC_FILE_TYPES } from '@any-listen/common/constants'
 import { buildPublicPath } from '@any-listen/common/tools'
 import { extname, joinPath, toSha256 } from '@any-listen/nodejs'
-import fs from 'node:fs/promises'
-import path from 'node:path'
+
+import { appState } from '@/app/app/state'
+import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
 
 const devHost = 'http://localhost:9500'
 

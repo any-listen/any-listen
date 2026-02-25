@@ -1,6 +1,7 @@
 import { EXTENSION_VM_IPC_FUNC_NAMES } from '@any-listen/common/constants'
-import { checkLength } from '@/shared'
+
 import { setMessage } from '@/i18n'
+import { checkLength } from '@/shared'
 
 type HostCallFuncsMap = {
   [K in (typeof EXTENSION_VM_IPC_FUNC_NAMES)[number]]: Readonly<

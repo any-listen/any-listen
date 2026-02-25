@@ -2,6 +2,7 @@ import { onRelease } from '@/modules/app/shared'
 import { settingEvent } from '@/modules/setting/store/event'
 import { languageChangeEvent } from '@/plugins/i18n'
 import { createUnsubscriptionSet } from '@/shared'
+
 import { setMessages } from './i18n'
 import {
   getExtensionErrorMessage,

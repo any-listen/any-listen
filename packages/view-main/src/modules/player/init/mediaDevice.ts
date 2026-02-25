@@ -5,6 +5,7 @@ import { updateSetting } from '@/modules/setting/store/action'
 import { settingState } from '@/modules/setting/store/state'
 import { setMediaDeviceId } from '@/plugins/player'
 import { createUnsubscriptionSet } from '@/shared'
+
 import { onPlayerCreated } from '../shared'
 import { pause } from '../store/actions'
 import { playerState } from '../store/state'

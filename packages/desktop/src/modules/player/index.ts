@@ -1,5 +1,3 @@
-import { appEvent, appState } from '@/app'
-import { workers } from '@/worker'
 import { musicListEvent, sendMusicListAction } from '@any-listen/app/modules/musicList'
 import {
   getPlayMusicInfo,
@@ -11,6 +9,10 @@ import {
   setPlayTime,
 } from '@any-listen/app/modules/player'
 import { LIST_IDS } from '@any-listen/common/constants'
+
+import { appEvent, appState } from '@/app'
+import { workers } from '@/worker'
+
 import { checkCollect, getPlayerMusic } from './shared'
 // import { playerState } from './state'
 

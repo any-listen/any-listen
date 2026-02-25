@@ -1,10 +1,11 @@
-import path from 'node:path'
 import fs from 'node:fs'
+import path from 'node:path'
 
 export default class Store {
   private readonly filePath: string
   private readonly dirPath: string
   private readonly batch: boolean
+  // eslint-disable-next-line @typescript-eslint/no-unused-private-class-members
   private immediate: NodeJS.Immediate | null = null
   private data: string | Record<string, unknown> | Buffer | Uint8Array | null = null
 

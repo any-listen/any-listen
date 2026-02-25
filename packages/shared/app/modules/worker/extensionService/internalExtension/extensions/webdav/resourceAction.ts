@@ -1,4 +1,5 @@
 import { parseLyrics } from '@any-listen/nodejs/lrcTool'
+
 import { getWebDAVOptionsByMusicInfo } from './utils'
 import { getMusicLyric, getMusicPic, getMusicUrl } from './webdav'
 

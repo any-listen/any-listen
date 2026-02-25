@@ -1,6 +1,7 @@
+import type { WriteStream } from 'node:fs'
+
 import { createCache } from '@any-listen/common/cache'
 import type { Options } from '@any-listen/nodejs/request'
-import type { WriteStream } from 'node:fs'
 
 export const proxyServerState = {
   proxyBaseUrl: '',

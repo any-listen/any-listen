@@ -1,4 +1,5 @@
 import { app, clipboard, shell } from 'electron'
+
 import { isUrl } from './utils'
 
 /**

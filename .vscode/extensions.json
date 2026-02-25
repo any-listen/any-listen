@@ -3,7 +3,7 @@
     "dbaeumer.vscode-eslint",
     "stylelint.vscode-stylelint",
     "svelte.svelte-vscode",
-    "esbenp.prettier-vscode",
+    "oxc.oxc-vscode",
     "editorconfig.editorconfig",
     "lokalise.i18n-ally"
   ]

@@ -5,6 +5,7 @@ import { settingEvent } from '@/modules/setting/store/event'
 import { settingState } from '@/modules/setting/store/state'
 import { getCurrentTime as getPlayerCurrentTime } from '@/plugins/player'
 import { createUnsubscriptionSet } from '@/shared'
+
 import * as desktopLyric from './desktopLyric'
 import * as lyric from './lyric'
 import { initMacStatusBarLyric } from './macStatusBarLyric'

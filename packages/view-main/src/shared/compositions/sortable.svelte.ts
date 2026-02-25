@@ -1,6 +1,7 @@
+import type Sortable from 'sortablejs'
+
 import { appEvent } from '@/modules/app/store/event'
 import { keyboardEvent } from '@/modules/hotkey/keyboard'
-import type Sortable from 'sortablejs'
 
 let loadPromise: Promise<typeof Sortable> | null = null
 const handleLoadSortable = async () => {

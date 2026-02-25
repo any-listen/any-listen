@@ -1,6 +1,7 @@
-import Store from '@any-listen/nodejs/Store'
-import { extensionEvent } from '../../../event'
 import { joinPath } from '@any-listen/nodejs'
+import Store from '@any-listen/nodejs/Store'
+
+import { extensionEvent } from '../../../event'
 
 export const createStore = (path: string) => {
   let store: Store

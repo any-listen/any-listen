@@ -1,8 +1,10 @@
-import { checkAllowPath, createMediaPublicPath, createPicPublicPath } from '@/app/modules/fileSystem'
-import { workers } from '@/app/worker'
 import { getLocalFilePath } from '@any-listen/app/modules/music/utils'
 import { writeProxyCache } from '@any-listen/app/modules/proxyServer'
 import { isUrl } from '@any-listen/common/utils'
+
+import { checkAllowPath, createMediaPublicPath, createPicPublicPath } from '@/app/modules/fileSystem'
+import { workers } from '@/app/worker'
+
 import { buildLyricInfo, getCachedLyricInfo } from './shared'
 
 export const getMusicUrl = async ({

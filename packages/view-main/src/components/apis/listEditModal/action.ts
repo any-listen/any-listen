@@ -1,6 +1,7 @@
+import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
+
 import { i18n } from '@/plugins/i18n'
 import { showOpenDialog } from '@/shared/ipc/app'
-import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
 
 export const selectLocalFolder = async () => {
   const { canceled, filePaths } = await showOpenDialog({

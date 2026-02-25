@@ -1,10 +1,9 @@
-import * as commit from './commit'
-import { musicLibraryState } from './state'
-
 import { showNotify } from '@/components/apis/notify'
 import { settingState } from '@/modules/setting/store/state'
 import { i18n } from '@/plugins/i18n'
 import { generateIdSimple, throttle } from '@/shared'
+
+import * as commit from './commit'
 import { musicLibraryEvent } from './event'
 import {
   addListMusics as addListMusicsFromRemote,
@@ -21,6 +20,7 @@ import {
   updateUserList as updateUserListFromRemote,
   updateUserListPosition as updateUserListPositionFromRemote,
 } from './listRemoteActions'
+import { musicLibraryState } from './state'
 
 export { getSubUserLists, setFetchingListStatus, setUserListInited, userListExist } from './commit'
 export { parseMusicMetadata, removeUserList, sortListMusics, syncUserList, updateListMusicsPosition } from './listRemoteActions'

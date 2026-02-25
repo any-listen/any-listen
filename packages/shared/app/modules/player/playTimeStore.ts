@@ -1,6 +1,7 @@
+import path from 'node:path'
+
 import { STORE_NAMES } from '@any-listen/common/constants'
 import AsyncFS from '@any-listen/nodejs/AsyncFS'
-import path from 'node:path'
 
 let time = 0
 let asyncFS: AsyncFS

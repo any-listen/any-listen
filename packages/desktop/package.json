@@ -1,6 +1,10 @@
 {
-  "version": "0.6.0-beta.0",
   "name": "desktop",
+  "version": "0.6.0-beta.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/any-listen/any-listen-desktop.git"
+  },
   "main": "build-config/vite.config.ts",
   "scripts": {
     "pack:win:setup:x86_64": "node build-config/build-pack.cjs target=win arch=x86_64 type=setup",
@@ -48,10 +52,6 @@
     "publish": "node publish",
     "build": "vite build",
     "rebuild:deps": "node ./build-config/before-install.cjs && electron-builder install-app-deps && node ./build-config/post-install.cjs"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/any-listen/any-listen-desktop.git"
   },
   "dependencies": {
     "@any-listen/app": "workspace:@shared/app@*",

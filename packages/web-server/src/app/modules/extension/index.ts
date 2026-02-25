@@ -1,12 +1,13 @@
-import { appEvent, appState } from '@/app/app'
-import { playerEvent } from '@/app/modules/player'
-import { startExtensionServiceWorker } from '@/app/worker'
-import { extensionLog } from '@/shared/log4js'
 import { extensionEvent, extensionState, initExtensionModule } from '@any-listen/app/modules/extension'
 import { musicListEvent } from '@any-listen/app/modules/musicList'
 import { workers } from '@any-listen/app/modules/worker'
 import { DEFAULT_LANG, EXTENSION, STORE_NAMES } from '@any-listen/common/constants'
 import { checkAndCreateDir, joinPath, readFile } from '@any-listen/nodejs'
+
+import { appEvent, appState } from '@/app/app'
+import { playerEvent } from '@/app/modules/player'
+import { startExtensionServiceWorker } from '@/app/worker'
+import { extensionLog } from '@/shared/log4js'
 
 const handleExtensionLog = (info: AnyListen.LogInfo) => {
   switch (info.type) {

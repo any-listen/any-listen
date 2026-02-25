@@ -1,4 +1,5 @@
 import { arrPush } from '@any-listen/common/utils'
+
 import { dbPrepare } from '../../db'
 
 let playHistoryList: AnyListen.IPCPlayer.PlayHistoryListItem[] | undefined

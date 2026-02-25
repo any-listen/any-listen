@@ -1,11 +1,13 @@
-import { openDirInExplorer } from '@/shared/electron'
-import { dialog } from 'electron'
 import path from 'node:path'
-// import { log } from '@/shared/log'
-import { i18n } from '@/i18n'
+
 import { startDBServiceWorker as _startDBServiceWorker, workers } from '@any-listen/app/modules/worker'
 import { DB_NAME } from '@any-listen/common/constants'
 import { backupDB } from '@any-listen/nodejs/tools'
+import { dialog } from 'electron'
+
+// import { log } from '@/shared/log'
+import { i18n } from '@/i18n'
+import { openDirInExplorer } from '@/shared/electron'
 
 // let nativeBindingPath = '../../node_modules/better-sqlite3/build/Release/better_sqlite3.node'
 let nativeBindingPath = './native/better_sqlite3.node'

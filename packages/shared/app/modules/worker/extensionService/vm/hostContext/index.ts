@@ -1,8 +1,10 @@
+import vm from 'node:vm'
+
 import { EXTENSION, EXTENSION_VM_IPC_FUNC_NAMES } from '@any-listen/common/constants'
 import { randomUUID } from '@any-listen/nodejs'
 import { createSimpleLogcat } from '@any-listen/nodejs/logs'
 import { createMessage2Call } from 'message2call'
-import vm from 'node:vm'
+
 import { createExposeObject } from './apis/exposeFuncs'
 import {
   clearExtensionTimeout,

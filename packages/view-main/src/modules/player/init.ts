@@ -2,6 +2,7 @@ import { onRelease } from '@/modules/app/shared'
 import { appState } from '@/modules/app/store/state'
 import { settingEvent } from '@/modules/setting/store/event'
 import { createUnsubscriptionSet } from '@/shared'
+
 import { initPlayer as initPlayerModules } from './init/index'
 import {
   initPlayHistoryList,

@@ -1,10 +1,12 @@
+import fs from 'node:fs'
+import path from 'node:path'
+
+import Store from '@any-listen/nodejs/Store'
 // import { writeFileSync } from 'atomically'
 import { dialog, shell } from 'electron'
-import path from 'node:path'
-import fs from 'node:fs'
-import { log } from '@/shared/log'
+
 import { appState } from '@/app'
-import Store from '@any-listen/nodejs/Store'
+import { log } from '@/shared/log'
 
 const stores = new Map<string, Store>()
 

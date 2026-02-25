@@ -1,10 +1,13 @@
+import path from 'node:path'
+
+import { isMac, isWin } from '@any-listen/nodejs/index'
+import { Menu, nativeImage, Tray } from 'electron'
+
 import { actions } from '@/actions'
 import { appEvent, appState, updateSetting } from '@/app'
 import { i18n } from '@/i18n'
 import type { WinMainEvent } from '@/renderer/winMain'
-import { isMac, isWin } from '@any-listen/nodejs/index'
-import { Menu, nativeImage, Tray } from 'electron'
-import path from 'node:path'
+
 import { playerEvent } from '../player'
 
 let tray: Electron.Tray | null

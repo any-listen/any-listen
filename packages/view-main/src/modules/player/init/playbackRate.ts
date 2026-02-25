@@ -1,12 +1,13 @@
-import { createUnsubscriptionSet, debounce } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
-import { onPlayerCreated } from '../shared'
-import { setPlaybackRate, setPreservesPitch } from '@/plugins/player'
-import { playerEvent } from '../store/event'
+import { onSettingChanged } from '@/modules/setting/shared'
 import { updateSetting } from '@/modules/setting/store/action'
 import { settingState } from '@/modules/setting/store/state'
-import { onSettingChanged } from '@/modules/setting/shared'
+import { setPlaybackRate, setPreservesPitch } from '@/plugins/player'
+import { createUnsubscriptionSet, debounce } from '@/shared'
+
+import { onPlayerCreated } from '../shared'
 import { setStatePlaybackRate } from '../store/actions'
+import { playerEvent } from '../store/event'
 
 let rate = 0
 let setValCount = 0

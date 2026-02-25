@@ -1,13 +1,13 @@
 {
-  "version": "0.8.0-beta.0",
   "name": "web-server",
-  "main": "build-config/vite.config.ts",
-  "scripts": {
-    "build": "vite build"
-  },
+  "version": "0.8.0-beta.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/any-listen/any-listen-web-server.git"
+  },
+  "main": "build-config/vite.config.ts",
+  "scripts": {
+    "build": "vite build"
   },
   "dependencies": {
     "@any-listen/app": "workspace:@shared/app@*",
@@ -17,10 +17,10 @@
     "@any-listen/theme": "workspace:@shared/theme@*",
     "@any-listen/web": "workspace:@shared/web@*",
     "@koa/cors": "^5.0.0",
+    "@koa/router": "^15.3.0",
     "better-sqlite3": "^12.6.2",
     "jsonwebtoken": "^9.0.3",
     "koa": "^3.1.1",
-    "@koa/router": "^15.3.0",
     "log4js": "6.9.1",
     "message2call": "^2.0.3",
     "ws": "^8.19.0"
@@ -30,8 +30,8 @@
     "@any-listen/types": "workspace:@shared/types@*",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/koa": "^3.0.1",
-    "@types/koa__router": "^12.0.5",
     "@types/koa__cors": "^5.0.1",
+    "@types/koa__router": "^12.0.5",
     "@types/ws": "8.18.1",
     "vite": "^8.0.0-beta.15"
   }

@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 // import { checkMusicFileAvailable } from '@renderer/utils/music'
 
+import { LIST_IDS } from '@any-listen/common/constants'
+import { createPlayMusicInfoList } from '@any-listen/common/tools'
+import { getRandom } from '@any-listen/common/utils'
+import { checkPicUrl } from '@any-listen/web'
+
 import { addInfo } from '@/modules/dislikeList/actions'
 import { addListMusics, parseMusicMetadata, removeListMusics, updateListMusic } from '@/modules/musicLibrary/store/actions'
 import { settingState } from '@/modules/setting/store/state'
 import { i18n } from '@/plugins/i18n'
 import { getSrc, isEmpty, releasePlayer, setPause, setPlay, setResource, setStop } from '@/plugins/player'
 import { parseInterval } from '@/shared'
-import { LIST_IDS } from '@any-listen/common/constants'
-import { createPlayMusicInfoList } from '@any-listen/common/tools'
-import { getRandom } from '@any-listen/common/utils'
-import { checkPicUrl } from '@any-listen/web'
+
 import * as commit from './commit'
 import { playerEvent } from './event'
 import { setPlayListMusic, setPlayListMusicPlayed, setPlayListMusicUnplayedAll } from './listRemoteAction'

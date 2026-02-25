@@ -1,5 +1,7 @@
-import { workers } from '@/worker'
 import type { DOMPurify } from 'dompurify'
+
+import { workers } from '@/worker'
+
 import { runTimeout, stopTimeout } from './browser/tools'
 
 export const sanitizeHtml = (DOMPurify: DOMPurify, str?: string) => {

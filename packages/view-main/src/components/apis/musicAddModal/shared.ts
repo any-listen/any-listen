@@ -1,6 +1,7 @@
 import { addListMusics, moveListMusics } from '@/modules/musicLibrary/store/actions'
-import { showNotify } from '../notify'
 import { i18n } from '@/plugins/i18n'
+
+import { showNotify } from '../notify'
 
 export const addMusic = async (listId: string, musicInfos: AnyListen.Music.MusicInfo[]) => {
   await addListMusics(listId, musicInfos)

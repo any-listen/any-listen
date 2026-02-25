@@ -1,8 +1,9 @@
-import { createUnsubscriptionSet } from '@/shared'
 import { onRelease } from '@/modules/app/shared'
+import { hotkeyEvent } from '@/modules/hotkey/store/event'
+import { createUnsubscriptionSet } from '@/shared'
+
 import { onPlayerCreated } from '../shared'
 import { collectMusic, dislikeMusic, skipNext, skipPrev, togglePlay, uncollectMusic } from '../store/actions'
-import { hotkeyEvent } from '@/modules/hotkey/store/event'
 
 let unregistered = createUnsubscriptionSet()
 export const initPlayKeyboardAction = () => {

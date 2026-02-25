@@ -1,6 +1,6 @@
-import { URL } from 'url'
-import http from 'http'
-import https from 'https'
+import http from 'node:http'
+import https from 'node:https'
+import { URL } from 'node:url'
 
 export interface Options {
   method: 'get' | 'head' | 'delete' | 'patch' | 'post' | 'put'
@@ -27,7 +27,7 @@ const sendRequest = (url: string, options: Options, callback?: HttpCallback) => 
   }
 
   if (options.params) {
-    (httpOptions.path!) += `${urlParse.search ? '&' : '?'}${Object.entries(options.params)
+    httpOptions.path! += `${urlParse.search ? '&' : '?'}${Object.entries(options.params)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&')}`
   }
@@ -36,9 +36,7 @@ const sendRequest = (url: string, options: Options, callback?: HttpCallback) => 
 
   if (options.agent) httpOptions.agent = options.agent
 
-  return urlParse.protocol == 'https:'
-    ? https.request(httpOptions, callback)
-    : http.request(httpOptions, callback)
+  return urlParse.protocol == 'https:' ? https.request(httpOptions, callback) : http.request(httpOptions, callback)
 }
 
 const applyTimeout = (request: http.ClientRequest, time: number) => {
@@ -70,4 +68,3 @@ export function request(url: string, _options: Partial<Options>, callback?: Http
   if (options.timeout) applyTimeout(request, options.timeout)
   return request
 }
-

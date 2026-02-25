@@ -1,8 +1,9 @@
-import { settingEvent } from '@/modules/setting/store/event'
 import { DEFAULT_LANG } from '@any-listen/common/constants'
 import { type Langs, type Locale, type Message, type TranslateValues, fillMessage, langList, messages } from '@any-listen/i18n'
 import SingleEvent from '@any-listen/web/SimpleSingleEvent'
 import { derived, writable } from 'svelte/store'
+
+import { settingEvent } from '@/modules/setting/store/event'
 
 const $locale = writable<Locale>(DEFAULT_LANG)
 

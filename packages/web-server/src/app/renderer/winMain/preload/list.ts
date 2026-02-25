@@ -1,5 +1,7 @@
-import type { IPCSocket } from '@/preload/ws'
 import { createProxyCallback } from 'message2call'
+
+import type { IPCSocket } from '@/preload/ws'
+
 import type { ClientCall, ExposeFunctions } from '.'
 
 // 暴露给后端的方法

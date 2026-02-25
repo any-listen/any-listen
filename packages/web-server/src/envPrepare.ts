@@ -1,3 +1,6 @@
+import os from 'node:os'
+import path from 'node:path'
+
 import { NATIVE_VERSION } from '@any-listen/common/constants'
 import {
   basename,
@@ -9,8 +12,6 @@ import {
   renamePath,
 } from '@any-listen/nodejs'
 import { simpleDownload } from '@any-listen/nodejs/download'
-import os from 'node:os'
-import path from 'node:path'
 
 const nativeName = getNativeName()
 const nativeLibPath = path.join(__dirname, `../native/${nativeName}`)

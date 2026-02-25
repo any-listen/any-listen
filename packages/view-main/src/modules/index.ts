@@ -1,5 +1,6 @@
 import { initI18n } from '@/plugins/i18n'
 import { connectIPC as _connectIPC } from '@/shared/ipc/ipc'
+
 import { initApp } from './app/init'
 import { sendConnectFailed, sendConnected, sendDesconnected, sendRelease } from './app/store/action'
 import { initDislikeList } from './dislikeList/init'

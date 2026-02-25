@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { broadcast } from '@/modules/ipc/websocket'
 import {
   addFolderMusics,
   cancelAddFolderMusics,
@@ -15,6 +14,9 @@ import {
   sortListMusics,
   syncUserList,
 } from '@any-listen/app/modules/musicList'
+
+import { broadcast } from '@/modules/ipc/websocket'
+
 import type { ExposeClientFunctions, ExposeServerFunctions } from '.'
 
 // 暴露给前端的方法

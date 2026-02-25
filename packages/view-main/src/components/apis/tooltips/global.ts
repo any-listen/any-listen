@@ -1,6 +1,8 @@
+import { mount, tick, type ComponentExports } from 'svelte'
+
 import { appEvent } from '@/modules/app/store/event'
 import { debounce } from '@/shared'
-import { mount, tick, type ComponentExports } from 'svelte'
+
 import App from './App.svelte'
 let instance: ComponentExports<typeof App> | null
 let prevTips: TipInfo | null = null

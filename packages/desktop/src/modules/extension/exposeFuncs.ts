@@ -1,9 +1,11 @@
-import { extensionEvent } from '@/modules/extension'
-import { rendererIPC } from '@/renderer/winMain/rendererEvent'
 import { getAllUserLists, getListMusics, sendMusicListAction } from '@any-listen/app/modules/musicList'
 import { checkProxyCache, createProxy, writeProxyCache } from '@any-listen/app/modules/proxyServer'
 import type { Options } from '@any-listen/nodejs/request'
 import { createProxyCallback } from 'message2call'
+
+import { extensionEvent } from '@/modules/extension'
+import { rendererIPC } from '@/renderer/winMain/rendererEvent'
+
 import { getPlayInfo, playerEvent } from '../player'
 import { boxTools } from './clientTools'
 

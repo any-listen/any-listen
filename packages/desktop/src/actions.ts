@@ -1,4 +1,5 @@
 import Action from '@any-listen/common/Action'
+
 import { appActions } from './app'
 import { playerActions } from './modules/player'
 import { winMainActions } from './renderer/winMain'

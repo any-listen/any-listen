@@ -1,11 +1,12 @@
-import { getMusicPic as getMusicPicFromRemote, getMusicUrl as getMusicUrlFromRemote } from '@/shared/ipc/music'
-import { sendPlayerEvent, sendPlayHistoryListAction } from '@/shared/ipc/player'
 import { createCache } from '@any-listen/common/cache'
-import * as commit from './commit'
 
 import { lyricEvent } from '@/modules/lyric/store/event'
 import { musicLibraryEvent } from '@/modules/musicLibrary/store/event'
+import { getMusicPic as getMusicPicFromRemote, getMusicUrl as getMusicUrlFromRemote } from '@/shared/ipc/music'
+import { sendPlayerEvent, sendPlayHistoryListAction } from '@/shared/ipc/player'
 import { playerActionEvent, playHistoryListActionEvent } from '@/shared/ipc/player/event'
+
+import * as commit from './commit'
 import { playerEvent } from './event'
 import { pause, play, playId, seekTo, setCollectStatus, skipNext, skipPrev, togglePlay } from './playerActions'
 import { playerState } from './state'

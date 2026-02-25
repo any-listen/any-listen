@@ -1,5 +1,7 @@
-import { appEvent, appState } from '@/app'
 import { playerEvent } from '@any-listen/app/modules/player'
+
+import { appEvent, appState } from '@/app'
+
 import { setProgressBar } from './main'
 
 let unsubscribes = new Set<() => void>()

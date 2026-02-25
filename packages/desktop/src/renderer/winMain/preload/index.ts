@@ -1,5 +1,6 @@
 import { IPC_NAMES } from '@/shared/ipc/names'
 import { createMainCall } from '@/shared/ipc/renderer'
+
 import { createClientApp, createExposeApp } from './app'
 import { createClientData } from './data'
 import { createClientDislike, createExposeDislike } from './dislike'
@@ -10,7 +11,6 @@ import { createClientMusic } from './music'
 import { createClientPlayer, createExposePlayer } from './player'
 import { createClientSoundEffect } from './soundEffect'
 import { createClientTheme, createExposeTheme } from './theme'
-
 import './env'
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'

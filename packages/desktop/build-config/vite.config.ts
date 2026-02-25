@@ -1,7 +1,8 @@
-import electron from 'electron'
 import { execSync, spawn } from 'node:child_process'
 import { builtinModules } from 'node:module'
 import path from 'node:path'
+
+import electron from 'electron'
 import type { UserConfig } from 'vite'
 
 const isProd = process.env.NODE_ENV == 'production'

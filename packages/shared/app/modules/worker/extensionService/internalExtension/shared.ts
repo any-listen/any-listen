@@ -2,6 +2,7 @@ import { EXTENSION } from '@any-listen/common/constants'
 import { logFormat } from '@any-listen/common/tools'
 import { dateFormat, generateId } from '@any-listen/common/utils'
 import { createSimpleLogcat } from '@any-listen/nodejs/logs'
+
 import { extensionEvent } from '../event'
 import type { createCommon } from '../extensionApis/common'
 

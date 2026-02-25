@@ -1,5 +1,6 @@
 import { LIST_IDS } from '@any-listen/common/constants'
 import { arrPush, throttle } from '@any-listen/common/utils'
+
 import { getSettings } from '../../common'
 import { getDeviceId } from '../../common/deviceId'
 import { parseRemoteMusicInfoMetadata, sortRemoteUserList, syncRemoteUserList } from '../../modules/extension'

@@ -24,6 +24,7 @@ import {
   updateExtensionSettings,
 } from '@/app/modules/extension'
 import { broadcast } from '@/modules/ipc/websocket'
+
 import type { ExposeClientFunctions, ExposeServerFunctions } from '.'
 
 // 暴露给前端的方法

@@ -1,10 +1,11 @@
 import { createAudio } from '@/plugins/player'
+
 import { initMediaDevice } from './mediaDevice'
-import { initPlayerEvent } from './playerEvent'
 // import usePlayStatus from './usePlayStatus'
 import { initMediaSessionInfo } from './mediaSessionInfo'
 import { initPlaybackRate } from './playbackRate'
 import { initPlayerAudioContext } from './playerAudioContext'
+import { initPlayerEvent } from './playerEvent'
 import { initPlayErrorHandler } from './playErrorHandler'
 import { initPlayKeyboardAction } from './playKeyboardAction'
 import { initPlayStatus } from './playStatus'

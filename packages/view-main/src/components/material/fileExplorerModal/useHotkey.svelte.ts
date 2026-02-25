@@ -1,5 +1,6 @@
-import { keyboardEvent } from '@/modules/hotkey/keyboard'
 import { onMount } from 'svelte'
+
+import { keyboardEvent } from '@/modules/hotkey/keyboard'
 
 export const useHotkey = ({ getListEl, selectAll }: { getListEl: () => HTMLElement | undefined; selectAll: () => void }) => {
   let isShiftDown = $state(false)

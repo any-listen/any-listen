@@ -1,5 +1,6 @@
-import { appLog } from '@/shared/log4js'
 import { ReadStream } from 'node:fs'
+
+import { appLog } from '@/shared/log4js'
 
 export default async (ctx: AnyListen.RequestContext, next: AnyListen.Next) => {
   await next()

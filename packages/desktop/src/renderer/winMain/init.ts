@@ -1,4 +1,20 @@
+import { winMainReadyEvent } from '@any-listen/app/common/event'
 import { APP_EVENT_NAMES } from '@any-listen/common/constants'
+import { isMac } from '@any-listen/nodejs/index'
+
+// import { initMainWindowHandler as initMainWindowHandlerUserApi } from '@/modules/userApi'
+// import { initMainWindowHandler as initMainWindowHandlerSync } from '@/modules/sync'
+import { actions } from '@/actions'
+// import initUpdate from './autoUpdate'
+import { appEvent } from '@/app'
+import { extensionEvent } from '@/modules/extension'
+import { hotKeyEvent, hotKeyState } from '@/modules/hotKey'
+import { playerEvent } from '@/modules/player'
+import { themeEvent } from '@/modules/theme'
+import { initMainWindowHandler as initMainWindowHandlerTray } from '@/modules/tray'
+
+import { initUpdate } from './autoUpdate'
+import { winMainEvent } from './event'
 import {
   createWindow,
   getWebContents,
@@ -11,20 +27,6 @@ import {
   toggleMinimize,
 } from './main'
 import { init as initRendererEvent, rendererIPC } from './rendererEvent'
-// import initUpdate from './autoUpdate'
-import { appEvent } from '@/app'
-import { hotKeyEvent, hotKeyState } from '@/modules/hotKey'
-import { themeEvent } from '@/modules/theme'
-import { initMainWindowHandler as initMainWindowHandlerTray } from '@/modules/tray'
-import { isMac } from '@any-listen/nodejs/index'
-// import { initMainWindowHandler as initMainWindowHandlerUserApi } from '@/modules/userApi'
-// import { initMainWindowHandler as initMainWindowHandlerSync } from '@/modules/sync'
-import { actions } from '@/actions'
-import { extensionEvent } from '@/modules/extension'
-import { playerEvent } from '@/modules/player'
-import { winMainReadyEvent } from '@any-listen/app/common/event'
-import { initUpdate } from './autoUpdate'
-import { winMainEvent } from './event'
 import { initTaskProgress } from './taskProgress'
 import { initThumbarButtons } from './thumbarButtons'
 import { getWindowSizeInfo } from './utils'

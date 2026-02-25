@@ -1,6 +1,8 @@
-import { startDBServiceWorker } from './dbService'
 import { workers } from '@any-listen/app/modules/worker'
+
 import { exposedFuncs } from '@/app/modules/extension/exposeFuncs'
+
+import { startDBServiceWorker } from './dbService'
 import { startExtensionServiceWorker as _startExtensionServiceWorker } from './extenstion'
 import { startUtilServiceWorker } from './utilService'
 

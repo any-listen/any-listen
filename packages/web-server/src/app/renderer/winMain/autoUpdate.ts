@@ -1,7 +1,9 @@
+import { DATA_KEYS, STORE_NAMES } from '@any-listen/common/constants'
+
 import { appEvent, appState } from '@/app/app'
 import getStore from '@/app/shared/store'
 import { update } from '@/app/shared/update'
-import { DATA_KEYS, STORE_NAMES } from '@any-listen/common/constants'
+
 import { rendererIPC } from './rendererEvent'
 
 export const initUpdate = () => {
