@@ -9,7 +9,7 @@ import { WebDAVClient } from '@any-listen/nodejs/webdav-client'
 import { hostContext, logcat } from './shared'
 import { debugLog, getEnabledCache, savePassword } from './utils'
 
-const cache = createCache({ max: 10, ttl: 60 * 1000 })
+const cache = createCache({ max: 30, ttl: 60 * 1000 })
 
 export interface WebDAVClientOptions {
   url: string
