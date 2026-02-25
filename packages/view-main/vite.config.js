@@ -237,7 +237,7 @@ export const buildConfig = (target, port = 9200, ipcScript) => {
       rolldownOptions: {
         output: {
           entryFileNames: '[name][hash].js',
-          inlineDynamicImports: true,
+          // codeSplitting: true,
           format: 'iife',
           // experimentalMinChunkSize: 50_000,
         },
