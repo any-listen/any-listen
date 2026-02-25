@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Added
+### Fixed
 
-- Added the **“Taoism”** theme. When enabled, the application will switch between your previously selected light‑color theme and the **“Blackout”** theme according to the system’s light/dark mode. ([#136](https://github.com/any-listen/any-listen/issues/136))
+- Fixed a crash that occurred when closing the main window via the close button while the tray icon was disabled.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 新增
+### 修复
 
-- 新增 **“道法自然”主题**。勾选该主题时，应用会根据当前系统的亮/暗模式，在之前选定的亮色主题与 **“黑灯瞎火”** 主题之间切换。([#136](https://github.com/any-listen/any-listen/issues/136))
+- 修复未启用托盘图标时，通过关闭按钮关闭主窗口时程序崩溃的问题。
