@@ -1,5 +1,5 @@
 import { createCache } from '@any-listen/common/cache'
-import { sizeFormate } from '@any-listen/common/utils'
+import { sizeFormate, debounce } from '@any-listen/common/utils'
 import { isMusicFile } from '@any-listen/nodejs/music'
 
 import { hostContext, logcat } from './shared'
@@ -15,8 +15,33 @@ import {
   type WebDAVItem,
 } from './webdav'
 
-const listCache = createCache<WebDAVItem[]>()
-const musicCache = createCache<WebDAVFileItem>()
+const listCache = createCache<WebDAVItem[]>({ ttl: 10 * 60 * 1000 })
+const MUSIC_CACHE_TTL = 2 * 60 * 1000
+const musicCache = {
+  cache: new Map<string, [number, WebDAVFileItem]>(),
+  ttl: MUSIC_CACHE_TTL,
+  runClean() {
+    const now = performance.now()
+    for (const [key, [time]] of this.cache) {
+      if (now - time < this.ttl) continue
+      this.cache.delete(key)
+    }
+  },
+  runCleanThrottled: debounce(() => {
+    musicCache.runClean()
+  }, MUSIC_CACHE_TTL + 1000),
+  set(key: string, value: WebDAVFileItem) {
+    this.cache.set(key, [performance.now(), value])
+    this.runCleanThrottled()
+  },
+  get(key: string) {
+    return this.cache.get(key)?.[1]
+  },
+  has(key: string) {
+    return this.cache.has(key)
+  },
+}
+
 const MAX_DEEP = 5
 
 const generateId = (extId: string, source: string, options: WebDAVClientOptions, item: WebDAVItem) => {
