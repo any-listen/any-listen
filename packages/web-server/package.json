@@ -20,7 +20,7 @@
     "@koa/router": "^15.3.0",
     "better-sqlite3": "^12.6.2",
     "jsonwebtoken": "^9.0.3",
-    "koa": "^3.1.1",
+    "koa": "^3.1.2",
     "log4js": "6.9.1",
     "message2call": "^2.0.3",
     "ws": "^8.19.0"

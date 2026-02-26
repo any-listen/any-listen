@@ -3,7 +3,7 @@
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
     "chokidar": "^5.0.0",
-    "fast-xml-parser": "^5.3.7",
+    "fast-xml-parser": "^5.4.1",
     "iconv-lite": "^0.7.2",
     "jschardet": "^3.1.4",
     "music-metadata": "^11.12.1",
@@ -14,7 +14,7 @@
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "@types/node": "^22.19.11",
+    "@types/node": "^22.19.12",
     "@types/tunnel": "^0.0.7"
   }
 }
