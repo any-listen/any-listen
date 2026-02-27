@@ -3,7 +3,7 @@ import path from 'node:path'
 
 import { MEDIA_FILE_TYPES, PIC_FILE_TYPES } from '@any-listen/common/constants'
 import { buildPublicPath } from '@any-listen/common/tools'
-import { extname, joinPath, toSha256 } from '@any-listen/nodejs'
+import { extname, joinPath, normalizePath, toSha256 } from '@any-listen/nodejs'
 
 import { appState } from '@/app/app/state'
 import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
@@ -11,8 +11,14 @@ import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
 const devHost = 'http://localhost:9500'
 
 export const checkAllowPath = (filePath: string) => {
+  if (!filePath.length || filePath.length > 1024) return false
   if (!filePath.endsWith(path.sep)) filePath += path.sep
+  filePath = normalizePath(filePath)
   return global.anylisten.config.allowPublicDir.some((p) => filePath.startsWith(p))
+}
+const checkAllowPathError = (filePath: string) => {
+  if (checkAllowPath(filePath)) return
+  throw new Error(`Not allow path: ${filePath}`)
 }
 
 export const createExtensionIconPublicPath = (filePath: string) => {
@@ -56,7 +62,7 @@ export const createPicFilePublicPath = async (rawPath: string, format: string, f
 }
 
 export const createPicPublicPath = async (rawPath: string, filePath: string) => {
-  if (!checkAllowPath(filePath)) throw new Error(`Not allow path: ${filePath}`)
+  checkAllowPathError(filePath)
   const format = extname(filePath).substring(1)
   if (PIC_FILE_TYPES.includes(format as (typeof PIC_FILE_TYPES)[number])) {
     const fileName = `${toSha256(rawPath)}.${format}`
@@ -74,7 +80,7 @@ const readRootDir = async () => {
   }))
 }
 const readDir = async (filePath: string, isDirOnly = false, fileFilter: string[] = []): Promise<AnyListen.FileSystem.File[]> => {
-  if (!checkAllowPath(filePath)) throw new Error(`Not allow path: ${filePath}`)
+  checkAllowPathError(filePath)
   return fs.readdir(filePath, { withFileTypes: true }).then((files) => {
     let result = files.map((file) => {
       return {
@@ -92,8 +98,8 @@ const readDir = async (filePath: string, isDirOnly = false, fileFilter: string[]
 }
 
 const rename = async (filePath: string, newPath: string) => {
-  if (!checkAllowPath(filePath)) throw new Error(`Not allow path: ${filePath}`)
-  if (!checkAllowPath(newPath)) throw new Error(`Not allow path: ${newPath}`)
+  checkAllowPathError(filePath)
+  checkAllowPathError(newPath)
   await fs.rename(filePath, newPath)
 }
 
