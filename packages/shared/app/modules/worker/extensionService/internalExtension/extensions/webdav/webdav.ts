@@ -96,14 +96,14 @@ export const testDir = async (options: WebDAVClientOptions) => {
 }
 
 const nextLenMap = {
-  0: 8 * 1024 - 1,
-  [8 * 1024 - 1]: 16 * 1024 - 1,
-  [16 * 1024 - 1]: 32 * 1024 - 1,
-  [32 * 1024 - 1]: 64 * 1024 - 1,
-  [64 * 1024 - 1]: 96 * 1024 - 1,
-  [96 * 1024 - 1]: 128 * 1024 - 1,
-  [128 * 1024 - 1]: 192 * 1024 - 1,
-  [192 * 1024 - 1]: 256 * 1024 - 1,
+  0: 8 * 1024,
+  [8 * 1024]: 16 * 1024,
+  [16 * 1024]: 32 * 1024,
+  [32 * 1024]: 64 * 1024,
+  [64 * 1024]: 96 * 1024,
+  [96 * 1024]: 128 * 1024,
+  [128 * 1024]: 192 * 1024,
+  [192 * 1024]: 256 * 1024,
 }
 const MAX_META_LENGTH = 128 * 1024
 const requestParseMetadata = async ({
@@ -128,7 +128,7 @@ const requestParseMetadata = async ({
   if (cache.has(path)) return cache.get<ReturnType<typeof parseBufferMetadata>>(path)!
   let nextLength = nextLenMap[preLength]
   if (!nextLength || (isMetaOnly && nextLength > MAX_META_LENGTH)) return null
-  data = Buffer.concat([data, await webDAVClient.getPartial(path, preLength, nextLength)]) // first 8k
+  data = Buffer.concat([data, await webDAVClient.getPartial(path, preLength, nextLength - 1)]) // first 8k
   const metaHead = await parseBufferMetadata(data, mimeType, ext).catch(() => {
     // logcat.error('parseBufferMetadata error', err)
     return null

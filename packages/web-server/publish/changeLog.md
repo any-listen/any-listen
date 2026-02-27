@@ -8,7 +8,8 @@
 
 - Fixed an issue where artist tag information in `wav` files was parsed as garbled text ([#132](https://github.com/any-listen/any-listen/issues/132)).
 - Fixed an issue where a **WebDAV list** could only add up to 1 000 songs ([#134](https://github.com/any-listen/any-listen/issues/134)).
-- Fixed issues where playback or file reading failed due to **file extension case sensitivity** ([#141](https://github.com/any-listen/any-listen/issues/141)).
+- Fixed playback or file‑reading failures caused by **file extension case sensitivity** ([#141](https://github.com/any-listen/any-listen/issues/141)).
+- Fixed **WebDAV metadata** read errors.
 
 ---
 
@@ -22,4 +23,5 @@
 
 - 修复 `wav` 文件的艺术家标签信息解析为乱码的问题（[#132](https://github.com/any-listen/any-listen/issues/132)）。
 - 修复 **WebDAV 列表** 最多只能添加 1000 首歌曲的问题（[#134](https://github.com/any-listen/any-listen/issues/134)）。
-- 修复 **文件扩展名大小写** 导致的播放、文件读取等问题（[#141](https://github.com/any-listen/any-listen/issues/141)）。
+- 修复由于 **文件扩展名大小写敏感** 导致的播放或文件读取失败的问题（[#141](https://github.com/any-listen/any-listen/issues/141)）。
+- 修复 **WebDAV 元数据** 读取错误。
