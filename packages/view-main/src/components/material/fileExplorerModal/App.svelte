@@ -132,7 +132,7 @@
               musicFile:
                 file.isFile &&
                 MEDIA_FILE_TYPES.includes(
-                  file.name.substring(file.name.lastIndexOf('.') + 1) as (typeof MEDIA_FILE_TYPES)[number]
+                  file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase() as (typeof MEDIA_FILE_TYPES)[number]
                 ),
             }
           })
@@ -163,6 +163,16 @@
       dirInputValue = ''
       list = rootPath
     }
+    const dirs: File[] = []
+    const files: File[] = []
+    for (const file of list) {
+      if (file.isFile) {
+        files.push(file)
+      } else {
+        dirs.push(file)
+      }
+    }
+    list = [...dirs, ...files]
   }
 
   const handleClick = createClickHandle<[File, number]>(

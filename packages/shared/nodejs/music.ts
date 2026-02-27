@@ -71,7 +71,6 @@ const getWavFileArtist = (metadata: IAudioMetadata) => {
   return ''
 }
 const getArtist = (ext: string, metadata: IAudioMetadata) => {
-  ext = ext.toLowerCase()
   if (ext === 'wav') return getWavFileArtist(metadata)
   return metadata.common.artists?.length ? singerFormat(metadata.common.artists.join(';')) : ''
 }
@@ -197,5 +196,5 @@ export const getFileLyric = async (path: string) => {
 
 const musicExtensions = MEDIA_FILE_TYPES.map((ext) => `.${ext}`)
 export const isMusicFile = (filePath: string): boolean => {
-  return musicExtensions.includes(extname(filePath).toLowerCase())
+  return musicExtensions.includes(extname(filePath))
 }

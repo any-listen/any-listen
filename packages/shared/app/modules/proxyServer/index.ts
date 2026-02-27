@@ -26,7 +26,7 @@ export const generateName = (url: string) => {
   const ext = extname(url)
   if (ext && !checkAllowedExt(ext)) throw new Error('Not allowed file type')
 
-  return (toSha256(url) + ext).toLocaleLowerCase()
+  return (toSha256(url) + ext).toLowerCase()
 }
 
 export const createProxy = async (url: string, reqOptions: Options, enabledCache?: boolean) => {

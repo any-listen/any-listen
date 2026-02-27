@@ -9,7 +9,7 @@ const ALLOWED_EXT = [...MEDIA_FILE_TYPES, ...PIC_FILE_TYPES].map((i) => `.${i}`)
 export const TEMP_FILE_EXT = '.tmp'
 
 export const checkAllowedExt = (ext: string) => {
-  return ALLOWED_EXT.includes(ext)
+  return ALLOWED_EXT.includes(ext.toLowerCase())
 }
 
 const RANGE_REGEX = /bytes=(?:\d*)-(?:\d*)/

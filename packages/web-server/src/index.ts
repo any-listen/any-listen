@@ -5,6 +5,7 @@ import path from 'node:path'
 import { createCache } from '@any-listen/common/cache'
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
 import { formatExtensionGHMirrorHosts } from '@any-listen/common/tools'
+import { extname } from '@any-listen/nodejs'
 
 import { ENV_PARAMS } from '@/shared/constants'
 
@@ -65,7 +66,7 @@ const mergeConfigFileEnv = (config: Partial<Record<ENV_PARAMS_Value_Type, string
 const margeConfig = (p: string) => {
   let config: Partial<AnyListen.Config>
   try {
-    config = /\.c?js/.test(path.extname(p))
+    config = /\.c?js$/.test(extname(p))
       ? // eslint-disable-next-line @typescript-eslint/no-require-imports
         (require(p) as AnyListen.Config)
       : (JSON.parse(fs.readFileSync(p).toString()) as AnyListen.Config)

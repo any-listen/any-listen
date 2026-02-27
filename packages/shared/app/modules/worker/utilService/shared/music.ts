@@ -3,6 +3,7 @@ import {
   checkFile,
   dirname,
   extname,
+  extnameRaw,
   getFileStats,
   joinPath,
   removeFile as nodeRemoveFile,
@@ -152,7 +153,7 @@ const tryPicExt = ['.jpg', '.jpeg', '.png'] as const
  * @param path 路径
  */
 export const getLocalMusicFilePic = async (path: string) => {
-  const filePath = new RegExp(`\\${extname(path)}$`)
+  const filePath = new RegExp(`\\${extnameRaw(path)}$`)
   for await (const ext of tryPicExt) {
     const picPath = path.replace(filePath, ext)
     if (await checkFile(picPath)) return picPath

@@ -1,7 +1,7 @@
 import { createCache } from '@any-listen/common/cache'
 import { getMimeType } from '@any-listen/common/mime'
 import { isLikelyGarbage } from '@any-listen/common/utils'
-import { basename, extname, sleep } from '@any-listen/nodejs'
+import { basename, extname, extnameRaw, sleep } from '@any-listen/nodejs'
 import { decodeString } from '@any-listen/nodejs/char'
 import { parseBufferMetadata } from '@any-listen/nodejs/music'
 import { WebDAVClient } from '@any-listen/nodejs/webdav-client'
@@ -206,7 +206,7 @@ export const getMusicUrl = async (options: WebDAVClientOptions, path: string) =>
 
 const tryPicExt = ['.jpg', '.jpeg', '.png'] as const
 const getDirCoverPic = async (webDAVClient: WebDAVClient, path: string) => {
-  const filePath = new RegExp(`\\${extname(path)}$`)
+  const filePath = new RegExp(`\\${extnameRaw(path)}$`)
   for await (const ext of tryPicExt) {
     const picPath = path.replace(filePath, ext)
     const [url, reqOpts] = webDAVClient.getRequestOptions(picPath)
@@ -216,7 +216,7 @@ const getDirCoverPic = async (webDAVClient: WebDAVClient, path: string) => {
   return null
 }
 const getDirNamePic = async (webDAVClient: WebDAVClient, path: string) => {
-  const filePath = new RegExp(`\\${extname(path)}$`)
+  const filePath = new RegExp(`\\${extnameRaw(path)}$`)
   for await (const ext of tryPicExt) {
     const picPath = path.replace(filePath, ext)
     const [url, reqOpts] = webDAVClient.getRequestOptions(picPath)
@@ -233,7 +233,7 @@ export const getMusicPic = async (options: WebDAVClientOptions, path: string) =>
   const mimeType = getMimeType(basename(path))
   const metaHead = await handleParseMetadata({ webDAVClient, path, mimeType, isMetaOnly: false, needCache: true })
   if (metaHead?.pic) {
-    const filePath = new RegExp(`\\${extname(path)}$`)
+    const filePath = new RegExp(`\\${extnameRaw(path)}$`)
     const [type, ext] = metaHead.pic.format.split('/')
     if (type == 'image') {
       const [url] = webDAVClient.getRequestOptions(path.replace(filePath, `.${ext}`))
@@ -248,7 +248,7 @@ export const getMusicPic = async (options: WebDAVClientOptions, path: string) =>
 
 export const getMusicLyric = async (options: WebDAVClientOptions, path: string) => {
   const webDAVClient = createWebDAVClient(options)
-  const lrcPath = path.replace(new RegExp(`\\${extname(path)}$`), '.lrc')
+  const lrcPath = path.replace(new RegExp(`\\${extnameRaw(path)}$`), '.lrc')
 
   const data = await webDAVClient.get(lrcPath).catch(() => null)
   if (data) {

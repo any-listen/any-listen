@@ -12,6 +12,7 @@ import {
   createDir,
   dirname,
   extname,
+  extnameRaw,
   getFileStats,
   isAbsolute,
   joinPath,
@@ -212,7 +213,7 @@ const verifyManifest = async (extensionPath: string, manifest: AnyListen.Extensi
   formatManifest(manifest)
   manifest.icon = manifest.icon ? await buildPath(extensionPath, manifest.icon).catch(() => '') : ''
   if (manifest.icon) {
-    if (availableIcons.includes(path.extname(manifest.icon).toLowerCase())) {
+    if (availableIcons.includes(extname(manifest.icon))) {
       manifest.icon = await extensionState.remoteFuncs.createExtensionIconPublicPath(manifest.icon)
     } else {
       manifest.icon = ''
@@ -390,7 +391,7 @@ const verifyExtension = async (unpackDir: string) => {
   })
   let extDir: string
   if (extBundleFilePath) {
-    extDir = extBundleFilePath.replace(new RegExp(`${path.extname(EXTENSION.extBundleFileName).replaceAll('.', '\\.')}$`), '')
+    extDir = extBundleFilePath.replace(new RegExp(`${extnameRaw(EXTENSION.extBundleFileName).replaceAll('.', '\\.')}$`), '')
     await createDir(extDir)
     const { unpack } = await import('@any-listen/nodejs/tar')
     await unpack(extBundleFilePath, extDir).catch(async (err: Error) => {
@@ -408,7 +409,7 @@ const verifyExtension = async (unpackDir: string) => {
 }
 
 export const unpackExtension = async (bundlePath: string) => {
-  if (extname(bundlePath).toLowerCase() != FILE_EXT_NAME) {
+  if (extname(bundlePath) != FILE_EXT_NAME) {
     if ((await getFileStats(bundlePath))?.isDirectory()) {
       return verifyExtension(bundlePath)
     }
