@@ -21,7 +21,6 @@ overrides:
   json5: latest
   mdast-util-to-hast@>=13.0.0 <13.2.1: '>=13.2.1'
   micromatch@<4.0.8: '>=4.0.8'
-  minimatch@10.2.3: 10.2.2
   node-abi: latest
   postcss: latest
   semver: latest
