@@ -44,7 +44,7 @@
     // }
   }
 
-  :global(html.mac .aside) {
+  :global(html.desktop.mac .aside) {
     padding-top: calc(env(titlebar-area-height, 30px) + 4px);
   }
 
