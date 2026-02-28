@@ -35,7 +35,9 @@ export const initApp = () => {
   settingEvent.on('inited', async () => {
     // unregistereds.register((subscriptions) => {})
     await sendInitedEvent()
-    void setSystemThemeMode(getSystemThemeIsDark())
+    if (import.meta.env.VITE_IS_WEB) {
+      void setSystemThemeMode(getSystemThemeIsDark())
+    }
   })
   let mainWorkerResolve: () => void
   setWorkerInitPromise(
