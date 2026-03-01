@@ -42,7 +42,7 @@
   "edit_list_modal.local_list_form.path_update_device_id": "將該列表標記為本機創建",
   "edit_list_modal.remote_list.form_source": "來源",
   "edit_list_modal.use_polling": "使用輪詢監聽檔案變動",
-  "edit_list_modal.use_polling_tip": "若沒有遇到清單更新報錯的問題，不建議啟用此選項。",
+  "edit_list_modal.use_polling_tip": "若沒有遇到清單更新報錯的問題，不建議啟用此選項",
   "edit_list_modal__create_failed": "❌ 列表創建失敗：{err}",
   "edit_list_modal__edit_failed": "❌ 列表編輯失敗：{err}",
   "edit_list_modal__edit_title": "編輯列表",
