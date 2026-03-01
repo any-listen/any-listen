@@ -66,7 +66,7 @@ const winOptions = {
     legalTrademarks: 'lyswhut',
     // artifactName: '${productName}-${version}-${env.ARCH}-${env.TARGET}.${ext}',
   },
-  artifactName: `\${productName}-\${version}-win_\${arch}.\${ext}`,
+  artifactName: `\${productName}-\${version}-\${arch}.\${ext}`,
   nsis: {
     oneClick: false,
     language: '2052',
