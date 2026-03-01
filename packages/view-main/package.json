@@ -25,7 +25,7 @@
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
-    "@swc/html": "^1.15.17",
+    "@swc/html": "^1.15.18",
     "@types/postcss-pxtorem": "^6.1.0",
     "@types/sortablejs": "^1.15.9",
     "eslint-plugin-svelte": "^3.15.0",
