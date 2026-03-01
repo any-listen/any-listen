@@ -149,9 +149,9 @@
       onchange={(checked) => {
         listInfo.meta.usePolling = checked
       }}
-      label={$t('edit_list_modal.use_polling')}
+      label={$t('edit_list_modal.local_list_form.use_polling')}
     />
-    <p class="tip">{$t('edit_list_modal.use_polling_tip')}</p>
+    <p class="tip">{$t('edit_list_modal.local_list_form.use_polling_tip')}</p>
   </FormItem>
 </main>
 
