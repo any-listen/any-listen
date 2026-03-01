@@ -29,11 +29,8 @@
     "publish:win:7z": "node build-config/build-pack.cjs target=win arch=x64,arm64 type=green publish=always",
     "publish:win7:setup": "node build-config/build-pack.cjs target=win arch=x64 type=win7_setup publish=always",
     "publish:win7:7z": "node build-config/build-pack.cjs target=win arch=x64,x86 type=win7_green publish=always",
-    "publish:mac:dmg": "node build-config/build-pack.cjs target=mac arch=x64,arm64,universal type=dmg publish=always",
-    "publish:linux:deb": "node build-config/build-pack.cjs target=linux arch=x64,arm64,armv7l type=deb publish=always",
-    "publish:linux:appImage": "node build-config/build-pack.cjs target=linux arch=x64 type=appImage publish=always",
-    "publish:linux:rpm": "node build-config/build-pack.cjs target=linux arch=x64 type=rpm publish=always",
-    "publish:linux:pacman": "node build-config/build-pack.cjs target=linux arch=x64 type=pacman publish=always",
+    "publish:mac": "node build-config/build-pack.cjs target=mac arch=x64,arm64 type=dmg publish=always",
+    "publish:linux": "node build-config/build-pack.cjs target=linux arch=x64,arm64,armv7l type=deb,appImage,rpm,pacman publish=always",
     "publish": "node publish",
     "build": "vite build",
     "rebuild:deps": "node ./build-config/before-install.cjs && electron-builder install-app-deps && node ./build-config/post-install.cjs"

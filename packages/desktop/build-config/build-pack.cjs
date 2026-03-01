@@ -66,6 +66,7 @@ const winOptions = {
     legalTrademarks: 'lyswhut',
     // artifactName: '${productName}-${version}-${env.ARCH}-${env.TARGET}.${ext}',
   },
+  artifactName: `\${productName}-\${version}-win_\${arch}.\${ext}`,
   nsis: {
     oneClick: false,
     language: '2052',
@@ -73,8 +74,13 @@ const winOptions = {
     differentialPackage: true,
     license: './licenses/license.rtf',
     shortcutName: 'Any Listen',
+    artifactName: `\${productName}-\${version}-\${arch}-Setup.\${ext}`,
+  },
+  portable: {
+    artifactName: `\${productName}-\${version}-\${arch}-portable.\${ext}`,
   },
 }
+
 /**
  * @type {import('electron-builder').Configuration}
  * @see https://www.electron.build/configuration/configuration
@@ -106,9 +112,13 @@ const linuxOptions = {
       // StartupNotify: 'false',
     },
   },
+  artifactName: `\${productName}_\${version}_\${arch}.\${ext}`,
   appImage: {
     license: './licenses/license_zh.txt',
     category: 'Utility;AudioVideo;Audio;Player;Music;',
+  },
+  rpm: {
+    artifactName: `\${productName}-\${version}.\${arch}.\${ext}`,
   },
 }
 /**
@@ -116,6 +126,7 @@ const linuxOptions = {
  * @see https://www.electron.build/configuration/configuration
  */
 const macOptions = {
+  artifactName: `\${productName}-\${version}-\${arch}.\${ext}`,
   mac: {
     icon: './resources/icons/icon.icns',
     category: 'public.app-category.music',
@@ -177,95 +188,103 @@ const macOptions = {
 const createTarget = {
   /**
    *
-   * @param {*} packageType
+   * @param {*} packageTypes
    * @returns {{ buildOptions: import('electron-builder').CliOptions, options: import('electron-builder').Configuration }}
    */
-  win(packageType) {
-    switch (packageType) {
-      case 'setup':
-        winOptions.artifactName = `\${productName}-\${version}-\${arch}-Setup.\${ext}`
-        return {
-          buildOptions: { win: ['nsis'] },
-          options: winOptions,
-        }
-      case 'green':
-        winOptions.artifactName = `\${productName}-\${version}-win_\${arch}-green.\${ext}`
-        return {
-          buildOptions: { win: ['7z'] },
-          options: winOptions,
-        }
-      case 'win7_setup':
-        winOptions.artifactName = `\${productName}-v\${version}-win7_\${arch}-Setup.\${ext}`
-        return {
-          buildOptions: { win: ['nsis'] },
-          options: winOptions,
-        }
-      case 'win7_green':
-        winOptions.artifactName = `\${productName}-\${version}-win7_\${arch}-green.\${ext}`
-        return {
-          buildOptions: { win: ['7z'] },
-          options: winOptions,
-        }
-      case 'portable':
-        winOptions.artifactName = `\${productName}-\${version}-\${arch}-portable.\${ext}`
-        return {
-          buildOptions: { win: ['portable'] },
-          options: winOptions,
-        }
-      default:
-        throw new Error(`Unknown package type: ${packageType}`)
+  win(packageTypes) {
+    /**
+     * @type {import('electron-builder').CliOptions['win']}
+     */
+    const buildOptions = []
+
+    for (const packageType of packageTypes) {
+      switch (packageType) {
+        case 'setup':
+          buildOptions.push('nsis')
+          break
+        case 'green':
+          buildOptions.push('7z')
+          winOptions.artifactName = `\${productName}-\${version}-win_\${arch}-green.\${ext}`
+          break
+        case 'portable':
+          buildOptions.push('portable')
+          break
+        case 'win7_setup':
+          buildOptions.push('nsis')
+          winOptions.artifactName = `\${productName}-\${version}-win7_\${arch}-Setup.\${ext}`
+          break
+        case 'win7_green':
+          buildOptions.push('7z')
+          winOptions.artifactName = `\${productName}-\${version}-win7_\${arch}-green.\${ext}`
+          break
+        default:
+          throw new Error(`Unknown package type: ${packageType}`)
+      }
+    }
+
+    return {
+      buildOptions: { win: buildOptions },
+      options: winOptions,
     }
   },
   /**
    *
-   * @param {*} packageType
+   * @param {*} packageTypes
    * @returns {{ buildOptions: import('electron-builder').CliOptions, options: import('electron-builder').Configuration }}
    */
-  linux(packageType) {
-    switch (packageType) {
-      case 'deb':
-        linuxOptions.artifactName = `\${productName}_\${version}_\${arch}.\${ext}`
-        return {
-          buildOptions: { linux: ['deb'] },
-          options: linuxOptions,
-        }
-      case 'appImage':
-        linuxOptions.artifactName = `\${productName}_\${version}_\${arch}.\${ext}`
-        return {
-          buildOptions: { linux: ['AppImage'] },
-          options: linuxOptions,
-        }
-      case 'pacman':
-        linuxOptions.artifactName = `\${productName}_\${version}_\${arch}.\${ext}`
-        return {
-          buildOptions: { linux: ['pacman'] },
-          options: linuxOptions,
-        }
-      case 'rpm':
-        linuxOptions.artifactName = `\${productName}-\${version}.\${arch}.\${ext}`
-        return {
-          buildOptions: { linux: ['rpm'] },
-          options: linuxOptions,
-        }
-      default:
-        throw new Error(`Unknown package type: ${packageType}`)
+  linux(packageTypes) {
+    /**
+     * @type {import('electron-builder').CliOptions['linux']}
+     */
+    const buildOptions = []
+
+    for (const packageType of packageTypes) {
+      switch (packageType) {
+        case 'deb':
+          buildOptions.push('deb')
+          break
+        case 'appImage':
+          buildOptions.push('AppImage')
+          break
+        case 'pacman':
+          buildOptions.push('pacman')
+          break
+        case 'rpm':
+          buildOptions.push('rpm')
+          break
+        default:
+          throw new Error(`Unknown package type: ${packageType}`)
+      }
+    }
+
+    return {
+      buildOptions: { linux: buildOptions },
+      options: linuxOptions,
     }
   },
   /**
    *
-   * @param {*} packageType
+   * @param {*} packageTypes
    * @returns {{ buildOptions: import('electron-builder').CliOptions, options: import('electron-builder').Configuration }}
    */
-  mac(packageType) {
-    switch (packageType) {
-      case 'dmg':
-        macOptions.artifactName = `\${productName}-\${version}-\${arch}.\${ext}`
-        return {
-          buildOptions: { mac: ['dmg', 'zip'] },
-          options: macOptions,
-        }
-      default:
-        throw new Error(`Unknown package type: ${packageType}`)
+  mac(packageTypes) {
+    /**
+     * @type {import('electron-builder').CliOptions['mac']}
+     */
+    const buildOptions = []
+    for (const packageType of packageTypes) {
+      switch (packageType) {
+        case 'dmg':
+          buildOptions.push('dmg', 'zip')
+          break
+        default:
+          throw new Error(`Unknown package type: ${packageType}`)
+      }
+    }
+
+    return {
+      buildOptions: { mac: buildOptions },
+      options: macOptions,
     }
   },
 }
@@ -274,10 +293,10 @@ const createTarget = {
  *
  * @param {'win' | 'mac' | 'linux' | 'dir'} target 构建目标平台
  * @param {Array<'x86_64' | 'x64' | 'x86' | 'arm64' | 'armv7l'>} arch 包架构
- * @param {*} packageType 包类型
+ * @param {Array<string>} packageTypes 包类型
  * @param {'onTag' | 'onTagOrDraft' | 'always' | 'never'} publishType 发布类型
  */
-const build = async (target, arch, packageType, publishType) => {
+const build = async (target, arch, packageTypes, publishType) => {
   if (target == 'dir') {
     await builder.build({
       dir: true,
@@ -285,7 +304,7 @@ const build = async (target, arch, packageType, publishType) => {
     })
     return
   }
-  const targetInfo = createTarget[target](packageType)
+  const targetInfo = createTarget[target](packageTypes)
   // Promise is returned
   await builder.build({
     ...targetInfo.buildOptions,
@@ -319,4 +338,4 @@ if (params.target != 'dir' && params.type == null) throw new Error('Missing type
 console.log(params.target, params.arch, params.type, params.publish ?? '')
 
 rmSourceModule()
-build(params.target, params.arch.split(','), params.type, params.publish)
+build(params.target, params.arch.split(','), params.type.split(','), params.publish)
