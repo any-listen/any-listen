@@ -211,7 +211,7 @@ const createTarget = {
           break
         case 'win7_setup':
           buildOptions.push('nsis')
-          winOptions.artifactName = `\${productName}-\${version}-win7_\${arch}-Setup.\${ext}`
+          winOptions.nsis.artifactName = `\${productName}-\${version}-win7_\${arch}-Setup.\${ext}`
           break
         case 'win7_green':
           buildOptions.push('7z')
