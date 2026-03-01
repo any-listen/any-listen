@@ -186,6 +186,7 @@ declare namespace AnyListen {
       path: string
       includeSubDir: boolean
       enabledRemove?: boolean
+      usePolling?: boolean
     }
     interface UserListInfoByOnlineMeta extends UserListInfoBaseMeta {
       extensionId: string

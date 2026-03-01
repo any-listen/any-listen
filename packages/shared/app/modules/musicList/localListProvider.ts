@@ -288,6 +288,7 @@ const syncList = async (list: AnyListen.List.LocalListInfo) => {
   })
   const id = await workers.utilService.createMusicDirWatcher(list.meta.path, onFileProxy, onReadyProxy, onErrorProxy, {
     recursive: list.meta.includeSubDir,
+    usePolling: list.meta.usePolling,
   })
   watcherMap.set(list.id, [
     list.meta.path,
@@ -445,6 +446,8 @@ export const sortLocalListMusics = async (
     void workers.utilService
       .createMusicDirWatcher(info.meta.path, onFileProxy, onReadyProxy, onErrorProxy, {
         recursive: info.meta.includeSubDir,
+        persistent: false,
+        usePolling: info.meta.usePolling,
       })
       .then((id) => {
         watcherMap.set(info.id, [

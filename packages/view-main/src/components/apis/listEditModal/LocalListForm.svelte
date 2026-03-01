@@ -142,6 +142,17 @@
     />
     <p class="tip">{$t('edit_list_modal.lazzy_parse_meta_tip')}</p>
   </FormItem>
+  <FormItem>
+    <Checkbox
+      id="use_polling"
+      checked={listInfo.meta.usePolling || false}
+      onchange={(checked) => {
+        listInfo.meta.usePolling = checked
+      }}
+      label={$t('edit_list_modal.use_polling')}
+    />
+    <p class="tip">{$t('edit_list_modal.use_polling_tip')}</p>
+  </FormItem>
 </main>
 
 <style lang="less">

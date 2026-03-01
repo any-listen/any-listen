@@ -41,6 +41,8 @@
   "edit_list_modal.local_list_form.path_include_sub_dir_tip": "Scan subdirectories at the same time, up to 5 levels of directory depth",
   "edit_list_modal.local_list_form.path_update_device_id": "Mark the list as natively created",
   "edit_list_modal.remote_list.form_source": "source",
+  "edit_list_modal.use_polling": "Use polling to monitor file changes",
+  "edit_list_modal.use_polling_tip": "If you do not encounter any problems with list update errors, it is not recommended to enable this option.",
   "edit_list_modal__create_failed": "❌ List creation failed: {err}",
   "edit_list_modal__edit_failed": "❌ List editing failed: {err}",
   "edit_list_modal__edit_title": "Edit list",

@@ -7,10 +7,21 @@ export const createMusicDirWatcher = (
   onFile: (action: FileAction, path: string) => void,
   onReady: () => void,
   onError: (message: string) => void,
-  options: { recursive?: boolean } = {}
+  options: { recursive?: boolean; persistent?: boolean; usePolling?: boolean } = {}
 ) => {
   const id = generateId()
-  watchers.set(id, watchMusicDir(dir, onFile, onReady, onError, options))
+  watchers.set(
+    id,
+    watchMusicDir(dir, onFile, onReady, onError, {
+      ...options,
+      usePolling: options.usePolling
+        ? {
+            interval: 1000,
+            binaryInterval: 2000,
+          }
+        : undefined,
+    })
+  )
   return id
 }
 export const removeMusicDirWatcher = async (id: string) => {

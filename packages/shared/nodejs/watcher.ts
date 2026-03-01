@@ -8,7 +8,16 @@ export const watchMusicDir = (
   callback: (action: FileAction, path: string, ctimeMs?: number, mtimeMs?: number, size?: number) => void,
   onReady: () => void,
   onError: (message: string) => void,
-  options: { recursive?: boolean } = {}
+  options: {
+    recursive?: boolean
+    persistent?: boolean
+    usePolling?:
+      | false
+      | {
+          interval?: number
+          binaryInterval?: number
+        }
+  } = {}
 ) => {
   // console.log(`Start watching music dir: ${dir}, recursive: ${options.recursive ? 'yes' : 'no'}`)
   const watcher = chokidar.watch(dir, {
@@ -18,13 +27,21 @@ export const watchMusicDir = (
       }
       return false
     },
-    persistent: true,
+    persistent: options.persistent ?? true,
     ignoreInitial: false,
     depth: options.recursive ? 5 : 0,
+    ...(options.usePolling
+      ? {
+          usePolling: true,
+          interval: options.usePolling.interval ?? 1000,
+          binaryInterval: options.usePolling.binaryInterval ?? 2000,
+        }
+      : { usePolling: false }),
     awaitWriteFinish: {
       stabilityThreshold: 2000,
       pollInterval: 200,
     },
+    atomic: 300,
   })
 
   watcher.on('all', (event, path, stats) => {

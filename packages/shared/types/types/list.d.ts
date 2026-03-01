@@ -15,6 +15,7 @@ declare namespace AnyListen {
       includeSubDir: boolean
       lazzyParseMeta?: boolean
       enabledRemove?: boolean
+      usePolling?: boolean
     }
     interface UserListInfoByOnlineMeta extends UserListInfoBaseMeta {
       extensionId: string

@@ -1,15 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Fixed playback or file‑reading failures caused by **file extension case sensitivity** ([#141](https://github.com/any-listen/any-listen/issues/141)).
-- Fixed **WebDAV metadata** read errors.
+- Added a **“Use Polling to Watch for File Changes”** option in _Local List Settings_ to address issues reading from mounted remote drives ([#142](https://github.com/any-listen/any-listen/issues/142)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复由于 **文件扩展名大小写敏感** 导致的播放或文件读取失败的问题（[#141](https://github.com/any-listen/any-listen/issues/141)）。
-- 修复 **WebDAV 元数据** 读取错误。
+- 本地列表设置新增 **“使用轮询监察文件变动”** 选项，用于解决挂载的远程驱动器读取问题 ([#142](https://github.com/any-listen/any-listen/issues/142))。
