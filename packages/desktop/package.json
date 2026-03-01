@@ -59,6 +59,6 @@
     "electron-to-chromium": "^1.5.302",
     "node-abi": "^4.26.0",
     "tar": "^7.5.9",
-    "vite": "^8.0.0-beta.15"
+    "vite": "^8.0.0-beta.16"
   }
 }

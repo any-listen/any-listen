@@ -17,7 +17,7 @@
     "@any-listen/theme": "workspace:@shared/theme@*",
     "@any-listen/web": "workspace:@shared/web@*",
     "@koa/cors": "^5.0.0",
-    "@koa/router": "^15.3.0",
+    "@koa/router": "^15.3.1",
     "better-sqlite3": "^12.6.2",
     "jsonwebtoken": "^9.0.3",
     "koa": "^3.1.2",
@@ -33,6 +33,6 @@
     "@types/koa__cors": "^5.0.1",
     "@types/koa__router": "^12.0.5",
     "@types/ws": "8.18.1",
-    "vite": "^8.0.0-beta.15"
+    "vite": "^8.0.0-beta.16"
   }
 }
