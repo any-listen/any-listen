@@ -12,6 +12,7 @@
 - Fixed playback or file‑reading failures caused by **file extension case sensitivity** ([#141](https://github.com/any-listen/any-listen/issues/141)).
 - Fixed **WebDAV metadata** read errors.
 - Fixed a conflict between playback cover and playlist song cover loading logic.
+- Fixed an issue where song information in the **Playback History** list didn't update when the song in the original list was changed.
 
 ---
 
@@ -29,3 +30,4 @@
 - 修复由于 **文件扩展名大小写敏感** 导致的播放或文件读取失败的问题（[#141](https://github.com/any-listen/any-listen/issues/141)）。
 - 修复 **WebDAV 元数据** 读取错误。
 - 修复播放封面与列表内歌曲封面加载逻辑冲突的问题。
+- 修复**播放历史列表**中的歌曲信息在原始列表歌曲更新时未随之更新的问题。

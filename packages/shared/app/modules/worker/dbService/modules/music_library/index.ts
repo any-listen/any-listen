@@ -519,6 +519,22 @@ export const musicsUpdate = (musicInfos: AnyListen.IPCList.ListActionMusicUpdate
     targetMusic.meta = musicInfo.meta
   }
 }
+export const musicsUpdateLastPlayedList = (musicInfos: AnyListen.IPCList.ListActionMusicUpdate) => {
+  const notLastPlayedListInfos: AnyListen.IPCList.ListActionMusicUpdate = []
+  const lastPlayedListMusicIds = new Set<string>()
+  const list = getListMusics(LIST_IDS.LAST_PLAYED)
+  for (const musicInfo of list) lastPlayedListMusicIds.add(musicInfo.id)
+  for (const info of musicInfos) {
+    if (info.id !== LIST_IDS.LAST_PLAYED && lastPlayedListMusicIds.has(info.musicInfo.id)) {
+      notLastPlayedListInfos.push({
+        musicInfo: info.musicInfo,
+        id: LIST_IDS.LAST_PLAYED,
+      })
+    }
+  }
+  if (notLastPlayedListInfos.length) musicsUpdate(notLastPlayedListInfos)
+  return notLastPlayedListInfos
+}
 
 /**
  * 更新歌曲图片

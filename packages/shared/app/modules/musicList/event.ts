@@ -289,6 +289,10 @@ export class Event extends _Event {
     await dbService.musicsUpdate(musicInfos)
     this.emitEvent('list_music_update', musicInfos, isRemote)
     this.list_changed()
+    const updatedInfo = await dbService.musicsUpdateLastPlayedList(musicInfos)
+    if (!updatedInfo.length) return
+    this.emitEvent('list_music_update', updatedInfo, isRemote)
+    this.list_changed()
   }
 
   /**
