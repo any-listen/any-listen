@@ -11,6 +11,7 @@
 - Fixed an issue where a **WebDAV list** could only add up to 1 000 songs ([#134](https://github.com/any-listen/any-listen/issues/134)).
 - Fixed playback or file‑reading failures caused by **file extension case sensitivity** ([#141](https://github.com/any-listen/any-listen/issues/141)).
 - Fixed **WebDAV metadata** read errors.
+- Fixed a conflict between playback cover and playlist song cover loading logic.
 
 ---
 
@@ -27,3 +28,4 @@
 - 修复 **WebDAV 列表** 最多只能添加 1000 首歌曲的问题（[#134](https://github.com/any-listen/any-listen/issues/134)）。
 - 修复由于 **文件扩展名大小写敏感** 导致的播放或文件读取失败的问题（[#141](https://github.com/any-listen/any-listen/issues/141)）。
 - 修复 **WebDAV 元数据** 读取错误。
+- 修复播放封面与列表内歌曲封面加载逻辑冲突的问题。
