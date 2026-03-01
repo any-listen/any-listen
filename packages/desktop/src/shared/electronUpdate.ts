@@ -1,4 +1,4 @@
-import { isWin, sleep } from '@any-listen/nodejs/index'
+import { sleep } from '@any-listen/nodejs/index'
 import { autoUpdater } from 'electron-updater'
 
 import { appActions, appEvent } from '@/app'
@@ -52,13 +52,13 @@ export const initUpdate = (_update: Update) => {
 }
 
 export const checkUpdate = async (allowPrerelease: boolean) => {
-  // 由于集合安装包中不包含win arm版，这将会导致arm版更新失败
-  if (!isWin || !process.arch.includes('arm')) {
-    autoUpdater.allowPrerelease = allowPrerelease
-    await autoUpdater.checkForUpdates()
-  } else {
-    update.emit('error', new Error('Windows ARM is not supported'))
-  }
+  // TODO win 7 不支持更新
+  // if (!isWin || !process.arch.includes('arm')) {
+  autoUpdater.allowPrerelease = allowPrerelease
+  await autoUpdater.checkForUpdates()
+  // } else {
+  //   update.emit('error', new Error('Windows ARM is not supported'))
+  // }
 }
 
 export const downloadUpdate = async () => {
