@@ -133,6 +133,7 @@ const macOptions = {
     // artifactName: '${productName}-${version}.${ext}',
   },
   dmg: {
+    artifactName: `\${productName}-\${version}-\${arch}.\${ext}`,
     // window: {
     //   width: 540,
     //   height: 100,
@@ -275,6 +276,7 @@ const createTarget = {
     for (const packageType of packageTypes) {
       switch (packageType) {
         case 'dmg':
+          macOptions.artifactName = `\${productName}-\${version}-mac_\${arch}.\${ext}`
           buildOptions.push('dmg', 'zip')
           break
         default:
