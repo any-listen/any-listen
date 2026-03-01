@@ -340,4 +340,4 @@ if (params.target != 'dir' && params.type == null) throw new Error('Missing type
 console.log(params.target, params.arch, params.type, params.publish ?? '')
 
 rmSourceModule()
-build(params.target, params.arch.split(','), params.type.split(','), params.publish)
+build(params.target, params.arch?.split(','), params.type?.split(','), params.publish)
