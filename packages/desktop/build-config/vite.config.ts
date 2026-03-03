@@ -66,8 +66,8 @@ export const buildConfig = (mode: string): UserConfig => {
   }
   try {
     let isClean = !execSync('git status --porcelain').toString().trim()
-    if (process.env.BUILD_WIN7) {
-      console.warn('BUILD_WIN7 is set, skipping git status check.')
+    if (process.env.BUILD_WIN_LEGACY) {
+      console.warn('BUILD_WIN_LEGACY is set, skipping git status check.')
       console.log('Workspace status:', execSync('git status --porcelain').toString().trim())
       isClean = true
     }

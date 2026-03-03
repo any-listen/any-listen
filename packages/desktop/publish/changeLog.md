@@ -17,6 +17,7 @@
 ### Other
 
 - Updated the installer/package build process and added support for more package types.
+- Release package specifically for Windows 7 renamed from `win7` to `win_legacy` ([#145](https://github.com/any-listen/any-listen/issues/145)).
 
 ---
 
@@ -39,3 +40,4 @@
 ### 其他
 
 - 更新安装包构建流程，新增了更多类型的安装包。
+- 专门用于 Windows 7 的发布包从 `win7` 重命名为 `win_legacy`（[#145](https://github.com/any-listen/any-listen/issues/145)）。

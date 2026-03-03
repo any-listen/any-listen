@@ -2,11 +2,11 @@
 
 ### Fixed
 
-- Fixed an issue where song information in the **Playback History** list didn't update when the song in the original list was changed.
+- Build failure resolved.
 
 ### Other
 
-- Updated the installer/package build process and added support for more package types.
+- Release package specifically for Windows 7 renamed from `win7` to `win_legacy` ([#145](https://github.com/any-listen/any-listen/issues/145)).
 
 ---
 
@@ -14,8 +14,8 @@
 
 ### 修复
 
-- 修复**播放历史列表**中的歌曲信息在原始列表歌曲更新时未随之更新的问题。
+- 修复构建失败。
 
 ### 其他
 
-- 更新安装包构建流程，新增了更多类型的安装包。
+- 专门用于 Windows 7 的发布包从 `win7` 重命名为 `win_legacy`（[#145](https://github.com/any-listen/any-listen/issues/145)）。

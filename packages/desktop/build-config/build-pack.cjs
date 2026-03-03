@@ -210,13 +210,14 @@ const createTarget = {
         case 'portable':
           buildOptions.push('portable')
           break
-        case 'win7_setup':
+        case 'win_legacy_setup':
           buildOptions.push('nsis')
-          winOptions.nsis.artifactName = `\${productName}-\${version}-win7_\${arch}-Setup.\${ext}`
+          winOptions.publish = null
+          winOptions.nsis.artifactName = `\${productName}-\${version}-win_legacy_\${arch}-Setup.\${ext}`
           break
-        case 'win7_green':
+        case 'win_legacy_green':
           buildOptions.push('7z')
-          winOptions.artifactName = `\${productName}-\${version}-win7_\${arch}-green.\${ext}`
+          winOptions.artifactName = `\${productName}-\${version}-win_legacy_\${arch}-green.\${ext}`
           break
         default:
           throw new Error(`Unknown package type: ${packageType}`)
