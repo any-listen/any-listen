@@ -142,6 +142,24 @@ export const initPlayer = async () => {
         if (ids.includes(item.id)) idxs.push(idx)
       })
       if (idxs.length) void playerEvent.playHistoryListAction({ action: 'removeIdx', data: idxs })
+    } else if (action.action == 'update') {
+      const data = action.data
+      const playerMusic = getPlayMusicInfo()
+      if (playerMusic) {
+        const targetMusic = data.find((m) => m.listId == playerMusic.listId && m.musicInfo.id == playerMusic.musicInfo.id)
+        if (targetMusic) {
+          setPlayMusicInfo({
+            ...playerMusic,
+            musicInfo: targetMusic.musicInfo,
+          })
+        }
+      }
+
+      const updatedInfo = await workers.dbService.musicsUpdateLastPlayedList(
+        data.map((m) => ({ id: m.listId, musicInfo: m.musicInfo }))
+      )
+      if (!updatedInfo.length) return
+      void sendMusicListAction({ action: 'list_music_update', data: updatedInfo })
     }
   })
 

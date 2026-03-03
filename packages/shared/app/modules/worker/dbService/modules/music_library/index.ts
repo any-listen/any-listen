@@ -521,11 +521,15 @@ export const musicsUpdate = (musicInfos: AnyListen.IPCList.ListActionMusicUpdate
 }
 export const musicsUpdateLastPlayedList = (musicInfos: AnyListen.IPCList.ListActionMusicUpdate) => {
   const notLastPlayedListInfos: AnyListen.IPCList.ListActionMusicUpdate = []
-  const lastPlayedListMusicIds = new Set<string>()
+  const lastPlayedListMusicIds = new Map<string, boolean | undefined>()
   const list = getListMusics(LIST_IDS.LAST_PLAYED)
-  for (const musicInfo of list) lastPlayedListMusicIds.add(musicInfo.id)
+  for (const musicInfo of list) lastPlayedListMusicIds.set(musicInfo.id, musicInfo.meta.unparsed)
   for (const info of musicInfos) {
-    if (info.id !== LIST_IDS.LAST_PLAYED && lastPlayedListMusicIds.has(info.musicInfo.id)) {
+    if (
+      info.id !== LIST_IDS.LAST_PLAYED &&
+      lastPlayedListMusicIds.has(info.musicInfo.id) &&
+      lastPlayedListMusicIds.get(info.musicInfo.id)
+    ) {
       notLastPlayedListInfos.push({
         musicInfo: info.musicInfo,
         id: LIST_IDS.LAST_PLAYED,

@@ -122,8 +122,8 @@ class Event extends _Event {
     this.emitEvent('playListMusicRemoved', ids)
   }
 
-  playListChanged(playedList: InitState['playList']) {
-    this.emitEvent('playListChanged', playedList)
+  playListChanged(list: InitState['playList']) {
+    this.emitEvent('playListChanged', list)
   }
 
   playHistoryListChanged(list: InitState['playHistoryList']) {
