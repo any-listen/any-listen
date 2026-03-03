@@ -30,7 +30,7 @@
     "@types/sortablejs": "^1.15.9",
     "eslint-plugin-svelte": "^3.15.0",
     "less": "^4.5.1",
-    "postcss": "^8.5.6",
+    "postcss": "^8.5.8",
     "postcss-pxtorem": "^6.1.0",
     "stylelint": "^16.26.1",
     "stylelint-config-html": "^1.1.0",
