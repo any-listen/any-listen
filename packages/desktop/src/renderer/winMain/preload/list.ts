@@ -20,6 +20,9 @@ export const createClientList = (main: MainCall) => {
     async getListMusics(id) {
       return main.getListMusics(id)
     },
+    async getListCover(listId) {
+      return main.getListCover(listId)
+    },
     async getMusicExistListIds(listId) {
       return main.getMusicExistListIds(listId)
     },

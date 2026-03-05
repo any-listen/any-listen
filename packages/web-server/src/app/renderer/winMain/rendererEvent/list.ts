@@ -15,6 +15,7 @@ import {
   syncUserList,
 } from '@any-listen/app/modules/musicList'
 
+import { getListsCover } from '@/app/modules/musicList'
 import { broadcast } from '@/modules/ipc/websocket'
 
 import type { ExposeClientFunctions, ExposeServerFunctions } from '.'
@@ -27,6 +28,9 @@ export const createExposeList = () => {
     },
     async getListMusics(event, listId) {
       return getListMusics(listId)
+    },
+    async getListCover(event, listId) {
+      return (await getListsCover([listId]))[listId]
     },
     async getMusicExistListIds(event, musicId) {
       return getMusicExistListIds(musicId)

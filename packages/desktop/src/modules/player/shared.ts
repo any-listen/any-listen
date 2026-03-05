@@ -1,4 +1,4 @@
-import { musicListEvent } from '@any-listen/app/modules/musicList'
+import { sendMusicListAction } from '@any-listen/app/modules/musicList'
 import { getPlayInfo as getPlayInfoRaw } from '@any-listen/app/modules/player'
 import { LIST_IDS } from '@any-listen/common/constants'
 
@@ -45,7 +45,7 @@ export const getPlayerMusic = async (): Promise<AnyListen.Player.PlayMusicInfo |
 export const collectMusic = async () => {
   const music = await getPlayerMusic()
   if (!music) return
-  await musicListEvent.listAction({
+  await sendMusicListAction({
     action: 'list_music_add',
     data: {
       id: LIST_IDS.LOVE,
@@ -58,7 +58,7 @@ export const collectMusic = async () => {
 export const uncollectMusic = async () => {
   const music = await getPlayerMusic()
   if (!music) return
-  await musicListEvent.listAction({
+  await sendMusicListAction({
     action: 'list_music_remove',
     data: {
       listId: LIST_IDS.LOVE,

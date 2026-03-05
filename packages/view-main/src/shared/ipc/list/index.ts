@@ -9,6 +9,9 @@ export const getListMusics: AnyListen.IPC.ServerIPC['getListMusics'] = async (id
 export const checkListExistMusic: AnyListen.IPC.ServerIPC['checkListExistMusic'] = async (id, musicId) => {
   return ipc.checkListExistMusic(id, musicId)
 }
+export const getListCover: AnyListen.IPC.ServerIPC['getListCover'] = async (listId) => {
+  return ipc.getListCover(listId)
+}
 export const getMusicExistListIds: AnyListen.IPC.ServerIPC['getMusicExistListIds'] = async (id) => {
   return ipc.getMusicExistListIds(id)
 }

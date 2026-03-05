@@ -19,6 +19,7 @@ import {
   userListsUpdate,
   userListsUpdatePosition,
 } from './commit'
+import { musicLibraryEvent } from './event'
 
 export {
   checkListExistMusic,
@@ -26,6 +27,7 @@ export {
   getListMusics,
   getListPrevSelectId,
   getListScrollPosition,
+  getListCover,
   getMusicExistListIds,
   parseMusicMetadata,
   saveListPrevSelectId,
@@ -142,8 +144,8 @@ export const registerListAction = () => {
   const list_remove = (ids: AnyListen.IPCList.ListActionRemove) => {
     userListsRemove(ids)
   }
-  const list_update = (listInfos: AnyListen.IPCList.ListActionUpdate) => {
-    userListsUpdate(listInfos)
+  const list_update = (data: AnyListen.IPCList.ListActionUpdate) => {
+    userListsUpdate(data.lists, data.sync)
   }
   const list_move = ({ id, ids, position }: AnyListen.IPCList.ListActionMove) => {
     userListMove(id, position, ids)
@@ -192,6 +194,12 @@ export const registerListAction = () => {
     switch (action.action) {
       case 'list_data_overwrite':
         list_data_overwrite(action.data)
+        musicLibraryEvent.anyListChanged([
+          action.data.defaultList.id,
+          action.data.loveList.id,
+          action.data.lastPlayList.id,
+          ...action.data.userList.map((i) => i.id),
+        ] satisfies string[])
         break
       case 'list_create':
         list_create(action.data)
@@ -213,24 +221,30 @@ export const registerListAction = () => {
       //   break
       case 'list_music_add':
         list_music_add(action.data)
+        musicLibraryEvent.anyListMusicChanged([action.data.id])
         break
       case 'list_music_move':
         list_music_move(action.data)
+        musicLibraryEvent.anyListMusicChanged([action.data.fromId, action.data.toId])
         break
       case 'list_music_remove':
         list_music_remove(action.data)
+        musicLibraryEvent.anyListMusicChanged([action.data.listId])
         break
       case 'list_music_update':
         list_music_update(action.data)
         break
       case 'list_music_update_position':
         list_music_update_position(action.data)
+        musicLibraryEvent.anyListMusicChanged([action.data.listId])
         break
       case 'list_music_overwrite':
         list_music_overwrite(action.data)
+        musicLibraryEvent.anyListMusicChanged([action.data.listId])
         break
       case 'list_music_clear':
         list_music_clear(action.data)
+        musicLibraryEvent.anyListMusicChanged(action.data)
         break
       // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
       default:

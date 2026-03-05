@@ -3,7 +3,7 @@ import { derived, get, readable } from 'svelte/store'
 
 import { i18n, languageChangeEvent } from '@/plugins/i18n'
 
-import { getSubUserLists } from './store/actions'
+import { initListCover, getSubUserLists } from './store/actions'
 import { musicLibraryEvent } from './store/event'
 import { musicLibraryState } from './store/state'
 
@@ -71,7 +71,11 @@ export const allUserLists = readable(musicLibraryState.userLists, (set) => {
 //   }
 // }
 export const userListsAll = derived([defaultLists, allUserLists], ([defaultLists, allUserLists]) => {
-  return [...defaultLists, { ...musicLibraryState.lastPlayList, name: i18n.t('list_name__last_play') }, ...allUserLists]
+  return [
+    ...defaultLists,
+    { ...musicLibraryState.lastPlayList, name: i18n.t('list_name__last_play') } satisfies AnyListen.List.MyLastPlayListInfo,
+    ...allUserLists,
+  ]
 })
 
 export const userListInited = readable(musicLibraryState.userListInited, (set) => {
@@ -126,6 +130,41 @@ export const useFetchingListStatus = (id = '') => {
       if (id != _id) return
       val = musicLibraryState.fetchingListStatus[_id]
     })
+  })
+  return {
+    get val() {
+      return val
+    },
+  }
+}
+
+export const useListCover = (listInfo?: AnyListen.List.MyListInfo) => {
+  let val = $state(listInfo ? listInfo.meta.pic || musicLibraryState.listCoverMap.get(listInfo.id) : null)
+  $effect(() => {
+    if (!listInfo || listInfo.type === 'default') return
+    if (listInfo.meta.pic) {
+      val = listInfo.meta.pic
+      return
+    }
+    const pic = musicLibraryState.listCoverMap.get(listInfo.id)
+    if (pic) {
+      val = pic
+    } else {
+      void initListCover(listInfo.id)
+    }
+
+    const unsub = musicLibraryEvent.on('listCoverUpdated', (_listId, cover) => {
+      if (listInfo.id != _listId) return
+      val = cover
+    })
+    const unsub2 = musicLibraryEvent.on('anyListMusicChanged', (ids) => {
+      if (!ids.includes(listInfo.id)) return
+      void initListCover(listInfo.id)
+    })
+    return () => {
+      unsub()
+      unsub2()
+    }
   })
   return {
     get val() {

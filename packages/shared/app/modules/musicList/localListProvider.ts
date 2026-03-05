@@ -8,6 +8,7 @@ import { winMainReadyEvent } from '../../common/event'
 import { workers } from '../worker'
 import { proxyCallback } from '../worker/utils'
 import { musicListEvent } from './event'
+import { sendMusicListAction } from './index'
 
 export const verifyLocalListCreate = async (info: AnyListen.List.LocalListInfo) => {
   await checkPath(info.meta.path, true)
@@ -60,7 +61,7 @@ const handleMusicsParse = async (listId: string, list: AnyListen.Music.MusicInfo
   const musics = list.slice(index + 1, index + 101)
   let musicInfos = await workers.utilService.parseLocalMusicInfosMetadata(musics)
   if (musicInfos.length) {
-    await musicListEvent.listAction({
+    await sendMusicListAction({
       action: 'list_music_update',
       data: musicInfos.map((music) => {
         return {
@@ -82,7 +83,7 @@ const handleCreateAndAddMusics = async (listId: string, filePaths: string[], ind
   let musicInfos = await workers.utilService.createLocalMusicInfos(paths, false)
   if (musicInfos.length) {
     const addMusicLocationType = index > -1 ? 'bottom' : getSettings()['list.addMusicLocationType']
-    await musicListEvent.listAction({
+    await sendMusicListAction({
       action: 'list_music_add',
       data: {
         addMusicLocationType,
@@ -104,7 +105,7 @@ export const handleAddMusics = async (listId: string, filePaths: string[], parse
     if (musics.length !== parsedMusicInfos.length) {
       const failedIds = new Set<string>(musics.map((m) => m.id))
       for (const m of parsedMusicInfos) failedIds.delete(m.id)
-      await musicListEvent.listAction({
+      await sendMusicListAction({
         action: 'list_music_remove',
         data: {
           listId,
@@ -123,7 +124,7 @@ const handleChangeMusics = async (listId: string, filePaths: string[], index = -
   const musicInfos = await workers.utilService.createLocalMusicInfos(paths, true)
   let failedCount = paths.length - musicInfos.length
   if (musicInfos.length) {
-    await musicListEvent.listAction({
+    await sendMusicListAction({
       action: 'list_music_update',
       data: musicInfos.map((music) => {
         return {
@@ -158,7 +159,7 @@ const handleReadyWatcher = async (listId: string, files: string[], parseMetadata
     }
   }
   if (removedMusicIds.size) {
-    await musicListEvent.listAction({
+    await sendMusicListAction({
       action: 'list_music_remove',
       data: {
         listId,
@@ -189,7 +190,7 @@ const handleMusicRemove = async (listId: string, paths: string[]) => {
     removedIds.push(music.id)
   }
   if (!removedIds.length) return
-  await musicListEvent.listAction({
+  await sendMusicListAction({
     action: 'list_music_remove',
     data: {
       listId,
@@ -343,7 +344,8 @@ export const initLocalListProvider = async () => {
     // console.log('run list provider sync after create list', state.initing)
     void handleSyncList()
   })
-  musicListEvent.on('list_update', async (lists) => {
+  musicListEvent.on('list_update', async (lists, isSync, isRemote) => {
+    if (isSync || isRemote) return
     for (const list of lists) {
       if (list.type !== 'local' || list.meta.deviceId !== getDeviceId()) continue
       await removeWatcher(list.id)

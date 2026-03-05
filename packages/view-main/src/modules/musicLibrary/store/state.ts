@@ -9,6 +9,7 @@ export interface InitState {
   allMusicList: Map<string, AnyListen.Music.MusicInfo[]>
   userListInited: boolean
   fetchingListStatus: Record<string, boolean>
+  listCoverMap: Map<string, string | null | undefined>
 }
 
 export const musicLibraryState: InitState = {
@@ -19,6 +20,8 @@ export const musicLibraryState: InitState = {
     type: 'default',
     parentId: null,
     meta: {
+      pic: '',
+      songCount: 0,
       createTime: 0,
       updateTime: 0,
       posTime: 0,
@@ -33,6 +36,8 @@ export const musicLibraryState: InitState = {
     type: 'default',
     parentId: null,
     meta: {
+      pic: '',
+      songCount: 0,
       createTime: 0,
       updateTime: 0,
       posTime: 0,
@@ -47,6 +52,8 @@ export const musicLibraryState: InitState = {
     type: 'default',
     parentId: null,
     meta: {
+      pic: '',
+      songCount: 0,
       createTime: 0,
       updateTime: 0,
       posTime: 0,
@@ -59,4 +66,5 @@ export const musicLibraryState: InitState = {
   userListsMap: new Map(),
   allMusicList: new Map(),
   fetchingListStatus: {},
+  listCoverMap: new Map(),
 }

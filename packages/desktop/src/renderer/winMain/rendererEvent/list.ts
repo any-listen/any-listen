@@ -13,6 +13,8 @@ import {
   syncUserList,
 } from '@any-listen/app/modules/musicList'
 
+import { getListsCover } from '@/modules/musicList'
+
 import type { ExposeFunctions } from '.'
 
 // 暴露给前端的方法
@@ -23,6 +25,9 @@ export const createExposeList = () => {
     },
     async getListMusics(event, listId) {
       return getListMusics(listId)
+    },
+    async getListCover(event, listId) {
+      return (await getListsCover([listId]))[listId]
     },
     async getMusicExistListIds(event, musicId) {
       return getMusicExistListIds(musicId)

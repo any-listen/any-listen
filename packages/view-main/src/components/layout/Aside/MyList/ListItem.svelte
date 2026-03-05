@@ -1,9 +1,10 @@
 <script lang="ts">
-  // import SvgIcon from '@/components/base/SvgIcon.svelte'
-  // import Image from '@/components/base/Image.svelte'
+  import SvgIcon from '@/components/base/SvgIcon.svelte'
+  import Image from '@/components/base/Image.svelte'
   import type { MouseEventHandler } from 'svelte/elements'
   import { location, push, query, replace } from '@/plugins/routes'
-  import { useFetchingListStatus } from '@/modules/musicLibrary/reactive.svelte'
+  import { useFetchingListStatus, useListCover } from '@/modules/musicLibrary/reactive.svelte'
+  import { LIST_PIC_ICON } from '@/shared/constants'
   // console.log(querystring)
   let {
     listInfo,
@@ -19,6 +20,8 @@
   } = $props()
 
   const fetching = useFetchingListStatus(listInfo.id)
+
+  const listCover = useListCover(listInfo)
 
   const handleSelect = () => {
     const url = `/library?id=${listInfo.id}`
@@ -52,16 +55,15 @@
   onclick={handleSelect}
   {oncontextmenu}
 >
-  <!-- <div class="container" role="button" tabindex="0" onkeydown={log} onclick={log} {oncontextmenu}> -->
   <div class="left" style={picStyle}>
-    <!-- <Image /> -->
+    <Image src={listCover.val} icon={LIST_PIC_ICON[listInfo.id as keyof typeof LIST_PIC_ICON]} />
   </div>
   <div class="right">
     <span>{listInfo.name}</span>
-    <!-- <div class="meta">
-      <span><SvgIcon name="music" /> {100}</span>
-      <span><SvgIcon name="headphones" /> {listInfo.meta.playCount}</span>
-    </div> -->
+    <div class="meta">
+      <span><SvgIcon name="music" />{listInfo.meta.songCount}</span>
+      <!-- <span><SvgIcon name="headphones" /> {listInfo.meta.playCount}</span> -->
+    </div>
   </div>
 </div>
 
@@ -70,10 +72,10 @@
     position: relative;
     display: flex;
     flex-flow: row nowrap;
-    gap: 10px;
+    gap: 6px;
     align-items: center;
     height: 100%;
-    padding: 5px 2px;
+    padding: 6px;
     background-color: transparent;
     border-radius: @radius-border;
     transition: 0.3s ease;
@@ -109,6 +111,11 @@
     // span {
     //   padding-left: 2px;
     // }
+
+    :global(.pic.empty-pic) {
+      color: var(--color-primary-light-100-alpha-400);
+      background-color: var(--color-primary-light-200-alpha-700);
+    }
   }
 
   .right {
@@ -123,11 +130,11 @@
     }
   }
 
-  // .meta {
-  //   display: flex;
-  //   flex-flow: row nowrap;
-  //   gap: 12px;
-  //   color: var(--color-300);
-  //   font-size: 12px;
-  // }
+  .meta {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--color-300);
+  }
 </style>

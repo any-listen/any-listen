@@ -361,7 +361,10 @@ declare namespace AnyListen {
       listInfos: List.UserListInfo[]
     }
     type ListActionRemove = string[]
-    type ListActionUpdate = List.UserListInfo[]
+    interface ListActionUpdate {
+      lists: List.MyListInfo[]
+      sync?: boolean
+    }
     interface ListActionMove {
       /**
        * 目标列表id

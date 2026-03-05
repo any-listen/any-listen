@@ -12,8 +12,8 @@
   import { updateUserListPosition } from './action'
   // console.log(params)
   const listItemHeight = useListItemHeight(3.2)
-  // const picStyle = $derived(`height:${listItemHeight.val * 0.64}px; width:${listItemHeight.val * 0.64}px;`)
-  const picStyle = $derived(`height:${listItemHeight.val * 0.5}px;`)
+  const picStyle = $derived(`height:${listItemHeight.val * 0.64}px; width:${listItemHeight.val * 0.64}px;`)
+  // const picStyle = $derived(`height:${listItemHeight.val * 0.5}px;`)
 
   let menu: ComponentExports<typeof Menu>
 
@@ -35,7 +35,7 @@
       role="list"
       tabindex="-1"
       {@attach scrollPointerEvents}
-      {@attach verticalScrollbar({ offset: '0.15rem', scrollbarWidth: '0.4rem' })}
+      {@attach verticalScrollbar({ offset: '0', scrollbarWidth: '0.375rem' })}
       oncontextmenu={(event) => {
         event.preventDefault()
         event.stopPropagation()
@@ -95,7 +95,7 @@
     contain: strict;
   }
   .list-item {
-    padding: 0 12px;
+    padding: 0 6px;
     -webkit-user-drag: revert-layer;
   }
   .tip {

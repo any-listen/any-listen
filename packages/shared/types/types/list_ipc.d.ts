@@ -6,7 +6,11 @@ declare namespace AnyListen {
       listInfos: List.UserListInfo[]
     }
     type ListActionRemove = string[]
-    type ListActionUpdate = List.UserListInfo[]
+    interface ListActionUpdate {
+      lists: List.MyListInfo[]
+      /** 是否是同步操作导致的列表更新 */
+      sync?: boolean
+    }
     interface ListActionMove {
       /**
        * 目标列表id
@@ -120,6 +124,7 @@ declare namespace AnyListen {
     type ServerActions = WarpPromiseRecord<{
       // importLocalFile: (listId: string) => void
       getAllUserLists: () => List.MyAllList
+      getListCover: (listId: string) => string | undefined | null
       getListMusics: (listId: string) => Music.MusicInfo[]
       checkListExistMusic: (id: string, musicId: string) => boolean
       getMusicExistListIds: (id: string) => string[]

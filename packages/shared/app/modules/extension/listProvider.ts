@@ -265,7 +265,8 @@ export const initListProvider = async () => {
     // console.log('run list provider sync after create list', state.initing)
     if (!state.initing) void handleSyncList()
   })
-  musicListEvent.on('list_update', async (lists) => {
+  musicListEvent.on('list_update', async (lists, isSync, isRemote) => {
+    if (isSync || isRemote) return
     for (const list of lists) {
       if (list.type !== 'remote') continue
       state.waitingSyncLists.push(list)

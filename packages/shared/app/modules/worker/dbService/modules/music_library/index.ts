@@ -22,7 +22,7 @@ import {
   updateMusicInfos,
   updateUserLists as updateUserListsFromDB,
 } from './dbHelper'
-import type { MusicInfo, MusicInfoOrder, UserListInfo } from './statements'
+import type { MusicInfo, MusicInfoOrder, QueryUserListInfo, UserListInfo } from './statements'
 
 let defaultList: AnyListen.List.MyDefaultListInfo | undefined
 let loveList: AnyListen.List.MyLoveListInfo
@@ -58,14 +58,15 @@ const toDBMusicInfo = (musicInfos: AnyListen.Music.MusicInfo[], listId: string, 
   })
 }
 
-const parseList = <T extends AnyListen.List.UserListInfo>(list: UserListInfo) => {
+const parseList = <T extends AnyListen.List.UserListInfo>(list: QueryUserListInfo) => {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const { position, parent_id, ...newList } = list
+  const { position, parent_id, song_count, ...newList } = list
   const listInfo = {
     ...newList,
     parentId: parent_id,
     meta: JSON.parse(newList.meta),
   }
+  ;(listInfo as T).meta.songCount = song_count
   return listInfo as T
 }
 /**
@@ -171,6 +172,11 @@ const filterUserLists = (parentId: UserListInfo['parent_id']) => {
 const overwriteUserList = (parentId: UserListInfo['parent_id'], lists: AnyListen.List.UserListInfo[]) => {
   const newList = userLists.filter((l) => l.parentId !== parentId)
   userLists = [...newList, ...lists]
+}
+
+const getAllListInfo = () => {
+  initListInfo()
+  return [defaultList!, loveList!, lastPlayList!, ...userLists]
 }
 
 /**
@@ -356,6 +362,12 @@ export const getListMusics = (listId: string): AnyListen.Music.MusicInfo[] => {
   return targetList
 }
 
+const updateSongCount = (listId: string, count: number) => {
+  initUserList()
+  const targetListInfo = getAllListInfo().find((l) => l.id == listId)
+  if (targetListInfo) targetListInfo.meta.songCount = count
+}
+
 export const getListMusicsByIds = (listId: string, ids: string[]) => {
   const list = musicLists.get(listId)
   if (!list) return []
@@ -375,6 +387,7 @@ export const musicOverwrite = (listId: string, musicInfos: AnyListen.Music.Music
   if (targetList) {
     targetList.splice(0, targetList.length)
     arrPush(targetList, musicInfos)
+    updateSongCount(listId, musicInfos.length)
   }
 }
 
@@ -418,6 +431,7 @@ export const musicsAdd = (
       arrPush(targetList, musicInfos)
       break
   }
+  updateSongCount(listId, targetList.length)
 }
 
 /**
@@ -430,10 +444,9 @@ export const musicsRemove = (listId: string, ids: string[]) => {
   if (!targetList.length) return
   removeMusicInfos(listId, ids)
   const idsSet = new Set<string>(ids)
-  musicLists.set(
-    listId,
-    targetList.filter((mInfo) => !idsSet.has(mInfo.id))
-  )
+  const newList = targetList.filter((mInfo) => !idsSet.has(mInfo.id))
+  musicLists.set(listId, newList)
+  updateSongCount(listId, newList.length)
 }
 
 /**
@@ -482,10 +495,10 @@ export const musicsMove = (
   }
 
   listSet = new Set<string>(ids)
-  musicLists.set(
-    fromId,
-    fromList.filter((mInfo) => !listSet.has(mInfo.id))
-  )
+  const newFromList = fromList.filter((mInfo) => !listSet.has(mInfo.id))
+  musicLists.set(fromId, newFromList)
+  updateSongCount(fromId, newFromList.length)
+  updateSongCount(toId, toList.length)
 }
 
 /**
@@ -591,6 +604,7 @@ export const musicsClear = (ids: string[]) => {
     const targetList = musicLists.get(id)
     if (!targetList) continue
     targetList.splice(0, targetList.length)
+    updateSongCount(id, 0)
   }
 }
 
@@ -702,4 +716,15 @@ export const checkListExistMusic = (listId: string, musicInfoId: string): boolea
 export const getMusicExistListIds = (musicInfoId: string): string[] => {
   const musicInfos = queryMusicInfoByMusicInfoId(musicInfoId)
   return musicInfos.map((m) => m.list_id)
+}
+
+export const getListInfos = (ids: string[]): Array<AnyListen.List.MyListInfo | undefined> => {
+  return ids.map((id) => getAllListInfo().find((l) => l.id == id))
+}
+
+export const getListsFirstMusics = (ids: string[]) => {
+  return ids.map((id) => {
+    const list = getListMusics(id)
+    return list.slice(0, 4)
+  })
 }

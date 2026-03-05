@@ -1,21 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Build failure resolved.
-
-### Other
-
-- Release package specifically for Windows 7 renamed from `win7` to `win_legacy` ([#145](https://github.com/any-listen/any-listen/issues/145)).
+- Added preliminary **cover display** in the *playlist list* (no custom covers yet; uses the cover from the first song in the list) and **song count** shown in playlists.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复构建失败。
-
-### 其他
-
-- 专门用于 Windows 7 的发布包从 `win7` 重命名为 `win_legacy`（[#145](https://github.com/any-listen/any-listen/issues/145)）。
+- 在 **歌单列表** 中初步添加 **封面显示**（暂不支持自定义封面，自动取列表内第一首歌的封面作为歌单封面）与 **歌曲数量** 显示。

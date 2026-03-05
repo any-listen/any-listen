@@ -42,15 +42,33 @@ export interface UserListInfo {
   position: number
 }
 
+export interface QueryUserListInfo extends UserListInfo {
+  song_count: number
+}
+
 /**
  * 创建所有默认列表查询语句
  * @returns 查询语句
  */
 export const createDefaultListQueryStatement = () => {
-  return dbPrepare<[], UserListInfo>(`
-    SELECT "id", "parent_id", "name", "type", "meta", "position"
-    FROM "main"."my_list"
-    WHERE "type"=='${LIST_IDS.DEFAULT}'
+  return dbPrepare<[], QueryUserListInfo>(`
+    SELECT
+      sl.id,
+      sl.parent_id,
+      sl.name,
+      sl.type,
+      sl.meta,
+      COUNT(s.id) AS song_count
+    FROM main.my_list sl
+    LEFT JOIN main.my_list_music_info s
+      ON s.list_id = sl.id
+    WHERE sl.type = '${LIST_IDS.DEFAULT}'
+    GROUP BY
+      sl.id,
+      sl.parent_id,
+      sl.name,
+      sl.type,
+      sl.meta;
     `)
 }
 
@@ -59,11 +77,27 @@ export const createDefaultListQueryStatement = () => {
  * @returns 查询语句
  */
 export const createAllUserListQueryStatement = () => {
-  return dbPrepare<[], UserListInfo>(`
-    SELECT "id", "parent_id", "name", "type", "meta", "position"
-    FROM "main"."my_list"
-    WHERE "type"!='${LIST_IDS.DEFAULT}'
-    ORDER BY position ASC
+  return dbPrepare<[], QueryUserListInfo>(`
+    SELECT
+      sl.id,
+      sl.parent_id,
+      sl.name,
+      sl.type,
+      sl.meta,
+      sl.position,
+      COUNT(s.id) AS song_count
+    FROM main.my_list sl
+    LEFT JOIN main.my_list_music_info s
+      ON s.list_id = sl.id
+    WHERE sl.type <> '${LIST_IDS.DEFAULT}'
+    GROUP BY
+      sl.id,
+      sl.parent_id,
+      sl.name,
+      sl.type,
+      sl.meta,
+      sl.position
+    ORDER BY sl.position ASC;
     `)
 }
 
@@ -109,7 +143,7 @@ export const createListInsertStatement = () => {
 export const createListClearStatement = () => {
   return dbPrepare<NonNullable<UserListInfo['parent_id']>>(`
     DELETE FROM "main"."my_list"
-    WHERE "parent_id"=? AND "type"!='${LIST_IDS.DEFAULT}'
+    WHERE "parent_id"=? AND "type"<>'${LIST_IDS.DEFAULT}'
   `)
 }
 
@@ -120,7 +154,7 @@ export const createListClearStatement = () => {
 export const createListClearNullStatement = () => {
   return dbPrepare(`
     DELETE FROM "main"."my_list"
-    WHERE "parent_id" IS NULL AND "type"!='${LIST_IDS.DEFAULT}'
+    WHERE "parent_id" IS NULL AND "type"<>'${LIST_IDS.DEFAULT}'
   `)
 }
 
@@ -129,7 +163,7 @@ export const createListClearNullStatement = () => {
  * @returns 清空语句
  */
 export const createListClearAllStatement = () => {
-  return dbPrepare(`DELETE FROM "main"."my_list" WHERE "type"!='${LIST_IDS.DEFAULT}'`)
+  return dbPrepare(`DELETE FROM "main"."my_list" WHERE "type"<>'${LIST_IDS.DEFAULT}'`)
 }
 
 /**
@@ -137,7 +171,7 @@ export const createListClearAllStatement = () => {
  * @returns 删除语句
  */
 export const createListDeleteStatement = () => {
-  return dbPrepare<string>(`DELETE FROM "main"."my_list" WHERE "id"=? AND "type"!='${LIST_IDS.DEFAULT}'`)
+  return dbPrepare<string>(`DELETE FROM "main"."my_list" WHERE "id"=? AND "type"<>'${LIST_IDS.DEFAULT}'`)
 }
 
 /**

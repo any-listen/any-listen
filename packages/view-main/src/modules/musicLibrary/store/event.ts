@@ -23,6 +23,11 @@ class Event extends _Event {
     this.emitEvent('listChanged', ids)
   }
 
+  anyListMusicChanged(ids: string[]) {
+    if (!ids.length) return
+    this.emitEvent('anyListMusicChanged', ids)
+  }
+
   listMusicChanged(ids: string[]) {
     if (!ids.length) return
     this.emitEvent('listMusicChanged', ids)
@@ -40,6 +45,10 @@ class Event extends _Event {
 
   fetchingListStatusUpdated(id: string, val: boolean) {
     this.emitEvent('fetchingListStatusUpdated', id, val)
+  }
+
+  listCoverUpdated(listId: string, cover: string | null | undefined) {
+    this.emitEvent('listCoverUpdated', listId, cover)
   }
 }
 

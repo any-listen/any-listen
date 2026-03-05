@@ -4,7 +4,7 @@
   import { getListMusics } from '@/modules/musicLibrary/actions'
   import { musicLibraryEvent } from '@/modules/musicLibrary/store/event'
   import type { ListInfo } from '@/components/common/MusicList/type'
-  import { userListInited, userListsAll } from '@/modules/musicLibrary/reactive.svelte'
+  import { useListCover, userListInited, userListsAll } from '@/modules/musicLibrary/reactive.svelte'
   import { dateFormat } from '@/shared'
   import {
     getListScrollPosition,
@@ -15,25 +15,27 @@
   import { type ComponentExports, tick } from 'svelte'
   import { LIST_IDS } from '@any-listen/common/constants'
   import { resourceList } from '@/modules/extension/reactive.svelte'
+  import { LIST_PIC_ICON } from '@/shared/constants'
 
   let list = $state.raw<AnyListen.Music.MusicInfo[]>([])
   let musicList = $state<ComponentExports<typeof MusicList> | null>(null)
-  const pics = {
-    [LIST_IDS.LOVE]: 'music_heart',
-    [LIST_IDS.DEFAULT]: 'play',
-    [LIST_IDS.LAST_PLAYED]: 'time_machine',
-  } as const
 
-  const getActiveListInfo = (allList: typeof $userListsAll, activeId: string, resourceList: AnyListen.Extension.ResourceList) => {
-    const info = allList.find((l) => l.id == activeId)
+  const getTargetActiveListInfo = (allList: typeof $userListsAll, activeId: string) => {
+    return allList.find((l) => l.id == activeId)
+  }
+  const buildActiveListInfo = (
+    resourceList: AnyListen.Extension.ResourceList,
+    info?: AnyListen.List.MyListInfo,
+    listCover?: string | null
+  ) => {
     if (!info) return undefined
-
     return {
       id: info.id,
       name: info.name,
       createTime: info.type == 'default' ? '' : dateFormat(info.meta.createTime, 'Y-M-D'),
       playCount: info.meta.playCount,
-      picIcon: pics[info.id as keyof typeof pics],
+      pic: info.type == 'default' ? '' : info.meta.pic || listCover || '',
+      picIcon: LIST_PIC_ICON[info.id as keyof typeof LIST_PIC_ICON],
       getSortTimeFn() {
         if (
           info.type === 'local' ||
@@ -49,7 +51,9 @@
       },
     } satisfies ListInfo
   }
-  const listInfo = $derived(getActiveListInfo($userListsAll, $query.id, $resourceList))
+  const targetListInfo = $derived(getTargetActiveListInfo($userListsAll, $query.id))
+  const listCover = $derived(useListCover(targetListInfo))
+  const listInfo = $derived(buildActiveListInfo($resourceList, targetListInfo, listCover.val))
 
   let currentId = ''
   const handleScroll = (pos: number) => {

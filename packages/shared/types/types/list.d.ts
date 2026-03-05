@@ -1,6 +1,8 @@
 declare namespace AnyListen {
   namespace List {
     interface UserListInfoBaseMeta {
+      songCount: number
+      pic: string
       playCount: number
       createTime: number
       updateTime: number
@@ -56,19 +58,19 @@ declare namespace AnyListen {
 
     interface MyDefaultListInfo extends Omit<GeneralListInfo, 'type'> {
       id: 'default'
-      name: 'default'
+      name: string
       type: 'default'
     }
 
     interface MyLoveListInfo extends Omit<GeneralListInfo, 'type'> {
       id: 'love'
-      name: 'love'
+      name: string
       type: 'default'
     }
 
     interface MyLastPlayListInfo extends Omit<GeneralListInfo, 'type'> {
       id: 'last_played'
-      name: 'last_played'
+      name: string
       type: 'default'
     }
 
