@@ -24,6 +24,7 @@ overrides:
   node-abi: latest
   postcss: latest
   semver: latest
+  svgo@>=2.1.0 <2.8.1: '>=2.8.1'
   tmp@<=0.2.3: '>=0.2.4'
   ws>bufferutil: '-'
   ws>utf-8-validate: '-'

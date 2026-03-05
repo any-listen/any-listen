@@ -51,11 +51,11 @@
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
     "electron": "39.6.0",
-    "electron-builder": "26.8.1",
+    "electron-builder": "26.8.2",
     "electron-debug": "^4.1.0",
-    "electron-to-chromium": "^1.5.302",
+    "electron-to-chromium": "^1.5.307",
     "node-abi": "^4.26.0",
-    "tar": "^7.5.9",
+    "tar": "^7.5.10",
     "vite": "^8.0.0-beta.16"
   }
 }
