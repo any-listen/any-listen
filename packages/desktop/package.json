@@ -50,7 +50,7 @@
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "electron": "39.6.0",
+    "electron": "40.8.0",
     "electron-builder": "26.8.2",
     "electron-debug": "^4.1.0",
     "electron-to-chromium": "^1.5.307",
