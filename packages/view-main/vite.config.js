@@ -3,14 +3,13 @@ import path from 'node:path'
 import { env } from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import { svelte } from '@sveltejs/vite-plugin-svelte'
 import pxtorem from 'postcss-pxtorem'
-import { sveltePreprocess } from 'svelte-preprocess'
 import { defaultClientConditions, defineConfig } from 'vite'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 import { createHtmlPlugin } from './build-config/html.plugin.js'
-// import type { UserConfig } from 'vite'
+import svelteConfig, { lessConfig } from './svelte.config.js'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,12 +17,6 @@ const dirname = path.dirname(filename)
 const isProd = env.NODE_ENV == 'production'
 const rootPath = path.join(dirname, '../../')
 const projectPath = path.join(rootPath, 'packages/view-main')
-
-export const lessConfig = {
-  modifyVars: {
-    hack: `true; @import "${path.join(projectPath, 'src/assets/styles/mixin.less')}";`,
-  },
-}
 
 // type Target = 'desktop' | 'web'
 
@@ -39,11 +32,6 @@ const dirs = {
 }
 
 export const buildConfig = (target, port = 9200, ipcScript) => {
-  // const lessConfig = {
-  //   modifyVars: {
-  //     hack: `true; @import "${path.join(projectPath, 'src/assets/styles/mixin.less')}";`,
-  //   },
-  // }
   const dir = dirs[target]
 
   /**
@@ -64,29 +52,7 @@ export const buildConfig = (target, port = 9200, ipcScript) => {
       conditions: [...defaultClientConditions],
     },
     plugins: [
-      svelte({
-        // configFile: path.join(dirname, './svelte.config.js'),
-        // onwarn(warning, defaultHandler) {
-        //   // don't warn on <marquee> elements, cos they're cool
-        //   if (warning.code === 'a11y-distracting-elements') return;
-
-        //   // handle all other warnings normally
-        //   defaultHandler(warning);
-        // }
-        // ...svelteConfig,
-        compilerOptions: {
-          runes: true,
-        },
-        preprocess: [
-          vitePreprocess(),
-          sveltePreprocess({
-            typescript: {
-              tsconfigFile: path.join(projectPath, 'tsconfig.json'),
-            },
-            less: lessConfig,
-          }),
-        ],
-      }),
+      svelte(svelteConfig),
       createSvgIconsPlugin({
         iconDirs: [path.join(projectPath, 'src/assets/svgs')],
       }),

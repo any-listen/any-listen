@@ -22,7 +22,8 @@
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@^",
-    "oxfmt": "^0.36.0"
+    "oxfmt": "^0.36.0",
+    "prettier-plugin-organize-imports": "^4.3.0"
   },
   "engines": {
     "node": ">=22.12.0 || ^20.19.0"

@@ -20,5 +20,5 @@ export default {
   htmlWhitespaceSensitivity: 'css',
   endOfLine: 'lf',
   organizeImportsSkipDestructiveCodeActions: true,
-  plugins: ['prettier-plugin-organize-imports', 'prettier-plugin-packagejson'],
+  plugins: ['prettier-plugin-organize-imports'],
 }
