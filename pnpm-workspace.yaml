@@ -17,6 +17,8 @@ overrides:
   braces@<3.0.3: '>=3.0.3'
   depd: latest
   diff@<4.0.4: '>=4.0.4'
+  file-type@>=20.0.0 <=21.3.1: '>=21.3.2'
+  flatted@<3.4.0: '>=3.4.0'
   js-yaml@>=4.0.0 <4.1.1: '>=4.1.1'
   json5: latest
   mdast-util-to-hast@>=13.0.0 <13.2.1: '>=13.2.1'
@@ -28,6 +30,7 @@ overrides:
   tmp@<=0.2.3: '>=0.2.4'
   ws>bufferutil: '-'
   ws>utf-8-validate: '-'
+  yauzl@<3.2.1: '>=3.2.1'
 
 publicHoistPattern:
   - '*eslint*'
