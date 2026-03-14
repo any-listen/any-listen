@@ -1,7 +1,7 @@
 {
   "name": "@shared/common",
   "dependencies": {
-    "lru-cache": "^11.2.6",
+    "lru-cache": "^11.2.7",
     "mime": "^4.1.0"
   },
   "devDependencies": {
