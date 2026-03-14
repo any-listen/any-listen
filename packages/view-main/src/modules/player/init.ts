@@ -1,6 +1,7 @@
 import { onRelease } from '@/modules/app/shared'
 import { appState } from '@/modules/app/store/state'
 import { settingEvent } from '@/modules/setting/store/event'
+import { settingState } from '@/modules/setting/store/state'
 import { createUnsubscriptionSet } from '@/shared'
 
 import { initPlayer as initPlayerModules } from './init/index'
@@ -37,7 +38,9 @@ const init = async (isInited: boolean) => {
   const targetMusicInfo = list[info.index] as AnyListen.Player.PlayMusicInfo | undefined
   if (targetMusicInfo && (!isInited || !playerState.playing)) {
     setPlayMusicInfo(targetMusicInfo, null, info.historyIndex)
-    playerEvent.setProgress(info.time, info.maxTime)
+    if (settingState.setting['player.isSavePlayTime']) {
+      playerEvent.setProgress(info.time, info.maxTime)
+    }
   }
 }
 

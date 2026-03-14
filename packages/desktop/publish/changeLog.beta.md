@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Added
+### Fixed
 
-- Added preliminary **cover display** in the *playlist list* (no custom covers yet; uses the cover from the first song in the list) and **song count** shown in playlists.
+- Fixed an issue where the **“Resume playback position on launch”** setting did not take effect ([#150](https://github.com/any-listen/any-listen/issues/150)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 新增
+### 修复
 
-- 在 **歌单列表** 中初步添加 **封面显示**（暂不支持自定义封面，自动取列表内第一首歌的封面作为歌单封面）与 **歌曲数量** 显示。
+- 修复 **“启动软件时是否恢复上次播放进度”** 设置不生效的问题（[#150](https://github.com/any-listen/any-listen/issues/150)）。
