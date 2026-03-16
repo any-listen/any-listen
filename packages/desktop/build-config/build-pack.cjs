@@ -217,6 +217,7 @@ const createTarget = {
           break
         case 'win_legacy_green':
           buildOptions.push('7z')
+          winOptions.publish = null
           winOptions.artifactName = `\${productName}-\${version}-win_legacy_\${arch}-green.\${ext}`
           break
         default:
