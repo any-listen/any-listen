@@ -29,6 +29,7 @@ import { extensionEvent } from '../event'
 import { loadExtension as loadExtensionByInternalExtension } from '../internalExtension'
 import { extensionState } from '../state'
 import { createVmConetxt, destroyContext, runExtension, setupVmContext } from '../vm'
+import { handlePreloadCall } from '../vm/hostContext/hostFuncs'
 import { sendConfigUpdatedEvent } from '../vm/hostContext/preloadFuncs'
 import { getConfig, saveConfig, unloadConfig } from './configStore'
 
@@ -304,7 +305,22 @@ export const loadExtension = async (extension: AnyListen.Extension.Extension) =>
     } else {
       const vmState = await createVmConetxt(extension, extensionState.preloadScript)
       await setupVmContext(vmState)
-      runTotalTime = await runExtension(vmState.vmContext, vmState.extension)
+      try {
+        runTotalTime = await runExtension(vmState.vmContext, vmState.extension)
+      } catch (err) {
+        handlePreloadCall(
+          'logcat',
+          {
+            id: extension.id,
+            type: 'error',
+            timestamp: Date.now(),
+            message: `${(err as Error).message}\n${(err as Error).stack ?? ''}`,
+            name: extension.name,
+          },
+          vmState.logcat
+        )
+        throw err
+      }
     }
   } catch (err) {
     console.error('load extension error: ', err)

@@ -26,6 +26,9 @@ const actionHandles: LPA = {
   updateList: async (params) => {
     await actions.updateList!(params)
   },
+  sortListMusics: async (params) => {
+    return verifyMusicIdArray(await actions.sortListMusics!(params))
+  },
   removeListMusics: async (params) => {
     return actions.removeListMusics!(params)
   },

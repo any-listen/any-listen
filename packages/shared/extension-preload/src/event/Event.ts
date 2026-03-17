@@ -13,6 +13,17 @@ export default class Event {
     }
   }
 
+  once(eventName: string, listener: (...args: unknown[]) => unknown) {
+    const onceListener = (...args: unknown[]) => {
+      this.off(eventName, onceListener)
+      listener(...args)
+    }
+    this.on(eventName, onceListener)
+    return () => {
+      this.off(eventName, onceListener)
+    }
+  }
+
   off(eventName: string, listener: (...args: unknown[]) => unknown) {
     const targetListeners = this.listeners.get(eventName)
     if (!targetListeners) return

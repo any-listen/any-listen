@@ -173,6 +173,8 @@ declare namespace AnyListen {
   }
   namespace List {
     interface UserListInfoBaseMeta {
+      songCount: number
+      pic: string
       playCount: number
       createTime: number
       updateTime: number
@@ -226,19 +228,19 @@ declare namespace AnyListen {
 
     interface MyDefaultListInfo extends Omit<GeneralListInfo, 'type'> {
       id: 'default'
-      name: 'default'
+      name: string
       type: 'default'
     }
 
     interface MyLoveListInfo extends Omit<GeneralListInfo, 'type'> {
       id: 'love'
-      name: 'love'
+      name: string
       type: 'default'
     }
 
     interface MyLastPlayListInfo extends Omit<GeneralListInfo, 'type'> {
       id: 'last_played'
-      name: 'last_played'
+      name: string
       type: 'default'
     }
 
@@ -708,7 +710,8 @@ declare global {
       headers?: Record<string, string | string[]>
       timeout?: number
       maxRedirect?: number
-      signal?: AbortController['signal']
+      // signal?: AbortController['signal']
+      signal?: unknown
       json?: Record<string, unknown>
       form?: Record<string, string | number | null | undefined | boolean>
       binary?: Uint8Array
@@ -1015,13 +1018,12 @@ declare global {
       error: (...args: unknown[]) => void
     }
     interface Storage {
-      getItem: <T>(key: string) => Promise<T>
-      getItems: <T extends unknown[]>(keys: string[]) => Promise<T>
-      setItem: (key: string, value: unknown) => Promise<void>
-      setItems: <T extends Array<[string, unknown]>>(datas: T) => Promise<void>
-      removeItem: (key: string) => Promise<void>
-      removeItems: (keys: string[]) => Promise<void>
-      clearItems: () => Promise<void>
+      saveFile: (path: string, data: Uint8Array | string) => Promise<void>
+      readFile: (path: string) => Promise<Uint8Array>
+      removeFile: (path: string) => Promise<void>
+      fileExists: (path: string) => Promise<boolean>
+      listFiles: (path?: string) => Promise<string[]>
+      statFile: (path: string) => Promise<{ isFile: boolean; size: number; createTime: number; updateTime: number }>
     }
     interface Buffer {
       from: (input: string | number[], encoding?: BufferFormat) => Uint8Array

@@ -1,37 +1,58 @@
-import { joinPath } from '@any-listen/nodejs'
-import Store from '@any-listen/nodejs/Store'
+import fs from 'node:fs/promises'
+import { sep } from 'node:path'
 
-import { extensionEvent } from '../event'
+import { joinPath, normalizePath } from '@any-listen/nodejs'
 
 export const createStore = (path: string) => {
-  let store: Store
-  const initStore = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (store) return
-    try {
-      store = new Store(joinPath(path, 'data.json'), false, true)
-    } catch (err: unknown) {
-      extensionEvent.error(`init store error: ${(err as Error).stack ?? (err as Error).message}`)
-      store = new Store(path, true, true)
-    }
+  const rootPath = joinPath(path, 'files') + sep
+  const buildPath = (names: string) => {
+    const fullPath = normalizePath(joinPath(rootPath, names))
+    if (!fullPath.startsWith(rootPath)) throw new Error('Invalid path')
+    return fullPath
   }
+  fs.mkdir(rootPath, { recursive: true }).catch(() => {
+    // ignore
+  })
 
   return {
-    async getItems(keys: string[]) {
-      initStore()
-      return keys.map((k) => store.get(k)) as string[]
+    async saveFile(path: string, content: string | Uint8Array) {
+      if (typeof path != 'string') throw new Error('path required a string')
+      if (typeof content != 'string' && !(content instanceof Uint8Array)) {
+        throw new Error('content required a string or Uint8Array')
+      }
+      await fs.writeFile(buildPath(path), content)
     },
-    async setItems<T extends Array<[string, string]>>(datas: T) {
-      initStore()
-      for (const [k, v] of datas) store.set(k, v)
+    async readFile(path: string) {
+      if (typeof path != 'string') throw new Error('path required a string')
+      return fs.readFile(buildPath(path)).then((data) => new Uint8Array(data))
     },
-    async removeItems(keys: string[]) {
-      initStore()
-      for (const k of keys) store.delete(k)
+    async removeFile(path: string) {
+      if (typeof path != 'string') throw new Error('path required a string')
+      await fs.rm(buildPath(path), { recursive: true })
     },
-    async clearItems() {
-      initStore()
-      store.override({})
+    async fileExists(path: string) {
+      if (typeof path != 'string') throw new Error('path required a string')
+      try {
+        await fs.access(buildPath(path), fs.constants.F_OK)
+        return true
+      } catch {
+        return false
+      }
+    },
+    async listFiles(path = '') {
+      if (typeof path != 'string') throw new Error('path required a string')
+      const fullPath = buildPath(path)
+      return fs.readdir(fullPath)
+    },
+    async statFile(path: string) {
+      if (typeof path != 'string') throw new Error('path required a string')
+      const stats = await fs.stat(buildPath(path))
+      return {
+        isFile: stats.isFile(),
+        size: stats.size,
+        createTime: stats.birthtimeMs,
+        updateTime: stats.mtimeMs,
+      }
     },
   }
 }

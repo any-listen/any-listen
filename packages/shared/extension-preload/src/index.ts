@@ -20,7 +20,10 @@ globalThis.env_setup = (key, extension, env) => {
   globalThis.clearTimeout = clear_timeout
   globalThis.setInterval = set_interval
   globalThis.clearInterval = clear_interval
+  // @ts-expect-error
   globalThis.AbortController = _AbortController
+  // @ts-expect-error
+  delete globalThis.console
 
   Object.defineProperty(globalThis, '__ext_preload__', {
     enumerable: false,
@@ -29,5 +32,5 @@ globalThis.env_setup = (key, extension, env) => {
     value: handleHostCall,
   })
 
-  freezeEnv()
+  freezeEnv(extensionAPI)
 }

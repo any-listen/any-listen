@@ -346,13 +346,21 @@ declare namespace AnyListen {
       showSaveBox: (key: string, options: IPCCommon.SaveDialogOptions) => Promise<unknown>
       closeMessageBox: (key: string) => void
 
-      request: <Resp = unknown>(url: string, options?: RequestOptions) => Promise<Response<Resp>>
-      getItems: (keys: string[]) => Promise<string[]>
-      setItems: <T extends Array<[string, string]>>(datas: T) => Promise<void>
-      removeItems: (keys: string[]) => Promise<void>
-      clearItems: () => Promise<void>
+      request: <Resp = unknown>(
+        url: string,
+        options?: Omit<RequestOptions, 'signal'> & { requestKey?: string }
+      ) => Promise<Response<Resp>>
+      cancelRequest: (requestKey: string) => void
+
+      saveFile: (path: string, content: string | Uint8Array) => Promise<void>
+      readFile: (path: string) => Promise<Uint8Array>
+      removeFile: (path: string) => Promise<void>
+      fileExists: (path: string) => Promise<boolean>
+      listFiles: (path?: string) => Promise<string[]>
+      statFile: (path: string) => Promise<{ isFile: boolean; size: number; createTime: number; updateTime: number }>
+
       getConfigs: <T extends unknown[] = []>(keys: string[]) => Promise<WithUndefined<T>>
-      setConfigs: (datas: Array<[string, string]>) => Promise<void>
+      setConfigs: (datas: Record<string, unknown>) => Promise<void>
       // getConnectedClients: () => Promise<string[]>
 
       getPlayInfo: () => Promise<IPCPlayer.PlayInfo>

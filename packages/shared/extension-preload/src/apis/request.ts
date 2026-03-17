@@ -1,37 +1,26 @@
 // import { hostCallActions } from '@/host/hostActions'
 import { hostContext } from '@/host/state'
+import { generateId } from '@/utils'
 
-// const requestQueue = new Map<string, {
-//   callback: RespCallback<any>
-//   requestInfo: {
-//     aborted: boolean
-//     abort: () => void
-//   }
-// }>()
+const requestQueue = new Map<string, (err: Error) => void>()
 
-export const request: AnyListen_API.API['request'] = async (url, options) => {
+export const request: AnyListen_API.API['request'] = async (url, { signal, ...options } = {}) => {
+  if (signal) {
+    const requestKey = generateId()
+    return new Promise((resolve, reject) => {
+      requestQueue.set(requestKey, reject)
+      // @ts-expect-error
+      signal.once('abort', () => {
+        const targetRequest = requestQueue.get(requestKey)
+        if (!targetRequest) return
+        requestQueue.delete(requestKey)
+        void hostContext.hostFuncs.cancelRequest(requestKey)
+      })
+      // @ts-expect-error
+      void hostContext.hostFuncs.request(url, options).then(resolve).catch(reject)
+    })
+  }
   return hostContext.hostFuncs.request(url, options)
-  // const requestKey = Math.random().toString()
-  // const requestInfo = {
-  //   aborted: false,
-  //   abort: () => {
-  //     if (requestInfo.aborted) return
-  //     requestInfo.aborted = true
-  //     hostCallActions('cancel_request', requestKey)
-  //   },
-  // }
-  // requestQueue.set(requestKey, {
-  //   callback,
-  //   // timeout: setTimeout(() => {
-  //   //   const req = requestQueue.get(requestKey)
-  //   //   if (req) req.timeout = null
-  //   //   nativeCall(NATIVE_EVENTS_NAMES.cancelRequest, requestKey)
-  //   // }, 30000),
-  //   requestInfo,
-  // })
-
-  // hostCallActions('request', { requestKey, url, options })
-  // return requestInfo
 }
 
 // export const handleResponse = ({ requestKey, error, response }: AnyListen.ExtensionVM.PreloadCallActions['response']) => {

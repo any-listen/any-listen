@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { hostContext } from '@/host/state'
 
+import { logcat } from './logcat'
+
 enum TIMEOUT_TYPE {
   TIMEOUT,
   INTERVAL,
@@ -69,8 +71,19 @@ export const triggerTimeout = (id: number) => {
 }
 
 export const console = {
-  log() {
-    // TODO
-    // console.log()
+  log(...args: unknown[]) {
+    logcat.info(...args)
+  },
+  debug(...args: unknown[]) {
+    logcat.debug(...args)
+  },
+  info(...args: unknown[]) {
+    logcat.info(...args)
+  },
+  warn(...args: unknown[]) {
+    logcat.warn(...args)
+  },
+  error(...args: unknown[]) {
+    logcat.error(...args)
   },
 }

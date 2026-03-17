@@ -23,5 +23,13 @@ export type ExtensionHostContext = {
   Configs &
   Pick<
     AnyListen.IPCExtension.PreloadIPCActions,
-    'getItems' | 'setItems' | 'removeItems' | 'clearItems' | 'getConfigs' | 'createProxyUrl' | 'writeProxyCache'
+    | 'saveFile'
+    | 'readFile'
+    | 'removeFile'
+    | 'fileExists'
+    | 'listFiles'
+    | 'statFile'
+    | 'getConfigs'
+    | 'createProxyUrl'
+    | 'writeProxyCache'
   >
