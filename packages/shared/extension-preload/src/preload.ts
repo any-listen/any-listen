@@ -2,6 +2,7 @@ import { createMessage2Call } from 'message2call'
 
 import { triggerTimeout } from '@/apis/global'
 
+import { onIsolateContextMessage } from './apis/isolateContext'
 import { onListProviderAction } from './apis/listProvider'
 import { onResourceAction } from './apis/resource'
 import {
@@ -49,6 +50,9 @@ const exposeObj = {
     params: Parameters<AnyListen.IPCExtension.ListProviderAction[T]>[0]
   ): Promise<Awaited<ReturnType<AnyListen.IPCExtension.ListProviderAction[T]>>> {
     return onListProviderAction(action, params)
+  },
+  isolateContextMessage(id, message) {
+    onIsolateContextMessage(id, message)
   },
   // clientConnectAction(id, isConnected) {
   //   if (isConnected) {

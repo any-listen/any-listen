@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises'
 import { sep } from 'node:path'
 
+import { EXTENSION } from '@any-listen/common/constants'
 import { joinPath, normalizePath } from '@any-listen/nodejs'
 
 export const createStore = (path: string) => {
-  const rootPath = joinPath(path, 'files') + sep
+  const rootPath = joinPath(path, EXTENSION.storageDirName) + sep
   const buildPath = (names: string) => {
     const fullPath = normalizePath(joinPath(rootPath, names))
     if (!fullPath.startsWith(rootPath)) throw new Error('Invalid path')

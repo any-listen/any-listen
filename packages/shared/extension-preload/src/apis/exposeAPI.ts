@@ -7,6 +7,7 @@ import { configuration } from './configuration'
 import { crypto } from './crypto'
 import { env } from './env'
 import { iconv } from './iconv'
+import { createIsolateContext } from './isolateContext'
 import { logcat } from './logcat'
 // import { musicList } from './musicList'
 import { musicUtils } from './musicUtils'
@@ -30,6 +31,7 @@ export const getAPI = () => {
       buffer,
       crypto,
       iconv,
+      createIsolateContext,
     },
     t(key, data) {
       return translate(key, data)

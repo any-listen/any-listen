@@ -338,6 +338,8 @@ declare namespace AnyListen {
       (error: Error, response: null): void
     }
 
+    type IsolateContextMessageEvent = [id: string, message: string]
+
     // extension worker funcs, exposed to extension vm
     interface PreloadIPCActions {
       showMessageBox: (key: string, options: IPCCommon.MessageDialogOptions) => Promise<number>
@@ -351,6 +353,12 @@ declare namespace AnyListen {
         options?: Omit<RequestOptions, 'signal'> & { requestKey?: string }
       ) => Promise<Response<Resp>>
       cancelRequest: (requestKey: string) => void
+
+      createIsolateContext: () => Promise<string>
+      sendMessageToIsolateContext: (contextId: string, message: string) => Promise<void>
+      runInIsolateContext: (contextId: string, code: string) => Promise<void>
+      runFileInIsolateContext: (contextId: string, filePath: string) => Promise<void>
+      destroyIsolateContext: (contextId: string) => Promise<void>
 
       saveFile: (path: string, content: string | Uint8Array) => Promise<void>
       readFile: (path: string) => Promise<Uint8Array>
@@ -381,6 +389,9 @@ declare namespace AnyListen {
       updateLocale: (locale: Locale) => void
       updateI18nMessage: (message: Record<string, string>) => void
       musicListAction: (action: IPCList.ActionList) => void
+
+      isolateContextMessage: (contextId: string, message: string) => void
+
       playerEvent: (event: IPCPlayer.PlayerEvent) => void
       playListAction: (action: IPCPlayer.PlayListAction) => void
       playHistoryListAction: (action: IPCPlayer.PlayHistoryListAction) => void

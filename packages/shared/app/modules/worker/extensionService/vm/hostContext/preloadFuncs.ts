@@ -69,3 +69,9 @@ export const sendConfigUpdatedEvent = (extId: string, keys: string[], config: Re
   if (!targetContext) throw new Error(`context not found: ${extId}`)
   void targetContext.preloadFuncs.configurationChanged(keys, config)
 }
+
+export const sendIsolateContextMessage = (extId: string, contextId: string, message: unknown) => {
+  const targetContext = contextState.vmContexts.get(extId)
+  if (!targetContext) throw new Error(`context not found: ${extId}`)
+  void targetContext.preloadFuncs.isolateContextMessage(contextId, message)
+}

@@ -1048,6 +1048,12 @@ declare global {
       createProxyUrl: (url: string, options: RequestOptions, enabledCache?: boolean) => Promise<string>
       writeProxyCache: (fileName: string, data: Uint8Array) => Promise<string>
     }
+    interface IsolateContext {
+      sendMessage: (message: unknown) => Promise<void>
+      run: (code: string) => Promise<void>
+      runFile: (filePath: string) => Promise<void>
+      destroy: () => Promise<void>
+    }
     interface API {
       env: Env
       app: App
@@ -1070,6 +1076,7 @@ declare global {
         buffer: Buffer
         crypto: Crypto
         iconv: Iconv
+        createIsolateContext: (onMessage: (message: unknown) => void) => Promise<IsolateContext>
       }
     }
   }
