@@ -66,11 +66,29 @@ export const utils_str2b64 = (data: string) => {
 }
 
 export const utils_b642buf = (data: string) => {
-  if (typeof data != 'string') return []
+  if (typeof data != 'string') return new Uint8Array()
   try {
-    return [...Buffer.from(data, 'base64')]
+    return new Uint8Array(Buffer.from(data, 'base64'))
   } catch {
-    return []
+    return new Uint8Array()
+  }
+}
+
+export const utils_buf2str = (data: Uint8Array) => {
+  if (!(data instanceof Uint8Array)) return ''
+  try {
+    return Buffer.from(data).toString('utf-8')
+  } catch {
+    return ''
+  }
+}
+
+export const utils_str2buf = (data: string) => {
+  if (typeof data != 'string') return new Uint8Array()
+  try {
+    return new Uint8Array(Buffer.from(data, 'utf-8'))
+  } catch {
+    return new Uint8Array()
   }
 }
 

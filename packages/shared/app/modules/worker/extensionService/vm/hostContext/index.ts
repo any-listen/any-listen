@@ -20,6 +20,8 @@ import {
   utils_rsa_encrypt,
   utils_str2b64,
   utils_str2md5,
+  utils_buf2str,
+  utils_str2buf,
 } from './hostFuncs'
 import { contextState } from './state'
 
@@ -54,6 +56,8 @@ export const createContext = async (extension: AnyListen.Extension.Extension) =>
     __ext_host_call__utils_str2b64: utils_str2b64,
     __ext_host_call__utils_b642buf: utils_b642buf,
     __ext_host_call__utils_str2md5: utils_str2md5,
+    __ext_host_call__utils_buf2str: utils_buf2str,
+    __ext_host_call__utils_str2buf: utils_str2buf,
     __ext_host_call__utils_aes_encrypt: utils_aes_encrypt,
     __ext_host_call__utils_rsa_encrypt: utils_rsa_encrypt,
     __ext_host_call__utils_iconv_decode: utils_iconv_decode,

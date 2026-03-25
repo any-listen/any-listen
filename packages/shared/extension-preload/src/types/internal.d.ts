@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable no-var */
+
 type AllActions = AnyListen.ExtensionVM.HostCallActions
 
 type HostCallData = {
@@ -10,6 +10,7 @@ type HostCallEmptyData = {
 }
 
 // declare function _HostCall<T extends keyof HostCallEmptyData>(action: T): void
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare function _HostCall<T extends keyof HostCallData>(action: T, data?: HostCallData[T]): void
 
 declare global {
@@ -23,6 +24,8 @@ declare global {
   var __ext_host_call__clear_interval: AnyListen.ExtensionVM.VMContext['__ext_host_call__clear_interval']
   var __ext_host_call__utils_str2b64: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_str2b64']
   var __ext_host_call__utils_b642buf: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_b642buf']
+  var __ext_host_call__utils_buf2str: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_buf2str']
+  var __ext_host_call__utils_str2buf: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_str2buf']
   var __ext_host_call__utils_str2md5: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_str2md5']
   var __ext_host_call__utils_aes_encrypt: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_aes_encrypt']
   var __ext_host_call__utils_rsa_encrypt: AnyListen.ExtensionVM.VMContext['__ext_host_call__utils_rsa_encrypt']

@@ -63,7 +63,9 @@ declare global {
         __ext_host_call__set_interval?: (id: number, ms: number) => void
         __ext_host_call__clear_interval?: (id: number) => void
         __ext_host_call__utils_str2b64?: (data: string) => string
-        __ext_host_call__utils_b642buf?: (data: string) => number[]
+        __ext_host_call__utils_b642buf?: (data: string) => Uint8Array
+        __ext_host_call__utils_buf2str?: (data: Uint8Array) => string
+        __ext_host_call__utils_str2buf?: (data: string) => Uint8Array
         __ext_host_call__utils_str2md5?: (data: string) => string
         __ext_host_call__utils_aes_encrypt?: (
           mode: AES_MODE,

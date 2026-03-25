@@ -132,6 +132,8 @@ export const EXTENSION_VM_IPC_FUNC_NAMES = [
   '__ext_host_call__clear_timeout',
   '__ext_host_call__set_interval',
   '__ext_host_call__clear_interval',
+  '__ext_host_call__utils_buf2str',
+  '__ext_host_call__utils_str2buf',
   '__ext_host_call__utils_str2b64',
   '__ext_host_call__utils_b642buf',
   '__ext_host_call__utils_str2md5',

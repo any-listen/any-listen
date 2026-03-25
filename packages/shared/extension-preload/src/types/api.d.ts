@@ -702,6 +702,8 @@ declare global {
     type Architecture = 'arm' | 'arm64' | 'x86' | 'x64'
     type ClientType = 'desktop' | 'web' | 'mobile'
     type Quality = '128k' | '320k' | 'flac' | 'flac24bit' | '192k' | 'wav' | 'dobly' | 'master'
+    type MusicInfo = AnyListen.Music.MusicInfo
+    type MusicInfoOnline = AnyListen.Music.MusicInfoOnline
 
     type ParamsData = Record<string, string | number | null | undefined | boolean>
     interface RequestOptions {
@@ -1026,8 +1028,8 @@ declare global {
       statFile: (path: string) => Promise<{ isFile: boolean; size: number; createTime: number; updateTime: number }>
     }
     interface Buffer {
-      from: (input: string | number[], encoding?: BufferFormat) => Uint8Array
-      bufToString: <T extends BufferFormat>(buf: number[] | Uint8Array, format: T) => BufferToStringTypes[T]
+      from: (input: string | Uint8Array, encoding?: BufferFormat) => Uint8Array
+      bufToString: <T extends BufferFormat>(buf: Uint8Array, format: T) => BufferToStringTypes[T]
     }
     interface Crypto {
       aesEncrypt: (mode: AES_MODE, data: Uint8Array | string, key: Uint8Array | string, iv: Uint8Array | string) => string
@@ -1041,7 +1043,7 @@ declare global {
     }
     interface Configuration {
       getConfigs: <T extends unknown[] = []>(keys: string[]) => Promise<WithUndefined<T>>
-      setConfigs: (datas: Array<[string, string]>) => Promise<void>
+      setConfigs: (datas: Record<string, unknown>) => Promise<void>
       onConfigChanged: (callback: (keys: string[], configuration: Record<string, unknown>) => void) => () => void
     }
     interface MusicUtils {

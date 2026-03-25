@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/switch-exhaustiveness-check */
 import { hostContext } from '@/host/state'
-import { bytesToString, stringToBytes } from '@/utils'
 
 export const buffer: AnyListen_API.Buffer = {
-  from(input: string | number[], encoding: AnyListen_API.BufferFormat = 'utf-8') {
+  from(input: string | Uint8Array, encoding: AnyListen_API.BufferFormat = 'utf-8') {
     // console.log('buffer.from', input, encoding)
     if (typeof input === 'string') {
       switch (encoding) {
@@ -14,7 +13,7 @@ export const buffer: AnyListen_API.Buffer = {
         case 'hex':
           return new Uint8Array((input.match(/.{1,2}/g) ?? []).map((byte) => parseInt(byte, 16)))
         default:
-          return new Uint8Array(stringToBytes(input))
+          return new Uint8Array(hostContext.utils_str2buf(input))
       }
     } else if (Array.isArray(input)) {
       return new Uint8Array(input)
@@ -22,8 +21,7 @@ export const buffer: AnyListen_API.Buffer = {
       throw new Error(`Unsupported input type: ${typeof input} encoding: ${encoding}`)
     }
   },
-  bufToString<T extends AnyListen_API.BufferFormat>(buf: number[] | Uint8Array, format: T): AnyListen_API.BufferToStringTypes[T] {
-    // console.log('buffer.bufToString', buf, format)
+  bufToString<T extends AnyListen_API.BufferFormat>(buf: Uint8Array, format: T): AnyListen_API.BufferToStringTypes[T] {
     if (Array.isArray(buf) || ArrayBuffer.isView(buf)) {
       switch (format) {
         case 'binary':
@@ -35,11 +33,12 @@ export const buffer: AnyListen_API.Buffer = {
             ''
           ) as unknown as AnyListen_API.BufferToStringTypes[T]
         case 'base64':
-          return hostContext.utils_str2b64(bytesToString(buf)) as AnyListen_API.BufferToStringTypes[T]
+          // TODO add to base64 api
+          return hostContext.utils_str2b64(hostContext.utils_buf2str(buf)) as AnyListen_API.BufferToStringTypes[T]
         case 'utf8':
         case 'utf-8':
         default:
-          return bytesToString(Array.from(buf)) as AnyListen_API.BufferToStringTypes[T]
+          return hostContext.utils_buf2str(buf) as AnyListen_API.BufferToStringTypes[T]
       }
     } else {
       throw new Error(`Input is not a valid buffer: ${String(buf)} format: ${format}`)
