@@ -1047,7 +1047,7 @@ declare global {
       onConfigChanged: (callback: (keys: string[], configuration: Record<string, unknown>) => void) => () => void
     }
     interface MusicUtils {
-      createProxyUrl: (url: string, options: RequestOptions, enabledCache?: boolean) => Promise<string>
+      createProxyUrl: (url: string, options?: RequestOptions, enabledCache?: boolean) => Promise<string>
       writeProxyCache: (fileName: string, data: Uint8Array) => Promise<string>
     }
     interface IsolateContext {

@@ -270,7 +270,7 @@ declare namespace AnyListen {
       onExtensionEvent: (action: EventExtension) => Promise<void>
       // getConnectedClients: () => Promise<string[]>
       // showMessage: (message: string) => Promise<string[]>
-      createProxyUrl: (url: string, reqOptions: unknown, enabledCache?: boolean) => Promise<string>
+      createProxyUrl: (url: string, reqOptions?: unknown, enabledCache?: boolean) => Promise<string>
       checkProxyCache: (url: string) => Promise<boolean>
       writeProxyCache: (fileName: string, data: Uint8Array) => Promise<string>
 
@@ -380,7 +380,7 @@ declare namespace AnyListen {
       getListMusics: (listId: string) => Promise<Music.MusicInfo[]>
       listAction: (action: IPCList.ActionList) => Promise<void>
 
-      createProxyUrl: (url: string, options: RequestOptions, enabledCache?: boolean) => Promise<string>
+      createProxyUrl: (url: string, options?: RequestOptions, enabledCache?: boolean) => Promise<string>
       writeProxyCache: (fileName: string, data: Uint8Array) => Promise<string>
     }
 

@@ -29,7 +29,7 @@ export const generateName = (url: string) => {
   return (toSha256(url) + ext).toLowerCase()
 }
 
-export const createProxy = async (url: string, reqOptions: Options, enabledCache?: boolean) => {
+export const createProxy = async (url: string, reqOptions: Options = {}, enabledCache?: boolean) => {
   await verifyOptions(url, reqOptions)
 
   const name = generateName(url)
