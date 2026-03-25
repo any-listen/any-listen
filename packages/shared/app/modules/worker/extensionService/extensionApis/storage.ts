@@ -16,7 +16,7 @@ export const createStore = (path: string) => {
   })
 
   return {
-    async saveFile(path: string, content: string | Uint8Array) {
+    async writeFile(path: string, content: string | Uint8Array) {
       if (typeof path != 'string') throw new Error('path required a string')
       if (typeof content != 'string' && !(content instanceof Uint8Array)) {
         throw new Error('content required a string or Uint8Array')

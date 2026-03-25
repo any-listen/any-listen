@@ -23,7 +23,7 @@ export type ExtensionHostContext = {
   Configs &
   Pick<
     AnyListen.IPCExtension.PreloadIPCActions,
-    | 'saveFile'
+    | 'writeFile'
     | 'readFile'
     | 'removeFile'
     | 'fileExists'

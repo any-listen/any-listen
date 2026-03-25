@@ -40,6 +40,14 @@ declare global {
         enum: string[]
         enumName: string[]
       }
+      // interface FormTable extends FormBase {
+      //   type: 'table'
+      //   default: string
+      //   checkable?: boolean
+      //   checked?: string[]
+      //   rowNames: string[]
+      //   rows: string[][]
+      // }
       interface LazzyParseMeta {
         type: 'lazzyParseMeta'
         default: boolean

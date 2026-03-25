@@ -360,7 +360,7 @@ declare namespace AnyListen {
       runFileInIsolateContext: (contextId: string, filePath: string) => Promise<void>
       destroyIsolateContext: (contextId: string) => Promise<void>
 
-      saveFile: (path: string, content: string | Uint8Array) => Promise<void>
+      writeFile: (path: string, content: string | Uint8Array) => Promise<void>
       readFile: (path: string) => Promise<Uint8Array>
       removeFile: (path: string) => Promise<void>
       fileExists: (path: string) => Promise<boolean>

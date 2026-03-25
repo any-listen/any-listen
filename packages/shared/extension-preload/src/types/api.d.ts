@@ -1018,7 +1018,7 @@ declare global {
       error: (...args: unknown[]) => void
     }
     interface Storage {
-      saveFile: (path: string, data: Uint8Array | string) => Promise<void>
+      writeFile: (path: string, data: Uint8Array | string) => Promise<void>
       readFile: (path: string) => Promise<Uint8Array>
       removeFile: (path: string) => Promise<void>
       fileExists: (path: string) => Promise<boolean>
