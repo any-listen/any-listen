@@ -1,4 +1,4 @@
-const minor = ['electron', '@types/node', '@eslint/js', 'eslint', 'stylelint']
+const minor = ['electron', '@types/node', '@eslint/js', 'eslint', 'typescript']
 const newest = ['electron-builder', 'electron-updater', 'vite', 'oxfmt']
 const patch = []
 
