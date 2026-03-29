@@ -33,7 +33,7 @@
     "less": "^4.6.4",
     "postcss": "^8.5.8",
     "postcss-pxtorem": "^6.1.0",
-    "stylelint": "^17.5.0",
+    "stylelint": "^17.6.0",
     "stylelint-config-html": "^1.1.0",
     "stylelint-config-recess-order": "^7.7.0",
     "stylelint-config-standard-less": "^4.1.0",
@@ -41,7 +41,7 @@
     "svelte-check": "^4.4.5",
     "svelte-eslint-parser": "^1.6.0",
     "svelte-preprocess": "^6.0.3",
-    "vite": "^8.0.2",
+    "vite": "^8.0.3",
     "vite-plugin-svg-icons": "^2.0.1"
   }
 }

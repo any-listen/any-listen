@@ -11,10 +11,13 @@ onlyBuiltDependencies:
 
 overrides:
   '@types/ws': 8.5.4
+  brace-expansion@<1.1.13: '>=1.1.13'
+  brace-expansion@>=2.0.0 <2.0.3: '>=2.0.3'
   braces@<3.0.3: '>=3.0.3'
-  micromatch@<4.0.8: '>=4.0.8'
   depd: 2.0.0
+  micromatch@<4.0.8: '>=4.0.8'
   node-abi: latest
+  path-to-regexp@>=8.0.0 <8.4.0: '>=8.4.0'
   postcss@<7.0.36: '>=7.0.36'
   postcss@<8.4.31: '>=8.4.31'
   ws>bufferutil: '-'
@@ -22,6 +25,7 @@ overrides:
 
 publicHoistPattern:
   - '*eslint*'
+
 # minimumReleaseAge: 480
 # minimumReleaseAgeExclude:
 #   - typescript
