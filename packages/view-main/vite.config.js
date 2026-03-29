@@ -114,6 +114,7 @@ export const buildConfig = (target, port = 9200, ipcScript) => {
       modulePreload: target == 'web',
       emptyOutDir: false,
       reportCompressedSize: false,
+      cssMinify: 'esbuild',
       // assetsDir: 'chunks',
       assetsDir: './',
       sourcemap: isProd,

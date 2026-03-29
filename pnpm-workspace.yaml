@@ -13,6 +13,7 @@ overrides:
   '@types/ws': 8.5.4
   braces@<3.0.3: '>=3.0.3'
   micromatch@<4.0.8: '>=4.0.8'
+  depd: 2.0.0
   node-abi: latest
   postcss@<7.0.36: '>=7.0.36'
   postcss@<8.4.31: '>=8.4.31'
