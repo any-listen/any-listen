@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Improved
 
-- Fixed an issue where the Windows package was not built.
+- Improved sorting of search results within playlists.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 优化
 
-- 修复 Windows 包没有被构建的问题。
+- 优化歌单内歌曲搜索结果排序。

@@ -6,6 +6,10 @@
 - Added a **“Use Polling to Watch for File Changes”** option in _Local List Settings_ to address issues reading from mounted remote drives ([#142](https://github.com/any-listen/any-listen/issues/142)).
 - Added preliminary **cover display** in the *playlist list* (no custom covers yet; uses the cover from the first song in the list) and **song count** shown in playlists.
 
+### Improved
+
+- Improved sorting of search results within playlists.
+
 ### Fixed
 
 - Fixed an issue where artist tag information in `wav` files was parsed as garbled text ([#132](https://github.com/any-listen/any-listen/issues/132)).
@@ -30,6 +34,10 @@
 - 新增 **“道法自然”主题**。勾选该主题时，应用会根据当前系统的亮/暗模式，在之前选定的亮色主题与 **“黑灯瞎火”** 主题之间切换。([#136](https://github.com/any-listen/any-listen/issues/136))
 - 本地列表设置新增 **“使用轮询监听文件变动”** 选项，用于解决挂载的远程驱动器读取问题 ([#142](https://github.com/any-listen/any-listen/issues/142))。
 - 在 **歌单列表** 中初步添加 **封面显示**（暂不支持自定义封面，自动取列表内第一首歌的封面作为歌单封面）与 **歌曲数量** 显示。
+
+### 优化
+
+- 优化歌单内歌曲搜索结果排序。
 
 ### 修复
 

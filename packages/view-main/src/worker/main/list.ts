@@ -304,6 +304,19 @@ export const filterDuplicateMusic = async (list: AnyListen.Music.MusicInfo[], is
 }
 
 export const searchListMusic = (list: AnyListen.Music.MusicInfo[], text: string) => {
+  const fullMathNameResults = new Set<AnyListen.Music.MusicInfo>()
+  const fullMathSingerResults = new Set<AnyListen.Music.MusicInfo>()
+  const fullMathAlbumResults = new Set<AnyListen.Music.MusicInfo>()
+  const textLower = text.toLowerCase()
+  for (const mInfo of list) {
+    if (mInfo.name?.toLowerCase().includes(textLower)) {
+      fullMathNameResults.add(mInfo)
+    } else if (mInfo.singer?.toLowerCase().includes(textLower)) {
+      fullMathSingerResults.add(mInfo)
+    } else if (mInfo.meta.albumName?.toLowerCase().includes(textLower)) {
+      fullMathAlbumResults.add(mInfo)
+    }
+  }
   let result: AnyListen.Music.MusicInfo[] = []
   let rxp = new RegExp(
     `${text
@@ -313,6 +326,8 @@ export const searchListMusic = (list: AnyListen.Music.MusicInfo[], text: string)
     'i'
   )
   for (const mInfo of list) {
+    if (fullMathNameResults.has(mInfo) || fullMathSingerResults.has(mInfo) || fullMathAlbumResults.has(mInfo)) continue
+
     const str = `${mInfo.name}${mInfo.singer}${mInfo.meta.albumName ? mInfo.meta.albumName : ''}`
     if (rxp.test(str)) result.push(mInfo)
   }
@@ -325,7 +340,12 @@ export const searchListMusic = (list: AnyListen.Music.MusicInfo[], text: string)
       data: mInfo,
     })
   }
-  return sortedList.map((item) => item.data).reverse()
+  return [
+    ...fullMathNameResults.values(),
+    ...fullMathSingerResults.values(),
+    ...fullMathAlbumResults.values(),
+    ...sortedList.map((item) => item.data).reverse(),
+  ]
 }
 
 /**
