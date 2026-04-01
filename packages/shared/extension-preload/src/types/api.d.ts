@@ -1078,7 +1078,7 @@ declare global {
         buffer: Buffer
         crypto: Crypto
         iconv: Iconv
-        createIsolateContext: (onMessage: (message: unknown) => void) => Promise<IsolateContext>
+        createIsolateContext?: (onMessage: (message: unknown) => void) => Promise<IsolateContext>
       }
     }
   }

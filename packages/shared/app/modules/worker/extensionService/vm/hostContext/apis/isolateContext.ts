@@ -9,7 +9,7 @@ import { joinPath, normalizePath } from '@any-listen/nodejs'
 import { sendIsolateContextMessage } from '../preloadFuncs'
 import { contextState } from '../state'
 
-export const createIsolateFuncs = (extension: AnyListen.Extension.Extension) => {
+const handleCreateIsolateFuncs = (extension: AnyListen.Extension.Extension) => {
   const MAX_ISOLATE_CONTEXTS = 5
 
   const timeouts = new Map<string, Map<string, ['timeout' | 'interval', NodeJS.Timeout]>>()
@@ -254,4 +254,11 @@ export const createIsolateFuncs = (extension: AnyListen.Extension.Extension) => 
       clearContextTimeouts(contextId)
     },
   } as const
+}
+
+export const createIsolateFuncs = (extension: AnyListen.Extension.Extension) => {
+  if (!extension.grant.includes('isolate_context')) {
+    return {} as unknown as ReturnType<typeof handleCreateIsolateFuncs>
+  }
+  return handleCreateIsolateFuncs(extension)
 }

@@ -1,7 +1,7 @@
 declare global {
   namespace AnyListen {
     namespace Extension {
-      type Grant = 'internet' | 'player' | 'music_list'
+      type Grant = 'internet' | 'player' | 'music_list' | 'isolate_context'
       type ResourceAction =
         | 'tipSearch'
         | 'hotSearch'

@@ -31,7 +31,6 @@ export const getAPI = () => {
       buffer,
       crypto,
       iconv,
-      createIsolateContext,
     },
     t(key, data) {
       return translate(key, data)
@@ -50,6 +49,9 @@ export const getAPI = () => {
       case 'music_list':
         // TODO
         // extensionAPI.player = player
+        break
+      case 'isolate_context':
+        extensionAPI.utils!.createIsolateContext = createIsolateContext
         break
     }
   }

@@ -35,7 +35,7 @@ import { getConfig, saveConfig, unloadConfig } from './configStore'
 
 const FILE_EXT_NAME = `.${EXTENSION.pkgExtName}`
 const FILE_EXT_NAME_EXP = new RegExp(`\\.${EXTENSION.pkgExtName}$`, 'i')
-const GRANTS: AnyListen.Extension.Grant[] = ['music_list', 'player', 'internet']
+const GRANTS: AnyListen.Extension.Grant[] = ['music_list', 'player', 'internet', 'isolate_context']
 const RESOURCE: AnyListen.Extension.ResourceAction[] = [
   'tipSearch',
   'hotSearch',
