@@ -1056,30 +1056,36 @@ declare global {
       runFile: (filePath: string) => Promise<void>
       destroy: () => Promise<void>
     }
+    interface Command {
+      registerCommand: (command: string, callback: (...args: unknown[]) => Promise<unknown>) => Promise<() => void>
+      executeCommand: (command: string, ...args: unknown[]) => Promise<unknown>
+      getCommands: (filterInternal?: boolean) => Promise<string[]>
+    }
     interface API {
       env: Env
       app: App
-      musicList: MusicList
-      player: Player
+      musicList?: MusicList
+      player?: Player
       musicUtils: MusicUtils
       /** http 请求 */
-      request: <Resp = unknown>(url: string, options?: RequestOptions) => Promise<Response<Resp>>
+      request?: <Resp = unknown>(url: string, options?: RequestOptions) => Promise<Response<Resp>>
       t: (key: string, data?: Record<string, string | number | null | undefined>) => string
       logcat: Logcat
       storage: Storage
       configuration: Configuration
       registerResourceAction: (actions: Partial<ResourceAction>) => void
       // TODO
-      backup: {
-        runBackup: (opts: { backupData?: Array<'list' | 'dislike'> }) => Promise<void>
-        registerDataAction: (actions: BackupDataAction) => void
-      }
+      // backup: {
+      //   runBackup: (opts: { backupData?: Array<'list' | 'dislike'> }) => Promise<void>
+      //   registerDataAction: (actions: BackupDataAction) => void
+      // }
       utils: {
         buffer: Buffer
         crypto: Crypto
         iconv: Iconv
         createIsolateContext?: (onMessage: (message: unknown) => void) => Promise<IsolateContext>
       }
+      command: Command
     }
   }
 }

@@ -206,6 +206,16 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
         }
       })
     }
+    if (Array.isArray(manifest.contributes.commands)) {
+      contributes.commands = manifest.contributes.commands.map((c) => {
+        return {
+          command: String(c.command),
+          name: String(c.name),
+          description: String(c.description),
+          hidden: c.hidden ? Boolean(c.hidden) : false,
+        }
+      })
+    }
     manifest.contributes = contributes
   } else manifest.contributes = {}
 }
@@ -495,6 +505,7 @@ export const updateResourceList = () => {
   const resourceList: AnyListen.Extension.ResourceList = {
     resources: {},
     listProvider: [],
+    commands: [],
   }
   for (const ext of extensionState.extensions) {
     if (!ext.loaded) continue
@@ -523,6 +534,19 @@ export const updateResourceList = () => {
           description: provider.description,
           form: provider.form,
           fileSortable: provider.fileSortable,
+        })
+      }
+    }
+    if (ext.contributes.commands) {
+      for (const command of ext.contributes.commands) {
+        resourceList.commands!.push({
+          extensionId: ext.id,
+          extensionName: ext.name,
+          fullCommand: `${ext.id}.${command.command}`,
+          command: command.command,
+          name: command.name,
+          description: command.description,
+          hidden: command.hidden,
         })
       }
     }

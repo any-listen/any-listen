@@ -4,6 +4,7 @@ import { setProxyByHost } from '@any-listen/nodejs/request'
 import { exposeWorker } from '../utils/worker'
 import { registerErrorHandler } from './errorHandler'
 import { extensionEvent } from './event'
+import { executeCommand } from './extensionApis/command'
 import { initI18n } from './i18n'
 import { internalExtensionContextState } from './internalExtension/state'
 import {
@@ -162,6 +163,9 @@ const extension = {
     const context = internalExtensionContextState.contexts.get(params.extensionId)
     if (context) return context.context.listProviderAction!(action, params)
     return listProviderAction(action, params)
+  },
+  async executeCommand(commandName: string, args: any[]) {
+    return executeCommand(commandName, args)
   },
   // clientConnected(id: string) {
   //   extensionEvent.clientConnected(id)

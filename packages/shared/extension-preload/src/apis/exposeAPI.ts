@@ -3,6 +3,7 @@ import { translate } from '@/i18n'
 
 import { app } from './app'
 import { buffer } from './buffer'
+import { command } from './command'
 import { configuration } from './configuration'
 import { crypto } from './crypto'
 import { env } from './env'
@@ -17,7 +18,7 @@ import { registerResourceAction } from './resource'
 import { storage } from './storage'
 
 export const getAPI = () => {
-  const extensionAPI: Partial<AnyListen_API.API> = {
+  const extensionAPI: AnyListen_API.API = {
     /** 环境相关 */
     env,
     /** 应用相关 */
@@ -27,6 +28,7 @@ export const getAPI = () => {
     configuration,
     musicUtils,
     registerResourceAction,
+    command,
     utils: {
       buffer,
       crypto,

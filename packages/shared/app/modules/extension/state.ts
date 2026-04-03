@@ -10,5 +10,6 @@ export const extensionState: {
   resources: {
     resources: {},
     listProvider: [],
+    commands: [],
   },
 }

@@ -65,6 +65,16 @@ declare global {
         form: ListProviderFormItems[]
       }
 
+      interface Command {
+        extensionId: string
+        extensionName: string
+        fullCommand: string
+        command: string
+        name: string
+        description?: string
+        hidden?: boolean
+      }
+
       interface Manifest {
         id: string
         name: string
@@ -88,6 +98,12 @@ declare global {
           }>
           listProviders?: ListProvider[]
           settings?: FormItems[]
+          commands?: Array<{
+            command: string
+            name: string
+            description?: string
+            hidden?: boolean
+          }>
         }
       }
       interface Setting {
@@ -125,6 +141,7 @@ declare global {
           >
         >
         listProvider: ListProviderResource[]
+        commands: Command[]
       }
       type ExtensionI18nMessages = Record<string, string>
       // type ResourceMap = Map<string, {}>

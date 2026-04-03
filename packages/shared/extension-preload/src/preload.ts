@@ -2,6 +2,7 @@ import { createMessage2Call } from 'message2call'
 
 import { triggerTimeout } from '@/apis/global'
 
+import { executeCommand } from './apis/command'
 import { onIsolateContextMessage } from './apis/isolateContext'
 import { onListProviderAction } from './apis/listProvider'
 import { onResourceAction } from './apis/resource'
@@ -61,6 +62,9 @@ const exposeObj = {
   //     extensionAPIEvent.clientDisconnected(id)
   //   }
   // },
+  async executeCommand(commandName: string, args: any[]) {
+    return executeCommand(commandName, args)
+  },
 } satisfies AnyListen.IPCExtension.ExtensionIPCActions
 
 export const msg2call = createMessage2Call<AnyListen.HostFuncs>({

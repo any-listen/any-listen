@@ -94,3 +94,7 @@ export const getExtensionLastLogs: AnyListen.IPC.ServerIPC['getExtensionLastLogs
 export const clearExtensionLogs: AnyListen.IPC.ServerIPC['clearExtensionLogs'] = async (extId) => {
   return ipc.clearExtensionLogs(extId)
 }
+
+export const executeCommand = async (cmd: string, ...args: any[]) => {
+  return ipc.executeCommand(cmd, args)
+}

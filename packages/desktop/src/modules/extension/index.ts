@@ -153,6 +153,10 @@ export const getResourceList = async () => {
   return workers.extensionService.getResourceList()
 }
 
+export const executeCommand = async (cmd: string, args: any[]) => {
+  return workers.extensionService.executeCommand(cmd, args)
+}
+
 export const getExtensionLastLogs = async (id?: string) => {
   return workers.extensionService.getExtensionLastLogs(id)
 }

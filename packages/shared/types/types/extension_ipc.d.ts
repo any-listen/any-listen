@@ -257,6 +257,7 @@ declare namespace AnyListen {
         action: T,
         params: Parameters<ListProviderAction[T]>[0]
       ) => Promise<Awaited<ReturnType<ListProviderAction[T]>>>
+      executeCommand: (commandName: string, args: any[]) => Promise<unknown>
     }>
     type ServerIPCActions<Socket = undefined> = IPC.WarpIPCHandlerActions<Socket, ServerActions>
 
@@ -382,6 +383,9 @@ declare namespace AnyListen {
 
       createProxyUrl: (url: string, options?: RequestOptions, enabledCache?: boolean) => Promise<string>
       writeProxyCache: (fileName: string, data: Uint8Array) => Promise<string>
+
+      executeCommand: (commandName: string, args: any[]) => Promise<unknown>
+      getCommands: (filterInternal?: boolean) => Promise<string[]>
     }
 
     // extension vm funcs, exposed to extension worker
@@ -405,6 +409,8 @@ declare namespace AnyListen {
         action: T,
         params: Parameters<ListProviderAction[T]>[0]
       ) => Promise<Awaited<ReturnType<ListProviderAction[T]>>>
+
+      executeCommand: (commandName: string, args: any[]) => Promise<unknown>
     }
   }
 }

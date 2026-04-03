@@ -23,7 +23,11 @@ export const extensionState = {
   //   vmContext: AnyListen.ExtensionVM.VMContext
   // }>(),
   preloadScript: '',
-  resourceList: empty as AnyListen.Extension.ResourceList,
+  resourceList: {
+    commands: [],
+    resources: {},
+    listProvider: [],
+  } as AnyListen.Extension.ResourceList,
   extensionSettings: null as AnyListen.Extension.ExtensionSetting[] | null,
   remoteFuncs: empty as AnyListen.IPCExtension.MainIPCActions & {
     inited: () => void

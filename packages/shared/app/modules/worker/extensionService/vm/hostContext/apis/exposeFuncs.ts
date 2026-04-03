@@ -1,3 +1,4 @@
+import { createCommand } from '../../../extensionApis/command'
 import { createCommon } from '../../../extensionApis/common'
 import { createConfigurationStore } from '../../../extensionApis/configuration'
 import { createMusicList } from '../../../extensionApis/musicList'
@@ -18,6 +19,7 @@ export const createExposeObject = (extension: AnyListen.Extension.Extension) => 
     ...createPlayer(extension),
     ...createMusicUtils(extension),
     ...createIsolateFuncs(extension),
+    ...createCommand(extension),
     // async getConnectedClients() {
     //   return extensionState.remoteFuncs.getConnectedClients()
     // },

@@ -17,6 +17,7 @@ export {
   getAllExtensionSettings,
   getExtensionErrorMessage,
   getExtensionList,
+  executeCommand,
   getResourceList,
   installExtension,
   listProviderAction,

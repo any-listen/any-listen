@@ -1,10 +1,30 @@
-/** 注册命令 */
-export const registerCommand = (commandName: string, handler: () => void, exposed?: boolean) => {}
+import { hostContext } from '@/host/state'
 
-/** 执行命令 */
-export const executeCommand = (commandName: string, ...args: any[]) => {}
+const commandHandlers = new Map<string, (...args: unknown[]) => Promise<unknown>>()
+export const command: AnyListen_API.Command = {
+  async registerCommand(commandName, handler) {
+    if (commandHandlers.has(commandName)) {
+      throw new Error(`Command ${commandName} is already registered`)
+    }
+    commandHandlers.set(commandName, handler)
+    return async () => {
+      commandHandlers.delete(commandName)
+    }
+  },
+  async executeCommand(commandName: string, ...args: any[]) {
+    if (commandHandlers.has(commandName)) {
+      const handler = commandHandlers.get(commandName)!
+      return handler(...args)
+    }
+    return hostContext.hostFuncs.executeCommand(commandName, args)
+  },
+  async getCommands(filterInternal): Promise<string[]> {
+    return hostContext.hostFuncs.getCommands(filterInternal)
+  },
+}
 
-/** 获取所有可用的命令列表 */
-export const getCommands = (filterInternal?: boolean): string[] => {
-  return []
+export const executeCommand = async (commandName: string, args: any[]) => {
+  if (!commandHandlers.has(commandName)) throw new Error(`Command ${commandName} not found`)
+  const handler = commandHandlers.get(commandName)!
+  return handler(...args)
 }

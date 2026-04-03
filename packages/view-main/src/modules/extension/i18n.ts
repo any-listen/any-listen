@@ -1,3 +1,4 @@
+import SingleEvent from '@any-listen/web/SimpleSingleEvent'
 import { derived, writable } from 'svelte/store'
 const $messages = writable<Record<string, string>>({})
 
@@ -8,6 +9,7 @@ export const extI18n = {
     $messages.set(messages)
     this.message = messages
     this.cache.clear()
+    extI18nMessageChangedEvent.emit()
   },
   getMessage(extenstionId: string, transKey: string): string {
     const cacheKey = `${extenstionId}_${transKey}`
@@ -40,3 +42,5 @@ export const setMessages = (extensions: AnyListen.Extension.Extension[]) => {
 }
 
 export const extT = derived($messages, () => extI18n.getMessage.bind(extI18n))
+
+export const extI18nMessageChangedEvent = new SingleEvent()

@@ -21,5 +21,6 @@ export const extensionState: InitState = {
   resourceList: {
     resources: {},
     listProvider: [],
+    commands: [],
   },
 }

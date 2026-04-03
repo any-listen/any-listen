@@ -184,6 +184,10 @@ export const getExtensionErrorMessage = async () => {
   return extensionState.crashMessage
 }
 
+export const executeCommand = async (cmd: string, args: any[]) => {
+  return workers.extensionService.executeCommand(cmd, args)
+}
+
 export const getResourceList = async () => {
   return workers.extensionService.getResourceList()
 }

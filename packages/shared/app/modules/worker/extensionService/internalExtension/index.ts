@@ -1,3 +1,4 @@
+import { createCommand } from '../extensionApis/command'
 import { createCommon } from '../extensionApis/common'
 import { createMusicUtils } from '../extensionApis/musicUtils'
 import { createStore } from '../extensionApis/storage'
@@ -21,6 +22,7 @@ export const loadExtension = async (extension: AnyListen.Extension.Extension) =>
     ...createStore(extension.dataDirectory),
     ...createConfigurationStore(extension),
     ...createMusicUtils(extension),
+    ...createCommand(extension),
   })
 
   internalExtensionContextState.contexts.set(extension.id, {

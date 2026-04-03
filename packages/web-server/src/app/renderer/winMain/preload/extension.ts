@@ -89,5 +89,8 @@ export const createClientExtension = (ipcSocket: IPCSocket) => {
     ): Promise<Awaited<ReturnType<AnyListen.IPCExtension.ListProviderAction[T]>>> {
       return ipcSocket.remoteExtension.listProviderAction(action, params)
     },
+    async executeCommand(commandName: string, args: any[]) {
+      return ipcSocket.remoteExtension.executeCommand(commandName, args)
+    },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }
