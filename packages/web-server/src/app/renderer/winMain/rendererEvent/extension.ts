@@ -23,6 +23,7 @@ import {
   updateExtension,
   executeCommand,
   updateExtensionSettings,
+  getExtensionConfigValues,
 } from '@/app/modules/extension'
 import { broadcast } from '@/modules/ipc/websocket'
 
@@ -90,6 +91,9 @@ export const createExposeExtension = () => {
     },
     async getAllExtensionSettings() {
       return getAllExtensionSettings()
+    },
+    async getExtensionConfigValues(event, extId, fields) {
+      return getExtensionConfigValues(extId, fields)
     },
     async updateExtensionSettings(event, extId, config) {
       return updateExtensionSettings(extId, config)

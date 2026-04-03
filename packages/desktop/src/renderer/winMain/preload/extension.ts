@@ -72,6 +72,9 @@ export const createClientExtension = (main: MainCall) => {
     async getAllExtensionSettings() {
       return main.getAllExtensionSettings()
     },
+    async getExtensionConfigValues(extId, fields) {
+      return main.getExtensionConfigValues(extId, fields)
+    },
     async updateExtensionSettings(extId, config) {
       return main.updateExtensionSettings(extId, config)
     },

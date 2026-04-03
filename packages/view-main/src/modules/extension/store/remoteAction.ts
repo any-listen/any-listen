@@ -10,6 +10,7 @@ export {
   downloadAndParseExtension,
   enableExtension,
   getAllExtensionSettings,
+  getExtensionConfigValues,
   getExtensionErrorMessage,
   executeCommand,
   getExtensionList,

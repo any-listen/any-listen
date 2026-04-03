@@ -68,6 +68,10 @@ export const getAllExtensionSettings: AnyListen.IPC.ServerIPC['getAllExtensionSe
   return ipc.getAllExtensionSettings()
 }
 
+export const getExtensionConfigValues: AnyListen.IPC.ServerIPC['getExtensionConfigValues'] = async (extId, fields) => {
+  return ipc.getExtensionConfigValues(extId, fields)
+}
+
 export const updateExtensionSettings: AnyListen.IPC.ServerIPC['updateExtensionSettings'] = async (extId, config) => {
   return ipc.updateExtensionSettings(extId, config)
 }

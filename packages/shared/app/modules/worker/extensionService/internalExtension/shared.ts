@@ -56,6 +56,7 @@ export const createBoxs = (common: ReturnType<typeof createCommon>) => {
     })
   }
   return {
+    ...common,
     async showMessage(
       message: string,
       { signal, ...options }: AnyListen.IPCCommon.MessageDialogOptions & { signal?: AbortSignal } = {}
@@ -71,12 +72,12 @@ export const createBoxs = (common: ReturnType<typeof createCommon>) => {
     },
     async showOpenDialog({ signal, ...options }: AnyListen.IPCCommon.OpenDialogOptions & { signal?: AbortSignal }) {
       return buildKey(async (key) => {
-        return common.showOpenBox(key, options) as Promise<string | string[] | undefined>
+        return common.showOpenBox(key, options) as Promise<string[]>
       }, signal)
     },
     async showSaveDialog({ signal, ...options }: AnyListen.IPCCommon.SaveDialogOptions & { signal?: AbortSignal }) {
       return buildKey(async (key) => {
-        return common.showSaveBox(key, options) as Promise<string | undefined>
+        return common.showSaveBox(key, options) as Promise<string>
       }, signal)
     },
   }

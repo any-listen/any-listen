@@ -6,12 +6,14 @@ export const showFileSelectModal: AnyListen.IPC.ServerIPC['showOpenDialog'] = as
   const filters = options.filters?.map((f) => f.extensions).flat()
   const openDir = options.properties?.includes('openDirectory')
   return showFileExplorerModal({
+    modalTitle: options.modalTitle,
     title: options.title,
     defaultPath: options.defaultPath,
     filters,
     openFile: options.properties?.includes('openFile'),
     openDir,
     multi: options.properties?.includes('multiSelections'),
+    confirmText: options.buttonLabel,
     onReadRootDir: async (refresh) => {
       return readRootDir(refresh)
     },

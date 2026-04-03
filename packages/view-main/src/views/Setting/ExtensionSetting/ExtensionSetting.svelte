@@ -21,8 +21,21 @@
             name: extI18n.t(extension.id, s.name),
             description: extI18n.t(extension.id, s.description),
           }
-          if (ss.type == 'selection') {
-            ss.enumName = ss.enumName.map((n) => extI18n.t(extension.id, n))
+          switch (ss.type) {
+            case 'selection':
+              ss.enumName = ss.enumName.map((n) => extI18n.t(extension.id, n))
+              break
+            case 'configCheckbox':
+              if (ss.actionCommands) ss.actionCommands = ss.actionCommands.map((n) => `${extension.id}.${n}`)
+              if (ss.actionCommandNames) ss.actionCommandNames = ss.actionCommandNames.map((n) => extI18n.t(extension.id, n))
+              break
+            case 'configCheckboxMultiple':
+              if (ss.value == null) ss.value = []
+              if (ss.actionCommands) ss.actionCommands = ss.actionCommands.map((n) => `${extension.id}.${n}`)
+              if (ss.actionCommandNames) ss.actionCommandNames = ss.actionCommandNames.map((n) => extI18n.t(extension.id, n))
+              break
+            default:
+              break
           }
           return ss
         }),
@@ -42,8 +55,31 @@
       if (!targetExt) return
       for (const [field, value] of Object.entries(setting.setting)) {
         const targetSetting = targetExt.settingItems.find((ss) => ss.field == field)
-        if (!targetSetting) continue
-        targetSetting.value = value as string | boolean
+        if (targetSetting) {
+          targetSetting.value = value as string | boolean
+        }
+
+        const targteConfigCheckboxSetting = targetExt.settingItems.find(
+          (ss) => (ss.type === 'configCheckbox' || ss.type === 'configCheckboxMultiple') && ss.enumConfigFiled == field
+        ) as
+          | AnyListen.Extension.FormConfigValue<
+              AnyListen.Extension.FormConfigCheckbox | AnyListen.Extension.FormConfigCheckboxMultiple
+            >
+          | undefined
+        if (targteConfigCheckboxSetting) {
+          targteConfigCheckboxSetting.enum = Array.isArray(value)
+            ? value.map((v) => {
+                return {
+                  name: v[targteConfigCheckboxSetting.enumNameFiled],
+                  value: v[targteConfigCheckboxSetting.enumFiled],
+                  description: targteConfigCheckboxSetting.enumDescriptionFiled
+                    ? v[targteConfigCheckboxSetting.enumDescriptionFiled]
+                    : undefined,
+                  raw: v,
+                }
+              })
+            : []
+        }
       }
     })
 

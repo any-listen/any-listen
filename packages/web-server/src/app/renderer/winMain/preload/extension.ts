@@ -74,6 +74,9 @@ export const createClientExtension = (ipcSocket: IPCSocket) => {
     async getAllExtensionSettings() {
       return ipcSocket.remoteQueueExtension.getAllExtensionSettings()
     },
+    async getExtensionConfigValues(extId, fields) {
+      return ipcSocket.remoteQueueExtension.getExtensionConfigValues(extId, fields)
+    },
     async updateExtensionSettings(extId, config) {
       return ipcSocket.remoteQueueExtension.updateExtensionSettings(extId, config)
     },

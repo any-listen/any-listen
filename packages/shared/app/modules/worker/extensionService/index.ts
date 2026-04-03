@@ -32,6 +32,7 @@ import { resetI18n } from './onlineExtension/i18n'
 import {
   buildExtensionSettings,
   clearExtensionLogs,
+  getExtensionConfigValues,
   getExtensionLastLogs,
   updateExtensionSettings,
   updateResourceListThrottle,
@@ -141,6 +142,9 @@ const extension = {
   },
   async getAllExtensionSettings() {
     return buildExtensionSettings()
+  },
+  async getExtensionConfigValues(extId: string, fields: string[]) {
+    return getExtensionConfigValues(extId, fields)
   },
   async updateExtensionSettings(extId: string, config: Record<string, unknown>) {
     await updateExtensionSettings(extId, config)

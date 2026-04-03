@@ -21,8 +21,8 @@ export declare type ClientCommonActions = WarpPromiseRecord<{
     options: Omit<AnyListen.IPCCommon.InputDialogOptions, 'validateInput'>,
     validateInput: AnyListen.IPCCommon.InputDialogOptions['validateInput']
   ) => Promise<string>
-  showOpenBox: (key: string, extensionId: string, options: AnyListen.IPCCommon.OpenDialogOptions) => Promise<unknown>
-  showSaveBox: (key: string, extensionId: string, options: AnyListen.IPCCommon.SaveDialogOptions) => Promise<unknown>
+  showOpenBox: (key: string, extensionId: string, options: AnyListen.IPCCommon.OpenDialogOptions) => Promise<string[]>
+  showSaveBox: (key: string, extensionId: string, options: AnyListen.IPCCommon.SaveDialogOptions) => Promise<string>
   closeMessageBox: (key: string) => void
   updateInfo: (event: AnyListen.IPCCommon.UpdateInfo) => void
 }>
@@ -89,7 +89,7 @@ declare global {
          * This parameter might be ignored, as not all operating systems display a title on open dialogs
          * (for example, macOS).
          */
-        title?: string
+        title: string
       }
 
       interface SaveDialogOptions {
@@ -114,7 +114,7 @@ declare global {
          * This parameter might be ignored, as not all operating systems display a title on save dialogs
          * (for example, macOS).
          */
-        title?: string
+        title: string
       }
 
       // 更新信息

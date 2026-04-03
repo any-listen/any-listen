@@ -248,6 +248,7 @@ declare namespace AnyListen {
       getExtensionLastLogs: (id?: string) => LastLog[]
       clearExtensionLogs: (id?: string) => void
       getAllExtensionSettings: () => Promise<Extension.ExtensionSetting[]>
+      getExtensionConfigValues: (extId: string, fields: string[]) => Promise<Record<string, unknown>>
       updateExtensionSettings: (extId: string, config: Record<string, any>) => Promise<void>
       resourceAction: <T extends keyof ResourceAction>(
         action: T,
@@ -294,8 +295,8 @@ declare namespace AnyListen {
         options: Omit<IPCCommon.InputDialogOptions, 'validateInput'>,
         validateInput: IPCCommon.InputDialogOptions['validateInput']
       ) => Promise<string>
-      showOpenBox: (key: string, extensionId: string, options: IPCCommon.OpenDialogOptions) => Promise<unknown>
-      showSaveBox: (key: string, extensionId: string, options: IPCCommon.SaveDialogOptions) => Promise<unknown>
+      showOpenBox: (key: string, extensionId: string, options: IPCCommon.OpenDialogOptions) => Promise<string[]>
+      showSaveBox: (key: string, extensionId: string, options: IPCCommon.SaveDialogOptions) => Promise<string>
       closeMessageBox: (key: string) => Promise<void>
     }
 
@@ -344,9 +345,11 @@ declare namespace AnyListen {
     // extension worker funcs, exposed to extension vm
     interface PreloadIPCActions {
       showMessageBox: (key: string, options: IPCCommon.MessageDialogOptions) => Promise<number>
-      showInputBox: (key: string, options: IPCCommon.InputDialogOptions) => Promise<string | undefined>
-      showOpenBox: (key: string, options: IPCCommon.OpenDialogOptions) => Promise<unknown>
-      showSaveBox: (key: string, options: IPCCommon.SaveDialogOptions) => Promise<unknown>
+      showInputBox: (key: string, options: IPCCommon.InputDialogOptions) => Promise<string>
+      showOpenBox: (key: string, options: IPCCommon.OpenDialogOptions) => Promise<string[]>
+      showSaveBox: (key: string, options: IPCCommon.SaveDialogOptions) => Promise<string>
+      readOpenBoxFile: (path: string, format?: 'utf-8' | 'binary') => Promise<string | Uint8Array>
+      writeSaveBoxFile: (dir: string, name: string, content: string | Uint8Array) => Promise<string>
       closeMessageBox: (key: string) => void
 
       request: <Resp = unknown>(

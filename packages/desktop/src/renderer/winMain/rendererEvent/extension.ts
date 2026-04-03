@@ -23,6 +23,7 @@ import {
   updateExtension,
   executeCommand,
   updateExtensionSettings,
+  getExtensionConfigValues,
 } from '@/modules/extension'
 
 import type { ExposeFunctions } from '.'
@@ -89,6 +90,9 @@ export const createExposeExtension = () => {
     },
     async getAllExtensionSettings() {
       return getAllExtensionSettings()
+    },
+    async getExtensionConfigValues(event, extId, fields) {
+      return getExtensionConfigValues(extId, fields)
     },
     async updateExtensionSettings(event, extId, config) {
       return updateExtensionSettings(extId, config)

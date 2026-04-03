@@ -204,6 +204,10 @@ export const getAllExtensionSettings = async () => {
   return workers.extensionService.getAllExtensionSettings()
 }
 
+export const getExtensionConfigValues = async (extId: string, fields: string[]) => {
+  return workers.extensionService.getExtensionConfigValues(extId, fields)
+}
+
 export const updateExtensionSettings = async (extId: string, config: Record<string, unknown>) => {
   return workers.extensionService.updateExtensionSettings(extId, config)
 }

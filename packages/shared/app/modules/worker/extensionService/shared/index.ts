@@ -112,26 +112,54 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
                 name: String(s.name),
                 description: String(s.description),
                 textarea: Boolean(s.textarea),
-                default: String(s.default),
-              }
+                default: s.default != null ? String(s.default) : undefined,
+              } satisfies AnyListen.Extension.FormInput
             case 'boolean':
               return {
                 type: s.type,
                 field: String(s.field),
                 name: String(s.name),
                 description: String(s.description),
-                default: Boolean(s.default),
-              }
+                default: s.default != null ? Boolean(s.default) : undefined,
+              } satisfies AnyListen.Extension.FormBoolean
             case 'selection':
               return {
                 type: s.type,
                 field: String(s.field),
                 name: String(s.name),
                 description: String(s.description),
-                default: String(s.default),
+                default: s.default != null ? String(s.default) : undefined,
                 enum: s.enum.map((e) => String(e)),
                 enumName: s.enumName.map((e) => String(e)),
-              }
+              } satisfies AnyListen.Extension.FormSelection
+            case 'configCheckbox':
+              return {
+                type: s.type,
+                field: String(s.field),
+                name: String(s.name),
+                description: String(s.description),
+                default: s.default != null ? String(s.default) : undefined,
+                enumConfigFiled: String(s.enumConfigFiled),
+                enumFiled: String(s.enumFiled),
+                enumNameFiled: String(s.enumNameFiled),
+                enumDescriptionFiled: s.enumDescriptionFiled ? String(s.enumDescriptionFiled) : undefined,
+                actionCommands: Array.isArray(s.actionCommands) ? s.actionCommands.map((c) => String(c)) : undefined,
+                actionCommandNames: Array.isArray(s.actionCommandNames) ? s.actionCommandNames.map((c) => String(c)) : undefined,
+              } satisfies AnyListen.Extension.FormConfigCheckbox
+            case 'configCheckboxMultiple':
+              return {
+                type: s.type,
+                field: String(s.field),
+                name: String(s.name),
+                description: String(s.description),
+                default: s.default != null ? s.default.map((d) => String(d)) : undefined,
+                enumConfigFiled: String(s.enumConfigFiled),
+                enumFiled: String(s.enumFiled),
+                enumNameFiled: String(s.enumNameFiled),
+                enumDescriptionFiled: s.enumDescriptionFiled ? String(s.enumDescriptionFiled) : undefined,
+                actionCommands: s.actionCommands != null ? s.actionCommands.map((c) => String(c)) : undefined,
+                actionCommandNames: s.actionCommandNames != null ? s.actionCommandNames.map((c) => String(c)) : undefined,
+              } satisfies AnyListen.Extension.FormConfigCheckboxMultiple
             // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
             default:
               // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-case-declarations
@@ -160,31 +188,57 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
                   name: String(s.name),
                   description: String(s.description),
                   textarea: Boolean(s.textarea),
-                  default: String(s.default),
-                }
+                  default: s.default != null ? String(s.default) : undefined,
+                } satisfies AnyListen.Extension.FormInput
               case 'boolean':
                 return {
                   type: s.type,
                   field: String(s.field),
                   name: String(s.name),
                   description: String(s.description),
-                  default: Boolean(s.default),
-                }
+                  default: s.default != null ? Boolean(s.default) : undefined,
+                } satisfies AnyListen.Extension.FormBoolean
               case 'selection':
                 return {
                   type: s.type,
                   field: String(s.field),
                   name: String(s.name),
                   description: String(s.description),
-                  default: String(s.default),
+                  default: s.default != null ? String(s.default) : undefined,
                   enum: s.enum.map((e) => String(e)),
                   enumName: s.enumName.map((e) => String(e)),
-                }
+                } satisfies AnyListen.Extension.FormSelection
+              case 'configCheckbox':
+                return {
+                  type: s.type,
+                  field: String(s.field),
+                  name: String(s.name),
+                  description: String(s.description),
+                  default: s.default != null ? String(s.default) : undefined,
+                  enumConfigFiled: String(s.enumConfigFiled),
+                  enumFiled: String(s.enumFiled),
+                  enumNameFiled: String(s.enumNameFiled),
+                  enumDescriptionFiled: s.enumDescriptionFiled ? String(s.enumDescriptionFiled) : undefined,
+                  removeable: s.removeable ? Boolean(s.removeable) : undefined,
+                } satisfies AnyListen.Extension.FormConfigCheckbox
+              case 'configCheckboxMultiple':
+                return {
+                  type: s.type,
+                  field: String(s.field),
+                  name: String(s.name),
+                  description: String(s.description),
+                  default: s.default != null ? s.default.map((d) => String(d)) : undefined,
+                  enumConfigFiled: String(s.enumConfigFiled),
+                  enumFiled: String(s.enumFiled),
+                  enumNameFiled: String(s.enumNameFiled),
+                  enumDescriptionFiled: s.enumDescriptionFiled ? String(s.enumDescriptionFiled) : undefined,
+                  removeable: s.removeable ? Boolean(s.removeable) : undefined,
+                } satisfies AnyListen.Extension.FormConfigCheckboxMultiple
               case 'lazzyParseMeta':
                 return {
                   type: s.type,
-                  default: Boolean(s.default),
-                }
+                  default: s.default != null ? Boolean(s.default) : undefined,
+                } satisfies AnyListen.Extension.FormLazzyParseMeta
               // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
               default:
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-case-declarations
@@ -570,16 +624,52 @@ export const buildExtensionSettings = async () => {
     }
     const configs = await getConfig(ext)
     for (const item of ext.contributes.settings) {
-      extSetting.settingItems.push({
+      const s: AnyListen.Extension.FormValueItem = {
         ...item,
         // @ts-expect-error
         value: configs[item.field] ?? item.default,
-      })
+      }
+      switch (item.type) {
+        case 'configCheckbox':
+        case 'configCheckboxMultiple': {
+          const enumConfig = configs[item.enumConfigFiled] ?? []
+          const enums: AnyListen.Extension.ConfigEnum[] = Array.isArray(enumConfig)
+            ? enumConfig.map((v) => {
+                return {
+                  name: v[item.enumNameFiled],
+                  value: v[item.enumFiled],
+                  description: item.enumDescriptionFiled ? v[item.enumDescriptionFiled] : undefined,
+                  raw: v,
+                }
+              })
+            : []
+          ;(
+            s as AnyListen.Extension.FormConfigValue<
+              AnyListen.Extension.FormConfigCheckbox | AnyListen.Extension.FormConfigCheckboxMultiple
+            >
+          ).enum = enums
+          break
+        }
+        default:
+          break
+      }
+      extSetting.settingItems.push(s)
     }
     list.push(extSetting)
   }
   extensionState.extensionSettings = list
   return list
+}
+
+export const getExtensionConfigValues = async (id: string, fields: string[]) => {
+  const targetExt = extensionState.extensions.find((ext) => ext.id == id)
+  if (!targetExt) throw new Error('extension not found')
+  const configs = await getConfig(targetExt)
+  const result: Record<string, unknown> = {}
+  for (const field of fields) {
+    result[field] = configs[field]
+  }
+  return result
 }
 
 export const updateExtensionSettings = async (id: string, config: Record<string, any>) => {

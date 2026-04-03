@@ -816,9 +816,8 @@ declare global {
     }
 
     interface OpenDialogOptions {
-      signal?: unknown
       /** The resource the dialog shows when opened. */
-      defaultPath?: string
+      // defaultPath?: string
       /** A human-readable string for the open button. */
       openLabel?: string
       /** Allow to select files, defaults to `true`. */
@@ -844,13 +843,12 @@ declare global {
        * This parameter might be ignored, as not all operating systems display a title on open dialogs
        * (for example, macOS).
        */
-      title?: string
+      title: string
     }
 
     interface SaveDialogOptions {
-      signal?: unknown
       /** The resource the dialog shows when opened. */
-      defaultPath?: string
+      // defaultPath?: string
       /** A human-readable string for the save button. */
       saveLabel?: string
       /**
@@ -870,7 +868,7 @@ declare global {
        * This parameter might be ignored, as not all operating systems display a title on save dialogs
        * (for example, macOS).
        */
-      title?: string
+      title: string
     }
 
     /** 环境相关 */
@@ -897,10 +895,12 @@ declare global {
       showMessage: (message: string, options?: MessageDialogOptions) => Promise<number>
       // TODO
       // showFormDialog: (options: FormDialogOptions) => Promise<string | undefined>
-      showInputBox: (options: InputDialogOptions) => Promise<string | undefined>
+      showInputBox: (options: InputDialogOptions) => Promise<string>
       // showInput: (options: InputDialogOptions) => Promise<string | undefined>
-      showOpenDialog: (options: OpenDialogOptions) => Promise<string | string[] | undefined>
-      showSaveDialog: (options: SaveDialogOptions) => Promise<string | undefined>
+      showOpenDialog: (options: OpenDialogOptions) => Promise<string[]>
+      showSaveDialog: (options: SaveDialogOptions) => Promise<string>
+      readOpenBoxFile: (path: string, format?: 'utf-8' | 'binary') => Promise<string | Uint8Array>
+      writeSaveBoxFile: (dir: string, name: string, content: string | Uint8Array) => Promise<string>
       // getConnectedClient: () => Promise<string[]>
     }
     interface MusicList {

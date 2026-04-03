@@ -199,6 +199,7 @@
   bind:visible
   teleport="#root"
   bgclose={false}
+  title={options.modalTitle}
   {onafterleave}
   width="65%"
   maxwidth="56rem"
@@ -317,7 +318,7 @@
           closeModal()
         }}>{$t('btn_cancel')}</Btn
       >
-      <Btn disabled={!verifyStatus} onclick={handleComfirm}>{$t('btn_confirm')}</Btn>
+      <Btn disabled={!verifyStatus} onclick={handleComfirm}>{options.confirmText || $t('btn_confirm')}</Btn>
     </div>
   </div>
 </Modal>

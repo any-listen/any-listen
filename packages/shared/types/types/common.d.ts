@@ -31,6 +31,7 @@ declare global {
       name: string
     }
     interface OpenDialogOptions {
+      modalTitle?: string
       title: string
       defaultPath?: string
       buttonLabel?: string
