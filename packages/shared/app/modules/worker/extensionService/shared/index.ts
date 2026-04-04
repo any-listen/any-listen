@@ -220,6 +220,10 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
                   enumNameFiled: String(s.enumNameFiled),
                   enumDescriptionFiled: s.enumDescriptionFiled ? String(s.enumDescriptionFiled) : undefined,
                   removeable: s.removeable ? Boolean(s.removeable) : undefined,
+                  actionCommands: Array.isArray(s.actionCommands) ? s.actionCommands.map((c) => String(c)) : undefined,
+                  actionCommandNames: Array.isArray(s.actionCommandNames)
+                    ? s.actionCommandNames.map((c) => String(c))
+                    : undefined,
                 } satisfies AnyListen.Extension.FormConfigCheckbox
               case 'configCheckboxMultiple':
                 return {
@@ -233,6 +237,10 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
                   enumNameFiled: String(s.enumNameFiled),
                   enumDescriptionFiled: s.enumDescriptionFiled ? String(s.enumDescriptionFiled) : undefined,
                   removeable: s.removeable ? Boolean(s.removeable) : undefined,
+                  actionCommands: Array.isArray(s.actionCommands) ? s.actionCommands.map((c) => String(c)) : undefined,
+                  actionCommandNames: Array.isArray(s.actionCommandNames)
+                    ? s.actionCommandNames.map((c) => String(c))
+                    : undefined,
                 } satisfies AnyListen.Extension.FormConfigCheckboxMultiple
               case 'lazzyParseMeta':
                 return {
