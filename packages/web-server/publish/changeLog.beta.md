@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Improved
+### Fixed
 
-- Improved sorting of search results within playlists.
+- Fixed the release workflow.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 优化
+### 修复
 
-- 优化歌单内歌曲搜索结果排序。
+- 修复版本发布流程。
