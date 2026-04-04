@@ -15,13 +15,13 @@ jobs:
     if: startsWith(github.ref_name, 'desktop-')
     steps:
       - name: Checkout desktop app
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: any-listen/${{ env.DESKTOP_REPO }}
           token: ${{ secrets.GH_DESKTOP_PAT }}
 
       - name: Checkout monorepo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           path: any-listen
           token: ${{ github.token }}
@@ -41,7 +41,7 @@ jobs:
     if: startsWith(github.ref_name, 'webserver-')
     steps:
       - name: Checkout web server
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: any-listen/${{ env.WEBSERVER_REPO }}
           submodules: 'true'
