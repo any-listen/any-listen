@@ -128,6 +128,8 @@ export const settings: SettingListSection[] = [
         type: 'radio',
         enum: langList.map((l) => ({ value: l.locale, name: l.name as keyof Message })),
       },
+      // t('settings.basic.play_bar_style_center_control_btn')
+      // t('settings.basic.play_bar_style_center_control_middle_btn')
       // t('settings.basic.play_bar_style_center_control_full_btn')
       {
         field: 'common.playBarProgressStyle',
