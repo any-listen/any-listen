@@ -45,3 +45,4 @@ publicHoistPattern:
 #   - electron-updater
 #   - electron-to-chromium
 #   - npm-check-updates
+#   - vite
