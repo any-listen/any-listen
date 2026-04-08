@@ -21,9 +21,8 @@
     "checkJs": true,
     "isolatedModules": true,
     "outDir": "../../dist",
-    "baseUrl": "./src",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     },
     "types": ["@any-listen/types"]
   },

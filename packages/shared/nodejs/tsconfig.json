@@ -4,6 +4,7 @@
     // "typeRoots": [
     //   "./types"
     // ],
+    "moduleResolution": "Bundler",
     "types": ["@any-listen/types"]
   },
   "include": ["**/*.d.ts", "**/*.ts", "**/*.js"]

@@ -17,9 +17,8 @@
     "checkJs": true,
     "isolatedModules": true,
     "outDir": "../../dist",
-    "baseUrl": "./src",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     },
     "types": ["vite/client", "@any-listen/types"]
   },
