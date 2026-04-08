@@ -15,4 +15,4 @@ export const AES_MODE = {
   ECB_128_NoPadding: 'AES',
 } as const
 
-export const MAX_NATIVE_CALL_DATA_SIZE = 2 * 1024 * 1024
+export const MAX_NATIVE_CALL_DATA_SIZE = 10 * 1024 * 1024

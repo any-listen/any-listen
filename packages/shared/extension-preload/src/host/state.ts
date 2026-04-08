@@ -1,5 +1,6 @@
 import { EXTENSION_VM_IPC_FUNC_NAMES } from '@any-listen/common/constants'
 
+import { MAX_NATIVE_CALL_DATA_SIZE } from '@/constants'
 import { setMessage } from '@/i18n'
 import { checkLength } from '@/shared'
 
@@ -48,7 +49,7 @@ export const initState = (
     delete globalThis[name]
     // @ts-expect-error
     hostContext[name.replace('__ext_host_call__', '')] = (...args: unknown[]) => {
-      for (const arg of args) checkLength(arg)
+      for (const arg of args) checkLength(arg, MAX_NATIVE_CALL_DATA_SIZE)
       // @ts-expect-error
       return nativeFunc(key, ...args)
     }

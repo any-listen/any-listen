@@ -895,12 +895,15 @@ declare global {
       showMessage: (message: string, options?: MessageDialogOptions) => Promise<number>
       // TODO
       // showFormDialog: (options: FormDialogOptions) => Promise<string | undefined>
-      showInputBox: (options: InputDialogOptions) => Promise<string>
+      showInputDialog: (options: InputDialogOptions) => Promise<string>
       // showInput: (options: InputDialogOptions) => Promise<string | undefined>
       showOpenDialog: (options: OpenDialogOptions) => Promise<string[]>
       showSaveDialog: (options: SaveDialogOptions) => Promise<string>
-      readOpenBoxFile: (path: string, format?: 'utf-8' | 'binary') => Promise<string | Uint8Array>
-      writeSaveBoxFile: (dir: string, name: string, content: string | Uint8Array) => Promise<string>
+      readOpenDialogFile: <T extends 'utf-8' | 'binary' = 'binary'>(
+        path: string,
+        format?: T
+      ) => Promise<T extends 'utf-8' ? string : Uint8Array>
+      writeSaveDialogFile: (dir: string, name: string, content: string | Uint8Array) => Promise<string>
       // getConnectedClient: () => Promise<string[]>
     }
     interface MusicList {
@@ -1021,7 +1024,10 @@ declare global {
     }
     interface Storage {
       writeFile: (path: string, data: Uint8Array | string) => Promise<void>
-      readFile: (path: string) => Promise<Uint8Array>
+      readFile: <T extends 'utf-8' | 'binary' = 'utf-8'>(
+        path: string,
+        encoding?: T
+      ) => Promise<T extends 'utf-8' ? string : Uint8Array>
       removeFile: (path: string) => Promise<void>
       fileExists: (path: string) => Promise<boolean>
       listFiles: (path?: string) => Promise<string[]>
@@ -1040,6 +1046,16 @@ declare global {
     interface Iconv {
       decode: (data: Uint8Array | Uint16Array, encoding: string) => string
       encode: (data: string, encoding: string) => Uint8Array
+    }
+    interface Zlib {
+      deflate: <T extends 'base64' | 'binary' = 'binary'>(
+        data: Uint8Array | string,
+        encoding?: T
+      ) => Promise<T extends 'base64' ? string : Uint8Array>
+      inflate: <T extends 'utf-8' | 'binary' = 'binary'>(
+        data: Uint8Array | string,
+        encoding?: T
+      ) => Promise<T extends 'utf-8' ? string : Uint8Array>
     }
     interface Configuration {
       getConfigs: <T extends unknown[] = []>(keys: string[]) => Promise<WithUndefined<T>>
@@ -1083,6 +1099,7 @@ declare global {
         buffer: Buffer
         crypto: Crypto
         iconv: Iconv
+        zlib: Zlib
         createIsolateContext?: (onMessage: (message: unknown) => void) => Promise<IsolateContext>
       }
       command: Command

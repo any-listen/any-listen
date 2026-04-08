@@ -8,9 +8,9 @@ export const storage = {
     }
     await hostContext.hostFuncs.writeFile(path, content)
   },
-  async readFile(path: string) {
+  async readFile<T extends 'utf-8' | 'binary' = 'binary'>(path: string, encoding?: T) {
     if (typeof path != 'string') throw new Error('path required a string')
-    return hostContext.hostFuncs.readFile(path)
+    return hostContext.hostFuncs.readFile<T>(path, encoding)
   },
   async removeFile(path: string) {
     if (typeof path != 'string') throw new Error('path required a string')

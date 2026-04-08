@@ -3,6 +3,7 @@
   import TitleContent from './TitleContent.svelte'
   import Btn from '@/components/base/Btn.svelte'
   import { executeCommand } from '@/shared/ipc/extension'
+  import { t } from '@/plugins/i18n'
   let {
     item,
     onchange,
@@ -16,6 +17,10 @@
     onremove: (value: string) => Promise<void>
   } = $props()
   // let id = $derived(`${name}_${desc}_${f}`)
+  // console.log(item)
+  let disabled = $derived(
+    item.type == 'configCheckboxMultiple' && item.max != null && item.value != null && item.value.length >= item.max
+  )
 </script>
 
 {#snippet CheckBoxItem(
@@ -31,20 +36,21 @@
         id={`extenstion_${item.type}_${item.field}_${checkboxItem.value}`}
         {checked}
         {onchange}
+        disabled={!checked && disabled}
       />
-      {#if checkboxItem.description}
-        <p class="settings-item-desc">{checkboxItem.description}</p>
+      {#if removeable}
+        <Btn
+          min
+          onclick={async () => {
+            await onremove(checkboxItem.value)
+          }}
+        >
+          {$t('btn_remove')}
+        </Btn>
       {/if}
     </div>
-    {#if removeable}
-      <Btn
-        min
-        onclick={async () => {
-          await onremove(checkboxItem.value)
-        }}
-      >
-        移除
-      </Btn>
+    {#if checkboxItem.description}
+      <p class="settings-item-desc">{checkboxItem.description}</p>
     {/if}
   </div>
 {/snippet}
@@ -95,13 +101,18 @@
   }
   .settings-item-config-checkbox-item {
     display: flex;
-    flex-flow: row nowrap;
-    gap: 8px;
-    align-items: center;
+    flex-flow: column nowrap;
 
     .settings-item-config-checkbox-item-content {
-      flex-grow: 0;
-      flex-shrink: 1;
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 3px;
+
+      :global(.checkbox) {
+        margin-bottom: 0;
+      }
     }
 
     :global(.btn) {

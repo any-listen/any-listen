@@ -6,6 +6,7 @@ import { createMusicUtils } from '../../../extensionApis/musicUtils'
 import { createPlayer } from '../../../extensionApis/player'
 import { createRequest } from '../../../extensionApis/request'
 import { createStore } from '../../../extensionApis/storage'
+import { createUtils } from '../../../extensionApis/utils'
 import { createIsolateFuncs } from './isolateContext'
 // import { extensionState } from '../../../state'
 
@@ -20,6 +21,7 @@ export const createExposeObject = (extension: AnyListen.Extension.Extension) => 
     ...createMusicUtils(extension),
     ...createIsolateFuncs(extension),
     ...createCommand(extension),
+    ...createUtils(extension),
     // async getConnectedClients() {
     //   return extensionState.remoteFuncs.getConnectedClients()
     // },

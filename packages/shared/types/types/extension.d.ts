@@ -58,6 +58,7 @@ declare global {
         enumFiled: string
         enumNameFiled: string
         enumDescriptionFiled?: string
+        max?: number
         removeable?: boolean
         actionCommands?: string[]
         actionCommandNames?: string[]

@@ -143,6 +143,7 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
                 enumFiled: String(s.enumFiled),
                 enumNameFiled: String(s.enumNameFiled),
                 enumDescriptionFiled: s.enumDescriptionFiled ? String(s.enumDescriptionFiled) : undefined,
+                removeable: s.removeable ? Boolean(s.removeable) : undefined,
                 actionCommands: Array.isArray(s.actionCommands) ? s.actionCommands.map((c) => String(c)) : undefined,
                 actionCommandNames: Array.isArray(s.actionCommandNames) ? s.actionCommandNames.map((c) => String(c)) : undefined,
               } satisfies AnyListen.Extension.FormConfigCheckbox
@@ -153,10 +154,12 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
                 name: String(s.name),
                 description: String(s.description),
                 default: s.default != null ? s.default.map((d) => String(d)) : undefined,
+                max: typeof s.max === 'number' ? Math.max(s.max, 0) : undefined,
                 enumConfigFiled: String(s.enumConfigFiled),
                 enumFiled: String(s.enumFiled),
                 enumNameFiled: String(s.enumNameFiled),
                 enumDescriptionFiled: s.enumDescriptionFiled ? String(s.enumDescriptionFiled) : undefined,
+                removeable: s.removeable ? Boolean(s.removeable) : undefined,
                 actionCommands: s.actionCommands != null ? s.actionCommands.map((c) => String(c)) : undefined,
                 actionCommandNames: s.actionCommandNames != null ? s.actionCommandNames.map((c) => String(c)) : undefined,
               } satisfies AnyListen.Extension.FormConfigCheckboxMultiple
@@ -232,6 +235,7 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
                   name: String(s.name),
                   description: String(s.description),
                   default: s.default != null ? s.default.map((d) => String(d)) : undefined,
+                  max: typeof s.max === 'number' ? Math.max(s.max, 0) : undefined,
                   enumConfigFiled: String(s.enumConfigFiled),
                   enumFiled: String(s.enumFiled),
                   enumNameFiled: String(s.enumNameFiled),
@@ -687,15 +691,42 @@ export const updateExtensionSettings = async (id: string, config: Record<string,
   const configs = await getConfig(targetExt)
   const newConfig = { ...configs, ...config }
   await saveConfig(targetExt, newConfig)
+  extensionEvent.extenstionSettingUpdated(id, Object.keys(config), config)
+  if (targetExt.loaded && !targetExt.internal) sendConfigUpdatedEvent(id, Object.keys(config), config)
+
   const targetSetting = extensionState.extensionSettings?.find((s) => s.id == targetExt.id)
   if (targetSetting) {
-    for (const [key, value] of Object.entries(config)) {
-      targetSetting.settingItems.find((item) => item.field == key)!.value = value
+    const keys = Object.keys(config)
+    for (const item of targetSetting.settingItems) {
+      if (keys.includes(item.field)) item.value = config[item.field]
+      if (item.type == 'configCheckbox' || item.type == 'configCheckboxMultiple') {
+        if (keys.includes(item.enumConfigFiled)) {
+          const enumConfig = newConfig[item.enumConfigFiled] ?? []
+          const enums: AnyListen.Extension.ConfigEnum[] = Array.isArray(enumConfig)
+            ? enumConfig.map((v) => {
+                return {
+                  ...item,
+                  name: v[item.enumNameFiled],
+                  value: v[item.enumFiled],
+                  description: item.enumDescriptionFiled ? v[item.enumDescriptionFiled] : undefined,
+                  raw: v,
+                }
+              })
+            : []
+          item.enum = enums
+          if (item.type == 'configCheckbox') {
+            if (item.value !== undefined && !item.enum.some((v) => v.value === item.value)) {
+              item.value = item.default
+            }
+          } else if (item.type == 'configCheckboxMultiple') {
+            if (item.value !== undefined) {
+              const enumValues = item.enum.map((e) => e.value)
+              item.value = item.value.filter((v) => enumValues.includes(v))
+            }
+          }
+        }
+      }
     }
-  }
-  extensionEvent.extenstionSettingUpdated(id, Object.keys(config), config)
-  if (targetExt.loaded && !targetExt.internal) {
-    sendConfigUpdatedEvent(id, Object.keys(config), config)
   }
 }
 

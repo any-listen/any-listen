@@ -16,6 +16,7 @@ import { musicUtils } from './musicUtils'
 import { request } from './request'
 import { registerResourceAction } from './resource'
 import { storage } from './storage'
+import { zlib } from './zlib'
 
 export const getAPI = () => {
   const extensionAPI: AnyListen_API.API = {
@@ -33,6 +34,7 @@ export const getAPI = () => {
       buffer,
       crypto,
       iconv,
+      zlib,
     },
     t(key, data) {
       return translate(key, data)

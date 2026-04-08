@@ -17,6 +17,7 @@ export const extnameRaw = (p: string): string => path.extname(p)
 export const basename = (p: string, ext?: string): string => path.basename(p, ext)
 export const dirname = (p: string): string => path.dirname(p)
 export const isAbsolute = (p: string) => path.isAbsolute(p)
+export const sep = path.sep
 
 export const tmpdir = () => os.tmpdir()
 

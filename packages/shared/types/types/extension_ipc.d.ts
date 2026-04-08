@@ -348,7 +348,10 @@ declare namespace AnyListen {
       showInputBox: (key: string, options: IPCCommon.InputDialogOptions) => Promise<string>
       showOpenBox: (key: string, options: IPCCommon.OpenDialogOptions) => Promise<string[]>
       showSaveBox: (key: string, options: IPCCommon.SaveDialogOptions) => Promise<string>
-      readOpenBoxFile: (path: string, format?: 'utf-8' | 'binary') => Promise<string | Uint8Array>
+      readOpenBoxFile: <T extends 'utf-8' | 'binary' = 'binary'>(
+        path: string,
+        format?: T
+      ) => Promise<T extends 'utf-8' ? string : Uint8Array>
       writeSaveBoxFile: (dir: string, name: string, content: string | Uint8Array) => Promise<string>
       closeMessageBox: (key: string) => void
 
@@ -365,7 +368,10 @@ declare namespace AnyListen {
       destroyIsolateContext: (contextId: string) => Promise<void>
 
       writeFile: (path: string, content: string | Uint8Array) => Promise<void>
-      readFile: (path: string) => Promise<Uint8Array>
+      readFile: <T extends 'utf-8' | 'binary' = 'utf-8'>(
+        path: string,
+        encoding?: T
+      ) => Promise<T extends 'utf-8' ? string : Uint8Array>
       removeFile: (path: string) => Promise<void>
       fileExists: (path: string) => Promise<boolean>
       listFiles: (path?: string) => Promise<string[]>
@@ -389,6 +395,15 @@ declare namespace AnyListen {
 
       executeCommand: (commandName: string, args: any[]) => Promise<unknown>
       getCommands: (filterInternal?: boolean) => Promise<string[]>
+
+      deflate: <T extends 'base64' | 'binary' = 'binary'>(
+        data: Uint8Array | string,
+        encoding?: T
+      ) => Promise<T extends 'base64' ? string : Uint8Array>
+      inflate: <T extends 'utf-8' | 'binary' = 'binary'>(
+        data: Uint8Array | string,
+        encoding?: T
+      ) => Promise<T extends 'utf-8' ? string : Uint8Array>
     }
 
     // extension vm funcs, exposed to extension worker

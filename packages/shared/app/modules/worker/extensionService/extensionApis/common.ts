@@ -1,5 +1,5 @@
 import { createCache } from '@any-listen/common/cache'
-import { toMD5, readFile, writeFile, normalizePath, dirname } from '@any-listen/nodejs'
+import { toMD5, readFile, writeFile, normalizePath, dirname, basename, sep } from '@any-listen/nodejs'
 import { createProxyCallback } from 'message2call'
 
 import { extensionState } from '../state'
@@ -25,33 +25,44 @@ export const createCommon = (extension: AnyListen.Extension.Extension) => {
     },
     async showOpenBox(key: string, options: AnyListen.IPCCommon.OpenDialogOptions) {
       const data = await extensionState.remoteFuncs.showOpenBox(key, extension.id, cloneData(options))
-      if (data.length) {
-        if (!openDirs) openDirs = createCache<string>({ ttl: 30 * 60 * 1000 }) // 30 minutes
-        for (const path of data) openDirs.set(`content://${toMD5(path)}`, path)
+      if (!data.length) return []
+      if (!openDirs) openDirs = createCache<string>({ ttl: 30 * 60 * 1000 }) // 30 minutes
+      const paths: string[] = []
+      for (const path of data) {
+        const vpath = `content://${basename(path)}`
+        paths.push(vpath)
+        openDirs.set(vpath, path)
       }
-      return cloneData(data)
+      return paths
     },
     async showSaveBox(key: string, options: AnyListen.IPCCommon.SaveDialogOptions) {
-      const data = await extensionState.remoteFuncs.showSaveBox(key, extension.id, cloneData(options))
-      if (data) {
-        if (!saveDirs) saveDirs = createCache<string>({ ttl: 30 * 60 * 1000 }) // 30 minutes
-        saveDirs.set(`content://${toMD5(data)}`, data)
-      }
-      return cloneData(data)
+      const dir = await extensionState.remoteFuncs.showSaveBox(key, extension.id, cloneData(options))
+      if (!dir) return dir
+      if (!saveDirs) saveDirs = createCache<string>({ ttl: 30 * 60 * 1000 }) // 30 minutes
+      const vdir = `content://${toMD5(dir)}`
+      saveDirs.set(vdir, dir)
+      return vdir
     },
     async closeMessageBox(key: string) {
       return extensionState.remoteFuncs.closeMessageBox(key)
     },
-    async readOpenBoxFile(path: string, format?: 'utf-8' | 'binary') {
+    async readOpenBoxFile<T extends 'utf-8' | 'binary' = 'binary'>(path: string, format?: T) {
       const rawPath = openDirs?.get(path)
       if (!rawPath) throw new Error('Not Allowed to access this file')
-      return readFile(rawPath, format)
+      switch (format) {
+        case 'binary':
+        case 'utf-8':
+          break
+        default:
+          throw new Error('Invalid format')
+      }
+      return readFile(rawPath, format) as Promise<T extends 'utf-8' ? string : Uint8Array>
     },
     async writeSaveBoxFile(dir: string, name: string, content: string | Uint8Array) {
-      const rawPath = saveDirs?.get(dir)
+      let rawPath = saveDirs?.get(dir)
       if (!rawPath) throw new Error('Not Allowed to access this file')
-      if (name.length > 128) throw new Error('File name is too long')
-      const path = normalizePath(`${rawPath}/${name}`)
+      if (!rawPath.endsWith(sep)) rawPath += sep
+      const path = normalizePath(`${rawPath}${name}`)
       const dirPath = dirname(path)
       if (rawPath !== dirPath) throw new Error('Not Allowed to access this file')
       await writeFile(path, content)

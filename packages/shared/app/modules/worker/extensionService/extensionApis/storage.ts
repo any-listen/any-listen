@@ -23,9 +23,13 @@ export const createStore = (path: string) => {
       }
       await fs.writeFile(buildPath(path), content)
     },
-    async readFile(path: string) {
+    async readFile<T extends 'utf-8' | 'binary' = 'binary'>(path: string, encoding?: T) {
       if (typeof path != 'string') throw new Error('path required a string')
-      return fs.readFile(buildPath(path)).then((data) => new Uint8Array(data))
+      return fs
+        .readFile(buildPath(path))
+        .then((data) => (encoding === 'utf-8' ? data.toString() : new Uint8Array(data))) as Promise<
+        T extends 'utf-8' ? string : Uint8Array
+      >
     },
     async removeFile(path: string) {
       if (typeof path != 'string') throw new Error('path required a string')
