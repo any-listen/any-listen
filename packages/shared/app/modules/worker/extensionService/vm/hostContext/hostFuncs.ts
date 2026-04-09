@@ -75,9 +75,8 @@ export const utils_b642buf = (data: string) => {
 }
 
 export const utils_buf2str = (data: Uint8Array) => {
-  if (!(data instanceof Uint8Array)) return ''
   try {
-    return Buffer.from(data).toString('utf-8')
+    return Buffer.from(new Uint8Array(data)).toString('utf-8')
   } catch {
     return ''
   }
@@ -127,9 +126,9 @@ export const utils_aes_encrypt = (
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!AES_MODE[mode]) return ''
   try {
-    let dataBuf = Buffer.from(data)
-    let keyBuf = Buffer.from(key)
-    let ivBuf = Buffer.from(iv)
+    let dataBuf = Buffer.from(typeof data == 'string' ? data : new Uint8Array(data))
+    let keyBuf = Buffer.from(typeof key == 'string' ? key : new Uint8Array(key))
+    let ivBuf = Buffer.from(typeof iv == 'string' ? iv : new Uint8Array(iv))
     const cipher = crypto.createCipheriv(AES_MODE[mode], keyBuf, ivBuf)
     const result = Buffer.concat([cipher.update(dataBuf), cipher.final()]).toString('base64')
     return result
@@ -151,8 +150,8 @@ export const utils_rsa_encrypt = (
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!RSA_PADDING[mode]) return ''
   try {
-    let dataBuf = Buffer.from(data)
-    let keyBuf = Buffer.from(key)
+    let dataBuf = Buffer.from(typeof data == 'string' ? data : new Uint8Array(data))
+    let keyBuf = Buffer.from(typeof key == 'string' ? key : new Uint8Array(key))
     dataBuf = Buffer.concat([Buffer.alloc(128 - dataBuf.length), dataBuf])
     return crypto.publicEncrypt({ key: keyBuf, padding: crypto.constants[RSA_PADDING[mode]] }, dataBuf).toString('base64')
   } catch {
@@ -160,8 +159,8 @@ export const utils_rsa_encrypt = (
   }
 }
 
-export const utils_iconv_decode = (data: Uint8Array | Uint16Array, encoding: string) => {
-  return iconv.decode(Buffer.from(data), encoding)
+export const utils_iconv_decode = (data: Uint8Array, encoding: string) => {
+  return iconv.decode(Buffer.from(new Uint8Array(data)), encoding)
 }
 
 export const utils_iconv_encode = (data: string, encoding: string) => {

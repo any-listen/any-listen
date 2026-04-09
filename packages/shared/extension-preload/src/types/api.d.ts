@@ -1044,7 +1044,7 @@ declare global {
       md5: (b64Data: string) => string
     }
     interface Iconv {
-      decode: (data: Uint8Array | Uint16Array, encoding: string) => string
+      decode: (data: Uint8Array, encoding: string) => string
       encode: (data: string, encoding: string) => Uint8Array
     }
     interface Zlib {

@@ -2,7 +2,7 @@
 
 ### Fixed
 
-- Fixed the release workflow.
+- Fixed an issue where `bufToString` failed to be called in extension environments.
 
 ---
 
@@ -10,4 +10,4 @@
 
 ### 修复
 
-- 修复版本发布流程。
+- 修复扩展环境的 `bufToString` 方法调用失败的问题。

@@ -74,7 +74,7 @@ declare global {
           iv: Uint8Array | string
         ) => string
         __ext_host_call__utils_rsa_encrypt?: (mode: RSA_PADDING, data: Uint8Array | string, key: Uint8Array | string) => string
-        __ext_host_call__utils_iconv_decode?: (data: Uint8Array | Uint16Array, encoding: string) => string
+        __ext_host_call__utils_iconv_decode?: (data: Uint8Array, encoding: string) => string
         __ext_host_call__utils_iconv_encode?: (data: string, encoding: string) => Uint8Array
 
         // host -> preload

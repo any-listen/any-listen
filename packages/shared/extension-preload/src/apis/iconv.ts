@@ -7,7 +7,7 @@ import { hostContext } from '@/host/state'
 // }
 
 export const iconv: AnyListen_API.Iconv = {
-  decode(data: Uint8Array | Uint16Array, encoding: string) {
+  decode(data: Uint8Array, encoding: string) {
     return hostContext.utils_iconv_decode(data, encoding)
   },
   encode(data: string, encoding: string) {
