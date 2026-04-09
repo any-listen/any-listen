@@ -106,6 +106,7 @@ export const writeFile = async (path: string, content: string | Buffer | Uint8Ar
  * @param {*} str
  */
 export const toMD5 = (str: string | Buffer | Uint8Array) => crypto.createHash('md5').update(str).digest('hex')
+export const toSha1 = (str: string | Buffer | Uint8Array) => crypto.createHash('sha1').update(str).digest('hex')
 export const toSha256 = (str: string | Buffer | Uint8Array) => crypto.createHash('sha256').update(str).digest('hex')
 export const toSha512 = (str: string | Buffer | Uint8Array) => crypto.createHash('sha512').update(str).digest('hex')
 

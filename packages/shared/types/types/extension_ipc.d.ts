@@ -404,6 +404,28 @@ declare namespace AnyListen {
         data: Uint8Array | string,
         encoding?: T
       ) => Promise<T extends 'utf-8' ? string : Uint8Array>
+      aesEncrypt: (
+        mode: ExtensionVM.AES_MODE,
+        data: Uint8Array | string,
+        key: Uint8Array | string,
+        iv: Uint8Array | string
+      ) => Promise<string>
+      rsaEncrypt: (mode: ExtensionVM.RSA_PADDING, data: Uint8Array, key: Uint8Array) => Promise<string>
+      md5: (text: string | Uint8Array) => Promise<string>
+      sha1: (text: string | Uint8Array) => Promise<string>
+      sha256: (text: string | Uint8Array) => Promise<string>
+      sha512: (text: string | Uint8Array) => Promise<string>
+      dataConverterBinary: <R extends ExtensionVM.ConverterBinaryFormatTo = 'utf-8'>(
+        input: Uint8Array,
+        toEncoding: R
+      ) => Promise<R extends 'binary' ? Uint8Array : string>
+      dataConverterString: <R extends ExtensionVM.ConverterFormatTo = 'binary'>(
+        input: string,
+        fromEncoding: ExtensionVM.ConverterFormatFrom,
+        toEncoding: R
+      ) => Promise<R extends 'binary' ? Uint8Array : string>
+      iconvDecode: (data: Uint8Array | Uint16Array, encoding: string) => Promise<string>
+      iconvEncode: (data: string, encoding: string) => Promise<Uint8Array>
     }
 
     // extension vm funcs, exposed to extension worker

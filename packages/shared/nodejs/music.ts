@@ -2,7 +2,6 @@ import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
 import { singerFormat } from '@any-listen/common/tools'
 import { formatPlayTime, isLikelyGarbage, sizeFormate } from '@any-listen/common/utils'
 import type { IAudioMetadata } from 'music-metadata'
-import type { IComment } from 'music-metadata/lib/type'
 
 import { basename, checkFile, extname, getFileStats } from './index'
 
@@ -14,6 +13,7 @@ export const bitrateFormat = (formate: IAudioMetadata['format']) => {
   return ''
 }
 
+type IComment = NonNullable<IAudioMetadata['common']['comment']> extends (infer U)[] ? U : never
 const getMetadataLyric = (metadata: IAudioMetadata | null) => {
   if (!metadata) return null
   // let lyricInfo = metadata.common.lyrics?.[0]

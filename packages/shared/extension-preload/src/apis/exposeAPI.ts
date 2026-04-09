@@ -2,10 +2,10 @@ import { hostContext } from '@/host/state'
 import { translate } from '@/i18n'
 
 import { app } from './app'
-import { buffer } from './buffer'
 import { command } from './command'
 import { configuration } from './configuration'
 import { crypto } from './crypto'
+import { dataConverter } from './dataConverter'
 import { env } from './env'
 import { iconv } from './iconv'
 import { createIsolateContext } from './isolateContext'
@@ -31,7 +31,7 @@ export const getAPI = () => {
     registerResourceAction,
     command,
     utils: {
-      buffer,
+      dataConverter,
       crypto,
       iconv,
       zlib,

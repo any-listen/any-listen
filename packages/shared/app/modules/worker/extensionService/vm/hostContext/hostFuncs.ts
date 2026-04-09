@@ -159,12 +159,13 @@ export const utils_rsa_encrypt = (
   }
 }
 
-export const utils_iconv_decode = (data: Uint8Array, encoding: string) => {
-  return iconv.decode(Buffer.from(new Uint8Array(data)), encoding)
+export const utils_iconv_decode = (data: Uint8Array | Uint16Array, encoding: string) => {
+  return iconv.decode(Buffer.from(data), encoding)
 }
 
 export const utils_iconv_encode = (data: string, encoding: string) => {
-  return iconv.encode(data, encoding)
+  if (typeof data != 'string') return new Uint8Array()
+  return new Uint8Array(iconv.encode(data, encoding))
 }
 
 export const handlePreloadCall = <T extends keyof AnyListen.ExtensionVM.HostCallActions>(

@@ -1,6 +1,7 @@
 {
   "extends": "./node_modules/@any-listen/eslint/tsconfig.json",
   "compilerOptions": {
+    "rootDir": "./"
     // "allowJs": true
   }
 }

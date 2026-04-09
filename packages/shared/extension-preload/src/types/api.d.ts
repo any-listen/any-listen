@@ -730,7 +730,9 @@ declare global {
       body: Resp
     }
 
-    type BufferFormat = 'binary' | 'base64' | 'hex' | 'utf-8' | 'utf8'
+    type ConverterFormatFrom = 'base64' | 'hex' | 'utf-8'
+    type ConverterFormatTo = 'binary' | 'base64' | 'hex' | 'utf-8'
+    type ConverterBinaryFormatTo = 'base64' | 'hex' | 'utf-8'
     interface BufferToStringTypes {
       binary: number[] | Uint8Array
       base64: string
@@ -988,6 +990,7 @@ declare global {
         params: BuildListProviderActionCommonParams<AnyListen.Music.MusicInfoOnline>
       ) => Promise<AnyListen.Music.MusicInfoOnline>
     }
+    type MusicSearchResult = ListCommonResult<AnyListen.Music.MusicInfoOnline>
 
     interface ResourceAction {
       // ('tipSearch' | 'hotSearch', CommonParams) => Promise<string[]>
@@ -1033,19 +1036,23 @@ declare global {
       listFiles: (path?: string) => Promise<string[]>
       statFile: (path: string) => Promise<{ isFile: boolean; size: number; createTime: number; updateTime: number }>
     }
-    interface Buffer {
-      from: (input: string | Uint8Array, encoding?: BufferFormat) => Uint8Array
-      bufToString: <T extends BufferFormat>(buf: Uint8Array, format: T) => BufferToStringTypes[T]
-    }
     interface Crypto {
-      aesEncrypt: (mode: AES_MODE, data: Uint8Array | string, key: Uint8Array | string, iv: Uint8Array | string) => string
-      rsaEncrypt: (mode: RSA_PADDING, data: Uint8Array, key: Uint8Array) => string
-      randomBytes: (size: number) => Uint8Array
-      md5: (b64Data: string) => string
+      aesEncrypt: (
+        mode: AES_MODE,
+        data: Uint8Array | string,
+        key: Uint8Array | string,
+        iv: Uint8Array | string
+      ) => Promise<string>
+      rsaEncrypt: (mode: RSA_PADDING, data: Uint8Array, key: Uint8Array) => Promise<string>
+      randomBytes: (size: number) => Promise<Uint8Array>
+      md5: (text: string | Uint8Array) => Promise<string>
+      sha1: (text: string | Uint8Array) => Promise<string>
+      sha256: (text: string | Uint8Array) => Promise<string>
+      sha512: (text: string | Uint8Array) => Promise<string>
     }
     interface Iconv {
-      decode: (data: Uint8Array, encoding: string) => string
-      encode: (data: string, encoding: string) => Uint8Array
+      decode: (data: Uint8Array | Uint16Array, encoding: string) => Promise<string>
+      encode: (data: string, encoding: string) => Promise<Uint8Array>
     }
     interface Zlib {
       deflate: <T extends 'base64' | 'binary' = 'binary'>(
@@ -1096,11 +1103,21 @@ declare global {
       //   registerDataAction: (actions: BackupDataAction) => void
       // }
       utils: {
-        buffer: Buffer
         crypto: Crypto
         iconv: Iconv
         zlib: Zlib
         createIsolateContext?: (onMessage: (message: unknown) => void) => Promise<IsolateContext>
+        dataConverter: {
+          <R extends ConverterFormatTo = 'binary'>(
+            input: string,
+            fromEncoding?: ConverterFormatFrom,
+            toEncoding?: R
+          ): Promise<R extends 'binary' ? Uint8Array : string>
+          <R extends ConverterBinaryFormatTo = 'utf-8'>(
+            input: Uint8Array,
+            toEncoding?: R
+          ): Promise<R extends 'binary' ? Uint8Array : string>
+        }
       }
       command: Command
     }
