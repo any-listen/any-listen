@@ -1,7 +1,7 @@
 <script lang="ts">
   import Image from '@/components/base/Image.svelte'
   import SvgIcon from '@/components/base/SvgIcon.svelte'
-  import { i18n } from '@/plugins/i18n'
+  import { i18n, t } from '@/plugins/i18n'
   import { extT } from '@/modules/extension/i18n'
   import ActionBtn from './ActionBtn.svelte'
   import { tooltip } from '@/components/apis/tooltips/attach.svelte'
@@ -39,6 +39,11 @@
       {#if ext.loaded}
         <p class="load-time">
           {ext.loadTimestamp}ms
+        </p>
+      {:else if ext.errorMessage}
+        <p class="load-error" aria-label={$t('extension.load_error', { msg: ext.errorMessage })}>
+          <SvgIcon name="error" />
+          <span>{ext.errorMessage}</span>
         </p>
       {/if}
     </div>
@@ -148,6 +153,15 @@
         flex: none;
         font-size: 12px;
         color: var(--color-font-label);
+      }
+      .load-error {
+        flex-grow: 0;
+        flex-shrink: 1;
+        color: var(--color-font-error);
+        .mixin-ellipsis-1();
+        span {
+          font-size: 12px;
+        }
       }
     }
     .right {

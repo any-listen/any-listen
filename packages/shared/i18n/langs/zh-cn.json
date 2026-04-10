@@ -63,6 +63,7 @@
   "extension.list_provider.local_list_remove_music_files_confirm": "即将同步移除 [{name}] 的 {count} 个本地文件，是否继续移除？",
   "extension.list_provider.local_list_remove_music_files_confirm_title": "文件移除确认",
   "extension.list_provider.local_list_watcher_error": "本地列表[{name}]加载失败：{message}",
+  "extension.load_error": "加载失败：{msg}",
   "extension.select_local_file": "选择扩展安装包",
   "extension__action_disable": "禁用",
   "extension__action_downgrade": "降级",

@@ -16,6 +16,7 @@
     "allowJs": true,
     "checkJs": true,
     "isolatedModules": true,
+    "rootDir": "./",
     "outDir": "../../dist",
     "paths": {
       "@/*": ["./src/*"]

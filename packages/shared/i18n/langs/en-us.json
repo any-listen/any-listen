@@ -63,6 +63,7 @@
   "extension.list_provider.local_list_remove_music_files_confirm": "{count} local files of [{name}] are about to be removed simultaneously. Do you want to continue the removal?",
   "extension.list_provider.local_list_remove_music_files_confirm_title": "File removal confirmation",
   "extension.list_provider.local_list_watcher_error": "Local list [{name}] failed to load: {message}",
+  "extension.load_error": "Loading failed: {msg}",
   "extension.select_local_file": "Select the extension installation package",
   "extension__action_disable": "Disable",
   "extension__action_downgrade": "Downgrade",

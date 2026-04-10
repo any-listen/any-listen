@@ -3,6 +3,7 @@
   "extends": "./node_modules/@any-listen/eslint/tsconfig.node.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "rootDir": "./",
     "outDir": "../../dist/web",
     "paths": {
       "@/*": ["./src/*"]
