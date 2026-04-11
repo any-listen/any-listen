@@ -26,7 +26,6 @@ import {
   getOnlineExtensionList,
   getOnlineTags,
   initOnlineList,
-  resetOnlineData,
 } from './onlineExtension'
 import { resetI18n } from './onlineExtension/i18n'
 import {
@@ -112,9 +111,6 @@ const extension = {
   },
   async getOnlineExtensionDetail(id: string) {
     return getOnlineExtensionDetail(id)
-  },
-  async resetOnlineData() {
-    resetOnlineData()
   },
   getLocalExtensionList() {
     return extensionState.extensions

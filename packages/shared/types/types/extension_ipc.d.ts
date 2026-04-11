@@ -181,6 +181,7 @@ declare namespace AnyListen {
     interface OnlineListFilterOptions {
       page: number
       limit: number
+      skipCache?: boolean
     }
     interface RemoteOnlineListItem {
       id: Extension.Manifest['id']
@@ -243,7 +244,6 @@ declare namespace AnyListen {
       getOnlineExtensionDetail: (id: string) => RemoteOnlineDetail | null
       getOnlineTags: () => OnlineTagResult
       getOnlineCategories: () => OnlineCategorieResult
-      resetOnlineData: () => void
       downloadAndParseExtension: (url: string, manifest?: Extension.Manifest) => Extension.Extension
       installExtension: (tempExtension: Extension.Extension) => Extension.Extension
       updateExtension: (tempExtension: Extension.Extension) => Extension.Extension

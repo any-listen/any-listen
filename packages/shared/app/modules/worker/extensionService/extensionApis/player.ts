@@ -1,5 +1,6 @@
+import { cloneData } from '@any-listen/common/utils'
+
 import { extensionState } from '../state'
-import { cloneData } from './shared'
 export const createPlayer = (extension: AnyListen.Extension.Extension) => {
   const player = {
     async getPlayInfo() {

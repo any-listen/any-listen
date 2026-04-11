@@ -3,7 +3,7 @@ import { STORE_NAMES } from '@any-listen/common/constants'
 import type { HOTKEY_Type } from '@any-listen/common/hotKey'
 
 import getStore from '@/shared/store'
-import { throttle } from '@/shared/utils'
+import { cloneData, throttle } from '@/shared/utils'
 
 import defaultHotKey from './config/defaultHotKey'
 
@@ -17,8 +17,8 @@ export const getHotKeyConfig = async () => {
   let globalConfig = storeHotKey.get<AnyListen.HotKey.HotKeyConfig<HOTKEY_Type>>('global')
 
   if (!globalConfig) {
-    localConfig = JSON.parse(JSON.stringify(defaultHotKey.local)) as AnyListen.HotKey.HotKeyConfig<HOTKEY_Type>
-    globalConfig = JSON.parse(JSON.stringify(defaultHotKey.global)) as AnyListen.HotKey.HotKeyConfig<HOTKEY_Type>
+    localConfig = cloneData(defaultHotKey.local)
+    globalConfig = cloneData(defaultHotKey.global)
 
     storeHotKey.set('local', localConfig)
     storeHotKey.set('global', globalConfig)

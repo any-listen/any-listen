@@ -1,9 +1,9 @@
 import { createCache } from '@any-listen/common/cache'
+import { cloneData } from '@any-listen/common/utils'
 import { toMD5, readFile, writeFile, normalizePath, dirname, basename, sep } from '@any-listen/nodejs'
 import { createProxyCallback } from 'message2call'
 
 import { extensionState } from '../state'
-import { cloneData } from './shared'
 
 export const createCommon = (extension: AnyListen.Extension.Extension) => {
   let openDirs: ReturnType<typeof createCache<string>>

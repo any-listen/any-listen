@@ -428,3 +428,7 @@ export const isLikelyGarbage = (str: string, options: GarbageOptions = {}): bool
   }
   return badRatio > badThreshold || printableRatio < minPrintableRatio || suspiciousExtendedLatin || hasLongConsecutiveExtended
 }
+
+export const cloneData = <T>(data: T) => {
+  return data === undefined ? data : (structuredClone(data) as T)
+}

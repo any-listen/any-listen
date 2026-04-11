@@ -34,8 +34,8 @@ const getRemoteI18nMessages = async (lang: Locale) => {
   return datas.i18nMessages[lang]
 }
 
-const initI18nMessages = async () => {
-  if (!datas.i18nPromise || datas.i18nLocale != extensionState.locale) {
+const initI18nMessages = async (skipCache = false) => {
+  if (!datas.i18nPromise || datas.i18nLocale != extensionState.locale || skipCache) {
     const currentLocale = extensionState.locale
     datas.i18nLocale = currentLocale
     datas.i18nPromise = Promise.all([getRemoteI18nMessages(DEFAULT_LANG), getRemoteI18nMessages(extensionState.locale)])
@@ -106,8 +106,8 @@ const buildNewVersionInfo = () => {
   extensionState.newExtensionVersions = newVersionInfo
   extensionEvent.newVersionInfoUpdated(newVersionInfo)
 }
-const getList = async (): Promise<AnyListen.IPCExtension.RemoteOnlineListItem[]> => {
-  if (!datas.list) {
+const getList = async (skipCache = false): Promise<AnyListen.IPCExtension.RemoteOnlineListItem[]> => {
+  if (!datas.list || skipCache) {
     const { body } = await mirrorRequest<{ all: AnyListen.IPCExtension.RemoteOnlineListItem[] } | null>(`${API_URL}/list.json`)
 
     if (!body || !Array.isArray(body.all)) throw new Error('Invalid list data')
@@ -121,19 +121,19 @@ const getList = async (): Promise<AnyListen.IPCExtension.RemoteOnlineListItem[]>
 }
 
 export const getOnlineExtensionList = async (
-  filter: AnyListen.IPCExtension.OnlineListFilterOptions
+  options: AnyListen.IPCExtension.OnlineListFilterOptions
 ): Promise<AnyListen.IPCExtension.OnlineListResult> => {
-  const [list] = await Promise.all([getList(), initI18nMessages()])
+  const [list] = await Promise.all([getList(options.skipCache), initI18nMessages(options.skipCache)])
 
   const extMap = new Map<string, AnyListen.Extension.Extension>()
   for (const ext of extensionState.extensions) extMap.set(ext.id, ext)
 
   return {
     total: list.length,
-    page: filter.page,
-    limit: filter.limit,
+    page: options.page,
+    limit: options.limit,
     list: list
-      .slice((filter.page - 1) * filter.limit, filter.page * filter.limit)
+      .slice((options.page - 1) * options.limit, options.page * options.limit)
       .map((item) => {
         if (item.description) return { ...item, description: t(item.description, item.id) }
         return item
@@ -160,14 +160,14 @@ export const getOnlineExtensionDetail = async (id: string) => {
 }
 
 // TODO
-export const resetOnlineData = () => {
-  datas.categories = null
-  datas.tags = null
-  datas.list = null
-  datas.i18nMessages = {}
-  datas.i18nLocale = ''
-  datas.i18nPromise = null
-}
+// export const resetOnlineData = () => {
+//   datas.categories = null
+//   datas.tags = null
+//   datas.list = null
+//   datas.i18nMessages = {}
+//   datas.i18nLocale = ''
+//   datas.i18nPromise = null
+// }
 
 export const initOnlineList = async () => {
   try {

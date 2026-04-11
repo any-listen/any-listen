@@ -19,7 +19,6 @@ export {
   getNewVersionInfo,
   installExtension,
   listProviderAction,
-  resetOnlineData,
   resourceAction,
   restartExtension,
   restartExtensionHost,

@@ -1,6 +1,5 @@
+import { cloneData } from '@any-listen/common/utils'
 import { request as rawRequest } from '@any-listen/nodejs/request'
-
-import { cloneData } from './shared'
 
 type RequestOptions = Omit<AnyListen.IPCExtension.RequestOptions, 'signal'> & { requestKey?: string }
 type Response<Resp> = AnyListen.IPCExtension.Response<Resp>

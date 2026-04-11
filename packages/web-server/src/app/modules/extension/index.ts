@@ -167,9 +167,6 @@ export const getOnlineCategories = async () => {
 export const getOnlineTags = async () => {
   return workers.extensionService.getOnlineTags()
 }
-export const resetOnlineData = async () => {
-  return workers.extensionService.resetOnlineData()
-}
 
 export const getLocalExtensionList = async () => {
   return workers.extensionService.getLocalExtensionList()

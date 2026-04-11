@@ -1,6 +1,8 @@
 import fs from 'node:fs'
 import vm from 'node:vm'
 
+import { cloneData } from '@any-listen/common/utils'
+
 import { extensionEvent } from '../event'
 import { extensionState } from '../state'
 import { createContext } from './hostContext'
@@ -73,26 +75,24 @@ export const setupVmContext = async (vmState: VMState) => {
       case 'music_list':
         vmState.unsubscribeEvents.push(
           extensionEvent.on('musicListAction', (action: AnyListen.IPCList.ActionList) => {
-            void vmState.preloadFuncs.musicListAction(JSON.parse(JSON.stringify(action)) as AnyListen.IPCList.ActionList)
+            void vmState.preloadFuncs.musicListAction(cloneData(action))
           })
         )
         break
       case 'player':
         vmState.unsubscribeEvents.push(
           extensionEvent.on('playerEvent', (event: AnyListen.IPCPlayer.PlayerEvent) => {
-            void vmState.preloadFuncs.playerEvent(JSON.parse(JSON.stringify(event)) as AnyListen.IPCPlayer.PlayerEvent)
+            void vmState.preloadFuncs.playerEvent(cloneData(event))
           })
         )
         vmState.unsubscribeEvents.push(
           extensionEvent.on('playListAction', (action: AnyListen.IPCPlayer.PlayListAction) => {
-            void vmState.preloadFuncs.playListAction(JSON.parse(JSON.stringify(action)) as AnyListen.IPCPlayer.PlayListAction)
+            void vmState.preloadFuncs.playListAction(cloneData(action))
           })
         )
         vmState.unsubscribeEvents.push(
           extensionEvent.on('playHistoryListAction', (action: AnyListen.IPCPlayer.PlayHistoryListAction) => {
-            void vmState.preloadFuncs.playHistoryListAction(
-              JSON.parse(JSON.stringify(action)) as AnyListen.IPCPlayer.PlayHistoryListAction
-            )
+            void vmState.preloadFuncs.playHistoryListAction(cloneData(action))
           })
         )
         break

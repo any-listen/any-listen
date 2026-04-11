@@ -1,5 +1,5 @@
 import * as commit from './commit'
-import { getOnlineExtensionList as getOnlineExtensionListRemote, resetOnlineData as resetOnlineDataRemote } from './remoteAction'
+import { getOnlineExtensionList as getOnlineExtensionListRemote } from './remoteAction'
 import { extensionState } from './state'
 
 export const getOnlineExtensionList = async (force = false) => {
@@ -11,8 +11,7 @@ export const getOnlineExtensionList = async (force = false) => {
   const cost = performance.now() - t
   console.log(`get online extension list cost: ${cost}ms`)
   if (cost < 1000) {
-    await resetOnlineDataRemote()
-    ;({ list } = await getOnlineExtensionListRemote({ page: 1, limit: 1000 }))
+    list = await getOnlineExtensionListRemote({ page: 1, limit: 1000, skipCache: true }).then((res) => res.list)
     commit.setOnlineExtension(list)
   }
 }

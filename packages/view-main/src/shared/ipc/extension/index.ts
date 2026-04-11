@@ -20,9 +20,6 @@ export const getOnlineCategories: AnyListen.IPC.ServerIPC['getOnlineCategories']
 export const getOnlineTags: AnyListen.IPC.ServerIPC['getOnlineTags'] = async () => {
   return ipc.getOnlineTags()
 }
-export const resetOnlineData: AnyListen.IPC.ServerIPC['resetOnlineData'] = async () => {
-  return ipc.resetOnlineData()
-}
 
 export const downloadAndParseExtension: AnyListen.IPC.ServerIPC['downloadAndParseExtension'] = async (url, manifest) => {
   return ipc.downloadAndParseExtension(url, manifest)

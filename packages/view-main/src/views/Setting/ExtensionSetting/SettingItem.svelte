@@ -56,7 +56,7 @@
         const newConfig: unknown[] = []
         for (const v of item.enum) {
           if (v.value === value) continue
-          newConfig.push(v.raw)
+          newConfig.push($state.snapshot(v.raw))
         }
         const newSetting: Record<string, any> = { [item.enumConfigFiled]: newConfig }
         if (item.value == value) newSetting[item.field] = ''
@@ -84,7 +84,7 @@
         const newConfig: unknown[] = []
         for (const v of item.enum) {
           if (v.value === value) continue
-          newConfig.push(v.raw)
+          newConfig.push($state.snapshot(v.raw))
         }
         const newSetting: Record<string, any> = { [item.enumConfigFiled]: newConfig }
         const targetIdx = item.value?.indexOf(value) ?? -1

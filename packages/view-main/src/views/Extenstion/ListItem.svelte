@@ -10,6 +10,7 @@
   import { showNotify } from '@/components/apis/notify'
   import { extensionState } from '@/modules/extension/store/state'
   import { downloadAndParseExtension, updateExtension } from '@/modules/extension/store/actions'
+  import { getOnlineExtensionList } from '@/modules/extension/store/actions'
 
   let { ext }: { ext: AnyListen.Extension.Extension } = $props()
   let latest = useExtensionLatestVersion(ext.id)
@@ -17,6 +18,7 @@
   let grants = $derived(ext.grant.map((g) => ({ id: g, icon: `ext_grant_${g}`, label: i18n.t(`extension__grant_${g}`) })))
 
   const handleUpdate = async () => {
+    if (!extensionState.onlineExtensionList.length) await getOnlineExtensionList()
     const targetExt = extensionState.onlineExtensionList.find((e) => e.id == ext.id)
     if (!targetExt) return
     // TODO

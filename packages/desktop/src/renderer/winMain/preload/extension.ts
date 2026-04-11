@@ -30,9 +30,6 @@ export const createClientExtension = (main: MainCall) => {
     async getOnlineTags() {
       return main.getOnlineTags()
     },
-    async resetOnlineData() {
-      return main.resetOnlineData()
-    },
     async downloadAndParseExtension(url, manifest) {
       return main.downloadAndParseExtension(url, manifest)
     },

@@ -14,7 +14,6 @@ import {
   getResourceList,
   installExtension,
   listProviderAction,
-  resetOnlineData,
   resourceAction,
   restartExtension,
   restartExtensionHost,
@@ -49,9 +48,6 @@ export const createExposeExtension = () => {
     },
     async getOnlineTags(event) {
       return getOnlineTags()
-    },
-    async resetOnlineData(event) {
-      return resetOnlineData()
     },
     async downloadAndParseExtension(event, url, manifest) {
       return downloadAndParseExtension(url, manifest)

@@ -1,6 +1,7 @@
+import { cloneData } from '@any-listen/common/utils'
+
 import { updateExtensionSettings } from '../shared'
 import { getConfig } from '../shared/configStore'
-import { cloneData } from './shared'
 
 type WithUndefined<T extends readonly unknown[]> = {
   [K in keyof T]: T[K] | undefined

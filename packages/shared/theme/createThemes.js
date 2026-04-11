@@ -72,7 +72,7 @@ const defaultThemes = [
 
       '--color-badge-primary': 'var(--color-primary)',
       '--color-badge-secondary': 'rgba(66.6, 150.7, 171, 1)',
-      '--color-badge-tertiary': 'rgba(54, 196, 231, 1)',
+      '--color-badge-tertiary': 'rgba(54, 156, 231, 1)',
     },
   },
   {

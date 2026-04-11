@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 import { sep } from 'node:path'
 
 import { EXTENSION } from '@any-listen/common/constants'
-import { joinPath, normalizePath } from '@any-listen/nodejs'
+import { dirname, joinPath, normalizePath } from '@any-listen/nodejs'
 
 export const createStore = (path: string) => {
   const rootPath = joinPath(path, EXTENSION.storageDirName) + sep
@@ -21,7 +21,9 @@ export const createStore = (path: string) => {
       if (typeof content != 'string' && !(content instanceof Uint8Array)) {
         throw new Error('content required a string or Uint8Array')
       }
-      await fs.writeFile(buildPath(path), content)
+      const fullPath = buildPath(path)
+      await fs.mkdir(dirname(fullPath), { recursive: true })
+      await fs.writeFile(fullPath, content)
     },
     async readFile<T extends 'utf-8' | 'binary' = 'binary'>(path: string, encoding?: T) {
       if (typeof path != 'string') throw new Error('path required a string')
