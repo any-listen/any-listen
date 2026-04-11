@@ -9,6 +9,7 @@
 ### Improved
 
 - Improved sorting of search results within playlists.
+- Improved the extension management system. Bubble notifications now appear when extensions fail to load or when updates are available.
 
 ### Fixed
 
@@ -38,6 +39,7 @@
 ### 优化
 
 - 优化歌单内歌曲搜索结果排序。
+- 完善扩展管理系统，现在扩展加载失败或者有新版本时会有气泡提示。
 
 ### 修复
 
