@@ -5,7 +5,7 @@
   import InstalledList from './InstalledList.svelte'
   import OnlineList from './OnlineList.svelte'
 
-  let activeView = $derived<(typeof viewTypes)[number]>(viewTypes.find((t) => t == $query.type) ?? 'online')
+  let activeView = $derived<(typeof viewTypes)[number]>(viewTypes.find((t) => t == $query.type) ?? 'installed')
 </script>
 
 <div class="view-container container">

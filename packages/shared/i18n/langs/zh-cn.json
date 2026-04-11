@@ -55,6 +55,8 @@
   "edit_list_modal__list_remote": "远程列表",
   "edit_list_modal__new_title": "新建列表",
   "extension.header.actions.install_local": "本地安装",
+  "extension.incompatible_new_engine": "该扩展版本过旧，与当前 Any Listen 版本不兼容，请尝试安装更新的版本",
+  "extension.incompatible_old_engine": "该扩展需要更高版本的 Any Listen 才能运行，请尝试更新 Any Listen",
   "extension.install_failed": "❌ 扩展 [{name}] 安装失败：{err}",
   "extension.install_local_failed.public_key_not_match": "安装失败，即将安装的扩展与已安装的签名不一致",
   "extension.install_success": "✔️ 扩展 [{name}] 安装成功",

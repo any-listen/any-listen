@@ -13,6 +13,7 @@ import {
   backupExtension,
   buildExtensionI18nMessage,
   downloadExtension,
+  getCompareVersionMessage,
   loadExtension,
   mvExtension,
   parseExtension,
@@ -156,7 +157,13 @@ export const updateExtension = async (tempExtension: AnyListen.Extension.Extensi
     void removePath(tempExtension.directory)
     throw new Error(`Will update extension does not exist: ${tempExtension.id}`)
   }
-
+  if (tempExtension.target_engine) {
+    const message = getCompareVersionMessage(tempExtension.target_engine)
+    if (message) {
+      void removePath(tempExtension.directory)
+      throw new Error(message)
+    }
+  }
   const targetExtension = extensionState.extensions[targetExtensionIndex]
   if (targetExtension.internal) throw new Error(`Will update extension does not exist: ${tempExtension.id}`)
   // if (targetExtension.loaded) throw new Error(`Will update extension does running: ${tempExtension.id}`)
@@ -191,7 +198,13 @@ export const installExtension = async (tempExtension: AnyListen.Extension.Extens
     void removePath(tempExtension.directory)
     throw new Error(`Repeated expansion: ${tempExtension.id}`)
   }
-
+  if (tempExtension.target_engine) {
+    const message = getCompareVersionMessage(tempExtension.target_engine)
+    if (message) {
+      void removePath(tempExtension.directory)
+      throw new Error(message)
+    }
+  }
   const extensionPath = await mvExtension(tempExtension)
   const extension = await parseExtension(extensionPath)
   if (!extension) {

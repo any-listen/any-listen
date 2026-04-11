@@ -55,6 +55,8 @@
   "edit_list_modal__list_remote": "Remote List",
   "edit_list_modal__new_title": "Create new list",
   "extension.header.actions.install_local": "Local installation",
+  "extension.incompatible_new_engine": "This extension version is out of date and incompatible with the current Any Listen version. Please try installing a newer version.",
+  "extension.incompatible_old_engine": "This extension requires a newer version of Any Listen to run, please try updating Any Listen",
   "extension.install_failed": "❌ Extension [{name}] Installation failed: {err}",
   "extension.install_local_failed.public_key_not_match": "Installation failed, the upcoming extension is inconsistent with the installed signature",
   "extension.install_success": "✔️ Extension [{name}] Installed successfully",

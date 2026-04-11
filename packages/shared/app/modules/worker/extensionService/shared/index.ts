@@ -2,8 +2,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import { EXTENSION } from '@any-listen/common/constants'
-import { generateId, isUrl, throttle } from '@any-listen/common/utils'
+import { EXTENSION, EXTENSION_ENGINE } from '@any-listen/common/constants'
+import { compareVersions, generateId, isUrl, throttle } from '@any-listen/common/utils'
 import {
   basename,
   checkFile,
@@ -26,6 +26,7 @@ import { eachMirror } from '@any-listen/nodejs/mirrorReuqest'
 import { verifySignature } from '@any-listen/nodejs/sign'
 
 import { extensionEvent } from '../event'
+import { i18n } from '../i18n'
 import { loadExtension as loadExtensionByInternalExtension } from '../internalExtension'
 import { extensionState } from '../state'
 import { createVmConetxt, destroyContext, runExtension, setupVmContext } from '../vm'
@@ -343,6 +344,24 @@ export const parseExtension = async (extensionPath: string): Promise<AnyListen.E
   }
 }
 
+const getCompareVersion = (target: string) => {
+  if (compareVersions(EXTENSION_ENGINE, target) < 0) return -1
+  const targetParts = parseInt(target.split('.')[0])
+  const currentParts = parseInt(EXTENSION_ENGINE.split('.')[0])
+  if (Number.isNaN(targetParts) || Number.isNaN(currentParts)) return 0
+  return currentParts > targetParts ? 1 : 0
+}
+export const getCompareVersionMessage = (target: string) => {
+  switch (getCompareVersion(target)) {
+    case 1:
+      return i18n.t('extension.incompatible_new_engine')
+    case -1:
+      return i18n.t('extension.incompatible_old_engine')
+    default:
+      return ''
+  }
+}
+
 export const saveExtensionsSetting = async (extensions: AnyListen.Extension.Extension[]) => {
   return fs.promises.writeFile(
     extensionState.configFilePath,
@@ -379,6 +398,10 @@ export const loadExtension = async (extension: AnyListen.Extension.Extension) =>
     if (extension.internal) {
       runTotalTime = await loadExtensionByInternalExtension(extension)
     } else {
+      if (extension.target_engine) {
+        const msg = getCompareVersionMessage(extension.target_engine)
+        if (msg) throw new Error(msg)
+      }
       const vmState = await createVmConetxt(extension, extensionState.preloadScript)
       await setupVmContext(vmState)
       try {

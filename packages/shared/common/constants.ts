@@ -2,6 +2,8 @@ export const URL_SCHEME_RXP = /^anylisten:\/\//
 
 export const NATIVE_VERSION = 8
 
+export const EXTENSION_ENGINE = '1.1.0'
+
 export const DEV_SERVER_PORTS = {
   'view-main': 9200,
 } as const

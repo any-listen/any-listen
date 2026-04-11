@@ -41,7 +41,12 @@
           {ext.loadTimestamp}ms
         </p>
       {:else if ext.errorMessage}
-        <p class="load-error" aria-label={$t('extension.load_error', { msg: ext.errorMessage })}>
+        <p
+          class="load-error"
+          aria-label={$t('extension.load_error', { msg: ext.errorMessage })}
+          data-ignore-tip
+          {@attach tooltip()}
+        >
           <SvgIcon name="error" />
           <span>{ext.errorMessage}</span>
         </p>
