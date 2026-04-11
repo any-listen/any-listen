@@ -24,6 +24,7 @@ import {
   executeCommand,
   updateExtensionSettings,
   getExtensionConfigValues,
+  getNewVersionInfo,
 } from '@/modules/extension'
 
 import type { ExposeFunctions } from '.'
@@ -81,6 +82,9 @@ export const createExposeExtension = () => {
     },
     async getResourceList() {
       return getResourceList()
+    },
+    async getNewVersionInfo() {
+      return getNewVersionInfo()
     },
     async getExtensionLastLogs(event, extId) {
       return getExtensionLastLogs(extId)

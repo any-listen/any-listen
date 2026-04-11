@@ -46,6 +46,10 @@ export const setExtensionEnabled = (id: string, enabled: boolean) => {
   if (tagretExtIndex < 0) return
   const tagretExt = extensionState.extensionList[tagretExtIndex]
   tagretExt.enabled = enabled
+  if (!enabled) {
+    tagretExt.loadTimestamp = 0
+    tagretExt.errorMessage &&= ''
+  }
   extensionState.extensionList.splice(tagretExtIndex, 1, { ...tagretExt })
   extensionEvent.listChanged()
 }
@@ -104,4 +108,9 @@ export const setOnlineExtension = (list: AnyListen.IPCExtension.OnlineListItem[]
     }
   })
   extensionEvent.onlineExtensionListUpdated(extensionState.onlineExtensionList)
+}
+
+export const setNewVersionInfo = (info: AnyListen.IPCExtension.EventVersionInfoUpdated) => {
+  extensionState.newVersionInfo = info
+  extensionEvent.newVersionInfoUpdated(info)
 }

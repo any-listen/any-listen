@@ -1,7 +1,9 @@
 import { DEFAULT_LANG } from '@any-listen/common/constants'
+import { compareVersions } from '@any-listen/common/utils'
 import type { Locale } from '@any-listen/i18n'
 import { mirrorRequest } from '@any-listen/nodejs/mirrorReuqest'
 
+import { extensionEvent } from '../event'
 import { extensionState } from '../state'
 import { setMessages, t } from './i18n'
 
@@ -10,7 +12,7 @@ const API_URL = 'https://raw.githubusercontent.com/any-listen/any-listen-extensi
 let datas = {
   tags: null as AnyListen.IPCExtension.OnlineTagResult | null,
   categories: null as AnyListen.IPCExtension.OnlineCategorieResult | null,
-  list: null as AnyListen.IPCExtension.OnlineListItem[] | null,
+  list: null as AnyListen.IPCExtension.RemoteOnlineListItem[] | null,
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   i18nMessages: {} as Partial<Record<Locale, Record<string, string>>>,
   i18nLocale: '' as Locale | '',
@@ -90,15 +92,30 @@ export const getOnlineCategories = async (): Promise<AnyListen.IPCExtension.Onli
   })
 }
 
-const getList = async (): Promise<AnyListen.IPCExtension.OnlineListItem[]> => {
+const buildNewVersionInfo = () => {
+  const extMap = new Map<string, AnyListen.Extension.Extension>()
+  for (const ext of extensionState.extensions) extMap.set(ext.id, ext)
+
+  const newVersionInfo: Record<string, string> = {}
+  for (const item of datas.list ?? []) {
+    const target = extMap.get(item.id)
+    if (target && compareVersions(target.version, item.version) < 0) {
+      newVersionInfo[item.id] = item.version
+    }
+  }
+  extensionState.newExtensionVersions = newVersionInfo
+  extensionEvent.newVersionInfoUpdated(newVersionInfo)
+}
+const getList = async (): Promise<AnyListen.IPCExtension.RemoteOnlineListItem[]> => {
   if (!datas.list) {
-    const { body } = await mirrorRequest<{ all: AnyListen.IPCExtension.OnlineListItem[] } | null>(`${API_URL}/list.json`)
+    const { body } = await mirrorRequest<{ all: AnyListen.IPCExtension.RemoteOnlineListItem[] } | null>(`${API_URL}/list.json`)
 
     if (!body || !Array.isArray(body.all)) throw new Error('Invalid list data')
     if (body.all.length) {
       if (typeof body.all[0]?.id != 'string' || typeof body.all[0]?.name != 'string') throw new Error('Invalid list data')
     }
     datas.list = body.all
+    buildNewVersionInfo()
   }
   return datas.list
 }
@@ -108,19 +125,35 @@ export const getOnlineExtensionList = async (
 ): Promise<AnyListen.IPCExtension.OnlineListResult> => {
   const [list] = await Promise.all([getList(), initI18nMessages()])
 
+  const extMap = new Map<string, AnyListen.Extension.Extension>()
+  for (const ext of extensionState.extensions) extMap.set(ext.id, ext)
+
   return {
     total: list.length,
     page: filter.page,
     limit: filter.limit,
-    list: list.slice((filter.page - 1) * filter.limit, filter.page * filter.limit).map((item) => {
-      if (item.description) return { ...item, description: t(item.description, item.id) }
-      return item
-    }),
+    list: list
+      .slice((filter.page - 1) * filter.limit, filter.page * filter.limit)
+      .map((item) => {
+        if (item.description) return { ...item, description: t(item.description, item.id) }
+        return item
+      })
+      .map((item) => {
+        const target = extMap.get(item.id)
+        if (!target) return { ...item, installed: false, enabled: false, latest: false, currentVersion: '' }
+        return {
+          ...item,
+          enabled: target.enabled,
+          installed: true,
+          latest: compareVersions(target.version, item.version) >= 0,
+          currentVersion: target.version,
+        } satisfies AnyListen.IPCExtension.OnlineListItem
+      }),
   }
 }
 
 export const getOnlineExtensionDetail = async (id: string) => {
-  const resp = await mirrorRequest<AnyListen.IPCExtension.OnlineDetail>(`${API_URL}/registry/${id}.json`)
+  const resp = await mirrorRequest<AnyListen.IPCExtension.RemoteOnlineDetail>(`${API_URL}/registry/${id}.json`)
   if (resp.statusCode == 404) return null
   if (resp.statusCode !== 200) throw new Error(`Failed to fetch extension detail for ${id}: ${resp.statusMessage}`)
   return resp.body
@@ -144,4 +177,6 @@ export const initOnlineList = async () => {
     if (import.meta.env.DEV) console.error('Failed to fetch online extension list')
     setTimeout(initOnlineList, 5000)
   }
+
+  extensionEvent.on('listChanged', buildNewVersionInfo)
 }

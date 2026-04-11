@@ -63,6 +63,9 @@ export const createClientExtension = (main: MainCall) => {
     async getResourceList() {
       return main.getResourceList()
     },
+    async getNewVersionInfo() {
+      return main.getNewVersionInfo()
+    },
     async getExtensionLastLogs(extId) {
       return main.getExtensionLastLogs(extId)
     },

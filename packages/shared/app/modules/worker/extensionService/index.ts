@@ -134,6 +134,9 @@ const extension = {
   getResourceList() {
     return extensionState.resourceList
   },
+  getNewVersionInfo() {
+    return extensionState.newExtensionVersions
+  },
   async getExtensionLastLogs(extId?: string) {
     return getExtensionLastLogs(extId)
   },

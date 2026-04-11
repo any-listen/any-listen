@@ -111,6 +111,8 @@ export const disableExtension = async (id: string) => {
   if (!targetExtension) throw new Error(`extension not found: ${id}`)
   if (targetExtension.internal) throw new Error(`Internal extensions cannot be disabled: ${id}`)
   targetExtension.enabled = false
+  targetExtension.loadTimestamp = 0
+  if (targetExtension.errorMessage) delete targetExtension.errorMessage
   void saveExtensionsSetting(extensionState.extensions)
   extensionEvent.enabled(id, false)
   if (!targetExtension.loaded) return

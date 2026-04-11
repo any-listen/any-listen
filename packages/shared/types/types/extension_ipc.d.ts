@@ -21,6 +21,7 @@ declare namespace AnyListen {
       keys: string[]
       setting: Record<string, unknown>
     }
+    type EventVersionInfoUpdated = Record<string, string>
     type EventExtension =
       | IPCAction<'loadListStart'>
       | IPCAction<'loadListEnd'>
@@ -38,6 +39,7 @@ declare namespace AnyListen {
       | IPCAction<'listRemove', string>
       | IPCAction<'listUpdate', Extension.Extension>
       | IPCAction<'listSet', Extension.Extension[]>
+      | IPCAction<'newVersionInfoUpdated', EventVersionInfoUpdated>
       | IPCAction<'logOutput', LogInfo>
       | IPCAction<'resourceUpdated', Extension.ResourceList>
       | IPCAction<'extenstionSettingUpdated', EventExtensionSettingUpdated>
@@ -180,7 +182,7 @@ declare namespace AnyListen {
       page: number
       limit: number
     }
-    interface OnlineListItem {
+    interface RemoteOnlineListItem {
       id: Extension.Manifest['id']
       name: Extension.Manifest['name']
       description: Extension.Manifest['description']
@@ -197,7 +199,7 @@ declare namespace AnyListen {
       publicKey: Extension.Manifest['publicKey']
       download_url: string
     }
-    interface OnlineDetail {
+    interface RemoteOnlineDetail {
       id: Extension.Manifest['id']
       name: Extension.Manifest['name']
       description: Extension.Manifest['description']
@@ -212,6 +214,13 @@ declare namespace AnyListen {
       contributes: Extension.Manifest['contributes']
       publicKey: Extension.Manifest['publicKey']
       download_url: string
+    }
+
+    interface OnlineListItem extends RemoteOnlineListItem {
+      installed: boolean
+      enabled: boolean
+      latest: boolean
+      currentVersion: string
     }
 
     interface OnlineListResult {
@@ -231,7 +240,7 @@ declare namespace AnyListen {
       getExtensionErrorMessage: () => string | null
       getExtensionList: () => Extension.Extension[]
       getOnlineExtensionList: (options: OnlineListFilterOptions) => OnlineListResult
-      getOnlineExtensionDetail: (id: string) => OnlineDetail | null
+      getOnlineExtensionDetail: (id: string) => RemoteOnlineDetail | null
       getOnlineTags: () => OnlineTagResult
       getOnlineCategories: () => OnlineCategorieResult
       resetOnlineData: () => void
@@ -245,6 +254,7 @@ declare namespace AnyListen {
       uninstallExtension: (id: string) => void
       restartExtensionHost: () => void
       getResourceList: () => Extension.ResourceList
+      getNewVersionInfo: () => EventVersionInfoUpdated
       getExtensionLastLogs: (id?: string) => LastLog[]
       clearExtensionLogs: (id?: string) => void
       getAllExtensionSettings: () => Promise<Extension.ExtensionSetting[]>

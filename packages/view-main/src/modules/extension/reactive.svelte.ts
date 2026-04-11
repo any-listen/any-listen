@@ -3,7 +3,7 @@ import { readable } from 'svelte/store'
 
 import { extI18n, extI18nMessageChangedEvent } from './i18n'
 import { extensionEvent } from './store/event'
-import { extensionState, type OnlineListItem } from './store/state'
+import { extensionState } from './store/state'
 
 export const extensionStatus = readable(extensionState.status, (set) => {
   set(extensionState.status)
@@ -39,7 +39,7 @@ export const resourceList = readable(extensionState.resourceList, (set) => {
 })
 
 export const useOnlineExtensionList = () => {
-  let list = $state.raw<OnlineListItem[]>(extensionState.onlineExtensionList)
+  let list = $state.raw<AnyListen.IPCExtension.OnlineListItem[]>(extensionState.onlineExtensionList)
 
   $effect(() => {
     list = extensionState.onlineExtensionList
@@ -51,6 +51,57 @@ export const useOnlineExtensionList = () => {
   return {
     get val() {
       return list
+    },
+  }
+}
+
+export const useExtensionNewVersionNum = () => {
+  let num = $state(Object.keys(extensionState.newVersionInfo).length)
+
+  $effect(() => {
+    num = Object.keys(extensionState.newVersionInfo).length
+    return extensionEvent.on('newVersionInfoUpdated', () => {
+      num = Object.keys(extensionState.newVersionInfo).length
+    })
+  })
+
+  return {
+    get val() {
+      return num
+    },
+  }
+}
+
+export const useExtensionError = () => {
+  let error = $state(extensionState.extensionList.some((ext) => !!ext.errorMessage))
+
+  $effect(() => {
+    error = extensionState.extensionList.some((ext) => !!ext.errorMessage)
+    return extensionEvent.on('listChanged', () => {
+      error = extensionState.extensionList.some((ext) => !!ext.errorMessage)
+    })
+  })
+
+  return {
+    get val() {
+      return error
+    },
+  }
+}
+
+export const useExtensionLatestVersion = (ext: string) => {
+  let latest = $state(!extensionState.newVersionInfo[ext])
+
+  $effect(() => {
+    latest = !extensionState.newVersionInfo[ext]
+    return extensionEvent.on('newVersionInfoUpdated', () => {
+      latest = !extensionState.newVersionInfo[ext]
+    })
+  })
+
+  return {
+    get val() {
+      return latest
     },
   }
 }

@@ -32,4 +32,5 @@ export const extensionState = {
   remoteFuncs: empty as AnyListen.IPCExtension.MainIPCActions & {
     inited: () => void
   },
+  newExtensionVersions: {} as Record<string, string>,
 }

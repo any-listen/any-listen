@@ -64,6 +64,10 @@ export const getResourceList: AnyListen.IPC.ServerIPC['getResourceList'] = async
   return ipc.getResourceList()
 }
 
+export const getNewVersionInfo: AnyListen.IPC.ServerIPC['getNewVersionInfo'] = async () => {
+  return ipc.getNewVersionInfo()
+}
+
 export const getAllExtensionSettings: AnyListen.IPC.ServerIPC['getAllExtensionSettings'] = async () => {
   return ipc.getAllExtensionSettings()
 }

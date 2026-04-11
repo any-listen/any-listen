@@ -5,10 +5,32 @@
   import { extT } from '@/modules/extension/i18n'
   import ActionBtn from './ActionBtn.svelte'
   import { tooltip } from '@/components/apis/tooltips/attach.svelte'
+  import { useExtensionLatestVersion } from '@/modules/extension/reactive.svelte'
+  import Btn from '@/components/base/Btn.svelte'
+  import { showNotify } from '@/components/apis/notify'
+  import { extensionState } from '@/modules/extension/store/state'
+  import { downloadAndParseExtension, updateExtension } from '@/modules/extension/store/actions'
 
   let { ext }: { ext: AnyListen.Extension.Extension } = $props()
+  let latest = useExtensionLatestVersion(ext.id)
   let version = $derived(/^\d/.test(ext.version) ? `v${ext.version}` : ext.version)
   let grants = $derived(ext.grant.map((g) => ({ id: g, icon: `ext_grant_${g}`, label: i18n.t(`extension__grant_${g}`) })))
+
+  const handleUpdate = async () => {
+    const targetExt = extensionState.onlineExtensionList.find((e) => e.id == ext.id)
+    if (!targetExt) return
+    // TODO
+    try {
+      const tempExt = await downloadAndParseExtension(targetExt.download_url)
+      await updateExtension(tempExt)
+    } catch (error) {
+      console.error('Failed to install extension:', error)
+      // Show an error message to the user
+      showNotify(i18n.t('extension.install_failed', { name: ext.name, err: (error as Error).message }))
+      return
+    }
+    showNotify(i18n.t('extension.install_success', { name: ext.name }))
+  }
 </script>
 
 <li class="list-item" class:disabled={!ext.enabled}>
@@ -53,6 +75,16 @@
       {/if}
     </div>
     <div class="right">
+      {#if !latest.val}
+        <Btn
+          min
+          onclick={async () => {
+            await handleUpdate()
+          }}
+        >
+          {$t('extension__action_update')}
+        </Btn>
+      {/if}
       <ActionBtn {ext} />
     </div>
   </div>
@@ -131,6 +163,7 @@
     justify-content: space-between;
     .left {
       display: flex;
+      flex: auto;
       flex-flow: row nowrap;
       gap: 10px;
       align-items: center;
@@ -173,6 +206,7 @@
       display: flex;
       flex: none;
       flex-flow: row nowrap;
+      gap: 10px;
       font-size: 16px;
     }
   }

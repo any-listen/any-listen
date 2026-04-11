@@ -192,6 +192,10 @@ export const getResourceList = async () => {
   return workers.extensionService.getResourceList()
 }
 
+export const getNewVersionInfo = async () => {
+  return workers.extensionService.getNewVersionInfo()
+}
+
 export const getExtensionLastLogs = async (id?: string) => {
   return workers.extensionService.getExtensionLastLogs(id)
 }

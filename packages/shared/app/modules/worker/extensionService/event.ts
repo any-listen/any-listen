@@ -73,24 +73,32 @@ export class Event extends _Event {
     this.extensionEvent({ action: 'stopped', data: id })
   }
 
+  listChanged() {
+    this.emitEvent('listChanged')
+  }
+
   listAdd(extension: AnyListen.Extension.Extension) {
     this.emitEvent('listAdd', extension)
     this.extensionEvent({ action: 'listAdd', data: extension })
+    this.listChanged()
   }
 
   listRemove(id: string) {
     this.emitEvent('listRemove', id)
     this.extensionEvent({ action: 'listRemove', data: id })
+    this.listChanged()
   }
 
   listUpdate(extension: AnyListen.Extension.Extension) {
     this.emitEvent('listUpdate', extension)
     this.extensionEvent({ action: 'listUpdate', data: extension })
+    this.listChanged()
   }
 
   listSet(extensions: AnyListen.Extension.Extension[]) {
     this.emitEvent('listSet', extensions)
     this.extensionEvent({ action: 'listSet', data: extensions })
+    this.listChanged()
   }
 
   logOutput(info: AnyListen.LogInfo) {
@@ -131,6 +139,10 @@ export class Event extends _Event {
   // clientDisconnected(id: string) {
   //   this.emitEvent('clientDisconnected', id)
   // }
+  newVersionInfoUpdated(info: Record<string, string>) {
+    this.emitEvent('newVersionInfoUpdated', info)
+    this.extensionEvent({ action: 'newVersionInfoUpdated', data: info })
+  }
 }
 
 type EventMethods = Omit<Event, keyof _Event | 'emitEvent'>

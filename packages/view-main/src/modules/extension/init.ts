@@ -9,10 +9,12 @@ import {
   getExtensionList,
   getOnlineExtensionList,
   getResourceList,
+  getNewVersionInfo,
   registerRemoteExtensionEvent,
   setCrash,
   setList,
   setResourceList,
+  setNewVersionInfo,
 } from './store/actions'
 import { setOnlineExtension } from './store/commit'
 import { extensionEvent } from './store/event'
@@ -31,6 +33,9 @@ const init = async () => {
       getResourceList().then((list) => {
         console.log(list)
         setResourceList(list)
+      }),
+      getNewVersionInfo().then((info) => {
+        setNewVersionInfo(info)
       }),
     ])
   } else console.error('[ExtensionHost]', message)

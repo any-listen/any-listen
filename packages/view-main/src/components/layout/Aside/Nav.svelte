@@ -3,8 +3,12 @@
   import { link, location, query } from '@/plugins/routes'
   import { t } from '@/plugins/i18n'
   import { LIST_IDS } from '@any-listen/common/constants'
+  import { useExtensionError, useExtensionNewVersionNum } from '@/modules/extension/reactive.svelte'
 
   const lastPlayedUrl = `/library?id=${LIST_IDS.LAST_PLAYED}`
+
+  const newExtVerNum = useExtensionNewVersionNum()
+  const extensionError = useExtensionError()
 
   let menus = $derived(
     [
@@ -71,6 +75,7 @@
         icon: '#icon-puzzle',
         iconSize: '0 0 493.23 436.47',
         enable: true,
+        hidden: true,
       },
     ].filter((m) => m.enable)
   )
@@ -87,29 +92,69 @@
   // let activePath = ''
 </script>
 
-<ul class="aside-nav" role="menu">
-  {#each menus as item (item.to)}
-    <li class="nav-item" role="presentation">
-      <a
-        class="link"
-        class:active={activePath == item.to}
-        role="tab"
-        data-ignore-tip
-        aria-selected={activePath == item.to}
-        href={item.to}
-        aria-label={item.name}
-        {@attach link()}
-      >
-        <!-- <a class="link" class:active={activePath == item.to} role="tab" href={item.to} aria-label={item.name}> -->
+{#snippet listItem(item: {
+  to: string
+  name: string
+  icon: string
+  iconSize: string
+  enable: boolean
+  badgeNum?: number
+  waringBadge?: boolean
+})}
+  <li class="nav-item" role="presentation">
+    <a
+      class="link"
+      class:active={activePath == item.to}
+      role="tab"
+      data-ignore-tip
+      aria-selected={activePath == item.to}
+      href={item.to}
+      aria-label={item.name}
+      {@attach link()}
+    >
+      <!-- <a class="link" class:active={activePath == item.to} role="tab" href={item.to} aria-label={item.name}> -->
+      <div class="left">
         <div class="icon">
           <svg viewBox={item.iconSize}>
             <use xlink:href={item.icon} />
           </svg>
         </div>
         <span class="nav-name">{item.name}</span>
-      </a>
-    </li>
+      </div>
+      <div class="right">
+        {#if item.waringBadge}
+          <div class="icon" style="color: var(--color-font-error);">
+            <svg viewBox={item.iconSize}>
+              <use xlink:href="#icon-error" />
+            </svg>
+          </div>
+        {/if}
+        {#if item.badgeNum}
+          <span class="badge" aria-hidden="true">{item.badgeNum}</span>
+        {/if}
+      </div>
+    </a>
+  </li>
+{/snippet}
+{#snippet extensonItem()}
+  {@render listItem({
+    to: '/extenstion',
+    name: $t('extenstion'),
+    icon: '#icon-puzzle',
+    iconSize: '0 0 493.23 436.47',
+    enable: true,
+    waringBadge: extensionError.val,
+    badgeNum: newExtVerNum.val > 0 ? newExtVerNum.val : undefined,
+  })}
+{/snippet}
+
+<ul class="aside-nav" role="menu">
+  {#each menus as item (item.to)}
+    {#if !item.hidden}
+      {@render listItem(item)}
+    {/if}
   {/each}
+  {@render extensonItem()}
 </ul>
 
 <style lang="less">
@@ -125,7 +170,8 @@
   .link {
     display: flex;
     align-items: center;
-    padding: 8px 15px 8px 5px;
+    justify-content: space-between;
+    padding: 8px 8px 8px 5px;
     color: var(--color-primary-font);
     text-decoration: none;
     cursor: pointer;
@@ -156,13 +202,37 @@
     }
   }
 
+  .left {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .right {
+    display: flex;
+    flex: none;
+    gap: 3px;
+    align-items: center;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    font-size: 10px;
+    color: var(--color-primary-font);
+    background-color: var(--color-primary-background);
+    border-radius: 8px;
+  }
+
   .icon {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 20px;
     // margin-bottom: 5px;
-    margin-right: 6px;
+    // margin-right: 6px;
     & > svg {
       height: 20px;
     }

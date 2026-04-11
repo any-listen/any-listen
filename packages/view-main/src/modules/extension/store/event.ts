@@ -31,6 +31,10 @@ class Event extends WebEvent {
     this.emitEvent('extenstionSettingUpdated', setting)
   }
 
+  newVersionInfoUpdated(info: AnyListen.IPCExtension.EventVersionInfoUpdated) {
+    this.emitEvent('newVersionInfoUpdated', info)
+  }
+
   logOutput(info: AnyListen.LogInfo) {
     this.emitEvent('logOutput', info)
   }

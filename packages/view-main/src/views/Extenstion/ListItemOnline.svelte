@@ -4,22 +4,21 @@
   import SvgIcon from '@/components/base/SvgIcon.svelte'
   import { i18n, t } from '@/plugins/i18n'
   import ActionBtnOnline from './ActionBtnOnline.svelte'
-  import type { OnlineListItem } from '@/modules/extension/store/state'
   import { extT } from '@/modules/extension/i18n'
   import { downloadAndParseExtension, updateExtension, installExtension } from '@/modules/extension/store/actions'
   import { showNotify } from '@/components/apis/notify'
   import { tooltip } from '@/components/apis/tooltips/attach.svelte'
 
-  let { ext }: { ext: OnlineListItem } = $props()
+  let { ext }: { ext: AnyListen.IPCExtension.OnlineListItem } = $props()
   let version = $derived(
     !ext.installed || ext.currentVersion == ext.version ? `v${ext.version}` : `v${ext.currentVersion} → v${ext.version}`
   )
   let grants = $derived(ext.grant?.map((g) => ({ id: g, icon: `ext_grant_${g}`, label: i18n.t(`extension__grant_${g}`) })) ?? [])
-  const handleInstall = async (ext: OnlineListItem, install?: boolean) => {
+  const handleInstall = async (ext: AnyListen.IPCExtension.OnlineListItem, installed?: boolean) => {
     // TODO
     try {
       const tempExt = await downloadAndParseExtension(ext.download_url)
-      if (install) {
+      if (installed) {
         await updateExtension(tempExt)
       } else {
         await installExtension(tempExt)

@@ -5,9 +5,20 @@ import { extensionState } from './state'
 export const getOnlineExtensionList = async (force = false) => {
   if (!force && extensionState.onlineExtensionList.length) return
   // TODO
-  await resetOnlineDataRemote()
-  const { list } = await getOnlineExtensionListRemote({ page: 1, limit: 1000 })
+  const t = performance.now()
+  let { list } = await getOnlineExtensionListRemote({ page: 1, limit: 1000 })
   commit.setOnlineExtension(list)
+  const cost = performance.now() - t
+  console.log(`get online extension list cost: ${cost}ms`)
+  if (cost < 1000) {
+    await resetOnlineDataRemote()
+    ;({ list } = await getOnlineExtensionListRemote({ page: 1, limit: 1000 }))
+    commit.setOnlineExtension(list)
+  }
+}
+
+export const setNewVersionInfo = (info: AnyListen.IPCExtension.EventVersionInfoUpdated) => {
+  commit.setNewVersionInfo(info)
 }
 
 export {
@@ -20,6 +31,7 @@ export {
   getExtensionList,
   executeCommand,
   getResourceList,
+  getNewVersionInfo,
   installExtension,
   listProviderAction,
   registerRemoteExtensionEvent,

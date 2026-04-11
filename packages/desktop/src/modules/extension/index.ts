@@ -153,6 +153,10 @@ export const getResourceList = async () => {
   return workers.extensionService.getResourceList()
 }
 
+export const getNewVersionInfo = async () => {
+  return workers.extensionService.getNewVersionInfo()
+}
+
 export const executeCommand = async (cmd: string, args: any[]) => {
   return workers.extensionService.executeCommand(cmd, args)
 }
