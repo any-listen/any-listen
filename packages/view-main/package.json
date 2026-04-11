@@ -36,11 +36,11 @@
     "stylelint-config-html": "^1.1.0",
     "stylelint-config-recess-order": "^7.7.0",
     "stylelint-config-standard-less": "^4.1.0",
-    "svelte": "^5.55.2",
+    "svelte": "^5.55.3",
     "svelte-check": "^4.4.6",
     "svelte-eslint-parser": "^1.6.0",
     "svelte-preprocess": "^6.0.3",
-    "vite": "^8.0.7",
+    "vite": "^8.0.8",
     "vite-plugin-svg-icons": "^2.0.1"
   }
 }
