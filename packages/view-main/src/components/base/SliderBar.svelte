@@ -81,6 +81,7 @@
     emitChange(val, _step)
   }
   const handleKeydown = (event: KeyboardEvent) => {
+    if (disabled) return
     let _step = getDeltaStep()
     switch (event.key) {
       case 'ArrowLeft':
@@ -104,8 +105,8 @@
     handleDown(event.clientX, event.offsetX)
   }
   const handleTouchDown = (event: TouchEvent) => {
+    if (disabled) return
     if (event.changedTouches.length) {
-      if (disabled) return
       event.preventDefault()
       const touch = event.changedTouches[0]
       let offsetX = touch.clientX - (event.currentTarget as HTMLDivElement).getBoundingClientRect().left

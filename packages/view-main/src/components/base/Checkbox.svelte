@@ -44,6 +44,7 @@
       aria-checked={checked}
       aria-disabled={disabled}
       onkeydown={(event) => {
+        if (disabled) return
         switch (event.key) {
           case 'Enter':
           case ' ':

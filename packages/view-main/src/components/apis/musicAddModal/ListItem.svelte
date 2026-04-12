@@ -25,7 +25,7 @@
   tabindex="0"
   class:disabled
   onkeydown={(event) => {
-    if (event.repeat) return
+    if (event.repeat || disabled) return
     switch (event.key) {
       case 'Enter':
       case ' ':

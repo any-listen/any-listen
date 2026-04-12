@@ -20,6 +20,7 @@
 - Fixed a conflict between playback cover and playlist song cover loading logic.
 - Fixed an issue where song information in the **Playback History** list didn't update when the song in the original list was changed.
 - Fixed an issue where the **“Resume playback position on launch”** setting did not take effect ([#150](https://github.com/any-listen/any-listen/issues/150)).
+- Fixed an issue where some form fields remained editable via keyboard when disabled.
 
 ---
 
@@ -45,3 +46,4 @@
 - 修复播放封面与列表内歌曲封面加载逻辑冲突的问题。
 - 修复**播放历史列表**中的歌曲信息在原始列表歌曲更新时未随之更新的问题。
 - 修复 **“启动软件时是否恢复上次播放进度”** 设置不生效的问题（[#150](https://github.com/any-listen/any-listen/issues/150)）。
+- 修复某些表单项在禁用状态仍可通过键盘编辑的问题。
