@@ -26,6 +26,7 @@ export const createUtils = (extension: AnyListen.Extension.Extension) => {
       data: Uint8Array | string,
       encoding?: T
     ): Promise<T extends 'base64' ? string : Uint8Array> {
+      if (encoding === undefined) encoding = 'binary' as T
       switch (encoding) {
         case 'binary':
         case 'base64':
@@ -42,6 +43,7 @@ export const createUtils = (extension: AnyListen.Extension.Extension) => {
       data: Uint8Array | string,
       encoding?: T
     ): Promise<T extends 'utf-8' ? string : Uint8Array> {
+      if (encoding === undefined) encoding = 'binary' as T
       switch (encoding) {
         case 'binary':
         case 'utf-8':
