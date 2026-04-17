@@ -1,6 +1,6 @@
 export const URL_SCHEME_RXP = /^anylisten:\/\//
 
-export const NATIVE_VERSION = 8
+export const NATIVE_VERSION = 9
 
 export const EXTENSION_ENGINE = '1.1.1'
 
