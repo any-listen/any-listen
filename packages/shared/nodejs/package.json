@@ -3,13 +3,13 @@
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
     "chokidar": "^5.0.0",
-    "fast-xml-parser": "^5.5.11",
+    "fast-xml-parser": "^5.6.0",
     "iconv-lite": "^0.7.2",
     "jschardet": "^3.1.4",
     "music-metadata": "^11.12.3",
     "tar": "^7.5.13",
     "tunnel": "^0.0.6",
-    "undici": "^7.24.7"
+    "undici": "^7.25.0"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
