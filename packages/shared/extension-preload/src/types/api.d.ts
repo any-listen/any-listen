@@ -892,6 +892,10 @@ declare global {
 
       readonly onLocaleChanged: (callback: (locale: Locale) => void) => () => void
     }
+    interface Constants {
+      readonly storageDir: string
+      readonly extensionDir: string
+    }
     /** 应用相关 */
     interface App {
       showMessage: (message: string, options?: MessageDialogOptions) => Promise<number>
@@ -1120,6 +1124,7 @@ declare global {
         }
       }
       command: Command
+      constants: Constants
     }
   }
 }

@@ -4,6 +4,7 @@ import { translate } from '@/i18n'
 import { app } from './app'
 import { command } from './command'
 import { configuration } from './configuration'
+import { constants } from './constants'
 import { crypto } from './crypto'
 import { dataConverter } from './dataConverter'
 import { env } from './env'
@@ -30,6 +31,7 @@ export const getAPI = () => {
     musicUtils,
     registerResourceAction,
     command,
+    constants,
     utils: {
       dataConverter,
       crypto,
