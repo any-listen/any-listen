@@ -3,7 +3,7 @@
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
     "chokidar": "^5.0.0",
-    "fast-xml-parser": "^5.6.0",
+    "fast-xml-parser": "^5.7.1",
     "iconv-lite": "^0.7.2",
     "jschardet": "^3.1.4",
     "music-metadata": "^11.12.3",
