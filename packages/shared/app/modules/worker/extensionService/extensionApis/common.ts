@@ -63,7 +63,8 @@ export const createCommon = (extension: AnyListen.Extension.Extension) => {
       if (!rawPath) throw new Error('Not Allowed to access this file')
       if (!rawPath.endsWith(sep)) rawPath += sep
       const path = normalizePath(`${rawPath}${name}`)
-      const dirPath = dirname(path)
+      let dirPath = dirname(path)
+      if (!dirPath.endsWith(sep)) dirPath += sep
       if (rawPath !== dirPath) throw new Error('Not Allowed to access this file')
       await writeFile(path, content)
       return path
