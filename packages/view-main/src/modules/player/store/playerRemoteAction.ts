@@ -44,6 +44,7 @@ const handleGetMusicPicFromRemote = async (info: AnyListen.IPCMusic.GetMusicPicI
 }
 
 const handleGetMusicPic = async (info: AnyListen.IPCMusic.GetMusicPicInfo) => {
+  // console.log('handleGetMusicPicFromRemote', info.musicInfo.name, info.isRefresh)
   if (picRemoteGettingPromises.has(info.musicInfo.id)) return picRemoteGettingPromises.get(info.musicInfo.id)!
   const promise = handleGetMusicPicFromRemote(info)
     .then((urlInfo) => {
@@ -70,9 +71,18 @@ const getPicFromCache = (id: string) => {
   return null
 }
 
-export const getMusicPic = async (info: AnyListen.IPCMusic.GetMusicPicInfo) => {
-  const cache = getPicFromCache(info.musicInfo.id)
-  if (cache) return cache
+export const getMusicPic = async (info: AnyListen.IPCMusic.GetMusicPicInfo): Promise<AnyListen.IPCMusic.MusicPicInfo> => {
+  if (!info.isRefresh) {
+    const cache = getPicFromCache(info.musicInfo.id)
+    if (cache) return cache
+
+    if (info.musicInfo.meta.picUrl) {
+      return {
+        url: info.musicInfo.meta.picUrl,
+        isFromCache: true,
+      }
+    }
+  }
   return handleGetMusicPic(info)
 }
 
@@ -101,23 +111,36 @@ const findUpdatedMusic = (targetId: string, infos: Map<string, AnyListen.Music.M
   return null
 }
 export const getMusicPicDelay = (info: AnyListen.IPCMusic.GetMusicPicInfo, onUrl: (url: string) => void) => {
-  const cache = getPicFromCache(info.musicInfo.id)
-  if (cache) {
-    onUrl(cache.url)
-    return
+  if (!info.isRefresh) {
+    const cache = getPicFromCache(info.musicInfo.id)
+    if (cache) {
+      onUrl(cache.url)
+      return
+    }
+    if (info.musicInfo.meta.picUrl) {
+      onUrl(info.musicInfo.meta.picUrl)
+      return
+    }
   }
 
   let isCanceled = false
+  let lastPicUrl = info.musicInfo.meta.picUrl
+  const _onUrl = (url: string) => {
+    lastPicUrl = url
+    onUrl(url)
+  }
   const unsub = musicLibraryEvent.on('listMusicUpdated', (infos) => {
     if (isCanceled) return
     let targetMusic = findUpdatedMusic(info.musicInfo.id, infos)
     if (!targetMusic) return
-    if (targetMusic.meta.picUrl) onUrl(targetMusic.meta.picUrl)
-    else if (targetMusic.meta.unparsed != info.musicInfo.meta.unparsed) {
+    if (targetMusic.meta.picUrl) {
+      if (targetMusic.meta.picUrl == lastPicUrl) return
+      _onUrl(targetMusic.meta.picUrl)
+    } else if (targetMusic.meta.unparsed != info.musicInfo.meta.unparsed) {
       // Metadata has been parsed, fetch the pic again
       void handleGetMusicPic(info).then((urlInfo) => {
         if (isCanceled) return
-        onUrl(urlInfo.url)
+        _onUrl(urlInfo.url)
       })
     }
   })
@@ -131,7 +154,7 @@ export const getMusicPicDelay = (info: AnyListen.IPCMusic.GetMusicPicInfo, onUrl
     timeout = null
     void handleGetMusicPic(info).then((urlInfo) => {
       if (isCanceled) return
-      onUrl(urlInfo.url)
+      _onUrl(urlInfo.url)
     })
   }, 1000)
   return () => {

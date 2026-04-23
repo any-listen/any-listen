@@ -602,6 +602,7 @@ interface LyricDetailParams extends CommonParams {
 interface PicSearchParams extends CommonParams {
   name: string
   artist?: string
+  interval?: number
 }
 interface SearchParams extends CommonListParams {
   name: string

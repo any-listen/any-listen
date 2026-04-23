@@ -1,15 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Improved
 
-- Fixed an issue where some form fields remained editable via keyboard when disabled.
-- Fixed a mismatch between the extension system Zlib API `encoding` parameter and its type definition, and updated the extension system to version `1.1.1`.
+- Improved cover loading in the song list to display previously loaded covers faster ([#156](https://github.com/any-listen/any-listen/issues/156)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 优化
 
-- 修复某些表单项在禁用状态仍可通过键盘编辑的问题。
-- 修复扩展系统 Zlib API `encoding` 参数与类型不一致的问题，并将扩展系统版本更新至 `1.1.1`。
+- 优化歌曲列表内封面加载机制，加快已加载过封面的显示速度 ([#156](https://github.com/any-listen/any-listen/issues/156))。

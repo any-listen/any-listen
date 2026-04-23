@@ -555,7 +555,9 @@ export const musicsUpdateLastPlayedList = (musicInfos: AnyListen.IPCList.ListAct
 
 /**
  * 更新歌曲图片
- * @param musicInfos 歌曲&列表信息
+ * @param listId 列表Id
+ * @param musicId 歌曲Id
+ * @param picUrl 图片Url
  */
 export const musicPicUpdate = (listId: string, musicId: string, picUrl: string) => {
   let targetList = musicLists.get(listId)

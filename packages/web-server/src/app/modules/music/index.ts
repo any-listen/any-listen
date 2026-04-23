@@ -12,6 +12,8 @@
 //   getPicUrl as getDownloadPicUrl,
 //   getLyricInfo as getDownloadLyricInfo,
 // } from './download'
+import { updateMusicPicIfNeeded } from '@any-listen/app/modules/musicList'
+
 import { getLyricInfo as getLocalLyric, getMusicUrl as getLocalMusicUrl, getMusicPicUrl as getLocalPicUrl } from './local'
 import { getLyricInfo as getOnlineLyric, getMusicUrl as getOnlineMusicUrl, getMusicPicUrl as getOnlinePicUrl } from './online'
 
@@ -60,12 +62,17 @@ export const getMusicPic = async ({
       isRefresh,
       listId,
     })
-    if (info) return info
+    if (info) {
+      updateMusicPicIfNeeded(musicInfo, info.url, listId)
+      return info
+    }
     // return getLocalPicUrl({ musicInfo, isRefresh, listId })
   } else {
     // return getOnlinePicUrl({ musicInfo, isRefresh, listId })
   }
-  return getOnlinePicUrl({ musicInfo, isRefresh, listId })
+  const info = await getOnlinePicUrl({ musicInfo, isRefresh, listId })
+  updateMusicPicIfNeeded(musicInfo, info.url, listId)
+  return info
 
   // if ('progress' in musicInfo) {
   //   return getDownloadPicUrl({ musicInfo, isRefresh, listId })
