@@ -52,8 +52,6 @@
         offsets.push(0)
         return
       }
-      idx = queue.findIndex((n) => n.id == id)
-      if (idx > -1) queue.splice(idx, 1)
     }
   }
 </script>
@@ -66,12 +64,7 @@
         offset={offsets.slice(idx + 1).reduce((p, cur) => p + cur, 0)}
         maxheight={maxItemHeight}
         onhide={() => {
-          const idx = notifys.indexOf(notify)
-          const newNotifys = [...notifys]
-          newNotifys.splice(idx, 1)
-          notifys = newNotifys
-          offsets.splice(idx, 1)
-          offsets.push(0)
+          hide(notify.id)
         }}
         onmount={(height) => {
           offsets[idx] = height + 4

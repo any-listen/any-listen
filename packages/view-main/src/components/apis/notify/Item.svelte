@@ -32,6 +32,7 @@
   let transform = $derived(`translateX(-50%) translateY(${-offset}px)`)
 
   let hideTime = 0
+  let onoutroendCalled = false
   const addAutoCloseTimer = () => {
     clearAutoCloseTimer()
     autoCloseTimer = setTimeout(
@@ -74,7 +75,11 @@
   style:transform
   style:max-height={maxheight}
   transition:fly|global={{ y: 30 }}
-  onoutroend={item.onafterleave}
+  onoutroend={() => {
+    if (onoutroendCalled) return
+    onoutroendCalled = true
+    item.onafterleave?.()
+  }}
   onmouseenter={() => {
     hideTime = Math.max(2000, hideTime - performance.now())
     clearAutoCloseTimer()
@@ -130,7 +135,7 @@
       flex: auto;
       min-width: 0;
       padding: 0.04rem 0;
-      word-wrap: break-word;
+      overflow-wrap: break-word;
       white-space: pre-wrap;
     }
 
