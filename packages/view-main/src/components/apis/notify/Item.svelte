@@ -129,6 +129,7 @@
     .content {
       flex: auto;
       min-width: 0;
+      padding: 0.04rem 0;
       word-wrap: break-word;
       white-space: pre-wrap;
     }
