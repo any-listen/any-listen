@@ -51,7 +51,7 @@ parentPort.on('message', async ({ port, taskName, target }: { port?: MessagePort
       status: 'updated',
     })
   }
-  void build(await configs[taskName](target), sendStatus).then((result) => {
+  void build((await configs[taskName](target)) as UserConfig, sendStatus).then((result) => {
     buildResult = result
     port.postMessage({
       status: result.status ? 'success' : 'error',
