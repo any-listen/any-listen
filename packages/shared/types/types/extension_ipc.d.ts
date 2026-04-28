@@ -289,7 +289,7 @@ declare namespace AnyListen {
       getAllUserLists: () => Promise<List.MyAllList>
       getListMusics: (listId: string) => Promise<Music.MusicInfo[]>
       musicListAction: (action: IPCList.ActionList) => Promise<void>
-      createExtensionIconPublicPath: (filePath: string) => Promise<string>
+      createExtensionIconPublicPath: (extDir: string, filePath: string) => Promise<string>
       removeExtensionIconPublicPath: (filePath: string) => Promise<void>
 
       getPlayInfo: () => Promise<IPCPlayer.PlayInfo>

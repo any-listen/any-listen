@@ -57,6 +57,7 @@ export const baseRule = {
   '@eslint-community/eslint-comments/require-description': 'off',
   'require-unicode-regexp': 'off',
   radix: 'off',
+  'max-depth': 'off',
 }
 export const typescriptRule = {
   ...baseRule,
@@ -92,6 +93,13 @@ export const typescriptRule = {
     'error',
     {
       max: 6,
+    },
+  ],
+  '@typescript-eslint/consistent-type-assertions': [
+    'error',
+    {
+      assertionStyle: 'as',
+      objectLiteralTypeAssertions: 'allow',
     },
   ],
 }

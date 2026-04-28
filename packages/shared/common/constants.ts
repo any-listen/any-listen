@@ -102,7 +102,7 @@ export const DOWNLOAD_STATUS = {
 export const QUALITYS = ['flac24bit', 'flac', 'wav', 'ape', '320k', '192k', '128k'] as const
 
 export const MEDIA_FILE_TYPES = ['mp3', 'flac', 'ogg', 'oga', 'wav', 'm4a'] as const
-export const PIC_FILE_TYPES = ['jpg', 'jpeg', 'gif', 'png'] as const
+export const PIC_FILE_TYPES = ['jpg', 'jpeg', 'gif', 'png', 'webp'] as const
 
 // https://developer.mozilla.org/zh-CN/docs/Web/API/CloseEvent#status_codes
 export const IPC_CLOSE_CODE = {

@@ -6,6 +6,7 @@ export const extensionState = {
   clientType: '' as AnyListen.ClientType,
   locale: DEFAULT_LANG as AnyListen.Locale,
   onlineExtensionHost: '',
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   extensionI18nMessage: empty as Record<string, string>,
   proxy: {
     host: '',
@@ -32,5 +33,6 @@ export const extensionState = {
   remoteFuncs: empty as AnyListen.IPCExtension.MainIPCActions & {
     inited: () => void
   },
-  newExtensionVersions: {} as Record<string, string>,
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  newExtensionVersions: empty as Record<string, string>,
 }

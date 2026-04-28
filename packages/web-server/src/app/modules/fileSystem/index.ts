@@ -10,19 +10,25 @@ import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
 
 const devHost = 'http://localhost:9500'
 
-export const checkAllowPath = (filePath: string) => {
+export const checkAllowPath = (filePath: string, allowedDirs = global.anylisten.config.allowPublicDir) => {
   if (!filePath.length || filePath.length > 1024) return false
   if (!filePath.endsWith(path.sep)) filePath += path.sep
   filePath = normalizePath(filePath)
-  return global.anylisten.config.allowPublicDir.some((p) => filePath.startsWith(p))
+  return allowedDirs.some((p) => filePath.startsWith(p))
 }
 const checkAllowPathError = (filePath: string) => {
   if (checkAllowPath(filePath)) return
   throw new Error(`Not allow path: ${filePath}`)
 }
 
-export const createExtensionIconPublicPath = (filePath: string) => {
+export const createExtensionIconPublicPath = (extDir: string, filePath: string) => {
+  if (!checkAllowPath(filePath, [extDir])) {
+    throw new Error(`Not allow path: ${filePath}`)
+  }
   const extName = extname(filePath).substring(1)
+  if (!PIC_FILE_TYPES.includes(extName.toLowerCase() as (typeof PIC_FILE_TYPES)[number])) {
+    throw new Error(`Not allow file type: ${extName}`)
+  }
   const fileName = `${toSha256(filePath)}.${extName}`
   global.anylisten.publicStaticPaths.set(fileName, filePath)
   if (import.meta.env.DEV) return `${devHost}${PUBLIC_RESOURCE_PATH}/${fileName}`
@@ -37,6 +43,7 @@ export const removeExtensionIconPublicPath = (filePath: string) => {
 export const createMediaPublicPath = async (filePath: string) => {
   const extName = extname(filePath).substring(1) as (typeof MEDIA_FILE_TYPES)[number]
   if (MEDIA_FILE_TYPES.includes(extName)) {
+    checkAllowPathError(filePath)
     const fileName = `${toSha256(filePath)}.${extName}`
     global.anylisten.publicStaticPaths.set(fileName, filePath)
     if (import.meta.env.DEV) return `${devHost}${PUBLIC_RESOURCE_PATH}/${fileName}`
@@ -46,6 +53,7 @@ export const createMediaPublicPath = async (filePath: string) => {
 
 export const createPicFilePublicPath = async (rawPath: string, format: string, file: Uint8Array) => {
   if (PIC_FILE_TYPES.includes(format as (typeof PIC_FILE_TYPES)[number])) {
+    checkAllowPathError(rawPath)
     const fileName = `${toSha256(rawPath)}.${format}`
     const filePath = joinPath(appState.tempDataPath, fileName)
     try {

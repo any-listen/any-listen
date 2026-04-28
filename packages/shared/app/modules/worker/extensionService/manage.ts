@@ -208,6 +208,8 @@ export const installExtension = async (tempExtension: AnyListen.Extension.Extens
     }
   }
   const extensionPath = await mvExtension(tempExtension)
+  if (tempExtension.icon) void extensionState.remoteFuncs.removeExtensionIconPublicPath(tempExtension.icon)
+
   const extension = await parseExtension(extensionPath)
   if (!extension) {
     void removePath(extensionPath)
@@ -235,7 +237,7 @@ export const uninstallExtension = async (id: string) => {
     await removeExtensions([targetExtension])
     extensionState.extensions.splice(targetExtensionIndex, 1)
     await saveExtensionsSetting(extensionState.extensions)
-    if (targetExtension.icon) await extensionState.remoteFuncs.createExtensionIconPublicPath(targetExtension.icon)
+    if (targetExtension.icon) await extensionState.remoteFuncs.removeExtensionIconPublicPath(targetExtension.icon)
     extensionEvent.listRemove(id)
   }
 }

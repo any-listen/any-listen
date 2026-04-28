@@ -49,8 +49,8 @@ export const exposedFuncs: AnyListen.IPCExtension.MainIPCActions = {
     await sendMusicListAction(action)
   },
 
-  async createExtensionIconPublicPath(filePath) {
-    return createExtensionIconPublicPath(filePath)
+  async createExtensionIconPublicPath(extDir, filePath) {
+    return createExtensionIconPublicPath(extDir, filePath)
   },
   async removeExtensionIconPublicPath(filePath) {
     removeExtensionIconPublicPath(filePath)
