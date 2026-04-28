@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import type { Readable } from 'node:stream'
 
-import { XMLParser } from 'fast-xml-parser'
+import type { XMLParser } from 'fast-xml-parser'
 
 import { request, type Options, type Response } from '../request'
 import type { Ls, Response as LsResp } from './types/ls'
@@ -77,7 +77,7 @@ export class WebDAVClient {
   private readonly options: WebDAVClientOptions
   private readonly baseUrl: string
   private readonly authHeader?: string
-  private readonly xmlParser: XMLParser
+  private xmlParser?: XMLParser
 
   constructor(options: WebDAVClientOptions) {
     this.options = options
@@ -86,13 +86,20 @@ export class WebDAVClient {
       const token = Buffer.from(`${options.username}:${options.password || ''}`).toString('base64')
       this.authHeader = `Basic ${token}`
     }
-    this.xmlParser = new XMLParser({
-      ignoreAttributes: true,
-      attributeNamePrefix: '',
-      parseTagValue: false,
-      removeNSPrefix: true,
-      trimValues: false,
-    })
+  }
+
+  private async parseXML<T = unknown>(xml: string) {
+    if (!this.xmlParser) {
+      const { XMLParser } = await import('fast-xml-parser')
+      this.xmlParser = new XMLParser({
+        ignoreAttributes: true,
+        attributeNamePrefix: '',
+        parseTagValue: false,
+        removeNSPrefix: true,
+        trimValues: false,
+      })
+    }
+    return this.xmlParser.parse(xml) as T
   }
 
   private handleRequestError(url: string, method: Options['method'], statusCode?: number, body?: string) {
@@ -124,7 +131,7 @@ export class WebDAVClient {
     const contentType = res.headers['content-type']?.toString() ?? ''
     if (!res.statusCode || res.statusCode > 299) {
       if (res.body && contentType.includes('xml')) {
-        const error = this.xmlParser.parse(res.body)
+        const error = await this.parseXML(res.body)
         this.options.onDebugLog?.(`request error: [${method} ${url} ${res.statusCode}] ${JSON.stringify(error) || ''}`)
         throw this.handleRequestError(url, method, res.statusCode, JSON.stringify(error) || '')
       }
@@ -138,7 +145,7 @@ export class WebDAVClient {
       return res.headers as T
     }
     if (contentType.includes('xml')) {
-      const data = this.xmlParser.parse(res.body) as T
+      const data = await this.parseXML<T>(res.body)
       this.options.onDebugLog?.(`request parsed: ${JSON.stringify(data)}`)
       return data
     }
