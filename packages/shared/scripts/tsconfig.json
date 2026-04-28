@@ -1,11 +1,12 @@
 {
-  "extends": "./node_modules/@any-listen/eslint/tsconfig.node.json",
+  "extends": "@any-listen/eslint/tsconfig.node.json",
   "compilerOptions": {
     "target": "ESNext",
     "allowJs": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "moduleResolution": "bundler",
+    "rootDir": "./",
     "types": ["@any-listen/nodejs/node_modules/@types/node"],
     "outDir": "./dist"
   },

@@ -1,10 +1,11 @@
 {
-  "extends": "./node_modules/@any-listen/eslint/tsconfig.node.json",
+  "extends": "@any-listen/eslint/tsconfig.node.json",
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
     "checkJs": false,
+    "rootDir": "./",
     "types": ["@any-listen/nodejs/node_modules/@types/node"]
   },
   "include": ["build-config/*.cjs", "build-config/*.ts", "package.json", "./eslint.config.mjs"]

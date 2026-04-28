@@ -1,8 +1,9 @@
 {
-  "extends": "./node_modules/@any-listen/eslint/tsconfig.node.json",
+  "extends": "@any-listen/eslint/tsconfig.node.json",
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",
+    "rootDir": "./",
     "moduleResolution": "bundler"
   },
   "include": ["eslint.config.mjs", "vite.config.ts"]

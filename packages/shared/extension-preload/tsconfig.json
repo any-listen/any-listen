@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/@any-listen/eslint/tsconfig.json",
+  "extends": "@any-listen/eslint/tsconfig.json",
   "compilerOptions": {
     "lib": ["ESNext"],
     "composite": true,
@@ -7,6 +7,7 @@
     "moduleResolution": "Bundler",
     "module": "ESNext",
     "types": ["@any-listen/types"],
+    "rootDir": "./",
     "paths": {
       "@/*": ["./src/*"]
     }

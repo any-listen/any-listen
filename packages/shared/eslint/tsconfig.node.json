@@ -9,6 +9,7 @@
     "skipLibCheck": false,
     "module": "ESNext",
     "moduleResolution": "Node",
+    "rootDir": "./",
     // "composite": true,
     "outDir": "./dist"
   }

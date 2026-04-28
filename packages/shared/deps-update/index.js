@@ -124,7 +124,7 @@ const run = async () => {
       const updated = await runNcu({
         packageFile,
         upgrade: true,
-        // cooldown: '8h',
+        cooldown: '8h',
         jsonUpgraded: true,
         dep: ['prod', 'dev', 'optional'],
         ...config,

@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/@any-listen/eslint/tsconfig.json",
+  "extends": "@any-listen/eslint/tsconfig.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "target": "ESNext",

@@ -5,11 +5,11 @@
     "@eslint/js": "^9.39.4",
     "@tsconfig/node24": "^24.0.4",
     "@tsconfig/recommended": "^1.0.13",
-    "@typescript-eslint/eslint-plugin": "^8.58.2",
-    "@typescript-eslint/parser": "^8.58.2",
+    "@typescript-eslint/eslint-plugin": "^8.59.0",
+    "@typescript-eslint/parser": "^8.59.0",
     "eslint": "^9.39.4",
     "eslint-config-love": "^153.0.0",
     "globals": "^17.5.0",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }

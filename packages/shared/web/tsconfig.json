@@ -1,7 +1,9 @@
 {
-  "extends": "./node_modules/@any-listen/eslint/tsconfig.json",
+  "extends": "@any-listen/eslint/tsconfig.json",
   "compilerOptions": {
-    "lib": ["ESNext", "DOM", "DOM.Iterable"]
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "rootDir": "./"
+
     // "typeRoots": [
     //   "./types"
     // ],
