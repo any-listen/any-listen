@@ -76,7 +76,7 @@ const runMainThread = async () => {
       viewMainBuild.reload()
     }).then(handleResult('web-preload')),
     runBuildWorkerStatus('extension-preload', handleUpdate).then(handleResult('extension-preload')),
-    buildSuatus(buildConfig('web-server'), handleUpdate).then(handleResult('web-server')),
+    buildSuatus(buildConfig('web-server') as Vite.UserConfig, handleUpdate).then(handleResult('web-server')),
   ]
 
   if (!(await Promise.all(buildTasks).then((result) => result.every((s) => s)))) return
@@ -88,7 +88,7 @@ const runMainThread = async () => {
   logger.info(colors.green('\nAll task build successfully'))
   // })
   console.timeEnd('init')
-  logger.info(colors.yellow(`web UI running: ` + `http://localhost:${DEV_SERVER_PORTS['view-main']}`))
+  logger.info(colors.yellow(`web UI running: http://localhost:${DEV_SERVER_PORTS['view-main']}`))
 }
 
 void runMainThread()
