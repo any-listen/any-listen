@@ -6,8 +6,8 @@ import { createProxyCallback } from 'message2call'
 import { extensionState } from '../state'
 
 export const createCommon = (extension: AnyListen.Extension.Extension) => {
-  let openDirs: ReturnType<typeof createCache<string>>
-  let saveDirs: ReturnType<typeof createCache<string>>
+  let openDirs: ReturnType<typeof createCache<string>> | undefined
+  let saveDirs: ReturnType<typeof createCache<string>> | undefined
 
   return {
     async showMessageBox(key: string, options: AnyListen.IPCCommon.MessageDialogOptions) {
@@ -26,7 +26,7 @@ export const createCommon = (extension: AnyListen.Extension.Extension) => {
     async showOpenBox(key: string, options: AnyListen.IPCCommon.OpenDialogOptions) {
       const data = await extensionState.remoteFuncs.showOpenBox(key, extension.id, cloneData(options))
       if (!data.length) return []
-      if (!openDirs) openDirs = createCache<string>({ ttl: 30 * 60 * 1000 }) // 30 minutes
+      openDirs ||= createCache<string>({ ttl: 30 * 60 * 1000 }) // 30 minutes
       const paths: string[] = []
       for (const path of data) {
         const vpath = `content://${basename(path)}`
@@ -38,7 +38,7 @@ export const createCommon = (extension: AnyListen.Extension.Extension) => {
     async showSaveBox(key: string, options: AnyListen.IPCCommon.SaveDialogOptions) {
       const dir = await extensionState.remoteFuncs.showSaveBox(key, extension.id, cloneData(options))
       if (!dir) return dir
-      if (!saveDirs) saveDirs = createCache<string>({ ttl: 30 * 60 * 1000 }) // 30 minutes
+      saveDirs ||= createCache<string>({ ttl: 30 * 60 * 1000 }) // 30 minutes
       const vdir = `content://${toMD5(dir)}`
       saveDirs.set(vdir, dir)
       return vdir
