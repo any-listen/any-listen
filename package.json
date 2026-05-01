@@ -15,7 +15,7 @@
     "dev": "pnpm dev:desktop",
     "dev:desktop": "pnpm -F @shared/scripts dev:desktop",
     "dev:web": "pnpm -F @shared/scripts dev:web",
-    "init": "pnpm -F @shared/scripts postinstall",
+    "pi": "pnpm -F @shared/scripts postinstall",
     "pub": "pnpm pub:desktop",
     "pub:desktop": "pnpm -F @shared/publish pub desktop",
     "pub:web": "pnpm -F @shared/publish pub web-server",

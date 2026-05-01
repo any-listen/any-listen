@@ -37,6 +37,7 @@ COPY . ./
 RUN pnpm i --offline --frozen-lockfile
 
 ENV IS_CI=${IS_CI}
+ENV CI=${IS_CI}
 ENV GIT_COMMIT_ID=${GIT_COMMIT_ID}
 ENV GIT_COMMIT_DATE="${GIT_COMMIT_DATE}"
 
