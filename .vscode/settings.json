@@ -21,6 +21,7 @@
   "i18n-ally.translate.engines": ["deepl", "google-cn", "google", "openai", "libretranslate"],
   "i18n-ally.sortKeys": true,
   "js/ts.tsdk.path": "packages/shared/eslint/node_modules/typescript/lib",
+  "js/ts.experimental.useTsgo": true,
   "i18n-ally.review.enabled": false,
   "i18n-ally.review.gutters": false,
   "github.copilot.chat.commitMessageGeneration.instructions": [
