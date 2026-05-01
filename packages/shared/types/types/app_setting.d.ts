@@ -279,6 +279,11 @@ declare global {
       'player.isShowMediaSessionLyric': boolean
 
       /**
+       * 忽略本地歌曲的歌词（同名LRC及歌曲内嵌的歌词）
+       */
+      'player.ignoreLocalLyrics': boolean
+
+      /**
        * 播放详情页-是否缩放当前播放的歌词行
        */
       'playDetail.isZoomActiveLrc': boolean

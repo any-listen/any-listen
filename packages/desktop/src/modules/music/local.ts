@@ -1,6 +1,7 @@
 import { getLocalFilePath } from '@any-listen/app/modules/music/utils'
 import { writeProxyCache } from '@any-listen/app/modules/proxyServer'
 
+import { appState } from '@/app'
 import { encodePath } from '@/shared/electron'
 import { workers } from '@/worker'
 
@@ -76,7 +77,9 @@ export const getLyricInfo = async ({
   if (!isRefresh) {
     const [lyricInfo, fileLyricInfo] = await Promise.all([
       getCachedLyricInfo(musicInfo),
-      workers.utilService.getMusicFileLyric(musicInfo.meta.filePath),
+      appState.appSetting['player.ignoreLocalLyrics']
+        ? Promise.resolve(null)
+        : workers.utilService.getMusicFileLyric(musicInfo.meta.filePath),
     ])
     if (lyricInfo?.lyric && lyricInfo.rawlrcInfo) {
       // 存在已编辑歌词

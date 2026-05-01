@@ -56,6 +56,7 @@ const defaultSetting: AnyListen.AppSetting = {
   'player.soundEffect.panner.soundR': 5,
   'player.soundEffect.panner.speed': 50,
   'player.soundEffect.pitchShifter.playbackRate': 1,
+  'player.ignoreLocalLyrics': false,
 
   'playDetail.isZoomActiveLrc': true,
   'playDetail.style.fontSize': 100,

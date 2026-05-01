@@ -340,6 +340,7 @@
   "settings.play_detail.style_align_right": "居右",
   "settings.play_detail.style_font_weight": "加粗歌词字体",
   "settings.play_detail.zoom_active_lrc": "缩放当前播放的歌词",
+  "settings.player.ignore_local_lyrics": "忽略本地歌曲的同名及内嵌歌词",
   "settings.player.lyric_roma": "显示歌词罗马音（如果可用）",
   "settings.player.lyric_trans_roma_swap": "调换歌词翻译与歌词罗马音位置",
   "settings.player.lyric_transition": "显示歌词翻译（如果可用）",
