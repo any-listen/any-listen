@@ -7,8 +7,8 @@ packages:
 allowBuilds:
   better-sqlite3: true
   electron: true
-  electron-winstaller: set this to true or false
-  esbuild: set this to true or false
+  electron-winstaller: false
+  esbuild: false
   svelte-preprocess: true
 
 minimumReleaseAge: 480
