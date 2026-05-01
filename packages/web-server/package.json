@@ -1,6 +1,6 @@
 {
   "name": "web-server",
-  "version": "0.8.1-beta.1",
+  "version": "0.9.0-beta.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/any-listen/any-listen-web-server.git"
