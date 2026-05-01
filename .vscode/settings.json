@@ -26,25 +26,40 @@
   "i18n-ally.review.gutters": false,
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
-      "text": "Use conventional commit message format."
+      "text": "Generate exactly one commit subject line using Conventional Commits: <type>(<optional-scope>): <description>."
     },
     {
-      "text": "Always describe changes in English."
+      "text": "Use English only."
     },
     {
-      "text": "Keep change descriptions concise and clear. Example: `chore: update deps`"
+      "text": "Allowed types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert."
     },
     {
-      "text": "If the changeLog file is updated, base the commit message on the changeLog description."
+      "text": "Keep the subject concise: 8-14 words, present tense, no ending period."
     },
     {
-      "text": "Only describe what changed, do not explain the intent."
+      "text": "Describe only observable code/config/file changes; do not explain intent, impact, or motivation."
     },
     {
-      "text": "Good example: `feat: add SingleEvent class and update event API`"
+      "text": "Mention 1-2 most important changes only; avoid long lists and filler words."
     },
     {
-      "text": "Bad example: `feat: add event handling improvements with SingleEvent class and update API for better event management`"
+      "text": "If scope is clear, include it (for example: feat(shared): ..., fix(desktop): ...)."
+    },
+    {
+      "text": "If CHANGELOG.md or changelog files are updated, align wording with their updated entry."
+    },
+    {
+      "text": "If changelog entries include issue links, append the related issue number reference in subject (for example: #123)."
+    },
+    {
+      "text": "Output subject only. No body, no footer, no code block, no quotes."
+    },
+    {
+      "text": "Good: feat(shared): add SingleEvent and update event API"
+    },
+    {
+      "text": "Bad: feat: add event handling improvements for better management and future extensibility"
     }
   ]
 }
