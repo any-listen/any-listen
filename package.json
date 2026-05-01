@@ -15,6 +15,7 @@
     "dev": "pnpm dev:desktop",
     "dev:desktop": "pnpm -F @shared/scripts dev:desktop",
     "dev:web": "pnpm -F @shared/scripts dev:web",
+    "init": "pnpm -F @shared/scripts postinstall",
     "pub": "pnpm pub:desktop",
     "pub:desktop": "pnpm -F @shared/publish pub desktop",
     "pub:web": "pnpm -F @shared/publish pub web-server",
@@ -28,5 +29,5 @@
   "engines": {
     "node": ">=22.12.0 || ^20.19.0"
   },
-  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
+  "packageManager": "pnpm@11.0.3+sha512.10448f2988933787c6699aef683174c741f6472ad91b7e3c8fe3e2bda57be8a0f7caf58949b8bc22e624578b3dc6e57876ba4c631928a1b84cc141e12c79bccd"
 }

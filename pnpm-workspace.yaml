@@ -4,6 +4,13 @@ packages:
   - packages/extensions/*
   - '!**/test/**'
 
+allowBuilds:
+  better-sqlite3: true
+  electron: true
+  electron-winstaller: set this to true or false
+  esbuild: set this to true or false
+  svelte-preprocess: true
+
 minimumReleaseAge: 480
 minimumReleaseAgeExclude:
   - typescript
@@ -26,18 +33,13 @@ minimumReleaseAgeExclude:
   - rolldown
   - oxfmt
 
-onlyBuiltDependencies:
-  - better-sqlite3
-  - electron
-  - svelte-preprocess
-
 overrides:
   '@types/ws': 8.5.4
   braces@<3.0.3: '>=3.0.3'
+  depd@<2.0.0: '>=2.0.0'
   micromatch@<4.0.8: '>=4.0.8'
   postcss@<7.0.36: '>=7.0.36'
   postcss@<8.4.31: '>=8.4.31'
-  depd@<2.0.0: '>=2.0.0'
   ws>bufferutil: '-'
   ws>utf-8-validate: '-'
 

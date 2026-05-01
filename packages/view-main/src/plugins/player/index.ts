@@ -180,7 +180,7 @@ const initAdvancedAudioFeatures = () => {
   initConvolver()
   initPanner()
   initGain()
-  // source -> analyser -> biquadFilter -> [(convolver & convolverSource)->convolverDynamicsCompressor] -> panner -> gain
+  // source -> analyser -> biquadFilter -> pitchShifter -> [(convolver & convolverSource)->convolverDynamicsCompressor] -> panner -> gain
   mediaSource = audioContext.createMediaElementSource(audio)
   mediaSource.connect(analyser!)
   analyser!.connect(biquads!.get(`hz${freqs[0]}`)!)
