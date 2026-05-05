@@ -32,6 +32,10 @@
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24">
         <use xlink:href="#icon-list-order" />
       </svg>
+    {:else if togglePlayMethod.val == 'none'}
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24">
+        <use xlink:href="#icon-unavailable" />
+      </svg>
     {/if}
   </div>
   {#snippet content()}
@@ -78,6 +82,17 @@
       >
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24">
           <use xlink:href="#icon-list-single-loop" />
+        </svg>
+      </button>
+      <button
+        class="btn"
+        aria-label={$t('player__play_toggle_mode_none')}
+        onclick={() => {
+          toggleMode('none')
+        }}
+      >
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 24 24">
+          <use xlink:href="#icon-unavailable" />
         </svg>
       </button>
     </div>

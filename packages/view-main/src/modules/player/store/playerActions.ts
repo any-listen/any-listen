@@ -457,7 +457,8 @@ export const getNextPlayMusicInfo = async (): Promise<AnyListen.Player.PlayMusic
     case 'singleLoop':
       break
     default:
-      return null
+      nextIndex = -1
+      break
   }
   if (nextIndex < 0) return null
   return playList[nextIndex]
@@ -566,7 +567,8 @@ export const skipNext = async (isAutoSktp = false): Promise<void> => {
     case 'singleLoop':
       break
     default:
-      return
+      nextIndex = -1
+      break
   }
   if (nextIndex < 0) {
     if (!playerState.playerPlaying) commit.setPlaying(false)
@@ -656,7 +658,8 @@ export const skipPrev = async (isAutoSktp = false): Promise<void> => {
     case 'singleLoop':
       break
     default:
-      return
+      nextIndex = -1
+      break
   }
   if (nextIndex < 0) return
 

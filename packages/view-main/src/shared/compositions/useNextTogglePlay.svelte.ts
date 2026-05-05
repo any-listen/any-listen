@@ -17,13 +17,13 @@ export const useNextTogglePlay = () => {
       case 'list':
         return i18n.t('player__play_toggle_mode_list')
       default:
-        return i18n.t('player__play_toggle_mode_off')
+        return i18n.t('player__play_toggle_mode_none')
     }
   })
 
   const toggleMode = (mode: AnyListen.AppSetting['player.togglePlayMethod']) => {
     if (mode == settingState.setting['player.togglePlayMethod']) return
-    updateSetting({ 'player.togglePlayMethod': mode })
+    void updateSetting({ 'player.togglePlayMethod': mode })
   }
 
   return {

@@ -227,7 +227,7 @@
   "player__play": "Play",
   "player__play_toggle_mode_list": "Play sequentially",
   "player__play_toggle_mode_list_loop": "List loop",
-  "player__play_toggle_mode_off": "Disable",
+  "player__play_toggle_mode_none": "Disable song switching",
   "player__play_toggle_mode_random": "List random",
   "player__play_toggle_mode_single_loop": "Single loop",
   "player__playback_preserves_pitch": "Pitch compensation",

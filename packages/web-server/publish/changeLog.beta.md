@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Fixed a build failure.
+- Added a **Disable Song Switching** option to the song switching mode ([#161](https://github.com/any-listen/any-listen/issues/161)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复构建失败。
+- 歌曲切换模式新增 **「禁用歌曲切换」** 选项（[#161](https://github.com/any-listen/any-listen/issues/161)）。

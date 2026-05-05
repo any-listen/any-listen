@@ -227,7 +227,7 @@
   "player__play": "播放",
   "player__play_toggle_mode_list": "順序播放",
   "player__play_toggle_mode_list_loop": "清單循環",
-  "player__play_toggle_mode_off": "停用",
+  "player__play_toggle_mode_none": "停用歌曲切換",
   "player__play_toggle_mode_random": "清單隨機",
   "player__play_toggle_mode_single_loop": "單曲循環",
   "player__playback_preserves_pitch": "音調補償",
