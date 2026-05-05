@@ -48,11 +48,11 @@
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "electron": "40.9.2",
+    "electron": "40.9.3",
     "electron-builder": "26.9.0",
     "electron-debug": "^4.1.0",
-    "electron-to-chromium": "^1.5.344",
-    "node-abi": "^4.28.0",
+    "electron-to-chromium": "^1.5.349",
+    "node-abi": "^4.29.0",
     "tar": "^7.5.13",
     "vite": "^8.0.10"
   }
