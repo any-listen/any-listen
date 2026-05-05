@@ -50,7 +50,7 @@
       "text": "If CHANGELOG.md or changelog files are updated, align wording with their updated entry."
     },
     {
-      "text": "If changelog entries include issue links, append the related issue number reference in subject (for example: #123)."
+      "text": "If changelog entries include issue links, append the related issue number reference in subject (for example: (#123))."
     },
     {
       "text": "Output subject only. No body, no footer, no code block, no quotes."
