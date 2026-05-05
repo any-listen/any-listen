@@ -2,8 +2,6 @@
   import SliderBar from '@/components/base/SliderBar.svelte'
   import { t } from '@/plugins/i18n'
   import { useSettingValue } from '@/modules/setting/reactive.svelte'
-  import { setMediaDeviceId } from '@/plugins/player'
-  import { settingState } from '@/modules/setting/store/state'
   import { updateSetting } from '@/modules/setting/store/action'
   import Checkbox from '@/components/base/Checkbox.svelte'
 
@@ -12,12 +10,9 @@
   const soundR = useSettingValue('player.soundEffect.panner.soundR')
 
   const updateEnabled = async (enabled: boolean) => {
-    const setting: Partial<AnyListen.AppSetting> = {}
-    if (settingState.setting['player.mediaDeviceId'] != 'default') {
-      await setMediaDeviceId('default').catch(() => {})
-      setting['player.mediaDeviceId'] = 'default'
-    }
-    void updateSetting({ 'player.soundEffect.panner.enable': enabled })
+    void updateSetting({
+      'player.soundEffect.panner.enable': enabled,
+    })
   }
 
   const handleUpdateSoundR = (value: number) => {

@@ -1,6 +1,5 @@
 <script lang="ts">
   import Modal from '@/components/material/Modal.svelte'
-  import { useSettingValue } from '@/modules/setting/reactive.svelte'
   import { t } from '@/plugins/i18n'
   import AudioConvolution from './AudioConvolution.svelte'
   import BiquadFilter from './BiquadFilter.svelte'
@@ -8,8 +7,6 @@
   import AudioPanner from './AudioPanner.svelte'
   let { teleport }: { teleport?: 'string' } = $props()
   let visible = $state(false)
-  const mediaDeviceId = useSettingValue('player.mediaDeviceId')
-  let showTip = $derived(mediaDeviceId.val != 'default')
 </script>
 
 <button
@@ -36,9 +33,6 @@
       <BiquadFilter />
     </div>
   </div>
-  {#if showTip}
-    <p class="tip">{$t('player__sound_effect_features_tip')}</p>
-  {/if}
   <!-- </main> -->
 </Modal>
 
@@ -131,11 +125,11 @@
     padding: 0 10px;
   }
 
-  .tip {
-    padding: 0 15px 15px;
-    margin-top: 5px;
-    font-size: 12px;
-    line-height: 1.25;
-    color: var(--color-font);
-  }
+  // .tip {
+  //   padding: 0 15px 15px;
+  //   margin-top: 5px;
+  //   font-size: 12px;
+  //   line-height: 1.25;
+  //   color: var(--color-font);
+  // }
 </style>

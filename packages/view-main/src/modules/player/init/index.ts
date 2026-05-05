@@ -19,15 +19,15 @@ export const initPlayer = () => {
   createAudio()
 
   initPlayerEvent()
+  initSoundEffect()
   initMediaDevice() // 初始化音频驱动输出设置
+  initPlayerAudioContext()
   initMediaSessionInfo()
   initPlayErrorHandler()
   initPlayStatus()
-  initPlayerAudioContext()
   initPlayKeyboardAction()
   initVolume()
   initPlaybackRate()
-  initSoundEffect()
   initProgress()
   initPreloadNextMusic()
   initWatchList()

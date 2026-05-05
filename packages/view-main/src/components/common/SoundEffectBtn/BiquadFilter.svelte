@@ -6,7 +6,7 @@
   import { settingState } from '@/modules/setting/store/state'
   import { removeUserEQPreset, saveUserEQPreset } from '@/modules/soundEffect/store/actions'
   import { t } from '@/plugins/i18n'
-  import { freqs, freqsPreset, setMediaDeviceId } from '@/plugins/player'
+  import { freqs, freqsPreset } from '@/plugins/player'
   import { useUserEqPresetList } from '@/modules/soundEffect/reactive.svelte'
   import AddPresetBtn from './AddPresetBtn.svelte'
   const userPresetList = useUserEqPresetList()
@@ -26,16 +26,11 @@
   const labels = freqs.map((num) => (num < 1000 ? num : `${num / 1000}k`))
 
   const handleUpdate = async (key: (typeof freqs)[number], value: number) => {
-    const setting: Partial<AnyListen.AppSetting> = {}
-    if (settingState.setting['player.mediaDeviceId'] != 'default') {
-      await setMediaDeviceId('default').catch(() => {})
-      setting['player.mediaDeviceId'] = 'default'
-    }
-
     value = Math.round(value)
     // values[index] = value
-    setting[`player.soundEffect.biquadFilter.hz${key}`] = value
-    void updateSetting(setting)
+    void updateSetting({
+      [`player.soundEffect.biquadFilter.hz${key}`]: value,
+    })
   }
 
   const handleReset = () => {

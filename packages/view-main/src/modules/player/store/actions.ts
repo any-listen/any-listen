@@ -82,3 +82,11 @@ export const addPlayLaterMusic = async (musicInfos: AnyListen.Music.MusicInfo[],
 export const sendCreatedEvent = () => {
   playerEvent.created()
 }
+
+export {
+  getHasMediaDevicePermission,
+  getMediaDeviceIdSetting,
+  saveMediaDeviceIdSetting,
+  setHasMediaDevicePermission,
+  getMediaDevices,
+} from './mediaDevice'

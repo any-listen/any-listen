@@ -71,7 +71,7 @@
           data-ignore-tip
           {@attach tooltip()}
         >
-          <SvgIcon name="error" />
+          <SvgIcon name="warning" />
           <span>{ext.errorMessage}</span>
         </p>
       {/if}

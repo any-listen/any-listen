@@ -7,7 +7,7 @@
   import { settingState } from '@/modules/setting/store/state'
   import { removeUserConvolutionPreset, saveUserConvolutionPreset } from '@/modules/soundEffect/store/actions'
   import { t } from '@/plugins/i18n'
-  import { convolutions, setMediaDeviceId } from '@/plugins/player'
+  import { convolutions } from '@/plugins/player'
   import { useUserConvolutionPresetList } from '@/modules/soundEffect/reactive.svelte'
   import AddPresetBtn from './AddPresetBtn.svelte'
   let convolutionFileName = useSettingValue('player.soundEffect.convolution.fileName')
@@ -18,10 +18,6 @@
   const updateConvolution = async (val: string) => {
     const setting: Partial<AnyListen.AppSetting> = {
       'player.soundEffect.convolution.fileName': val,
-    }
-    if (settingState.setting['player.mediaDeviceId'] != 'default') {
-      await setMediaDeviceId('default').catch(() => {})
-      setting['player.mediaDeviceId'] = 'default'
     }
     const target = convolutions.find((c) => c.source == val)
     if (target) {
@@ -39,13 +35,11 @@
   }
 
   const handleSetPreset = (item: AnyListen.SoundEffect.ConvolutionPreset) => {
-    const setting: Partial<AnyListen.AppSetting> = {}
-    if (settingState.setting['player.mediaDeviceId'] != 'default') setting['player.mediaDeviceId'] = 'default'
-    setting['player.soundEffect.convolution.fileName'] = item.source
-    setting['player.soundEffect.convolution.mainGain'] = item.mainGain
-    setting['player.soundEffect.convolution.sendGain'] = item.sendGain
-
-    void updateSetting(setting)
+    void updateSetting({
+      'player.soundEffect.convolution.fileName': item.source,
+      'player.soundEffect.convolution.mainGain': item.mainGain,
+      'player.soundEffect.convolution.sendGain': item.sendGain,
+    })
   }
   const handleRemovePreset = (id: string) => {
     void removeUserConvolutionPreset(id)

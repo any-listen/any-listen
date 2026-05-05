@@ -3,19 +3,15 @@
   import { t } from '@/plugins/i18n'
   import SvgIcon from '@/components/base/SvgIcon.svelte'
   import { useSettingValue } from '@/modules/setting/reactive.svelte'
-  import { setMediaDeviceId } from '@/plugins/player'
-  import { settingState } from '@/modules/setting/store/state'
   import { updateSetting } from '@/modules/setting/store/action'
   import Btn from '@/components/base/Btn.svelte'
+
   const playbackRate = useSettingValue('player.soundEffect.pitchShifter.playbackRate')
 
   const handleSetPreset = async (value: number) => {
-    const setting: Partial<AnyListen.AppSetting> = {}
-    if (settingState.setting['player.mediaDeviceId'] != 'default') {
-      await setMediaDeviceId('default').catch(() => {})
-      setting['player.mediaDeviceId'] = 'default'
-    }
-    void updateSetting({ 'player.soundEffect.pitchShifter.playbackRate': value })
+    void updateSetting({
+      'player.soundEffect.pitchShifter.playbackRate': value,
+    })
   }
   const handleUpdatePlaybackRate = (value: number) => {
     value = parseFloat((Math.round(value) / 100).toFixed(2))

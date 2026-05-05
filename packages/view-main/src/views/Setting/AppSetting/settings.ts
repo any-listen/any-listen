@@ -12,6 +12,7 @@ import DislikedList from './DislikedList.svelte'
 import ExtensionGHMirrorHosts from './ExtensionGHMirrorHosts.svelte'
 import Font from './Font.svelte'
 import LoginDevices from './LoginDevices.svelte'
+import MediaDevice from './MediaDevice.svelte'
 import MusicCache from './MusicCache.svelte'
 import Network from './Network.svelte'
 import ResourceCache from './ResourceCache.svelte'
@@ -198,13 +199,11 @@ export const settings: SettingListSection[] = [
         name: 'settings.player.ignore_local_lyrics',
         type: 'boolean',
       },
-      import.meta.env.VITE_IS_DESKTOP
-        ? {
-            field: 'player.isMediaDeviceChangedPausePlay',
-            name: 'settings.player.media_device_changed_pause_play',
-            type: 'boolean',
-          }
-        : null,
+      {
+        field: 'player.isMediaDeviceChangedPausePlay',
+        name: 'settings.player.media_device_changed_pause_play',
+        type: 'boolean',
+      },
       import.meta.env.VITE_IS_MAC
         ? {
             field: 'player.isShowStatusBarLyric',
@@ -212,6 +211,11 @@ export const settings: SettingListSection[] = [
             type: 'boolean',
           }
         : null,
+      {
+        name: 'settings.player.media_device',
+        type: 'component',
+        component: MediaDevice,
+      },
     ],
   },
   {

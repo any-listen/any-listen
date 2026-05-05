@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+interface ChromeAudioContext extends AudioContext {
+  setSinkId?: (sinkId: string) => Promise<void>
+}
 let audio: HTMLAudioElement | null = null
-let audioContext: AudioContext | null = null
+let audioContext: ChromeAudioContext | null = null
 let mediaSource: MediaElementAudioSourceNode | null = null
 let analyser: AnalyserNode | null = null
 // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext
@@ -74,9 +77,12 @@ let gainNode: GainNode | null = null
 let panner: PannerNode | null = null
 let pitchShifterNode: AudioWorkletNode | null = null
 let pitchShifterNodePitchFactor: AudioParam | null = null
+let audioDestination: MediaStreamAudioDestinationNode | null = null
 let pitchShifterNodeLoadStatus: 'none' | 'loading' | 'unconnect' | 'connected' = 'none'
 let pitchShifterNodeTempValue = 1
 export const soundR = 0.5
+
+let audioOutput: HTMLAudioElement | null = null
 
 export const createAudio = () => {
   if (audio) return
@@ -95,16 +101,19 @@ export const createAudio = () => {
       })
     }
   })
+
+  audioContext = new window.AudioContext({ latencyHint: 'playback' })
 }
 export const releasePlayer = async () => {
   if (!audio) return
   setStop()
   audio = null
 
-  if (audioContext) {
-    await audioContext.close().catch(() => {})
-    // eslint-disable-next-line require-atomic-updates
-    audioContext = null
+  await audioContext!.close().catch(() => {})
+  // eslint-disable-next-line require-atomic-updates
+  audioContext = null
+
+  if (gainNode) {
     convolver!.disconnect()
     convolver = null
     convolverSourceGainNode!.disconnect()
@@ -113,7 +122,7 @@ export const releasePlayer = async () => {
     convolverOutputGainNode = null
     convolverDynamicsCompressor!.disconnect()
     convolverDynamicsCompressor = null
-    gainNode!.disconnect()
+    gainNode.disconnect()
     gainNode = null
     panner!.disconnect()
     panner = null
@@ -126,6 +135,11 @@ export const releasePlayer = async () => {
     pitchShifterNodePitchFactor = null
     pitchShifterNodeLoadStatus = 'none'
     pitchShifterNodeTempValue = 1
+  }
+
+  if (audioOutput) {
+    audioOutput.srcObject = null
+    audioOutput = null
   }
 }
 
@@ -170,10 +184,17 @@ const initGain = () => {
   gainNode = audioContext!.createGain()
 }
 
+const connectAudioOutput = () => {
+  if (!audioDestination || !gainNode) return false
+
+  gainNode.disconnect()
+  gainNode.connect(audioDestination)
+  return true
+}
 const initAdvancedAudioFeatures = () => {
-  if (audioContext) return
+  if (gainNode) return
   if (!audio) throw new Error('audio not defined')
-  audioContext = new window.AudioContext({ latencyHint: 'playback' })
+  console.log('init advanced audio features')
 
   initAnalyser()
   initBiquadFilter()
@@ -181,7 +202,7 @@ const initAdvancedAudioFeatures = () => {
   initPanner()
   initGain()
   // source -> analyser -> biquadFilter -> pitchShifter -> [(convolver & convolverSource)->convolverDynamicsCompressor] -> panner -> gain
-  mediaSource = audioContext.createMediaElementSource(audio)
+  mediaSource = audioContext!.createMediaElementSource(audio)
   mediaSource.connect(analyser!)
   analyser!.connect(biquads!.get(`hz${freqs[0]}`)!)
   const lastBiquadFilter = biquads!.get(`hz${freqs.at(-1)!}`)!
@@ -189,7 +210,36 @@ const initAdvancedAudioFeatures = () => {
   lastBiquadFilter.connect(convolver!)
   convolverDynamicsCompressor!.connect(panner!)
   panner!.connect(gainNode!)
-  gainNode!.connect(audioContext.destination)
+  if (!connectAudioOutput()) {
+    gainNode!.connect(audioContext!.destination)
+  }
+}
+
+const initAudioOutputDestination = () => {
+  if (audioOutput) return
+  console.log('init audio output destination')
+  audioOutput = new Audio()
+  audioOutput.controls = false
+  audioOutput.autoplay = true
+  audioOutput.preload = 'auto'
+  audioOutput.crossOrigin = 'anonymous'
+
+  audioOutput.addEventListener('playing', () => {
+    if (audioContext?.state == 'suspended') {
+      void audioContext.resume().catch((err) => {
+        console.error('Resume audio context failed:', err)
+        throw err
+      })
+    }
+  })
+
+  audioDestination = audioContext!.createMediaStreamDestination()
+  audioOutput.srcObject = audioDestination.stream
+  connectAudioOutput()
+}
+const setAudioOutputDevice = async (deviceId: string) => {
+  if (!audioOutput) return
+  await audioOutput.setSinkId(deviceId)
 }
 
 export const suspendAudioContext = async () => {
@@ -199,7 +249,6 @@ export const suspendAudioContext = async () => {
 }
 
 export const getAudioContext = () => {
-  initAdvancedAudioFeatures()
   return audioContext
 }
 
@@ -389,7 +438,7 @@ export const setPitchShifter = (val: number) => {
   }
 }
 
-export const hasInitedAdvancedAudioFeatures = (): boolean => audioContext != null
+// export const hasInitedAdvancedAudioFeatures = (): boolean => gainNode != null
 
 export const setResource = (src: string) => {
   if (!audio) return
@@ -450,7 +499,14 @@ export const setCurrentTime = (time: number) => {
 }
 
 export const setMediaDeviceId = async (mediaDeviceId: string) => {
-  return audio ? audio.setSinkId(mediaDeviceId) : Promise.resolve()
+  if (audio && !gainNode) await audio.setSinkId(mediaDeviceId)
+  if (audioContext) {
+    if (audioContext.setSinkId) await audioContext.setSinkId(mediaDeviceId === 'default' ? '' : mediaDeviceId)
+    else {
+      if (mediaDeviceId !== 'default') initAudioOutputDestination()
+      await setAudioOutputDevice(mediaDeviceId)
+    }
+  }
 }
 
 export const setVolume = (volume: number) => {

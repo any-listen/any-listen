@@ -203,6 +203,10 @@ class Event extends _Event {
   activePlayProgressTransition() {
     this.emitEvent('activePlayProgressTransition')
   }
+
+  mediaDeviceChanged(id: string) {
+    this.emitEvent('mediaDeviceChanged', id)
+  }
 }
 
 type EventMethods = Omit<Event, keyof _Event | 'emitEvent'>
