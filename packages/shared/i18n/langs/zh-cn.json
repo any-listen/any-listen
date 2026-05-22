@@ -390,7 +390,7 @@
   "settings.network.proxy_port_placeholder": "端口",
   "settings.online_resource": "在线资源",
   "settings.online_resource.enable": "启用在线资源板块",
-  "settings.online_resource.enable_desc": "当不存在能提供在线资源的的扩展时，即使启用该选项，也不会显示入口",
+  "settings.online_resource.enable_desc": "当不存在能提供在线资源的扩展时，即使启用该选项，也不会显示入口",
   "settings.other": "其他设置",
   "settings.other.clear_cache": "清理缓存",
   "settings.other.clear_cache_failed": "缓存清理失败：{msg}",
