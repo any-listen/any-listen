@@ -6,7 +6,12 @@
   // export let params = {}
 
   // console.log(params)
+  import { windowDarg } from '@/shared/browser/widnow.svelte'
 </script>
+
+{#if import.meta.env.VITE_IS_DESKTOP && import.meta.env.VITE_IS_MAC}
+  <div class="aside-drag-handle drag" {@attach windowDarg}></div>
+{/if}
 
 <div class="aside">
   {#if !import.meta.env.VITE_IS_MAC}
@@ -46,6 +51,15 @@
 
   :global(html.desktop.mac .aside) {
     padding-top: calc(env(titlebar-area-height, 30px) + 4px);
+  }
+
+  .aside-drag-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calc(env(titlebar-area-height, 30px) + 4px);
+    z-index: 10;
   }
 
   // :global(html.mac .aside-nav) {

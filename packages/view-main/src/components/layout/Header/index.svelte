@@ -62,6 +62,10 @@
     align-items: center;
     height: 100%;
     margin-left: 12px;
+
+    :global(html.mac) & {
+      margin-left: 0;
+    }
     :global {
       .search-input {
         // background-color: transparent;
