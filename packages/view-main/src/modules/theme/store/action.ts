@@ -29,4 +29,4 @@ export const registerRemoteThemeAction = () => {
   })
 }
 
-export { getThemeList, getThemeSetting } from '@/shared/ipc/theme'
+export { getThemeList, getThemeSetting, saveTheme } from '@/shared/ipc/theme'

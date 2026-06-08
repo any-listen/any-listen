@@ -6,9 +6,14 @@ import getStore from '@/app/shared/store'
 import { joinPath, encodePath, isUrl } from '@/app/shared/utils'
 
 let userThemes: AnyListen.Theme[]
+const getUserThemes = () => {
+  userThemes ??= getStore(STORE_NAMES.THEME).get<AnyListen.Theme[]>('themes') ?? []
+  return userThemes
+}
+
 export const getAllThemes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  userThemes ??= getStore(STORE_NAMES.THEME).get<AnyListen.Theme[]>('themes') ?? []
+  getUserThemes()
   return {
     themes,
     userThemes,
@@ -17,14 +22,15 @@ export const getAllThemes = () => {
 }
 
 export const saveTheme = (theme: AnyListen.Theme) => {
-  const targetTheme = userThemes.find((t) => t.id === theme.id)
+  if (themes.some((presetTheme) => presetTheme.id == theme.id)) return
+  const targetTheme = getUserThemes().find((t) => t.id === theme.id)
   if (targetTheme) Object.assign(targetTheme, theme)
   else userThemes.push(theme)
   getStore(STORE_NAMES.THEME).set('themes', userThemes)
 }
 
 export const removeTheme = (id: string) => {
-  const index = userThemes.findIndex((t) => t.id === id)
+  const index = getUserThemes().findIndex((t) => t.id === id)
   if (index < 0) return
   userThemes.splice(index, 1)
   getStore(STORE_NAMES.THEME).set('themes', userThemes)
@@ -40,6 +46,16 @@ const copyTheme = (theme: AnyListen.Theme): AnyListen.Theme => {
     },
   }
 }
+
+const formatUserThemeBackgroundImage = (backgroundImage: string) => {
+  if (backgroundImage == 'none') return backgroundImage
+  const urlMatch = /^url\((['"]?)(.*?)\1\)$/.exec(backgroundImage)
+  const imagePath = urlMatch?.[2] ?? backgroundImage
+  if (urlMatch && (imagePath.startsWith('./theme_images/') || imagePath.startsWith('file:///'))) return backgroundImage
+  if (isUrl(imagePath)) return `url(${imagePath})`
+  return `url(file:///${encodePath(joinPath(appState.dataPath, 'theme_images', imagePath))})`
+}
+
 export const getTheme = () => {
   // fs.promises.readdir()
   const shouldUseDarkColors = appState.shouldUseDarkColors
@@ -54,14 +70,11 @@ export const getTheme = () => {
   // themeId = 'black'
   let theme = themes.find((theme) => theme.id == themeId)
   if (!theme) {
-    userThemes = getStore(STORE_NAMES.THEME).get('themes') ?? []
-    theme = userThemes.find((theme) => theme.id == themeId)
+    theme = getUserThemes().find((theme) => theme.id == themeId)
     if (theme) {
       if (theme.config.extInfo['--background-image'] != 'none') {
         theme = copyTheme(theme)
-        theme.config.extInfo['--background-image'] = isUrl(theme.config.extInfo['--background-image'])
-          ? `url(${theme.config.extInfo['--background-image']})`
-          : `url(file:///${encodePath(joinPath(appState.dataPath, 'theme_images', theme.config.extInfo['--background-image']))})`
+        theme.config.extInfo['--background-image'] = formatUserThemeBackgroundImage(theme.config.extInfo['--background-image'])
       }
     } else {
       themeId = appState.appSetting['theme.id'] == 'auto' && shouldUseDarkColors ? 'black' : 'green'
