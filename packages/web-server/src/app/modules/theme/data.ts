@@ -48,9 +48,10 @@ const copyTheme = (theme: AnyListen.Theme): AnyListen.Theme => {
 }
 
 const formatUserThemeBackgroundImage = (backgroundImage: string) => {
-  if (backgroundImage == 'none') return backgroundImage
+  if (!backgroundImage || backgroundImage == 'none') return 'none'
   const urlMatch = /^url\((['"]?)(.*?)\1\)$/.exec(backgroundImage)
   const imagePath = urlMatch?.[2] ?? backgroundImage
+  if (!imagePath) return 'none'
   if (urlMatch && (imagePath.startsWith('./theme_images/') || imagePath.startsWith('file:///'))) return backgroundImage
   if (isUrl(imagePath)) return `url(${imagePath})`
   return `url(file:///${encodePath(joinPath(appState.dataPath, 'theme_images', imagePath))})`

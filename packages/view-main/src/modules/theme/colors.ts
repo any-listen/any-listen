@@ -82,8 +82,8 @@ export const createThemeColors = (rgbaColor: string, fontRgbaColor: string | und
   return { ...colors, ...createFontColors(fontRgbaColor, isDark) } as unknown as AnyListen.ThemeColors
 }
 
-export const hexToRgb = (hex: string) => {
-  const color = hex.replace('#', '')
+export const hexToRgb = (hex: string, fallback = '#000000') => {
+  const color = /^#[\da-f]{6}$/i.test(hex) ? hex.slice(1) : fallback.replace('#', '')
   const red = Number.parseInt(color.slice(0, 2), 16)
   const green = Number.parseInt(color.slice(2, 4), 16)
   const blue = Number.parseInt(color.slice(4, 6), 16)
@@ -91,9 +91,9 @@ export const hexToRgb = (hex: string) => {
 }
 
 export const colorToHex = (color: string, fallback: string) => {
-  const match = /rgba?\((\d+),?\s+(\d+),?\s+(\d+)/.exec(color)
+  const match = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/.exec(color)
   if (!match) return fallback
-  return `#${[match[1], match[2], match[3]]
-    .map((value) => Number.parseInt(value, 10).toString(16).padStart(2, '0'))
-    .join('')}`
+  const rgb = [match[1], match[2], match[3]].map((value) => Number.parseInt(value, 10))
+  if (rgb.some((value) => Number.isNaN(value) || value < 0 || value > 255)) return fallback
+  return `#${rgb.map((value) => value.toString(16).padStart(2, '0')).join('')}`
 }

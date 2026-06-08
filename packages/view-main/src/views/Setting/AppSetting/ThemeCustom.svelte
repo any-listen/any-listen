@@ -20,6 +20,8 @@
   let hasCustomTheme = $state(false)
   let themeIdSetting = useSettingValue('theme.id')
   let isCustomSelected = $derived(themeIdSetting.val == CUSTOM_THEME_ID)
+  let isSavingTheme = false
+  let shouldSaveAgain = false
   let saveTimer: ReturnType<typeof setTimeout> | null = null
 
   const setForm = (theme: AnyListen.Theme | null) => {
@@ -55,17 +57,29 @@
 
   const saveCurrentTheme = async () => {
     if (themeIdSetting.val != CUSTOM_THEME_ID) return
+    if (isSavingTheme) {
+      shouldSaveAgain = true
+      return
+    }
     const theme = createTheme()
     if (!theme) return
 
-    await saveTheme(theme)
-    const setting: Partial<AnyListen.AppSetting> = {
-      'theme.id': CUSTOM_THEME_ID,
+    isSavingTheme = true
+    try {
+      await saveTheme(theme)
+      const setting: Partial<AnyListen.AppSetting> = {
+        'theme.id': CUSTOM_THEME_ID,
+      }
+      setting[theme.isDark ? 'theme.darkId' : 'theme.lightId'] = CUSTOM_THEME_ID
+      await updateSetting(setting)
+      sourceTheme = theme
+      hasCustomTheme = true
+    } finally {
+      isSavingTheme = false
     }
-    setting[theme.isDark ? 'theme.darkId' : 'theme.lightId'] = CUSTOM_THEME_ID
-    await updateSetting(setting)
-    sourceTheme = theme
-    hasCustomTheme = true
+    if (!shouldSaveAgain) return
+    shouldSaveAgain = false
+    queueSave()
   }
 
   const queueSave = () => {
@@ -81,16 +95,18 @@
     queueSave()
   })
 
+  const loadRemoteTheme = () => {
+    if (isSavingTheme || saveTimer) return
+    void load()
+  }
+
   onMount(() => {
     void load()
-    const unregisterThemeChanged = themeChangedEvent.on(() => {
-      void load()
-    })
-    const unregisterThemeListChanged = themeListChangedEvent.on(() => {
-      void load()
-    })
+    const unregisterThemeChanged = themeChangedEvent.on(loadRemoteTheme)
+    const unregisterThemeListChanged = themeListChangedEvent.on(loadRemoteTheme)
     return () => {
       if (saveTimer) clearTimeout(saveTimer)
+      shouldSaveAgain = false
       unregisterThemeChanged()
       unregisterThemeListChanged()
     }
