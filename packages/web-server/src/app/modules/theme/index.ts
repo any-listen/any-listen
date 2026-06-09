@@ -2,7 +2,15 @@ import { themeEvent, themeState } from '@any-listen/app/modules/theme'
 
 import { appEvent, appState, updateSetting } from '@/app/app'
 
-import { getAllThemes, getTheme, removeTheme as removeThemeData, saveTheme as saveThemeData } from './data'
+import {
+  getAllThemes,
+  getTheme,
+  getThemeImages as getThemeImagesData,
+  removeTheme as removeThemeData,
+  removeThemeImage as removeThemeImageData,
+  saveTheme as saveThemeData,
+  saveThemeImage as saveThemeImageData,
+} from './data'
 
 const getActiveThemeId = () => {
   return appState.appSetting['theme.id'] == 'auto'
@@ -55,6 +63,18 @@ export const getThemeSetting = () => {
 
 export const getThemeList = () => {
   return getAllThemes()
+}
+
+export const getThemeImages = async () => {
+  return getThemeImagesData()
+}
+
+export const saveThemeImage = async (filePath: string) => {
+  return saveThemeImageData(filePath)
+}
+
+export const removeThemeImage = async (fileName: string) => {
+  await removeThemeImageData(fileName)
 }
 
 export const saveTheme = (theme: AnyListen.Theme) => {

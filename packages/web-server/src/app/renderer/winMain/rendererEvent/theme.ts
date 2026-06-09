@@ -1,4 +1,4 @@
-import { getThemeList, getThemeSetting, removeTheme, saveTheme } from '@/app/modules/theme'
+import { getThemeImages, getThemeList, getThemeSetting, removeTheme, removeThemeImage, saveTheme, saveThemeImage } from '@/app/modules/theme'
 import { broadcast } from '@/modules/ipc/websocket'
 
 import type { ExposeClientFunctions, ExposeServerFunctions } from '.'
@@ -11,6 +11,15 @@ export const createExposeTheme = () => {
     },
     async getThemeList(event) {
       return getThemeList()
+    },
+    async getThemeImages(event) {
+      return getThemeImages()
+    },
+    async saveThemeImage(event, filePath) {
+      return saveThemeImage(filePath)
+    },
+    async removeThemeImage(event, fileName) {
+      await removeThemeImage(fileName)
     },
     async saveTheme(event, theme) {
       saveTheme(theme)
