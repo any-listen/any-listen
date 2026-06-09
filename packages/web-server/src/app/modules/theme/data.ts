@@ -1,3 +1,4 @@
+import { statSync } from 'node:fs'
 import fs from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 
@@ -16,6 +17,8 @@ let userThemes: AnyListen.Theme[]
 const THEME_IMAGE_DIR = 'theme_images'
 const THEME_IMAGE_EXTS = new Set<string>(PIC_FILE_TYPES)
 const devHost = 'http://localhost:9500'
+const REQUIRED_THEME_COLOR_KEYS = Object.keys(themes[0]?.config.themeColors ?? {})
+const REQUIRED_EXT_INFO_KEYS = Object.keys(themes[0]?.config.extInfo ?? {})
 
 const getUserThemeImageDir = () => joinPath(appState.dataPath, THEME_IMAGE_DIR)
 
@@ -25,6 +28,33 @@ const getPresetThemeImageDir = () => {
 
 const isThemeImageName = (name: string) => {
   return THEME_IMAGE_EXTS.has(extname(name).substring(1))
+}
+
+const isRecord = (value: unknown): value is Record<string, unknown> => {
+  return !!value && typeof value == 'object'
+}
+
+const isReadableFileSync = (filePath: string) => {
+  try {
+    return statSync(filePath).isFile()
+  } catch {
+    return false
+  }
+}
+
+const safeDecodeURIComponent = (value: string) => {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
+const getPathFileName = (filePath: string) => {
+  const normalizedPath = filePath.replaceAll('\\', '/')
+  const fileName = normalizedPath.split('/').pop() || normalizedPath
+  const decodedName = safeDecodeURIComponent(fileName).replaceAll('\\', '/')
+  return decodedName.split('/').pop() || decodedName
 }
 
 const listThemeImageNames = async (dir: string) => {
@@ -82,6 +112,52 @@ const normalizeUserThemeImageName = (name: string) => {
   name = basename(name)
   if (!isThemeImageName(name)) throw new Error(`Not allow file type: ${name}`)
   return name
+}
+
+const isValidTheme = (theme: unknown): theme is AnyListen.Theme => {
+  if (!isRecord(theme) || typeof theme.id != 'string' || typeof theme.name != 'string' || typeof theme.isDark != 'boolean') return false
+  if (!isRecord(theme.config) || !isRecord(theme.config.themeColors) || !isRecord(theme.config.extInfo)) return false
+  return (
+    REQUIRED_THEME_COLOR_KEYS.every((key) => typeof (theme.config.themeColors as Record<string, unknown>)[key] == 'string') &&
+    REQUIRED_EXT_INFO_KEYS.every((key) => typeof (theme.config.extInfo as Record<string, unknown>)[key] == 'string')
+  )
+}
+
+const getFallbackThemeInfo = (shouldUseDarkColors: boolean, sourceTheme?: unknown) => {
+  const fallbackThemeId =
+    (isRecord(sourceTheme) && typeof sourceTheme.isDark == 'boolean' ? sourceTheme.isDark : appState.appSetting['theme.id'] == 'auto' && shouldUseDarkColors)
+      ? 'black'
+      : 'green'
+  return {
+    themeId: fallbackThemeId,
+    theme: (themes.find((theme) => theme.id == fallbackThemeId) ?? themes[0]) as AnyListen.Theme,
+  }
+}
+
+const getFileUrlPath = (imagePath: string) => {
+  try {
+    return fileURLToPath(imagePath)
+  } catch {
+    return null
+  }
+}
+
+const resolveThemeBackgroundImage = (backgroundImage: string) => {
+  if (!backgroundImage || backgroundImage == 'none') return 'none'
+  const urlMatch = /^url\((['"]?)(.*?)\1\)$/.exec(backgroundImage)
+  const imagePath = urlMatch?.[2] ?? backgroundImage
+  if (!imagePath) return null
+  if (imagePath.startsWith('./theme_images/')) {
+    const name = getPathFileName(imagePath)
+    if (!isThemeImageName(name) || !isReadableFileSync(joinPath(getPresetThemeImageDir(), name))) return null
+    return `url(./${encodePath(joinPath(THEME_IMAGE_DIR, name))})`
+  }
+  if (isUrl(imagePath)) return `url(${imagePath})`
+
+  const filePath = imagePath.startsWith('file:///') ? getFileUrlPath(imagePath) : joinPath(getUserThemeImageDir(), getPathFileName(imagePath))
+  if (!filePath || !isThemeImageName(filePath) || !isReadableFileSync(filePath)) return null
+  if (imagePath.startsWith('file:///') && !checkAllowPath(filePath)) return null
+  return `url(${buildUserThemeImageUrl(filePath)})`
 }
 
 const getUserThemes = () => {
@@ -149,17 +225,6 @@ const copyTheme = (theme: AnyListen.Theme): AnyListen.Theme => {
   }
 }
 
-const formatUserThemeBackgroundImage = (backgroundImage: string) => {
-  if (!backgroundImage || backgroundImage == 'none') return 'none'
-  const urlMatch = /^url\((['"]?)(.*?)\1\)$/.exec(backgroundImage)
-  const imagePath = urlMatch?.[2] ?? backgroundImage
-  if (!imagePath) return 'none'
-  if (urlMatch && imagePath.startsWith('./theme_images/')) return backgroundImage
-  if (isUrl(imagePath)) return `url(${imagePath})`
-  const filePath = imagePath.startsWith('file:///') ? fileURLToPath(imagePath) : joinPath(appState.dataPath, THEME_IMAGE_DIR, imagePath)
-  return `url(${buildUserThemeImageUrl(filePath)})`
-}
-
 export const getTheme = () => {
   // fs.promises.readdir()
   const shouldUseDarkColors = appState.shouldUseDarkColors
@@ -174,15 +239,18 @@ export const getTheme = () => {
   // themeId = 'black'
   let theme = themes.find((theme) => theme.id == themeId)
   if (!theme) {
-    theme = getUserThemes().find((theme) => theme.id == themeId)
-    if (theme) {
-      if (theme.config.extInfo['--background-image'] != 'none') {
-        theme = copyTheme(theme)
-        theme.config.extInfo['--background-image'] = formatUserThemeBackgroundImage(theme.config.extInfo['--background-image'])
+    const userTheme = getUserThemes().find((theme) => theme.id == themeId)
+    if (isValidTheme(userTheme)) {
+      const backgroundImage = resolveThemeBackgroundImage(userTheme.config.extInfo['--background-image'])
+      if (backgroundImage) {
+        theme = copyTheme(userTheme)
+        theme.config.extInfo['--background-image'] = backgroundImage
       }
-    } else {
-      themeId = appState.appSetting['theme.id'] == 'auto' && shouldUseDarkColors ? 'black' : 'green'
-      theme = themes.find((theme) => theme.id == themeId) as AnyListen.Theme
+    }
+    if (!theme) {
+      const fallback = getFallbackThemeInfo(shouldUseDarkColors, userTheme)
+      themeId = fallback.themeId
+      theme = fallback.theme
     }
   }
 

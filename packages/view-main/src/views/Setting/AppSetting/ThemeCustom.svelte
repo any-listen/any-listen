@@ -61,24 +61,36 @@
     queueSave()
   }
 
+  const isThemeFormSource = (theme: AnyListen.Theme | null | undefined): theme is AnyListen.Theme => {
+    return (
+      !!theme?.config?.themeColors &&
+      !!theme.config.extInfo &&
+      typeof theme.config.themeColors['--color-primary'] == 'string' &&
+      typeof theme.config.themeColors['--color-1000'] == 'string' &&
+      typeof theme.config.extInfo['--background-image'] == 'string'
+    )
+  }
+
   const setForm = (theme: AnyListen.Theme | null) => {
     sourceTheme = theme
-    primaryColor = colorToHex(theme?.config.themeColors['--color-primary'] ?? '', '#4f62d0')
-    fontColor = colorToHex(theme?.config.themeColors['--color-1000'] ?? '', '#212121')
+    primaryColor = colorToHex(theme?.config?.themeColors['--color-primary'] ?? '', '#4f62d0')
+    fontColor = colorToHex(theme?.config?.themeColors['--color-1000'] ?? '', '#212121')
     isDark = theme?.isDark ?? false
-    backgroundImage = theme?.config.extInfo['--background-image'] ?? NONE_BACKGROUND_IMAGE
+    backgroundImage = theme?.config?.extInfo['--background-image'] ?? NONE_BACKGROUND_IMAGE
   }
 
   const load = async () => {
     const [list, setting, images] = await Promise.all([getThemeList(), getThemeSetting(), getThemeImages()])
     const customTheme = list.userThemes.find((theme) => theme.id == CUSTOM_THEME_ID)
+    const editableCustomTheme = isThemeFormSource(customTheme) ? customTheme : null
+    const fallbackTheme = list.themes.find((theme) => theme.id == setting.id) ?? list.themes[0] ?? null
     themeImages = images
-    hasCustomTheme = !!customTheme
-    setForm(customTheme ?? list.themes.find((theme) => theme.id == setting.id) ?? list.themes[0] ?? null)
+    hasCustomTheme = !!editableCustomTheme
+    setForm(editableCustomTheme ?? fallbackTheme)
   }
 
   const createTheme = () => {
-    if (!sourceTheme) return null
+    if (!isThemeFormSource(sourceTheme)) return null
     return {
       ...sourceTheme,
       id: CUSTOM_THEME_ID,
