@@ -1,16 +1,16 @@
 name: ✨ Feature request
-description: Suggest an idea for this project. Please check the FAQ and search existing issues first
-title: '[Feature]: '
+description: Suggest an idea for this project. Please search existing issues and discussions first.
+title: '[Feature] '
 body:
   - type: checkboxes
     id: check-answer
     attributes:
       label: Solution checklist
-      description: To avoid duplicate requests, please confirm the following. Duplicate issues may be closed directly
+      description: To avoid duplicate requests, please confirm the following. Duplicate issues may be closed directly.
       options:
-        - label: I have searched the [Issue list](https://github.com/any-listen/any-listen/issues?q=is%3Aissue+) and found no similar issue
+        - label: I have searched the [Issue list](https://github.com/any-listen/any-listen/issues?q=is%3Aissue+) and found no similar issue.
           required: true
-        - label: I have searched the [Discussions](https://github.com/any-listen/any-listen/discussions) and found no similar topic
+        - label: I have searched the [Discussions](https://github.com/any-listen/any-listen/discussions) and found no similar topic.
           required: true
 
   - type: dropdown
@@ -28,8 +28,8 @@ body:
   - type: textarea
     id: problem-description
     attributes:
-      label: Problem description and desired solution
-      description: Clearly and concisely describe your problem and what you want this feature request to solve
+      label: Problem description and expected solution
+      description: Clearly describe your problem and expected solution.
     validations:
       required: true
 
@@ -37,4 +37,4 @@ body:
     id: additional-information
     attributes:
       label: Additional information
-      description: Add more details here if your request needs further explanation or you want to share anything else (You can drag images/videos directly into the editor)
+      description: Add more details here if your request needs further explanation or you want to share anything else. (You can drag images/videos directly into the editor)
