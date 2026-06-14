@@ -1,5 +1,5 @@
 const minor = ['electron', '@types/node', '@eslint/js', 'eslint', 'undici']
-const newest = ['electron-builder', 'electron-updater', 'oxfmt']
+const newest = ['oxfmt']
 const patch = []
 const ignore = ['@types/ws']
 
