@@ -3,7 +3,7 @@ import { writeProxyCache } from '@any-listen/app/modules/proxyServer'
 import { verifyResourceBoolean } from '@any-listen/nodejs/request'
 
 import { appState } from '@/app'
-import { encodePath } from '@/shared/electron'
+import { encodePath } from '@/shared/utils'
 import { workers } from '@/worker'
 
 import { buildLyricInfo, getCachedLyricInfo } from './shared'

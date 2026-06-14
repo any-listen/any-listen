@@ -194,8 +194,6 @@ export const sortInsert = <T>(arr: Array<{ num: number; data: T }>, data: { num:
   arr.splice(left, 0, data)
 }
 
-export const encodePath = (path: string) => encodeURI(path.replaceAll('\\', '/'))
-
 export const arrPush = <T>(list: T[], newList: T[]) => {
   for (let i = 0; i * 1000 < newList.length; i++) {
     list.push(...newList.slice(i * 1000, (i + 1) * 1000))

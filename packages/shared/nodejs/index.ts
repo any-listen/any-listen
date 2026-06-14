@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import timers from 'node:timers/promises'
+import { pathToFileURL } from 'node:url'
 import { gunzip, gzip } from 'node:zlib'
 
 import { NATIVE_VERSION } from '@any-listen/common/constants'
@@ -20,6 +21,8 @@ export const isAbsolute = (p: string) => path.isAbsolute(p)
 export const sep = path.sep
 
 export const tmpdir = () => os.tmpdir()
+
+export const encodePath = (path: string) => pathToFileURL(path).href
 
 /**
  * 检查路径是否存在
