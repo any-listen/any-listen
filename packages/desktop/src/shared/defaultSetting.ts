@@ -4,6 +4,7 @@ import { isMac, isWin } from '@any-listen/nodejs/index'
 // import path from 'node:path'
 
 if (isWin) {
+  defaultSetting['playDetail.coverStyle'] = 'square'
   // defaultSetting['desktopLyric.isLockScreen'] = true
 } else {
   defaultSetting['player.isPlayAwlrc'] = false
