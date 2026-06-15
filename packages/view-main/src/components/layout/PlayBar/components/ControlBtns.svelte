@@ -3,6 +3,7 @@
   import VolumeBtn from '@/components/common/VolumeBtn.svelte'
   import PlaylistBtn from '@/components/common/PlaylistBtn/index.svelte'
   import CommentBtn from '@/components/common/CommentBtn.svelte'
+  import PlayerMusicHeartBtn from '@/components/common/PlayerMusicHeartBtn.svelte'
   // import PlaybackRateBtn from '@/components/common/PlaybackRateBtn.svelte'
 
   // import { t } from '@/plugins/i18n'
@@ -22,6 +23,7 @@
       <use xlink:href="#icon-desktop-lyric-off" />
     </svg>
   </button> -->
+  <PlayerMusicHeartBtn />
   <PlaylistBtn />
   <CommentBtn />
   <VolumeBtn />
