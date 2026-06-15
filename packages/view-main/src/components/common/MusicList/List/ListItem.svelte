@@ -13,6 +13,7 @@
   import { t } from '@/plugins/i18n'
   import { useSettingValue } from '@/modules/setting/reactive.svelte'
   import MusicHeartBtn from '@/components/common/MusicHeartBtn.svelte'
+  import { LIST_IDS } from '@any-listen/common/constants'
   // console.log(querystring)
   let {
     musicinfo,
@@ -141,7 +142,9 @@
             </Btn>
           </div>
         {/if}
-        <MusicHeartBtn {musicinfo} min />
+        {#if listid !== LIST_IDS.LOVE}
+          <MusicHeartBtn {musicinfo} min />
+        {/if}
       </div>
     {/if}
   </div>
