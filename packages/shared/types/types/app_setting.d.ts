@@ -319,14 +319,9 @@ declare global {
       'playDetail.coverStyle': 'cd' | 'square'
 
       /**
-       * 是否显示歌曲来源（仅对我的列表有效）
+       * 是否显示操作按钮
        */
-      'list.isShowSource': boolean
-
-      /**
-       * 是否自动恢复列表滚动位置（仅对我的列表有效）
-       */
-      'list.isSaveScrollLocation': boolean
+      'list.isShowActionBtn': boolean
 
       /**
        * 添加歌曲到我的列表时的方式

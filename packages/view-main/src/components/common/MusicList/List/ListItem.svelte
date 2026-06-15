@@ -10,8 +10,9 @@
   import { getMusicPicDelay } from '@/modules/player/store/actions'
   import Btn from '@/components/base/Btn.svelte'
   import SvgIcon from '@/components/base/SvgIcon.svelte'
-  import MusicHeartBtn from './components/MusicHeartBtn.svelte'
   import { t } from '@/plugins/i18n'
+  import { useSettingValue } from '@/modules/setting/reactive.svelte'
+  import MusicHeartBtn from '@/components/common/MusicHeartBtn.svelte'
   // console.log(querystring)
   let {
     musicinfo,
@@ -42,6 +43,7 @@
   let sourceLabel = $derived(buildSourceLabel(musicinfo))
   let picUrl = $state<null | string>(null)
   let hovered = $state(false)
+  let isShowActionBtn = useSettingValue('list.isShowActionBtn')
   // let isPlaying = $derived(isplaylist && $playInfo.index === index)
   const badgeTypes = ['primary', 'secondary', 'tertiary'] as const
 
@@ -120,20 +122,26 @@
         {/each}
       </div>
     </div>
-    {#if hovered}
-      <div class="name-right" transition:fade={{ duration: 200 }}>
-        <Btn
-          onclick={(evt) => {
-            evt.stopPropagation()
-            onplay?.()
-          }}
-          min
-          icon
-          aria-label={$t('player__play')}
-        >
-          <SvgIcon name="play" />
-        </Btn>
-        <MusicHeartBtn {musicinfo} />
+    {#if isShowActionBtn.val}
+      <div class="name-right">
+        {#if hovered}
+          <div class="auto-hide-btns" transition:fade={{ duration: 200 }}>
+            <Btn
+              onclick={(evt) => {
+                evt.stopPropagation()
+                onplay?.()
+              }}
+              min
+              icon
+              outline
+              aria-label={$t('player__play')}
+              class={['play-btn']}
+            >
+              <SvgIcon name="play" />
+            </Btn>
+          </div>
+        {/if}
+        <MusicHeartBtn {musicinfo} min />
       </div>
     {/if}
   </div>
@@ -334,22 +342,20 @@
     flex-flow: row nowrap;
     gap: 4px;
     align-items: center;
-    margin-left: 8px;
+    margin: 0 8px;
     color: var(--color-font-label);
 
     :global {
-      .love-btn {
-        svg {
-          transition: 0.3s ease;
-          transition-property: opacity, filter;
-        }
-      }
-      .unloved {
-        svg {
-          opacity: 0.5;
-          filter: grayscale(1);
-        }
+      .play-btn {
+        padding: 3px;
       }
     }
+  }
+  .auto-hide-btns {
+    display: flex;
+    flex: none;
+    flex-flow: row nowrap;
+    gap: 4px;
+    align-items: center;
   }
 </style>

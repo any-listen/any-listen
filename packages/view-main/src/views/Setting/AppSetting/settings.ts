@@ -297,8 +297,14 @@ export const settings: SettingListSection[] = [
   {
     id: 'list',
     name: 'settings.list',
-    // t('settings.list.add_music_location_type_top')
+    // t('settings.list.is_show_action_btn_desc')
     list: [
+      {
+        field: 'list.isShowActionBtn',
+        name: 'settings.list.is_show_action_btn',
+        description: 'settings.list.is_show_action_btn_desc',
+        type: 'boolean',
+      },
       {
         field: 'list.addMusicLocationType',
         name: 'settings.list.add_music_location_type',

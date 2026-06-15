@@ -414,6 +414,8 @@
   "settings.list.add_music_location_type": "添加歌曲到列表时的位置",
   "settings.list.add_music_location_type_bottom": "底部",
   "settings.list.add_music_location_type_top": "顶部",
+  "settings.list.is_show_action_btn": "显示列表操作按钮",
+  "settings.list.is_show_action_btn_desc": "在歌曲列表项显示收藏、播放等操作按钮",
   "settings.network": "网络设置",
   "settings.network.proxy": "HTTP 代理设置",
   "settings.network.proxy_desc": "设置后所有请求都将经过代理服务器，乱设置软件将无法联网",

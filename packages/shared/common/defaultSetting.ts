@@ -66,8 +66,7 @@ const defaultSetting: AnyListen.AppSetting = {
   'playDetail.isDynamicBackground': true,
   'playDetail.coverStyle': 'cd',
 
-  'list.isShowSource': true,
-  'list.isSaveScrollLocation': true,
+  'list.isShowActionBtn': true,
   'list.addMusicLocationType': 'top',
 
   'download.savePath': '',

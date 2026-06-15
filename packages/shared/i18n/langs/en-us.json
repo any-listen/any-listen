@@ -415,6 +415,8 @@
   "settings.list.add_music_location_type": "Position when adding songs to list",
   "settings.list.add_music_location_type_bottom": "Bottom",
   "settings.list.add_music_location_type_top": "Top",
+  "settings.list.is_show_action_btn": "Show list action buttons",
+  "settings.list.is_show_action_btn_desc": "Display operation buttons such as collection and playback in the song list item",
   "settings.network": "Network settings",
   "settings.network.proxy": "HTTP proxy settings",
   "settings.network.proxy_desc": "After setting, all requests will pass through the proxy server, and the software will not be able to connect to the Internet if it is randomly set.",

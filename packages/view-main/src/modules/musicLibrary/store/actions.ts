@@ -238,6 +238,16 @@ export const updateListMusic = async (listId: string, musicInfo: AnyListen.Music
   })
 }
 
+const getListMusicsFromRemotePromiseMap = new Map<string, Promise<AnyListen.Music.MusicInfo[]>>()
+const handleGetListMusicsFromRemote = async (listId: string): Promise<AnyListen.Music.MusicInfo[]> => {
+  if (getListMusicsFromRemotePromiseMap.has(listId)) return getListMusicsFromRemotePromiseMap.get(listId)!
+  const promise = getListMusicsFromRemote(listId)
+    .finally(() => {
+      getListMusicsFromRemotePromiseMap.delete(listId)
+    })
+  getListMusicsFromRemotePromiseMap.set(listId, promise)
+  return promise
+}
 /**
  * 获取列表内的歌曲
  * @param listId
@@ -246,7 +256,7 @@ export const updateListMusic = async (listId: string, musicInfo: AnyListen.Music
 export const getListMusics = async (listId: string | null, forceUpdate = false): Promise<AnyListen.Music.MusicInfo[]> => {
   if (!listId) return []
   if (!forceUpdate && musicLibraryState.allMusicList.has(listId)) return musicLibraryState.allMusicList.get(listId)!
-  const list = await getListMusicsFromRemote(listId).catch((err: Error) => {
+  const list = await handleGetListMusicsFromRemote(listId).catch((err: Error) => {
     showNotify(i18n.t('lists__music_load_failed', { err: err.message }))
     throw err
   })

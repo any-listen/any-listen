@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Other
+### Added
 
-- Updated Electron to version 42.
+- Added a **Show List Action Buttons** setting. Enabled by default.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 其他
+### 新增
 
-- 将 Electron 更新到 42 版本。
+- 新增 **「显示列表操作按钮」** 设置，默认开启。

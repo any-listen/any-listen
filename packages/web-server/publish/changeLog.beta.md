@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Fixed Docker image build failure.
+- Added a **Show List Action Buttons** setting. Enabled by default.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复 Docker 镜像构建失败的问题。
+- 新增 **「显示列表操作按钮」** 设置，默认开启。
