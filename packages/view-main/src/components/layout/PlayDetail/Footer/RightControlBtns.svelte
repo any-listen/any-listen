@@ -2,12 +2,12 @@
   import TogglePlayModeBtn from '@/components/common/TogglePlayModeBtn.svelte'
   import VolumeBtn from '@/components/common/VolumeBtn.svelte'
   import PlaylistBtn from '@/components/common/PlaylistBtn/index.svelte'
-  import CommentBtn from '@/components/common/CommentBtn.svelte'
+  import PlayerMusicHeartBtn from '@/components/common/PlayerMusicHeartBtn.svelte'
 </script>
 
 <div class="container">
+  <PlayerMusicHeartBtn />
   <PlaylistBtn />
-  <CommentBtn />
   <VolumeBtn />
   <TogglePlayModeBtn />
 </div>
