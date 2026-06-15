@@ -1,7 +1,8 @@
 import type http from 'node:http'
 import querystring from 'node:querystring'
 
-import { IPC_CODE } from '@any-listen/common/constants'
+import { getProxyUrlKey } from '@any-listen/app/modules/proxyServer'
+import { IPC_CODE, PROXY_URL_KEY_COOKIE_NAME } from '@any-listen/common/constants'
 
 // import { getUserSpace, getUserName, setUserName, createClientKeyInfo } from '@/user'
 import { checkClientInfo, createClientInfo, getServerName, getTokenSecret, saveClientInfo, updateLastActive } from '@/shared/data'
@@ -59,6 +60,15 @@ export const authCode = async (ctx: AnyListen.RequestContext, pwd: string) => {
       if (success) {
         msg = `${IPC_CODE.helloMsg}\n${encodeURIComponent(getServerName())}`
         code = 200
+        if (import.meta.env.PROD) {
+          // TODO refresh cookies
+          ctx.cookies.set(PROXY_URL_KEY_COOKIE_NAME, await getProxyUrlKey(), {
+            httpOnly: true,
+            sameSite: 'strict',
+            // maxAge: 36500 * 24 * 3600 * 1000,
+            maxAge: 0,
+          })
+        }
       }
     }
 

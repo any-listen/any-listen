@@ -2,6 +2,7 @@ import fs, { type ReadStream } from 'node:fs'
 import { PassThrough } from 'node:stream'
 
 import { getMimeType } from '@any-listen/common/mime'
+import { isUrl } from '@any-listen/common/utils'
 import { extname, getFileStats, joinPath, removeFileIgnoreError } from '@any-listen/nodejs'
 import { request, type Response } from '@any-listen/nodejs/request'
 
@@ -129,5 +130,40 @@ export const proxyRequest = async (name: string, rangeHeader?: string): Promise<
     statusCode: resp.statusCode,
     headers,
     body: tee || resp.body,
+  }
+}
+
+export const proxyRequestByUrl = async (url: string, rangeHeader?: string): Promise<Result | null> => {
+  if (url.length > 4096 || !isUrl(url)) return null
+
+  const ext = extname(url)
+  if (ext && !checkAllowedExt(ext)) return null
+
+  const range = parseRange(rangeHeader)
+  if (range === null) return RANGE_NOT_SATISFIABLE_RESULT
+
+  const resp = await request<ReadStream>(url, {
+    headers: {
+      ...(range ? { Range: `bytes=${range.start || 0}-${range.end || ''}` } : {}),
+    },
+    needBody: true,
+  })
+
+  if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode >= 300) {
+    console.log(`Proxy request failed: ${resp.statusCode}`)
+    return null
+  }
+
+  const headers: Record<string, string> = {}
+  if (resp.headers['content-type']) headers['content-type'] = resp.headers['content-type']
+  if (resp.headers['content-length']) headers['content-length'] = resp.headers['content-length']
+  if (resp.headers['content-range']) headers['content-range'] = resp.headers['content-range']
+  if (resp.headers['accept-ranges']) headers['accept-ranges'] = resp.headers['accept-ranges']
+  if (resp.headers['last-modified']) headers['last-modified'] = resp.headers['last-modified']
+  if (resp.headers['cache-control']) headers['cache-control'] = resp.headers['cache-control']
+  return {
+    statusCode: resp.statusCode,
+    headers,
+    body: resp.body,
   }
 }

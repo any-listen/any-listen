@@ -1,7 +1,9 @@
 import { createCache } from '@any-listen/common/cache'
+import { checkPicUrl } from '@any-listen/web'
 
 import { lyricEvent } from '@/modules/lyric/store/event'
 import { musicLibraryEvent } from '@/modules/musicLibrary/store/event'
+import { settingState } from '@/modules/setting/store/state'
 import { getMusicPic as getMusicPicFromRemote, getMusicUrl as getMusicUrlFromRemote } from '@/shared/ipc/music'
 import { sendPlayerEvent, sendPlayHistoryListAction } from '@/shared/ipc/player'
 import { playerActionEvent, playHistoryListActionEvent } from '@/shared/ipc/player/event'
@@ -19,22 +21,10 @@ const picCache = createCache<AnyListen.IPCMusic.MusicPicInfo>()
 const picCacheQueue: string[] = []
 const picRemoteGettingPromises = new Map<string, Promise<AnyListen.IPCMusic.MusicPicInfo>>()
 
-const checkUrl = async (url: string) => {
-  return new Promise<boolean>((resolve) => {
-    const img = new Image()
-    img.src = url
-    img.onload = () => {
-      resolve(true)
-    }
-    img.onerror = () => {
-      resolve(false)
-    }
-  })
-}
 const handleGetMusicPicFromRemote = async (info: AnyListen.IPCMusic.GetMusicPicInfo) => {
   const urlInfo = await getMusicPicFromRemote(info)
   if (urlInfo.isFromCache) {
-    const isValid = await checkUrl(urlInfo.url)
+    const isValid = await checkPicUrl(urlInfo.url, settingState.setting['network.proxyAllResources'])
     if (!isValid && !info.isRefresh) {
       return handleGetMusicPicFromRemote({ ...info, isRefresh: true })
     }

@@ -1,7 +1,7 @@
 import { IPC_CODE } from '@any-listen/common/constants'
 
 import { getAuthKey, setAuthKey } from './data'
-import { buildUrlPath, log, request, toSha256 } from './utils'
+import { buildIPCUrlPath, buildUrlPath, log, request, toSha256 } from './utils'
 import type { KeyInfo, UrlInfo } from './ws'
 
 // const hello = async(urlInfo: UrlInfo) => request(`${urlInfo.httpProtocol}//${urlInfo.hostPath}/${API_PREFIX}/hello`)
@@ -25,8 +25,12 @@ import type { KeyInfo, UrlInfo } from './ws'
 //     return false
 //   })
 
+export const initProxyUrlToken = async (urlInfo: UrlInfo, keyInfo: KeyInfo) => {
+  await request(buildUrlPath(urlInfo, `/proxyUrlToken?m=${keyInfo.token}`))
+}
+
 const getServerId = async (urlInfo: UrlInfo) =>
-  request(buildUrlPath(urlInfo, '/id'))
+  request(buildIPCUrlPath(urlInfo, '/id'))
     .then(({ text }) => {
       if (!text.startsWith(IPC_CODE.idPrefix)) return ''
       return text.replace(IPC_CODE.idPrefix, '')
@@ -41,7 +45,7 @@ const codeAuth = async (urlInfo: UrlInfo, serverId: string, authCode: string) =>
   let str = Math.random().toString().substring(2)
   let key = await toSha256(authCode + str)
   // console.log(msg, key)
-  return request(buildUrlPath(urlInfo, '/ah'), {
+  return request(buildIPCUrlPath(urlInfo, '/ah'), {
     method: 'post',
     headers: { m: key, s: str },
   }).then(async ({ text, code, headers }) => {
@@ -56,7 +60,7 @@ const codeAuth = async (urlInfo: UrlInfo, serverId: string, authCode: string) =>
     }
     // console.log(msg)
     const [msg, serverName] = text.split('\n')
-    if (msg != IPC_CODE.helloMsg || !headers.has('token')) return Promise.reject(new Error(IPC_CODE.authFailed))
+    if (msg != IPC_CODE.helloMsg || !headers.has('token')) throw new Error(IPC_CODE.authFailed)
     // const info = JSON.parse(text) as KeyInfo
     const keyInfo = { serverId, serverName: decodeURIComponent(serverName), token: headers.get('token')! }
     void setAuthKey(serverId, keyInfo)
@@ -65,13 +69,13 @@ const codeAuth = async (urlInfo: UrlInfo, serverId: string, authCode: string) =>
 }
 
 const keyAuth = async (urlInfo: UrlInfo, keyInfo: KeyInfo) => {
-  return request(buildUrlPath(urlInfo, '/ah'), {
+  return request(buildIPCUrlPath(urlInfo, '/ah'), {
     method: 'post',
     headers: { m: keyInfo.token },
   }).then(async ({ text, code }) => {
     if (code != 200) throw new Error(IPC_CODE.authFailed)
     const [msg, serverName] = text.split('\n')
-    if (msg != IPC_CODE.helloMsg) return Promise.reject(new Error(IPC_CODE.authFailed))
+    if (msg != IPC_CODE.helloMsg) throw new Error(IPC_CODE.authFailed)
     keyInfo.serverName = decodeURIComponent(serverName)
     void setAuthKey(keyInfo.serverId, keyInfo)
   })
@@ -87,7 +91,7 @@ const auth = async (urlInfo: UrlInfo, serverId: string, authCode?: string) => {
 
 export default async (urlInfo: UrlInfo, authCode?: string) => {
   console.log('connect: ', urlInfo.href, authCode)
-  // console.log(buildUrlPath(urlInfo, '/hello'))
+  // console.log(buildIPCUrlPath(urlInfo, '/hello'))
   // if (!await hello(urlInfo)) throw new Error(IPC_CODE.connectServiceFailed)
   const serverId = await getServerId(urlInfo)
   if (!serverId) throw new Error(IPC_CODE.getServiceIdFailed)

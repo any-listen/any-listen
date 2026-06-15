@@ -379,6 +379,11 @@ declare global {
       'network.proxy.port': string
 
       /**
+       * 是否代理所有非本地资源
+       */
+      'network.proxyAllResources': boolean
+
+      /**
        * 是否启用托盘
        */
       'tray.enable': boolean

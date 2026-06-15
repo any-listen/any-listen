@@ -11,6 +11,8 @@
   import { useSettingValue } from '@/modules/setting/reactive.svelte'
   import { tick, untrack } from 'svelte'
   import { MODAL_CLASSNAMES } from '@/shared/constants'
+  import { buildUrl, checkPicUrl } from '@any-listen/web'
+  import { settingState } from '@/modules/setting/store/state'
   let introend = $state(playDetailState.isShowPlayDetail)
   let bgSrc = $state<string>()
   const isDynamicBackground = useSettingValue('playDetail.isDynamicBackground')
@@ -24,14 +26,14 @@
     }
     const handlePic = (url?: string | null) => {
       if (url) {
-        const img = new Image()
-        img.onload = () => {
-          bgSrc = `url(${url})`
-        }
-        img.onerror = () => {
-          bgSrc = undefined
-        }
-        img.src = url
+        url = buildUrl(url, settingState.setting['network.proxyAllResources'])
+        void checkPicUrl(url, settingState.setting['network.proxyAllResources']).then((vaild) => {
+          if (vaild) {
+            bgSrc = `url(${url})`
+          } else {
+            bgSrc = undefined
+          }
+        })
       } else {
         bgSrc = undefined
       }

@@ -49,3 +49,7 @@ export const getSystemThemeIsDark = () => {
   initThemeMediaQuery()
   return themeMediaQuery.matches
 }
+
+export const buildUrl = (url: string) => {
+  if (!import.meta.env.VITE_IS_WEB) return url
+}

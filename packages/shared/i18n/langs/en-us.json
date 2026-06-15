@@ -419,6 +419,8 @@
   "settings.list.is_show_action_btn_desc": "Display operation buttons such as collection and playback in the song list item",
   "settings.network": "Network settings",
   "settings.network.proxy": "HTTP proxy settings",
+  "settings.network.proxy_all_resources": "Proxy all external resources accessed by browsers",
+  "settings.network.proxy_all_resources_desc": "Forward all external resources accessed in the browser through the server proxy to prevent Referer leakage",
   "settings.network.proxy_desc": "After setting, all requests will pass through the proxy server, and the software will not be able to connect to the Internet if it is randomly set.",
   "settings.network.proxy_enable": "Enable",
   "settings.network.proxy_host_placeholder": "Host",

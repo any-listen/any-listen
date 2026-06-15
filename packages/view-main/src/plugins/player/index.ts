@@ -1,4 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
+import { buildUrl } from '@any-listen/web'
+
+import { settingState } from '@/modules/setting/store/state'
+
 interface ChromeAudioContext extends AudioContext {
   setSinkId?: (sinkId: string) => Promise<void>
 }
@@ -442,7 +447,7 @@ export const setPitchShifter = (val: number) => {
 
 export const setResource = (src: string) => {
   if (!audio) return
-  audio.src = src
+  audio.src = buildUrl(src, settingState.setting['network.proxyAllResources'])
 }
 
 export const setPlay = () => {

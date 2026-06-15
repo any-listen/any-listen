@@ -418,6 +418,8 @@
   "settings.list.is_show_action_btn_desc": "在歌曲列表项显示收藏、播放等操作按钮",
   "settings.network": "网络设置",
   "settings.network.proxy": "HTTP 代理设置",
+  "settings.network.proxy_all_resources": "代理所有浏览器访问的外部资源",
+  "settings.network.proxy_all_resources_desc": "将所有在浏览器访问的外部资源经过服务端代理转发，防止 Referer 泄露",
   "settings.network.proxy_desc": "设置后所有请求都将经过代理服务器，乱设置软件将无法联网",
   "settings.network.proxy_enable": "启用",
   "settings.network.proxy_host_placeholder": "主机",

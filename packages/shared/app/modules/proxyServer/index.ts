@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 
 import { buildPublicPath } from '@any-listen/common/tools'
-import { checkAndCreateDir, checkFile, extname, joinPath, toSha256 } from '@any-listen/nodejs'
+import { checkAndCreateDir, checkFile, extname, joinPath, randomBytes, toMD5, toSha256 } from '@any-listen/nodejs'
 import { verifyResource, type Options } from '@any-listen/nodejs/request'
 
 import { checkAllowedExt } from './shared'
@@ -47,5 +47,12 @@ export const initProxyServer = async (proxyBaseUrl: string, cacheDir: string) =>
   await checkAndCreateDir(proxyServerState.cacheDir)
 }
 
-export { proxyRequest } from './proxy'
+export const getProxyUrlKey = async () => {
+  if (proxyServerState.proxyUrlKey) return proxyServerState.proxyUrlKey
+  const key = toMD5(randomBytes(16))
+  proxyServerState.proxyUrlKey = key
+  return key
+}
+
+export { proxyRequest, proxyRequestByUrl } from './proxy'
 export { proxyServerState } from './state'

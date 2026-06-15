@@ -4,7 +4,7 @@ import { createMessage2Call } from 'message2call'
 
 import handleAuth from './auth'
 import { removeAuthKey } from './data'
-import { buildUrlPath, decryptMsg, encryptMsg, log } from './utils'
+import { buildIPCUrlPath, decryptMsg, encryptMsg, log } from './utils'
 import { wsEvent } from './wsEvent'
 
 export interface KeyInfo {
@@ -233,7 +233,7 @@ export const connect = async (
   let pending = true
   return new Promise<void>((resolve, reject) => {
     client = new WebSocket(
-      buildUrlPath(urlInfo, `/socket?m=${encodeURIComponent(keyInfo.token)}&t=${winType}`, true)
+      buildIPCUrlPath(urlInfo, `/socket?m=${encodeURIComponent(keyInfo.token)}&t=${winType}`, true)
     ) as IPCSocket
     client.data = {
       keyInfo,

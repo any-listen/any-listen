@@ -104,5 +104,9 @@ export const parseUrl = (href: string): UrlInfo => {
 export const log = console
 
 export const buildUrlPath = (urlInfo: UrlInfo, path: string, isWS = false) => {
-  return `${isWS ? urlInfo.wsProtocol : urlInfo.httpProtocol}//${urlInfo.hostPath}${API_PREFIX}/ipc${path}`
+  return `${isWS ? urlInfo.wsProtocol : urlInfo.httpProtocol}//${urlInfo.hostPath}${API_PREFIX}${path}`
+}
+
+export const buildIPCUrlPath = (urlInfo: UrlInfo, path: string, isWS = false) => {
+  return buildUrlPath(urlInfo, `/ipc${path}`, isWS)
 }

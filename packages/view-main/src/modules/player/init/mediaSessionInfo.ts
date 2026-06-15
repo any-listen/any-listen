@@ -1,3 +1,5 @@
+import { buildUrl, checkPicUrl } from '@any-listen/web'
+
 import emptyAudioSource from '@/assets/medias/Silence02s.mp3'
 import { onRelease } from '@/modules/app/shared'
 import { executeLocalCommand } from '@/modules/app/store/action'
@@ -43,16 +45,15 @@ export const initMediaSessionInfo = () => {
       mediaMetadata.artist = playerState.title || ''
     }
     if (playerState.musicInfo.pic) {
-      const pic = new Image()
-      pic.src = playerState.musicInfo.pic
-      prevPicUrl = pic.src
-      pic.onload = () => {
-        if (prevPicUrl == pic.src) {
-          mediaMetadata.artwork = [{ src: pic.src }]
+      const url = buildUrl(playerState.musicInfo.pic, settingState.setting['network.proxyAllResources'])
+      prevPicUrl = url
+      void checkPicUrl(prevPicUrl, settingState.setting['network.proxyAllResources']).then((vaild) => {
+        if (vaild && prevPicUrl == url) {
+          mediaMetadata.artwork = [{ src: url }]
           // @ts-expect-error
           navigator.mediaSession.metadata = new window.MediaMetadata(mediaMetadata)
         }
-      }
+      })
     } else prevPicUrl = ''
 
     // @ts-expect-error

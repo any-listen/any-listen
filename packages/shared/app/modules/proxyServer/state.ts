@@ -15,4 +15,5 @@ export const proxyServerState = {
     ttl: 1000 * 60 * 60 * 6,
   }),
   activeWriteStreams: new Map<string, WriteStream>(),
+  proxyUrlKey: '',
 }

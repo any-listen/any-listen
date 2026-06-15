@@ -1,13 +1,30 @@
 import { IPC_CODE } from '@any-listen/common/constants'
 
-import handleAuth from './auth'
+import handleAuth, { initProxyUrlToken } from './auth'
 import { log, parseUrl } from './utils'
-import type { IPCSocket } from './ws'
+import type { IPCSocket, KeyInfo, UrlInfo } from './ws'
 import { sendSyncMessage, sendSyncStatus, connect as socketConnect, disconnect as socketDisconnect } from './ws'
 import { wsEvent } from './wsEvent'
 
 let connectId = 0
 
+let unsubs: Array<() => void> = []
+const handleInitProxyUrlToken = (urlInfo: UrlInfo, keyInfo: KeyInfo) => {
+  if (unsubs.length) {
+    unsubs.forEach((fn) => fn())
+    unsubs = []
+  }
+  unsubs.push(
+    wsEvent.on('logout', () => {
+      unsubs.forEach((fn) => fn())
+    })
+  )
+  unsubs.push(
+    wsEvent.on('connected', (socket) => {
+      void initProxyUrlToken(urlInfo, keyInfo)
+    })
+  )
+}
 const disconnectServer = async (isResetStatus = true) =>
   handleDisconnect()
     .then(() => {
@@ -40,6 +57,7 @@ const handleConnect = async (
   if (id != connectId) return null
   const keyInfo = await handleAuth(urlInfo, authCode)
   if (id != connectId) return null
+  handleInitProxyUrlToken(urlInfo, keyInfo)
   await socketConnect(exposeObj, urlInfo, keyInfo, winType)
 }
 const handleDisconnect = async () => {

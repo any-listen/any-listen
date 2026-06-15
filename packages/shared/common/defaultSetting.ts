@@ -79,6 +79,8 @@ const defaultSetting: AnyListen.AppSetting = {
   'network.proxy.host': '',
   'network.proxy.port': '',
 
+  'network.proxyAllResources': true,
+
   'tray.enable': false,
   // 'tray.isToTray': false,
   'tray.themeId': 1,

@@ -2,6 +2,10 @@
   "extends": "@any-listen/eslint/tsconfig.json",
   "compilerOptions": {
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
     "rootDir": "./"
 
     // "typeRoots": [

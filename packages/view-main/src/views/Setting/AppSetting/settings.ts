@@ -343,9 +343,17 @@ export const settings: SettingListSection[] = [
   },
   {
     id: 'network',
-    // t('settings.network.proxy')
+    // t('settings.network.proxy_all_resources_desc')
     name: 'settings.network',
     list: [
+      import.meta.env.VITE_IS_WEB
+        ? {
+            field: 'network.proxyAllResources',
+            name: 'settings.network.proxy_all_resources',
+            description: 'settings.network.proxy_all_resources_desc',
+            type: 'boolean',
+          }
+        : null,
       {
         name: 'settings.network.proxy',
         type: 'component',

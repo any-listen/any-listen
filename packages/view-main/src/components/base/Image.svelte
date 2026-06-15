@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { settingState } from '@/modules/setting/store/state'
+  import { buildUrl } from '@any-listen/web'
+
   let {
     src,
     alt = 'PIC',
@@ -20,14 +23,15 @@
   } = $props()
   let isError = $state(false)
 
+  let derivedSrc = $derived(src ? buildUrl(src, settingState.setting['network.proxyAllResources']) : undefined)
   $effect(() => {
     if (src) isError = false
   })
 </script>
 
-{#if src && !isError}
+{#if derivedSrc && !isError}
   <img
-    {src}
+    src={derivedSrc}
     class="pic img"
     {alt}
     style:width

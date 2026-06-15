@@ -220,5 +220,7 @@ export const API_PREFIX = '/api'
 export const SINGERS_RXP = /[、&;；/,，|]/
 
 export const PROXY_SERVER_PATH = '/p_static'
+export const PROXY_URL_PATH = '/p_url'
+export const PROXY_URL_KEY_COOKIE_NAME = 'p_urlkey'
 
 export const CANCELED_ERROR_MSG = 'canceled'

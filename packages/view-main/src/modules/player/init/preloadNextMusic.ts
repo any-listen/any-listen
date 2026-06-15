@@ -1,5 +1,8 @@
+import { buildUrl } from '@any-listen/web'
+
 import { onRelease } from '@/modules/app/shared'
 import { settingEvent } from '@/modules/setting/store/event'
+import { settingState } from '@/modules/setting/store/state'
 import { getCurrentTime, onTimeupdate } from '@/plugins/player'
 import { createUnsubscriptionSet } from '@/shared'
 
@@ -48,7 +51,7 @@ const checkMusicUrl = async (url: string): Promise<boolean> => {
     }
     audio.addEventListener('error', handleErr)
     audio.addEventListener('canplay', handlePlay)
-    audio.src = url
+    audio.src = buildUrl(url, settingState.setting['network.proxyAllResources'])
   })
 }
 

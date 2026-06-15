@@ -1,3 +1,6 @@
+import { API_PREFIX, PROXY_URL_PATH } from '@any-listen/common/constants'
+import { isUrl } from '@any-listen/common/utils'
+
 export const onDomSizeChanged = (dom: HTMLElement, onChanged: (width: number, height: number) => void) => {
   // 使用 ResizeObserver 监听大小变化
   const resizeObserver = new ResizeObserver((entries) => {
@@ -98,21 +101,33 @@ export const onVisibilityChange = (callback: (hidden: boolean) => void) => {
   }
 }
 
-export const checkPicUrl = async (picUrl: string | null | undefined) => {
+export const buildUrl = (url: string, enableProxy: boolean) => {
+  if (!import.meta.env.VITE_IS_WEB) return url
+  if (!enableProxy) return url
+  if (import.meta.env.DEV) {
+    if (!isUrl(url) || url.startsWith('http://localhost:9500')) return url
+    return `http://localhost:9500${API_PREFIX}${PROXY_URL_PATH}/${encodeURIComponent(url)}`
+  }
+  if (!isUrl(url) || url.startsWith(location.origin)) return url
+  return `${location.origin}${API_PREFIX}${PROXY_URL_PATH}/${encodeURIComponent(url)}`
+}
+
+export const checkPicUrl = async (picUrl: string | null | undefined, enableProxy: boolean) => {
   if (!picUrl) return true
-  return new Promise<void>((resolve, reject) => {
+  picUrl = buildUrl(picUrl, enableProxy)
+  return new Promise<boolean>((resolve, reject) => {
     const image = new Image(1, 1)
     image.addEventListener(
       'load',
       () => {
-        resolve()
+        resolve(true)
       },
       { once: true }
     )
     image.addEventListener(
       'error',
       () => {
-        reject(new Error(`Error loading image at ${picUrl}`))
+        resolve(false)
       },
       { once: true }
     )

@@ -222,7 +222,7 @@ const setMetadata = async (info: AnyListen.Player.PlayMusicInfo) => {
   }
   void loadImageUrl(info).then((url) => {
     if (!url) return
-    void checkPicUrl(url).catch(() => {
+    void checkPicUrl(url, settingState.setting['network.proxyAllResources']).catch(() => {
       if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
       void loadImageUrl(info, true)
     })
