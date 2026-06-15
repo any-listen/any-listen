@@ -75,6 +75,7 @@ const winOptions = {
     license: './licenses/license.rtf',
     shortcutName: 'Any Listen',
     artifactName: `\${productName}-\${version}-\${arch}-Setup.\${ext}`,
+    installerSidebar: './resources/install_bg3.bmp',
   },
   portable: {
     artifactName: `\${productName}-\${version}-\${arch}-portable.\${ext}`,
