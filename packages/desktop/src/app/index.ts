@@ -167,6 +167,8 @@ export const listenerElectronEvent = () => {
     // disable create dictionary
     // https://github.com/lyswhut/lx-music-desktop/issues/773
     contents.session.setSpellCheckerDictionaryDownloadURL('http://0.0.0.0')
+
+    contents.setUserAgent(contents.getUserAgent().replace(/\s(any-listen|Electron)\/[^\s]+/g, ''))
   })
 
   app.on('activate', () => {
