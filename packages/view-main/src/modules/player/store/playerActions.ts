@@ -8,7 +8,13 @@ import { checkPicUrl } from '@any-listen/web'
 
 import { executeLocalCommand } from '@/modules/app/store/action'
 import { addInfo } from '@/modules/dislikeList/actions'
-import { addListMusics, parseMusicMetadata, removeListMusics, updateListMusic } from '@/modules/musicLibrary/store/actions'
+import {
+  addListMusics,
+  getListMusics,
+  parseMusicMetadata,
+  removeListMusics,
+  updateListMusic,
+} from '@/modules/musicLibrary/store/actions'
 import { songlistDetailAll } from '@/modules/resource/songlist/detail/actions'
 import { topSongsDetailAll } from '@/modules/resource/topSongs/detail/actions'
 import { settingState } from '@/modules/setting/store/state'
@@ -155,33 +161,20 @@ const parsePlayList = () => {
   }
   return [playLaterList, playList] as const
 }
-const buildPlayerMusicInfo = (musicInfo: AnyListen.Music.MusicInfo | AnyListen.Download.ListItem | null) => {
+const buildPlayerMusicInfo = (musicInfo: AnyListen.Music.MusicInfo | null): Partial<AnyListen.Player.MusicInfo> => {
   if (musicInfo) {
-    return 'progress' in musicInfo
-      ? {
-          id: musicInfo.id,
-          pic: musicInfo.metadata.musicInfo.meta.picUrl,
-          name: musicInfo.metadata.musicInfo.name,
-          singer: musicInfo.metadata.musicInfo.singer,
-          album: musicInfo.metadata.musicInfo.meta.albumName ?? '',
-          lrc: null,
-          tlrc: null,
-          rlrc: null,
-          awlrc: null,
-          rawlrc: null,
-        }
-      : {
-          id: musicInfo.id,
-          pic: musicInfo.meta.picUrl,
-          name: musicInfo.name,
-          singer: musicInfo.singer,
-          album: musicInfo.meta.albumName ?? '',
-          lrc: null,
-          tlrc: null,
-          rlrc: null,
-          awlrc: null,
-          rawlrc: null,
-        }
+    return {
+      id: musicInfo.id,
+      pic: musicInfo.meta.picUrl,
+      name: musicInfo.name,
+      singer: musicInfo.singer,
+      album: musicInfo.meta.albumName ?? '',
+      lrc: null,
+      tlrc: null,
+      rlrc: null,
+      awlrc: null,
+      rawlrc: null,
+    }
   }
   return {
     id: null,
@@ -252,6 +245,10 @@ export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null, in
   if (info) {
     commit.setPlayMusicInfo(info)
     commit.setMusicInfo(buildPlayerMusicInfo(info.musicInfo))
+    void checkCollectMusic(info.musicInfo.id).then((isCollect) => {
+      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+      commit.setMusicInfo({ collect: isCollect })
+    })
     void setMetadata(info)
     playerEvent.setProgress(0, parseInterval(info.musicInfo.interval))
     const idx = index == null ? playerState.playList.findIndex((m) => m.itemId == info.itemId) : index
@@ -759,6 +756,12 @@ export const togglePlay = () => {
   } else {
     play()
   }
+}
+
+export const checkCollectMusic = async (musicId?: string) => {
+  if (!musicId) return false
+  const list = await getListMusics(LIST_IDS.LOVE)
+  return list.some((m) => m.id === musicId)
 }
 
 /**

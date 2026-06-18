@@ -241,10 +241,9 @@ export const updateListMusic = async (listId: string, musicInfo: AnyListen.Music
 const getListMusicsFromRemotePromiseMap = new Map<string, Promise<AnyListen.Music.MusicInfo[]>>()
 const handleGetListMusicsFromRemote = async (listId: string): Promise<AnyListen.Music.MusicInfo[]> => {
   if (getListMusicsFromRemotePromiseMap.has(listId)) return getListMusicsFromRemotePromiseMap.get(listId)!
-  const promise = getListMusicsFromRemote(listId)
-    .finally(() => {
-      getListMusicsFromRemotePromiseMap.delete(listId)
-    })
+  const promise = getListMusicsFromRemote(listId).finally(() => {
+    getListMusicsFromRemotePromiseMap.delete(listId)
+  })
   getListMusicsFromRemotePromiseMap.set(listId, promise)
   return promise
 }

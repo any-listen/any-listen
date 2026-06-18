@@ -1,8 +1,9 @@
 <script lang="ts">
   import Btn from '@/components/base/Btn.svelte'
   import SvgIcon from '@/components/base/SvgIcon.svelte'
-  import { addListMusics, getListMusics, removeListMusics } from '@/modules/musicLibrary/actions'
+  import { addListMusics, removeListMusics } from '@/modules/musicLibrary/actions'
   import { musicLibraryEvent } from '@/modules/musicLibrary/store/event'
+  import { checkCollectMusic } from '@/modules/player/store/actions'
   import { t } from '@/plugins/i18n'
   import { LIST_IDS } from '@any-listen/common/constants'
   import { onMount } from 'svelte'
@@ -18,21 +19,18 @@
   } = $props()
 
   let loved = $state(false)
+  const handleLoveListChange = async (id?: string) => {
+    loved = await checkCollectMusic(id)
+  }
+
+  $effect(() => {
+    void handleLoveListChange(musicinfo?.id)
+  })
 
   onMount(() => {
-    const handleLoveListChange = async () => {
-      if (!musicinfo) {
-        loved = false
-        return
-      }
-      const list = await getListMusics(LIST_IDS.LOVE)
-      loved = list.some((m) => m.id === musicinfo.id)
-    }
-    void handleLoveListChange()
-
     return musicLibraryEvent.on('listMusicChanged', (ids) => {
       if (!ids.includes(LIST_IDS.LOVE)) return
-      void handleLoveListChange()
+      void handleLoveListChange(musicinfo?.id)
     })
   })
 </script>

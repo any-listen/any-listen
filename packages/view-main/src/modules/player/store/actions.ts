@@ -71,6 +71,7 @@ export {
   stop,
   togglePlay,
   uncollectMusic,
+  checkCollectMusic,
 } from './playerActions'
 
 export const addPlayLaterMusic = async (
