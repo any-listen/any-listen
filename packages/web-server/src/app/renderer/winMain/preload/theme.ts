@@ -23,6 +23,15 @@ export const createClientTheme = (ipcSocket: IPCSocket) => {
     async getThemeList() {
       return ipcSocket.remoteQueueTheme.getThemeList()
     },
+    async getThemeImages() {
+      return ipcSocket.remoteQueueTheme.getThemeImages()
+    },
+    async saveThemeImage(filePath) {
+      return ipcSocket.remoteQueueTheme.saveThemeImage(filePath)
+    },
+    async removeThemeImage(fileName) {
+      return ipcSocket.remoteQueueTheme.removeThemeImage(fileName)
+    },
     async saveTheme(theme) {
       return ipcSocket.remoteQueueTheme.saveTheme(theme)
     },

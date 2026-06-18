@@ -291,6 +291,15 @@ declare namespace AnyListen {
     dataPath: string
   }
 
+  interface ThemeImage {
+    id: string
+    name: string
+    url: string
+    value: string
+    source: 'preset' | 'user'
+    canDelete: boolean
+  }
+
   interface ThemeSetting {
     id: string
     name: string
@@ -301,5 +310,6 @@ declare namespace AnyListen {
   interface ThemeList {
     themes: Theme[]
     userThemes: Theme[]
+    dataPath: string
   }
 }

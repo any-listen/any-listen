@@ -6,6 +6,9 @@ declare namespace AnyListen {
       /** 获取主题列表 */
       getThemeList: () => ThemeList
       /** 保存主题 */
+      getThemeImages: () => ThemeImage[]
+      saveThemeImage: (filePath: string) => ThemeImage
+      removeThemeImage: (fileName: string) => void
       saveTheme: (theme: Theme) => void
       /** 移除主题 */
       removeTheme: (id: string) => void

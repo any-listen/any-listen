@@ -18,6 +18,7 @@ import MediaDevice from './MediaDevice.svelte'
 import MusicCache from './MusicCache.svelte'
 import Network from './Network.svelte'
 import ResourceCache from './ResourceCache.svelte'
+import ThemeCustom from './ThemeCustom.svelte'
 import Update from './Update.svelte'
 
 interface SettingBase<T = unknown> {
@@ -58,6 +59,17 @@ interface SettingSelection extends SettingBase<EnumItem['value']> {
 export type SettingListCommonItem = SettingInput | SettingBoolean | SettingSelection | SettingRadio
 export type SettingListItem = SettingListCommonItem | SettingListComponentItem
 
+const CUSTOM_THEME_ID = 'custom'
+
+const getThemeEnum = async (): Promise<EnumItem[]> => {
+  const themeList = await getThemeList()
+  return [
+    ...themeList.themes.map((t) => ({ name: `theme_${t.id}` as keyof Message, value: t.id })),
+    { name: 'theme_custom' as keyof Message, value: CUSTOM_THEME_ID },
+    { name: 'theme_auto', value: 'auto' },
+  ]
+}
+
 export interface SettingListSection {
   id: string
   name: keyof Message
@@ -86,12 +98,14 @@ export const settings: SettingListSection[] = [
         type: 'radio',
         async asyncEnum() {
           // t('settings__basic_window_size_tip')
-          const themeList = (await getThemeList()).themes.map((t) => ({ name: `theme_${t.id}` as keyof Message, value: t.id }))
-          // console.log(themeList)
-          return [...themeList, { name: 'theme_auto', value: 'auto' }]
+          return getThemeEnum()
         },
         onUpdate(value) {
-          if (value === 'auto') {
+          if (value === CUSTOM_THEME_ID) {
+            void updateSetting({
+              'theme.id': value,
+            })
+          } else if (value === 'auto') {
             void updateSetting({
               'theme.id': value,
               'theme.lightId': settingState.setting['theme.id'] === 'black' ? undefined : settingState.setting['theme.id'],
@@ -103,6 +117,11 @@ export const settings: SettingListSection[] = [
             })
           }
         },
+      },
+      {
+        name: 'theme_edit_modal__title',
+        type: 'component',
+        component: ThemeCustom,
       },
       {
         field: 'common.windowSizeId',

@@ -9,6 +9,15 @@ export const getThemeList = async () => {
   return ipc.getThemeList()
 }
 /** 保存主题 */
+export const getThemeImages = async () => {
+  return ipc.getThemeImages()
+}
+export const saveThemeImage = async (filePath: string) => {
+  return ipc.saveThemeImage(filePath)
+}
+export const removeThemeImage = async (fileName: string) => {
+  return ipc.removeThemeImage(fileName)
+}
 export const saveTheme = async (theme: AnyListen.Theme) => {
   return ipc.saveTheme(theme)
 }

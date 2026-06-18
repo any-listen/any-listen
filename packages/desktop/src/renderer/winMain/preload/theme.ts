@@ -21,6 +21,15 @@ export const createClientTheme = (main: MainCall) => {
     async getThemeList() {
       return main.getThemeList()
     },
+    async getThemeImages() {
+      return main.getThemeImages()
+    },
+    async saveThemeImage(filePath) {
+      return main.saveThemeImage(filePath)
+    },
+    async removeThemeImage(fileName) {
+      return main.removeThemeImage(fileName)
+    },
     async saveTheme(theme) {
       return main.saveTheme(theme)
     },

@@ -1,14 +1,173 @@
-import { STORE_NAMES } from '@any-listen/common/constants'
+import { statSync } from 'node:fs'
+import fs from 'node:fs/promises'
+import { fileURLToPath } from 'node:url'
+
+import { PIC_FILE_TYPES, STORE_NAMES } from '@any-listen/common/constants'
+import { buildPublicPath } from '@any-listen/common/tools'
 import themes from '@any-listen/theme/index.json'
 
 import { appState } from '@/app/app'
 import getStore from '@/app/shared/store'
-import { joinPath, encodePath, isUrl } from '@/app/shared/utils'
+import { basename, checkAndCreateDir, copyFile, encodePath, extname, getFileStats, isUrl, joinPath, removeFile, toSha256 } from '@/app/shared/utils'
+import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
+
+import { checkAllowPath } from '../fileSystem'
 
 let userThemes: AnyListen.Theme[]
+const THEME_IMAGE_DIR = 'theme_images'
+const THEME_IMAGE_EXTS = new Set<string>(PIC_FILE_TYPES)
+const devHost = 'http://localhost:9500'
+const REQUIRED_THEME_COLOR_KEYS = Object.keys(themes[0]?.config.themeColors ?? {})
+const REQUIRED_EXT_INFO_KEYS = Object.keys(themes[0]?.config.extInfo ?? {})
+
+const getUserThemeImageDir = () => joinPath(appState.dataPath, THEME_IMAGE_DIR)
+
+const getPresetThemeImageDir = () => {
+  return import.meta.env.DEV ? joinPath(__dirname, 'public', THEME_IMAGE_DIR) : joinPath(__dirname, '../public', THEME_IMAGE_DIR)
+}
+
+const isThemeImageName = (name: string) => {
+  return THEME_IMAGE_EXTS.has(extname(name).substring(1))
+}
+
+const isRecord = (value: unknown): value is Record<string, unknown> => {
+  return !!value && typeof value == 'object'
+}
+
+const isReadableFileSync = (filePath: string) => {
+  try {
+    return statSync(filePath).isFile()
+  } catch {
+    return false
+  }
+}
+
+const safeDecodeURIComponent = (value: string) => {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
+const getPathFileName = (filePath: string) => {
+  const normalizedPath = filePath.replaceAll('\\', '/')
+  const fileName = normalizedPath.split('/').pop() || normalizedPath
+  const decodedName = safeDecodeURIComponent(fileName).replaceAll('\\', '/')
+  return decodedName.split('/').pop() || decodedName
+}
+
+const listThemeImageNames = async (dir: string) => {
+  return fs
+    .readdir(dir, { withFileTypes: true })
+    .then((files) => files.filter((file) => file.isFile() && isThemeImageName(file.name)).map((file) => file.name))
+    .catch(() => [])
+}
+
+const buildPresetThemeImage = (name: string): AnyListen.ThemeImage => {
+  const url = `./${encodePath(joinPath(THEME_IMAGE_DIR, name))}`
+  return {
+    id: `preset:${name}`,
+    name,
+    url,
+    value: `url(${url})`,
+    source: 'preset',
+    canDelete: false,
+  }
+}
+
+const buildUserThemeImageUrl = (filePath: string) => {
+  const ext = extname(filePath).substring(1)
+  const publicName = `theme_${toSha256(filePath)}.${ext}`
+  global.anylisten.publicStaticPaths.set(publicName, filePath)
+  if (import.meta.env.DEV) return `${devHost}${PUBLIC_RESOURCE_PATH}/${publicName}`
+  return buildPublicPath(PUBLIC_RESOURCE_PATH, publicName)
+}
+
+const buildUserThemeImage = (name: string): AnyListen.ThemeImage => {
+  const filePath = joinPath(getUserThemeImageDir(), name)
+  return {
+    id: `user:${name}`,
+    name,
+    url: buildUserThemeImageUrl(filePath),
+    value: name,
+    source: 'user',
+    canDelete: true,
+  }
+}
+
+const getAvailableThemeImageName = async (sourcePath: string, dir: string) => {
+  const ext = extname(sourcePath)
+  const rawName = basename(sourcePath, ext).replace(/[<>:"/\\|?*\x00-\x1f]/g, '_').trim() || 'theme-image'
+  let name = `${rawName}${ext}`
+  let index = 1
+  while (await getFileStats(joinPath(dir, name))) {
+    name = `${rawName}-${index}${ext}`
+    index += 1
+  }
+  return name
+}
+
+const normalizeUserThemeImageName = (name: string) => {
+  name = basename(name)
+  if (!isThemeImageName(name)) throw new Error(`Not allow file type: ${name}`)
+  return name
+}
+
+const isValidTheme = (theme: unknown): theme is AnyListen.Theme => {
+  if (!isRecord(theme) || typeof theme.id != 'string' || typeof theme.name != 'string' || typeof theme.isDark != 'boolean') return false
+  if (!isRecord(theme.config) || !isRecord(theme.config.themeColors) || !isRecord(theme.config.extInfo)) return false
+  return (
+    REQUIRED_THEME_COLOR_KEYS.every((key) => typeof (theme.config.themeColors as Record<string, unknown>)[key] == 'string') &&
+    REQUIRED_EXT_INFO_KEYS.every((key) => typeof (theme.config.extInfo as Record<string, unknown>)[key] == 'string')
+  )
+}
+
+const getFallbackThemeInfo = (shouldUseDarkColors: boolean, sourceTheme?: unknown) => {
+  const fallbackThemeId =
+    (isRecord(sourceTheme) && typeof sourceTheme.isDark == 'boolean' ? sourceTheme.isDark : appState.appSetting['theme.id'] == 'auto' && shouldUseDarkColors)
+      ? 'black'
+      : 'green'
+  return {
+    themeId: fallbackThemeId,
+    theme: (themes.find((theme) => theme.id == fallbackThemeId) ?? themes[0]) as AnyListen.Theme,
+  }
+}
+
+const getFileUrlPath = (imagePath: string) => {
+  try {
+    return fileURLToPath(imagePath)
+  } catch {
+    return null
+  }
+}
+
+const resolveThemeBackgroundImage = (backgroundImage: string) => {
+  if (!backgroundImage || backgroundImage == 'none') return 'none'
+  const urlMatch = /^url\((['"]?)(.*?)\1\)$/.exec(backgroundImage)
+  const imagePath = urlMatch?.[2] ?? backgroundImage
+  if (!imagePath) return null
+  if (imagePath.startsWith('./theme_images/')) {
+    const name = getPathFileName(imagePath)
+    if (!isThemeImageName(name) || !isReadableFileSync(joinPath(getPresetThemeImageDir(), name))) return null
+    return `url(./${encodePath(joinPath(THEME_IMAGE_DIR, name))})`
+  }
+  if (isUrl(imagePath)) return `url(${imagePath})`
+
+  const filePath = imagePath.startsWith('file:///') ? getFileUrlPath(imagePath) : joinPath(getUserThemeImageDir(), getPathFileName(imagePath))
+  if (!filePath || !isThemeImageName(filePath) || !isReadableFileSync(filePath)) return null
+  if (imagePath.startsWith('file:///') && !checkAllowPath(filePath)) return null
+  return `url(${buildUserThemeImageUrl(filePath)})`
+}
+
+const getUserThemes = () => {
+  userThemes ??= getStore(STORE_NAMES.THEME).get<AnyListen.Theme[]>('themes') ?? []
+  return userThemes
+}
+
 export const getAllThemes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  userThemes ??= getStore(STORE_NAMES.THEME).get<AnyListen.Theme[]>('themes') ?? []
+  getUserThemes()
   return {
     themes,
     userThemes,
@@ -17,17 +176,42 @@ export const getAllThemes = () => {
 }
 
 export const saveTheme = (theme: AnyListen.Theme) => {
-  const targetTheme = userThemes.find((t) => t.id === theme.id)
+  if (themes.some((presetTheme) => presetTheme.id == theme.id)) return
+  const targetTheme = getUserThemes().find((t) => t.id === theme.id)
   if (targetTheme) Object.assign(targetTheme, theme)
   else userThemes.push(theme)
   getStore(STORE_NAMES.THEME).set('themes', userThemes)
 }
 
 export const removeTheme = (id: string) => {
-  const index = userThemes.findIndex((t) => t.id === id)
+  const index = getUserThemes().findIndex((t) => t.id === id)
   if (index < 0) return
   userThemes.splice(index, 1)
   getStore(STORE_NAMES.THEME).set('themes', userThemes)
+}
+
+export const getThemeImages = async () => {
+  const [presetNames, userNames] = await Promise.all([listThemeImageNames(getPresetThemeImageDir()), listThemeImageNames(getUserThemeImageDir())])
+  return [...presetNames.map(buildPresetThemeImage), ...userNames.map(buildUserThemeImage)]
+}
+
+export const saveThemeImage = async (filePath: string) => {
+  if (!checkAllowPath(filePath)) throw new Error(`Not allow path: ${filePath}`)
+  const ext = extname(filePath).substring(1)
+  if (!THEME_IMAGE_EXTS.has(ext)) throw new Error(`Not allow file type: ${ext}`)
+  const stat = await getFileStats(filePath)
+  if (!stat?.isFile()) throw new Error(`File not found: ${filePath}`)
+
+  const dir = getUserThemeImageDir()
+  await checkAndCreateDir(dir)
+  const name = await getAvailableThemeImageName(filePath, dir)
+  await copyFile(filePath, joinPath(dir, name))
+  return buildUserThemeImage(name)
+}
+
+export const removeThemeImage = async (name: string) => {
+  name = normalizeUserThemeImageName(name)
+  await removeFile(joinPath(getUserThemeImageDir(), name))
 }
 
 const copyTheme = (theme: AnyListen.Theme): AnyListen.Theme => {
@@ -40,6 +224,7 @@ const copyTheme = (theme: AnyListen.Theme): AnyListen.Theme => {
     },
   }
 }
+
 export const getTheme = () => {
   // fs.promises.readdir()
   const shouldUseDarkColors = appState.shouldUseDarkColors
@@ -54,18 +239,18 @@ export const getTheme = () => {
   // themeId = 'black'
   let theme = themes.find((theme) => theme.id == themeId)
   if (!theme) {
-    userThemes = getStore(STORE_NAMES.THEME).get('themes') ?? []
-    theme = userThemes.find((theme) => theme.id == themeId)
-    if (theme) {
-      if (theme.config.extInfo['--background-image'] != 'none') {
-        theme = copyTheme(theme)
-        theme.config.extInfo['--background-image'] = isUrl(theme.config.extInfo['--background-image'])
-          ? `url(${theme.config.extInfo['--background-image']})`
-          : `url(file:///${encodePath(joinPath(appState.dataPath, 'theme_images', theme.config.extInfo['--background-image']))})`
+    const userTheme = getUserThemes().find((theme) => theme.id == themeId)
+    if (isValidTheme(userTheme)) {
+      const backgroundImage = resolveThemeBackgroundImage(userTheme.config.extInfo['--background-image'])
+      if (backgroundImage) {
+        theme = copyTheme(userTheme)
+        theme.config.extInfo['--background-image'] = backgroundImage
       }
-    } else {
-      themeId = appState.appSetting['theme.id'] == 'auto' && shouldUseDarkColors ? 'black' : 'green'
-      theme = themes.find((theme) => theme.id == themeId) as AnyListen.Theme
+    }
+    if (!theme) {
+      const fallback = getFallbackThemeInfo(shouldUseDarkColors, userTheme)
+      themeId = fallback.themeId
+      theme = fallback.theme
     }
   }
 
