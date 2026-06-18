@@ -98,7 +98,7 @@ export const initPlayer = async () => {
     }
   })
   playerEvent.on('playInfoUpdated', (info) => {
-    void setPlayInfo(info.duration, info.index, info.lastTrackId)
+    void setPlayInfo(info.duration, info.index, info.lastTrackId, info.isLinkedList)
   })
   let unregistered: (() => void) | null = null
   if (appState.appSetting['player.isSavePlayTime']) unregistered = registerProgressSave()

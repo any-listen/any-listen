@@ -84,6 +84,7 @@ declare namespace AnyListen {
       maxTime: number
       index: number
       historyIndex: number
+      isLinkedList: boolean
     }
   }
 
@@ -563,6 +564,7 @@ declare namespace AnyListen {
       maxTime: number
       index: number
       historyIndex: number
+      isLinkedList: boolean
     }
     interface PlayInfo {
       info: SavedPlayInfo

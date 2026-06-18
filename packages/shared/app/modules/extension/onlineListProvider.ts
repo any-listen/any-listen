@@ -34,10 +34,10 @@ export const syncList = async (list: AnyListen.List.OnlineListInfo) => {
   const localMusicMap = new Map<string, AnyListen.Music.MusicInfoOnline>()
   for (const m of localMusics) localMusicMap.set(m.id, m)
   let isUpdated = false
-  const newList = onlineMusics.map((m) => {
+  const newList = onlineMusics.map((m, i) => {
     const local = localMusicMap.get(m.id)
+    if (localMusics[i]?.id !== m.id) isUpdated ||= true
     if (local) return local
-    isUpdated ||= true
     return m
   })
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

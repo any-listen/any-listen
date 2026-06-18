@@ -1,4 +1,5 @@
 export interface InitState {
+  inited: boolean
   musicInfo: AnyListen.Player.MusicInfo
   playMusicInfo: AnyListen.Player.PlayMusicInfo | null
   playInfo: AnyListen.Player.PlayInfo
@@ -18,7 +19,6 @@ export interface InitState {
   volume: number
   volumeMute: boolean
   playbackRate: number
-  isLinkedList: boolean
   isPlayedStop: boolean
   dislikeIds: Set<string>
   playHistoryList: AnyListen.IPCPlayer.PlayHistoryListItem[]
@@ -26,6 +26,7 @@ export interface InitState {
 
 // const empty = {}
 export const playerState: InitState = {
+  inited: false,
   musicInfo: {
     id: null,
     pic: undefined,
@@ -47,6 +48,7 @@ export const playerState: InitState = {
     historyIndex: -1,
     lastTrackId: null,
     source: 'local',
+    isLinkedList: false,
   },
   playerPlaying: false,
   playing: false,
@@ -64,7 +66,6 @@ export const playerState: InitState = {
   volume: 0,
   volumeMute: false,
   playbackRate: 1,
-  isLinkedList: false,
   isPlayedStop: false,
   dislikeIds: new Set(),
   playHistoryList: [],

@@ -8,6 +8,7 @@ import { appEvent } from '../app/store/event'
 import { initPlayer as initPlayerModules } from './init/index'
 import {
   initPlayHistoryList,
+  initPlayInfo,
   initPlayList,
   registerLocalPlayerAction,
   registerRemoteHistoryListAction,
@@ -16,7 +17,7 @@ import {
   release,
   sendCreatedEvent,
   setCollectStatus,
-  setPlayListId,
+  setInited,
   setPlayMusicInfo,
   showMusicComment,
 } from './store/actions'
@@ -25,6 +26,7 @@ import { getPlayInfo } from './store/playerRemoteAction'
 import { playerState } from './store/state'
 
 const init = async (isInited: boolean) => {
+  setInited(false)
   initPlayerModules()
   sendCreatedEvent()
   const [{ info, list, listId, source, historyList, isCollect }] = await Promise.all([
@@ -34,7 +36,16 @@ const init = async (isInited: boolean) => {
   console.log(info)
   console.log(list, listId, historyList)
   initPlayList(list)
-  setPlayListId(listId, source)
+  initPlayInfo({
+    duration: info.maxTime,
+    historyIndex: info.historyIndex,
+    index: info.index,
+    lastTrackId: info.lastTrackId,
+    isLinkedList: info.isLinkedList,
+    listId,
+    source,
+  })
+  // setPlayListId(listId, source)
   setCollectStatus(isCollect)
   initPlayHistoryList(historyList)
   const targetMusicInfo = list[info.index] as AnyListen.Player.PlayMusicInfo | undefined
@@ -44,6 +55,7 @@ const init = async (isInited: boolean) => {
       playerEvent.setProgress(info.time, info.maxTime)
     }
   }
+  setInited(true)
 }
 
 let unregistereds = createUnsubscriptionSet()
@@ -51,6 +63,7 @@ export const initPlayer = () => {
   let isInit = false
   onRelease(() => {
     isInit &&= false
+    setInited(false)
     unregistereds.clear()
     void release()
   })

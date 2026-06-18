@@ -35,6 +35,7 @@
 - Fixed an issue where fullscreen mode could not be entered after changing window size settings when using native window style on Windows ([#190](https://github.com/any-listen/any-listen/issues/190)).
 - Fixed an issue where extension package downloads did not use the configured proxy settings ([#194](https://github.com/any-listen/any-listen/issues/194)).
 - Fixed an issue where draggable window regions remained functional when popup layers were present ([#200](https://github.com/any-listen/any-listen/issues/200)).
+- Fixed an issue where playlists could become out of sync with song lists in some cases.
 
 ### Security
 
@@ -79,6 +80,7 @@
 - 修复在 Windows 下使用系统原生窗口样式时，更改窗口大小设置后无法进入全屏的问题（[#190](https://github.com/any-listen/any-listen/issues/190)）。
 - 修复配置了代理时下载扩展文件未使用代理的问题（[#194](https://github.com/any-listen/any-listen/issues/194)）。
 - 修复存在弹出层时的窗口可拖动区域仍然会工作的问题（[#200](https://github.com/any-listen/any-listen/issues/200)）。
+- 修复播放列表在某些情况下与歌单不同步更新的问题。
 
 ### 安全
 

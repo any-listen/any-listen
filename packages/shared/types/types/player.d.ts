@@ -53,6 +53,7 @@ declare namespace AnyListen {
       historyIndex: number
       /** 上一首播放的歌曲ID */
       lastTrackId: string | null
+      isLinkedList: boolean
     }
 
     interface TempPlayListItem {
@@ -78,6 +79,7 @@ declare namespace AnyListen {
       historyIndex: number
       /** 上一首播放的歌曲ID */
       lastTrackId: string | null
+      isLinkedList: boolean
     }
   }
 }

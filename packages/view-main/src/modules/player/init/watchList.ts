@@ -23,8 +23,8 @@ import { playerEvent } from '../store/event'
 import { playerState } from '../store/state'
 
 let syncId = ''
-const checkLinked = async () => {
-  if (syncId) return playerState.isLinkedList
+const checkListSync = async () => {
+  if (syncId) return playerState.playInfo.isLinkedList
   const currentMusicList = playerState.playList.filter((m) => !m.playLater)
   const targetMusicList = await getListMusics(playerState.playInfo.listId)
   if (currentMusicList.length !== targetMusicList.length) return false
@@ -33,13 +33,24 @@ const checkLinked = async () => {
   }
   return true
 }
+const checkLinkedAndSync = async () => {
+  const isSynced = await checkListSync()
+  if (isSynced) return
+  console.log('list is not synced, try to sync')
+  if (playerState.playInfo.listId) handleListChangeSync([playerState.playInfo.listId])
+}
 const checkLinkedAndApply = () => {
-  void checkLinked().then((isLinked) => {
-    setIsLinkedList(isLinked)
+  if (!playerState.inited || syncId) return
+  void checkListSync().then((isSynced) => {
+    if (syncId) return
+    // console.log('isSynced', isSynced)
+    if (!isSynced) console.warn('list is not linked: ', isSynced)
+    setIsLinkedList(isSynced)
   })
 }
 const changedListIds = new Set<string | null>()
 const throttleListChangeSync = throttle(async () => {
+  if (!playerState.inited) return
   const targetListId = playerState.playInfo.listId
   if (!targetListId) {
     syncId = ''
@@ -47,7 +58,7 @@ const throttleListChangeSync = throttle(async () => {
   }
   const isSkip = !changedListIds.has(targetListId)
   changedListIds.clear()
-  if (isSkip || !playerState.isLinkedList) {
+  if (isSkip || !playerState.playInfo.isLinkedList) {
     syncId = ''
     return
   }
@@ -222,7 +233,12 @@ export const initWatchList = () => {
 
       unregistered.add(dislikeListEvent.on('updated', updateDislikeIds))
 
-      checkLinkedAndApply()
+      unregistered.add(
+        playerEvent.on('inited', (inited) => {
+          if (!inited) return
+          void checkLinkedAndSync()
+        })
+      )
     })
   })
 }

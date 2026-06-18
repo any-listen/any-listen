@@ -34,6 +34,7 @@
 - Fixed an issue where local song covers were not re-read from local storage with priority after clearing the cache.
 - Fixed an issue where the first item could be missing when reading data from certain WebDAV services ([#180](https://github.com/any-listen/any-listen/issues/180)).
 - Fixed an issue where extension package downloads did not use the configured proxy settings ([#194](https://github.com/any-listen/any-listen/issues/194)).
+- Fixed an issue where playlists could become out of sync with song lists in some cases.
 
 ### Security
 
@@ -77,6 +78,7 @@
 - 修复缓存被清空后，本地歌曲封面未优先从本地重新读取的问题。
 - 修复读取某些 WebDAV 服务时，丢失第一项内容的问题（[#180](https://github.com/any-listen/any-listen/issues/180)）。
 - 修复配置了代理时下载扩展文件未使用代理的问题（[#194](https://github.com/any-listen/any-listen/issues/194)）。
+- 修复播放列表在某些情况下与歌单不同步更新的问题。
 
 ### 安全
 

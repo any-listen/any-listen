@@ -26,6 +26,8 @@ export {
   updatePlayHistoryIndex,
   setMusicInfo,
   updatePlayIndex,
+  initPlayInfo,
+  setInited,
 } from './commit'
 
 export {

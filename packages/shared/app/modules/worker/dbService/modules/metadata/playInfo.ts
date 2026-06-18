@@ -22,6 +22,7 @@ const init = () => {
     maxTime: 0,
     historyIndex: -1,
     lastTrackId: null,
+    isLinkedList: true,
   }
 }
 /**
@@ -33,7 +34,7 @@ export const queryMetadataPlayInfo = () => {
 }
 /**
  * 保存播放信息
- * @param id
+ * @param info
  */
 export const saveMetadataPlayInfo = (info: AnyListen.Player.SavedPlayInfo) => {
   playInfo = info

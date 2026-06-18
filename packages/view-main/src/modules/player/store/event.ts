@@ -11,6 +11,10 @@ class Event extends _Event {
     this.emitEvent('created')
   }
 
+  inited(inited: boolean) {
+    this.emitEvent('inited', inited)
+  }
+
   setProgress(time: number, maxTime?: number) {
     this.emitEvent('setProgress', time, maxTime)
   }

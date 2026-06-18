@@ -82,6 +82,7 @@ declare namespace AnyListen {
       index: number
       historyIndex: number
       lastTrackId: string | null
+      isLinkedList: boolean
     }
     interface PlayInfo {
       info: SavedPlayInfo

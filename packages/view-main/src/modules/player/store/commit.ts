@@ -6,8 +6,15 @@ import { playerState } from './state'
 type PlayerMusicInfoKeys = keyof AnyListen.Player.MusicInfo
 const musicInfoKeys: PlayerMusicInfoKeys[] = Object.keys(playerState.musicInfo) as PlayerMusicInfoKeys[]
 
-export const setIsLinkedList = (isLinked: boolean) => {
-  playerState.isLinkedList = isLinked
+export const setInited = (inited: boolean) => {
+  if (playerState.inited == inited) return
+  playerState.inited = inited
+  playerEvent.inited(inited)
+}
+
+export const initPlayInfo = (playInfo: AnyListen.Player.PlayInfo) => {
+  playerState.playInfo = playInfo
+  playerEvent.playInfoChanged(playInfo)
 }
 
 export const setPlayInfo = (index: number, listId: string) => {
@@ -43,6 +50,12 @@ export const setPlayListId = (listId: string | null, source: AnyListen.Player.So
   playerState.playInfo.source = source
 
   playerEvent.playInfoChanged({ listId, source })
+}
+
+export const setIsLinkedList = (isLinkedList: boolean) => {
+  playerState.playInfo.isLinkedList = isLinkedList
+
+  playerEvent.playInfoChanged({ isLinkedList })
 }
 
 export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null) => {

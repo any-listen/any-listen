@@ -39,12 +39,13 @@ export const setPlayMusic = async (index: number, historyIndex: number, lastTrac
     maxTime: 0,
     historyIndex,
     lastTrackId,
+    isLinkedList: playInfo.isLinkedList,
   }
   savePlayInfoThrottle()
   savePlayTimeThrottle()
 }
 
-export const setPlayInfo = async (duration?: number, index?: number, lastTrackId?: string | null) => {
+export const setPlayInfo = async (duration?: number, index?: number, lastTrackId?: string | null, isLinkedList?: boolean) => {
   await initPlayInfo()
   let updated = false
   if (duration != null) {
@@ -60,6 +61,10 @@ export const setPlayInfo = async (duration?: number, index?: number, lastTrackId
   }
   if (lastTrackId !== undefined && playInfo.lastTrackId !== lastTrackId) {
     playInfo.lastTrackId = lastTrackId
+    updated ||= true
+  }
+  if (isLinkedList !== undefined && playInfo.isLinkedList !== isLinkedList) {
+    playInfo.isLinkedList = isLinkedList
     updated ||= true
   }
   if (!updated) return

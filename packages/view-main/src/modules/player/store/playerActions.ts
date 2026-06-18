@@ -308,7 +308,7 @@ const handlePlayList = async (
   const targetMusicInfo = targetList[index]
   let targetPlayMusicInfo: AnyListen.Player.PlayMusicInfo | undefined
   if (prevListId == listId) {
-    if (playerState.isLinkedList) {
+    if (playerState.playInfo.isLinkedList) {
       targetPlayMusicInfo = playerState.playList.find((m) => !m.playLater && m.musicInfo.id == targetMusicInfo.id)
       setPlayMusicInfo(targetPlayMusicInfo!, index)
     }
