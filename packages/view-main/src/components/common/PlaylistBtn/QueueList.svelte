@@ -5,7 +5,7 @@
   import ListItem from './ListItem.svelte'
   import Empty from '@/components/material/Empty.svelte'
   import { playerState } from '@/modules/player/store/state'
-  import { musicClick } from '@/components/common/MusicList/List/action'
+  import { musicClick } from './shared'
 
   let listItemHeight = useListItemHeight(3.2)
   let picstyle = $derived(`height:${listItemHeight.val * 0.8}px; width:${listItemHeight.val * 0.8}px;`)
@@ -30,8 +30,8 @@
           {index}
           playing={$playInfo.index == index}
           onclick={(isKey) => {
-            void musicClick(item.listId, item.musicInfo)
-            if (isKey) void musicClick(item.listId, item.musicInfo)
+            musicClick(index)
+            if (isKey) musicClick(index)
           }}
         />
       {/snippet}
