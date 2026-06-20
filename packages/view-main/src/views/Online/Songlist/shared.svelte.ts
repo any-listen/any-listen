@@ -1,3 +1,5 @@
+import { buildQueryParams } from '@/plugins/routes'
+
 export const queryType = ['list', 'detail'] as const
 export type QueryType = (typeof queryType)[number]
 
@@ -7,10 +9,8 @@ export const songlistUrlParamKeyMap = {
 }
 
 export const buildSonglistDetailUrl = (meta: { id: string; sid?: string; mid?: string; s?: string }) => {
-  // eslint-disable-next-line svelte/prefer-svelte-reactivity
-  const query = new URLSearchParams(meta).toString()
   return {
-    url: `/online/songlist?${query}`,
+    url: `/online/songlist?${buildQueryParams(meta)}`,
     path: `/online/songlist`,
     meta,
   }

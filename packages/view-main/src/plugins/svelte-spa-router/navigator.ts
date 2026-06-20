@@ -25,7 +25,7 @@ const parseUrlParams = (str: string): Record<string, string> => {
   return params
 }
 export type Params = Record<string, string | number | null | undefined>
-const buildQueryParams = (params: Params) => {
+export const buildQueryParams = (params: Params) => {
   return Object.entries(params)
     .filter(([_, value]) => value != null)
     .map(([key, value]) => `${key}=${encodeURIComponent(String(value))}`)

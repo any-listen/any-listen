@@ -1,5 +1,5 @@
 import { parseRequestKey } from '@/modules/resource/search/music/actions'
-import { getLocation, push } from '@/plugins/routes'
+import { buildQueryParams, getLocation, push } from '@/plugins/routes'
 import { executeCommand as executeCommandRemote } from '@/shared/ipc/extension'
 import { getItem, LOCAL_STORE_KEYS, setItem } from '@/shared/localStore'
 import { searchTypeMap } from '@/views/Online/Search/shared.svelte'
@@ -51,16 +51,16 @@ export const scrollListTo = (listId: string, source: AnyListen.Player.SourceType
   } else if (source === 'search') {
     const searchInfo = parseRequestKey(listId)
     if (!searchInfo) return
-    const params = new URLSearchParams()
-    params.set(urlParamKeyMap.type, 'search' satisfies ViewType)
-    params.set(urlParamKeyMap.source, getSourceId({ extensionId: searchInfo.extId, id: searchInfo.source, name: '' }))
-    params.set(urlParamKeyMap.queryType, searchTypeMap.musicSearch)
-    params.set(urlParamKeyMap.query, searchInfo.text)
-    if (searchInfo.page) params.set(urlParamKeyMap.page, searchInfo.page.toString())
-    params.set('mid', musicInfo.id)
+    const params: Record<string, string> = {}
+    params[urlParamKeyMap.type] = 'search' satisfies ViewType
+    params[urlParamKeyMap.source] = getSourceId({ extensionId: searchInfo.extId, id: searchInfo.source, name: '' })
+    params[urlParamKeyMap.queryType] = searchTypeMap.musicSearch
+    params[urlParamKeyMap.query] = searchInfo.text
+    if (searchInfo.page) params[urlParamKeyMap.page] = searchInfo.page.toString()
+    params.mid = musicInfo.id
     urlParams = {
       base: '/online',
-      path: `/online?${params.toString()}`,
+      path: `/online?${buildQueryParams(params)}`,
     }
     const loc = getLocation()
     if (loc.rawLocation == urlParams.path) {
