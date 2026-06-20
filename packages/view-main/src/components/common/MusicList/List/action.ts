@@ -117,7 +117,7 @@ export const removeMusic = async (
     const confirm =
       selectedList.length > 1
         ? await showSimpleConfirmModal(i18n.t('music_list__remove_music_tip', { len: selectedList.length }), {
-            confirmBtn: i18n.t('music_list__remove_tip_confirm_btn'),
+            confirmBtn: i18n.t('confirm_button_text_2'),
           })
         : true
     if (!confirm) return

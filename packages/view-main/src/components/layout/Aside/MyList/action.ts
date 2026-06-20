@@ -1,5 +1,6 @@
 import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
 
+import { showSimpleConfirmModal } from '@/components/apis/dialog'
 import { showNotify } from '@/components/apis/notify'
 import {
   addListMusics,
@@ -109,6 +110,12 @@ export const syncUserList = async (listInfo: AnyListen.List.MyListInfo) => {
 }
 
 export const removeUserList = async (listInfo: AnyListen.List.MyListInfo) => {
+  const confirm = await showSimpleConfirmModal(i18n.t('lists.remove_tip', { name: listInfo.name }), {
+    cancelBtn: i18n.t('cancel_button_text_2'),
+    confirmBtn: i18n.t('confirm_button_text_2'),
+  })
+  if (!confirm) return
+
   await removeUserListRemote([listInfo.id]).catch((e: Error) => {
     showNotify(i18n.t('user_list__remove_failed', { name: listInfo.name, err: e.message }))
   })

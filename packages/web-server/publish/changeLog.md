@@ -23,6 +23,7 @@
 - Improved the implementation of context menu separators ([#198](https://github.com/any-listen/any-listen/issues/198)).
 - Improved custom scrollbar rendering consistency across platforms.
 - Allowed the window to be dragged via the popup header.
+- Added a confirmation step before removing items from **My List** ([#234](https://github.com/any-listen/any-listen/issues/234)).
 
 ### Fixed
 
@@ -67,6 +68,7 @@
 - 优化上下文菜单分割线实现效果（[#198](https://github.com/any-listen/any-listen/issues/198)）。
 - 优化自定义滚动条在各平台上的显示效果。
 - 允许通过弹窗头部拖动窗口。
+- 移除 **「我的列表」** 条目前新增二次确认（[#234](https://github.com/any-listen/any-listen/issues/234)）。
 
 ### 修复
 

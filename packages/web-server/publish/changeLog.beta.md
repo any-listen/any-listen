@@ -1,15 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Improved
 
-- Fixed an issue where the favorite button state in the player bar did not update automatically ([#229](https://github.com/any-listen/any-listen/issues/229)).
-- Fixed an issue where playlists could become out of sync with song lists in some cases.
+- Added a confirmation step before removing items from **My List** ([#234](https://github.com/any-listen/any-listen/issues/234)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 优化
 
-- 修复播放栏歌曲收藏按钮状态未自动更新的问题（[#229](https://github.com/any-listen/any-listen/issues/229)）。
-- 修复播放列表在某些情况下与歌单不同步更新的问题。
+- 移除 **「我的列表」** 条目前新增二次确认（[#234](https://github.com/any-listen/any-listen/issues/234)）。

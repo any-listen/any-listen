@@ -23,6 +23,7 @@
 - Improved custom scrollbar rendering consistency across platforms.
 - Added a security notice for the Windows Legacy version ([#206](https://github.com/any-listen/any-listen/issues/206)).
 - Allowed the window to be dragged via the popup header.
+- Added a confirmation step before removing items from **My List** ([#234](https://github.com/any-listen/any-listen/issues/234)).
 
 ### Fixed
 
@@ -68,6 +69,7 @@
 - 优化自定义滚动条在各平台上的显示效果。
 - 为 Windows Legacy 版本添加安全提示（[#206](https://github.com/any-listen/any-listen/issues/206)）。
 - 允许通过弹窗头部拖动窗口。
+- 移除 **「我的列表」** 条目前新增二次确认（[#234](https://github.com/any-listen/any-listen/issues/234)）。
 
 ### 修复
 
