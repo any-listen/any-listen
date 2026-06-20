@@ -18,9 +18,6 @@ export default {
   async winShow(show) {
     winShowEvent.emit(show)
   },
-  async createDesktopLyricProcess() {
-    // TODO
-  },
   async showMessageBox(key, extId, options) {
     if (options.modal) {
       return showMessageBox(extId, key, options)

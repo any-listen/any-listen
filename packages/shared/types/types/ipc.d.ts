@@ -7,6 +7,7 @@ import './player_ipc'
 import './sound_effect_ipc'
 import './theme_ipc'
 import './resource_ipc'
+import './desktop_lyric_ipc'
 
 // type ExcludeSendActions<Actions extends Record<string, any>> = Pick<Actions, {
 //   [K in keyof Actions]: K extends `send${string}` ? never : K
@@ -38,6 +39,7 @@ type ServerAllActions = AnyListen.IPC.ServerCommonActions &
   AnyListen.IPCList.ServerActions &
   AnyListen.IPCDislikeList.ServerActions &
   AnyListen.IPCExtension.ServerActions &
+  AnyListen.IPCDesktopLyric.ServerActions &
   AnyListen.IPCSoundEffect.ServerActions
 
 declare global {
@@ -58,7 +60,7 @@ declare global {
         pwd: string
         clientCall: ClientIPC
       }) => void
-      type WinType = 'main'
+      type WinType = 'main' | 'desktopLyric'
       type ServerCommonActions = _ServerCommonActions &
         IPCMusic.ServerActions &
         IPCResource.ServerActions &

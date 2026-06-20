@@ -248,7 +248,7 @@ const listenerAppEvent = () => {
         void wc.session.setProxy(electronProxy)
       }
     } catch {}
-    console.log(electronProxy)
+    // console.log(electronProxy)
   })
   update.on('checking_for_update', () => {
     appState.version.status = 'checking'
@@ -291,9 +291,9 @@ export const initAppEnv = async () => {
   initState()
   initSingleInstanceHandle()
   applyElectronEnvParams()
-  await setUserDataPath()
   registerDeeplink()
   listenerElectronEvent()
+  await setUserDataPath()
   ;[appState.machineId, appState.appSetting] = await Promise.all([
     initDeviceId(appState.dataPath),
     getAppSetting().then((res) => res.setting),

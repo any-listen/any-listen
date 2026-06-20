@@ -25,6 +25,7 @@ const runMainThread = async () => {
 
   const spinners = new Spinnies({ color: 'blue' })
   spinners.add('view-main', { text: 'view-main compiling' })
+  spinners.add('view-lyric', { text: 'view-lyric compiling' })
   spinners.add('desktop', { text: 'desktop compiling' })
   spinners.add('extension-preload', { text: 'extension-preload compiling' })
   const handleResult = (name: TaskName) => {
@@ -40,6 +41,7 @@ const runMainThread = async () => {
 
   const buildTasks = [
     runBuildWorkerStatus('view-main', noop).then(handleResult('view-main')),
+    runBuildWorkerStatus('view-lyric', noop).then(handleResult('view-lyric')),
     runBuildWorkerStatus('desktop', noop).then(handleResult('desktop')),
     runBuildWorkerStatus('extension-preload', noop).then(handleResult('extension-preload')),
     // build(rendererConfig, noop).then(handleResult('renderer')),

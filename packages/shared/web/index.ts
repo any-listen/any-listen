@@ -135,3 +135,27 @@ export const checkPicUrl = async (picUrl: string | null | undefined, enableProxy
     image.src = picUrl
   })
 }
+
+let themeMediaQuery: MediaQueryList
+const initThemeMediaQuery = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (themeMediaQuery) return
+  themeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+}
+export const onSystemThemeModeChanged = (handler: (isDark: boolean) => void) => {
+  initThemeMediaQuery()
+  const handleThemeChange = (e: MediaQueryListEvent) => {
+    handler(e.matches)
+  }
+
+  // 监听变化
+  themeMediaQuery.addEventListener('change', handleThemeChange)
+
+  return () => {
+    themeMediaQuery.removeEventListener('change', handleThemeChange)
+  }
+}
+export const getSystemThemeIsDark = () => {
+  initThemeMediaQuery()
+  return themeMediaQuery.matches
+}

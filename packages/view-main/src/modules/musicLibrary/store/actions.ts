@@ -31,7 +31,7 @@ export { parseMusicMetadata, removeUserList, sortListMusics, syncUserList, updat
  */
 export const getAllList = async () => {
   const userLists = await getUserLists()
-  console.log(userLists)
+  // console.log(userLists)
 
   return userLists
 }

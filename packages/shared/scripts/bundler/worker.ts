@@ -11,6 +11,9 @@ if (!parentPort) throw new Error('Require run in worker')
 const getWebViewMainIpc = () => {
   return process.env.NODE_ENV === 'development' ? 'http://localhost:9500/view-main.ipc.js' : './view-main.ipc.js'
 }
+const getWebViewLyricIpc = () => {
+  return process.env.NODE_ENV === 'development' ? 'http://localhost:9500/view-lyric.ipc.js' : './view-lyric.ipc.js'
+}
 
 type ViewMainTarget = 'desktop' | 'web'
 const getViewMainConfig = async (target: Target) => {
@@ -19,6 +22,13 @@ const getViewMainConfig = async (target: Target) => {
   }
   if (target !== 'desktop' && target !== 'web') throw new Error(`Invalid target for view-main: ${target}`)
   return buildConfig(target, DEV_SERVER_PORTS['view-main'], target == 'web' ? getWebViewMainIpc() : '')
+}
+const getViewLyricConfig = async (target: Target) => {
+  const { buildConfig } = (await dynamicImport('@any-listen/view-lyric')) as {
+    buildConfig: (target: ViewMainTarget, port: number, path: string) => Promise<UserConfig>
+  }
+  if (target !== 'desktop' && target !== 'web') throw new Error(`Invalid target for view-lyric: ${target}`)
+  return buildConfig(target, DEV_SERVER_PORTS['view-lyric'], target == 'web' ? getWebViewLyricIpc() : '')
 }
 
 // const getExtensionPreloadConfig = async (target: Target) => {
@@ -41,6 +51,7 @@ parentPort.on('message', async ({ port, taskName, target }: { port?: MessagePort
     'web-server': async (mode: Target) => import('@any-listen/web-server').then((m) => m.buildConfig(mode)),
     'web-preload': async (mode: Target) => import('@any-listen/web-server').then((m) => m.buildPreloadConfig(mode)),
     'view-main': getViewMainConfig,
+    'view-lyric': getViewLyricConfig,
     'extension-preload': async (mode: Target) => {
       return import('@any-listen/extension-preload/vite.config').then((m) => m.buildConfig(mode))
     },
@@ -51,7 +62,7 @@ parentPort.on('message', async ({ port, taskName, target }: { port?: MessagePort
       status: 'updated',
     })
   }
-  void build((await configs[taskName](target)) as UserConfig, sendStatus).then((result) => {
+  void build(await configs[taskName](target), sendStatus).then((result) => {
     buildResult = result
     port.postMessage({
       status: result.status ? 'success' : 'error',

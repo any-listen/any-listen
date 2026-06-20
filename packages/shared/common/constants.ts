@@ -6,6 +6,7 @@ export const EXTENSION_ENGINE = '1.3.0'
 
 export const DEV_SERVER_PORTS = {
   'view-main': 9200,
+  'view-lyric': 9300,
 } as const
 
 export const DB_NAME = 'anylisten.data.db'
@@ -127,6 +128,12 @@ export const IPC_CODE = {
   unknownServiceAddress: 'Unknown service address',
   lowServiceVersion: 'Web server version too low, please upgrade server to latest',
   highServiceVersion: 'Web server version too high, please upgrade app to latest',
+} as const
+
+export const IPC_CHANNEL_NAMES = {
+  WIN_MAIN_CHANNEL_PORT: 'win_main_channel_port',
+  WIN_LYRIC_CHANNEL_PORT: 'win_lyric_channel_port',
+  WIN_CHANNEL_PORT_REQUEST: 'win_channel_port_request',
 } as const
 
 export const EXTENSION_VM_IPC_FUNC_NAMES = [

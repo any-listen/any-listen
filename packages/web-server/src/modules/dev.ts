@@ -4,7 +4,7 @@ import path from 'node:path'
 import type Router from '@koa/router'
 
 export const registerDevRouter = (router: Router<unknown, AnyListen.RequestContext>) => {
-  const ipcFiles = ['view-main.ipc']
+  const ipcFiles = ['view-main.ipc', 'view-lyric.ipc']
 
   for (const file of ipcFiles) {
     const jsFile = `${file}.js`

@@ -28,10 +28,10 @@
 
 <style lang="less">
   .settings-item-title-container {
-    margin-bottom: 8px;
+    padding-bottom: 8px;
   }
   .settings-item-title-content {
-    margin-bottom: 8px;
+    padding-bottom: 8px;
   }
   .settings-item-title {
     font-size: 13px;

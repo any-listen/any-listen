@@ -5,12 +5,27 @@ import { lyricEvent } from '@/modules/lyric/store/event'
 import { musicLibraryEvent } from '@/modules/musicLibrary/store/event'
 import { settingState } from '@/modules/setting/store/state'
 import { getMusicPic as getMusicPicFromRemote, getMusicUrl as getMusicUrlFromRemote } from '@/shared/ipc/music'
-import { sendPlayerEvent, sendPlayHistoryListAction } from '@/shared/ipc/player'
+import { sendPlayerEvent as sendRemotePlayerEvent, sendPlayHistoryListAction } from '@/shared/ipc/player'
 import { playerActionEvent, playHistoryListActionEvent } from '@/shared/ipc/player/event'
+import { sendPlayerEvent as sendWinLyricPlayerEvent } from '@/shared/ipcLyric'
 
 import * as commit from './commit'
 import { playerEvent } from './event'
-import { pause, play, playId, seekTo, setCollectStatus, skipNext, skipPrev, togglePlay } from './playerActions'
+import {
+  dislikeMusic,
+  pause,
+  play,
+  playId,
+  seekTo,
+  setCollectStatus,
+  setLyricOffset,
+  setPlaybackRate,
+  setVolume,
+  setVolumeMute,
+  skipNext,
+  skipPrev,
+  togglePlay,
+} from './playerActions'
 import { playerState } from './state'
 
 export { getPlayInfo } from '@/shared/ipc/player'
@@ -209,6 +224,10 @@ export const removePlayHistoryList = async (data: AnyListen.IPCPlayer.PlayHistor
   await sendPlayHistoryListAction({ action: 'removeIdx', data })
 }
 
+const sendPlayerEvent = async (event: AnyListen.IPCPlayer.PlayerEvent) => {
+  await sendRemotePlayerEvent(event)
+  void sendWinLyricPlayerEvent(event)
+}
 let unregistereds = new Set<() => void>()
 export const registerLocalPlayerAction = () => {
   let preStatus: AnyListen.IPCPlayer.PlayerStatus = 'stopped'
@@ -246,6 +265,12 @@ export const registerLocalPlayerAction = () => {
     playerEvent.on('playerEnded', () => {
       preStatus = 'ended'
       void sendPlayerEvent({ action: 'status', data: ['ended', playerState.playing] })
+    })
+  )
+  unregistereds.add(
+    playerEvent.on('playerEmptied', () => {
+      preStatus = 'paused'
+      void sendPlayerEvent({ action: 'status', data: ['paused', playerState.playing] })
     })
   )
   unregistereds.add(
@@ -371,6 +396,21 @@ export const registerRemotePlayerAction = () => {
         break
       case 'collectStatus':
         setCollectStatus(action.data)
+        break
+      case 'lyricOffset':
+        setLyricOffset(action.data)
+        break
+      case 'playbackRate':
+        setPlaybackRate(action.data)
+        break
+      case 'volume':
+        setVolume(action.data)
+        break
+      case 'volumeMute':
+        setVolumeMute(action.data)
+        break
+      case 'dislike':
+        void dislikeMusic()
         break
       // default:
       //   console.warn('unknown action:', action)

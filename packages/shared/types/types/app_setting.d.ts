@@ -329,6 +329,145 @@ declare global {
       'list.addMusicLocationType': AddMusicLocationType
 
       /**
+       * 是否启用桌面歌词
+       */
+      'desktopLyric.enable': boolean
+
+      /**
+       * 是否锁定桌面歌词
+       */
+      'desktopLyric.isLock': boolean
+
+      /**
+       * 是在置顶桌面
+       */
+      'desktopLyric.isAlwaysOnTop': boolean
+
+      /**
+       * 是否自动刷新歌词置顶
+       */
+      'desktopLyric.isAlwaysOnTopLoop': boolean
+
+      /**
+       * 是否将歌词进程显示在任务栏
+       */
+      'desktopLyric.isShowTaskbar': boolean
+
+      /**
+       * 是否在全屏时隐藏歌词
+       */
+      'desktopLyric.fullscreenHide': boolean
+
+      /**
+       * 是否在暂停时隐藏歌词
+       */
+      'desktopLyric.pauseHide': boolean
+
+      /**
+       * 桌面歌词窗口宽度
+       */
+      'desktopLyric.width': number
+
+      /**
+       * 桌面歌词窗口高度
+       */
+      'desktopLyric.height': number
+
+      /**
+       * 桌面歌词窗口x坐标
+       */
+      'desktopLyric.x': number | null
+
+      /**
+       * 桌面歌词窗口y坐标
+       */
+      'desktopLyric.y': number | null
+
+      /**
+       * 是否允许桌面歌词窗口拖出主屏幕之外
+       */
+      'desktopLyric.isLockScreen': boolean
+
+      /**
+       * 是否延迟桌面歌词滚动
+       */
+      'desktopLyric.isDelayScroll': boolean
+
+      /**
+       * 歌词滚动位置
+       */
+      'desktopLyric.scrollAlign': 'top' | 'center'
+
+      /**
+       * 是否在鼠标划过桌面歌词窗口时降低歌词透明度
+       */
+      'desktopLyric.isHoverHide': boolean
+
+      /**
+       * 歌词方向
+       */
+      'desktopLyric.direction': 'horizontal' | 'vertical'
+
+      /**
+       * 歌词对齐方式
+       */
+      'desktopLyric.style.align': 'center' | 'left' | 'right'
+
+      /**
+       * 桌面歌词字体
+       */
+      'desktopLyric.style.font': string
+
+      /**
+       * 桌面歌词字体大小
+       */
+      'desktopLyric.style.fontSize': number
+      /**
+       * 桌面歌词字体透明度
+       */
+      'desktopLyric.style.opacity': number
+
+      /**
+       * 歌词间距大小
+       */
+      'desktopLyric.style.lineGap': number
+
+      /**
+       * 桌面歌词未播放字体颜色
+       */
+      'desktopLyric.style.lyricUnplayColor': string
+
+      /**
+       * 桌面歌词已播放字体颜色
+       */
+      'desktopLyric.style.lyricPlayedColor': string
+
+      /**
+       * 桌面歌词字体阴影颜色
+       */
+      'desktopLyric.style.lyricShadowColor': string
+
+      /**
+       * 是否缩放当前正在播放的桌面歌词
+       */
+      'desktopLyric.style.isZoomActiveLrc': boolean
+
+      /**
+       * 是否加粗逐字歌词字体
+       */
+      'desktopLyric.style.isFontWeightFont': boolean
+
+      /**
+       * 是否加粗逐行歌词字体
+       */
+      'desktopLyric.style.isFontWeightLine': boolean
+
+      /**
+       * 是否加粗翻译、罗马音字体
+       */
+      'desktopLyric.style.isFontWeightExtended': boolean
+
+      /**
        * 下载路径
        */
       'download.savePath': string

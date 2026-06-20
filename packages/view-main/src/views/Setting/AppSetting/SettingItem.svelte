@@ -11,7 +11,13 @@
 
 <div class="settings-item">
   {#if item.type === 'component'}
-    <item.component />
+    {#await item.component() then Component}
+      {#if 'default' in Component}
+        <Component.default />
+      {:else}
+        <Component />
+      {/if}
+    {/await}
   {:else}
     <SettingCommonItem {item} />
   {/if}

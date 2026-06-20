@@ -1,0 +1,176 @@
+<script lang="ts" module>
+  export type MenuItem<T extends string> = Readonly<{ action: T; label: string; disabled?: boolean }>
+  export type MenuList<T extends string> = Readonly<Array<MenuItem<T> | null>>
+  export interface Position {
+    x: number
+    y: number
+  }
+</script>
+
+<script lang="ts" generics="T extends string = string">
+  import { menuLocaltion } from '@/shared/compositions/menuLocaltion.svelte'
+  import Portal from './Portal.svelte'
+  import { tick } from 'svelte'
+
+  type _Menus = MenuList<T>
+  let render = $state(false)
+  let anim = $state(false)
+
+  // let domMenu: HTMLDivElement
+
+  let {
+    visible = $bindable(false),
+    location = { x: 0, y: 0 },
+    menus = [],
+    onhide,
+    onclick,
+  }: {
+    visible: boolean
+    location: Position
+    menus: _Menus
+    onhide?: () => void
+    onclick?: (val: NonNullable<_Menus[number]>) => void
+  } = $props()
+
+  const onHide = () => {
+    visible = false
+    onhide?.()
+  }
+  const menuClick = (item: NonNullable<_Menus[number]>) => {
+    if (item.disabled) return
+    onclick?.(item)
+  }
+
+  // let prevFocusedNode: HTMLElement | null = null
+  $effect(() => {
+    if (visible) {
+      render = true
+      void tick().then(() => {
+        // prevFocusedNode = document.activeElement as HTMLElement
+        anim = true
+      })
+      return
+    }
+    anim = false
+    // prevFocusedNode?.focus()
+  })
+</script>
+
+{#if render}
+  <Portal to="#root">
+    <div
+      {@attach menuLocaltion({
+        reactives: {
+          get visible() {
+            return anim
+          },
+          get location() {
+            return location
+          },
+        },
+        onHide,
+      })}
+      class="menu"
+      role="toolbar"
+      tabindex="-1"
+      inert={!anim}
+      onclick={onHide}
+      onkeydown={(event) => {
+        if (event.key === 'Escape') {
+          onHide()
+        }
+      }}
+      ontransitionend={(event) => {
+        if (!visible) render = false
+      }}
+    >
+      {#each menus as item, idx (item?.action ?? idx)}
+        {#if item}
+          <button
+            class="menu-item"
+            disabled={item.disabled}
+            tabindex="0"
+            aria-label={item.label}
+            data-ignore-tip
+            onclick={() => {
+              menuClick(item)
+            }}
+          >
+            {item.label}
+          </button>
+        {:else}
+          <span class="hr"></span>
+        {/if}
+      {/each}
+    </div>
+  </Portal>
+{/if}
+
+<style lang="less">
+  .menu {
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    flex-flow: column nowrap;
+    overflow: hidden;
+    font-size: 12px;
+    outline: none;
+    background-color: var(--color-content-background);
+    border-radius: @radius-border;
+    box-shadow: @shadow-popup;
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: 0 0 0;
+    transition: 0.14s ease;
+    transition-property: transform, opacity;
+    // padding: 3px 0;
+    // will-change: transform;
+    // border: 1px solid rgba(0, 0, 0, 0.1);
+    // backdrop-filter: blur(4px);
+    // &::before {
+    //   display: block;
+    //   position: absolute;
+    //   content: '';
+    //   inset: 0;
+    //   z-index: -1;
+    //   background-color: var(--color-content-background);
+    //   opacity: 0.7;
+    // }
+  }
+  .menu-item {
+    display: block;
+    min-width: 140px;
+    // color: var(--color-button-font);
+    padding: 0 15px;
+    line-height: 34px;
+    text-align: left;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    // outline: none;
+    transition: @transition-normal;
+    transition-property: background-color, opacity;
+    .mixin-ellipsis-1();
+
+    &:hover {
+      background-color: var(--color-primary-background-hover);
+    }
+    &:active {
+      background-color: var(--color-primary-background-active);
+    }
+
+    &[disabled] {
+      cursor: default;
+      opacity: 0.4;
+      &:hover {
+        background: none !important;
+      }
+    }
+  }
+  .hr {
+    // margin: 5px 0;
+    // height: 1px;
+    border-top: 1px solid var(--color-primary-background-active);
+    // background-color: var(--color-primary-background-active);
+  }
+</style>

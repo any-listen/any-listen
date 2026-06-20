@@ -129,6 +129,7 @@ export const buildConfig = (mode: string): UserConfig => {
           'util-service.worker': path.join(rootPath, 'packages/shared/app/modules/worker/utilService/index.ts'),
           'extension-service.worker': path.join(rootPath, 'packages/shared/app/modules/worker/extensionService/index.ts'),
           'view-main.preload': path.join(projectPath, 'src/renderer/winMain/preload/index.ts'),
+          'view-lyric.preload': path.join(projectPath, 'src/renderer/winLyric/preload/index.ts'),
         },
         output: {
           entryFileNames: '[name].js',

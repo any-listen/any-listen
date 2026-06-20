@@ -1,3 +1,6 @@
+import { IPC_CHANNEL_NAMES } from '@any-listen/common/constants'
+
+import { getWebContents } from './main'
 import { rendererIPC } from './rendererEvent'
 
 export { hideWindow, showWindow } from './main'
@@ -20,4 +23,8 @@ export const prev = async () => {
 
 export const toggle = async () => {
   await rendererIPC.playerAction({ action: 'toggle' })
+}
+
+export const sendWinLyricChannelPort = async (port: Electron.MessagePortMain) => {
+  getWebContents()?.postMessage(IPC_CHANNEL_NAMES.WIN_LYRIC_CHANNEL_PORT, null, [port])
 }

@@ -27,7 +27,9 @@
     "src/preload/**/*.ts",
     "src/preload/**/*.js",
     "src/app/renderer/winMain/preload/**/*.js",
-    "src/app/renderer/winMain/preload/**/*.ts"
+    "src/app/renderer/winMain/preload/**/*.ts",
+    "src/app/renderer/winLyric/**/*.js",
+    "src/app/renderer/winLyric/**/*.ts"
   ],
   "exclude": ["@types/node"]
 }

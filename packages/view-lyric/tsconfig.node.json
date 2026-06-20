@@ -1,0 +1,10 @@
+{
+  "extends": "@any-listen/eslint/tsconfig.node.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "./"
+    // "module": "ESNext",
+    // "moduleResolution": "bundler"
+  },
+  "include": ["vite.config.js", "svelte.config.js", ".stylelintrc.mjs", "eslint.config.mjs", "build-config/html.plugin.js"]
+}

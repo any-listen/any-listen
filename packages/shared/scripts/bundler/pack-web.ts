@@ -15,12 +15,12 @@ import { type TaskName, runBuildWorkerStatus } from './utils'
 
 const rootPath = path.join(__dirname, '../../../../')
 
-const updateWebPreloadFileName = async () => {
+const updateWebPreloadFileName = async (name: 'view-main' | 'view-lyric') => {
   const publicDir = path.join(rootPath, 'build/public')
-  const ipcFileName = (await fs.readdir(publicDir)).find((f) => f.startsWith('view-main.ipc.'))
-  if (!ipcFileName) throw new Error('view-main.ipc file not found')
+  const ipcFileName = (await fs.readdir(publicDir)).find((f) => f.startsWith(`${name}.ipc.`))
+  if (!ipcFileName) throw new Error(`${name}.ipc file not found`)
   const idxHtml = path.join(publicDir, 'index.html')
-  await fs.writeFile(idxHtml, (await fs.readFile(idxHtml)).toString().replace('view-main.ipc.js', ipcFileName))
+  await fs.writeFile(idxHtml, (await fs.readFile(idxHtml)).toString().replace(`${name}.ipc.js`, ipcFileName))
 }
 
 const runMainThread = async () => {
@@ -33,6 +33,7 @@ const runMainThread = async () => {
 
   const spinners = new Spinnies({ color: 'blue' })
   spinners.add('view-main', { text: 'view-main compiling' })
+  spinners.add('view-lyric', { text: 'view-lyric compiling' })
   spinners.add('web-preload', { text: 'web-preload compiling' })
   spinners.add('extension-preload', { text: 'extension-preload compiling' })
   spinners.add('web-server', { text: 'web-server compiling' })
@@ -49,6 +50,7 @@ const runMainThread = async () => {
 
   const buildTasks = [
     runBuildWorkerStatus('view-main', noop).then(handleResult('view-main')),
+    runBuildWorkerStatus('view-lyric', noop).then(handleResult('view-lyric')),
     runBuildWorkerStatus('web-server', noop).then(handleResult('web-server')),
     runBuildWorkerStatus('extension-preload', noop).then(handleResult('extension-preload')),
     runBuildWorkerStatus('web-preload', noop).then(handleResult('web-preload')),
@@ -61,7 +63,8 @@ const runMainThread = async () => {
   }
 
   await copyAssets('web')
-  await updateWebPreloadFileName()
+  await updateWebPreloadFileName('view-main')
+  await updateWebPreloadFileName('view-lyric')
 
   // listr.run().then(() => {
 

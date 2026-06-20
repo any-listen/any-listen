@@ -49,6 +49,7 @@ const runMainThread = async () => {
 
   const spinners = new Spinnies({ color: 'blue' })
   spinners.add('view-main', { text: 'view-main compiling' })
+  spinners.add('view-lyric', { text: 'view-lyric compiling' })
   spinners.add('web-preload', { text: 'web-preload compiling' })
   spinners.add('extension-preload', { text: 'extension-preload compiling' })
   // spinners.add('renderer-lyric', { text: 'renderer-lyric compiling' })
@@ -72,11 +73,17 @@ const runMainThread = async () => {
         return result.status
       })
       .then(handleResult('view-main')),
+    runBuildWorker('view-lyric', noop)
+      .then((result) => {
+        viewMainBuild = result
+        return result.status
+      })
+      .then(handleResult('view-lyric')),
     runBuildWorkerStatus('web-preload', () => {
       viewMainBuild.reload()
     }).then(handleResult('web-preload')),
     runBuildWorkerStatus('extension-preload', handleUpdate).then(handleResult('extension-preload')),
-    buildSuatus(buildConfig('web-server') as Vite.UserConfig, handleUpdate).then(handleResult('web-server')),
+    buildSuatus(buildConfig('web-server'), handleUpdate).then(handleResult('web-server')),
   ]
 
   if (!(await Promise.all(buildTasks).then((result) => result.every((s) => s)))) return
@@ -88,7 +95,10 @@ const runMainThread = async () => {
   logger.info(colors.green('\nAll task build successfully'))
   // })
   console.timeEnd('init')
-  logger.info(colors.yellow(`web UI running: http://localhost:${DEV_SERVER_PORTS['view-main']}`))
+  logger.info(
+    colors.yellow(`web UI running: http://localhost:${DEV_SERVER_PORTS['view-main']}
+web lyric running: http://localhost:${DEV_SERVER_PORTS['view-lyric']}`)
+  )
 }
 
 void runMainThread()

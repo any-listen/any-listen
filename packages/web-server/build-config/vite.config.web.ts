@@ -44,6 +44,7 @@ export const buildConfig = (mode: string): UserConfig => {
       rolldownOptions: {
         input: {
           'view-main.ipc': path.join(projectPath, 'src/app/renderer/winMain/preload/index.ts'),
+          'view-lyric.ipc': path.join(projectPath, 'src/app/renderer/winLyric/index.ts'),
         },
         output: {
           entryFileNames: isProd ? '[name].[hash].js' : '[name].js',

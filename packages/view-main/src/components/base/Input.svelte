@@ -13,6 +13,7 @@
     trim = false,
     stopcontenteventpropagation = true,
     autopaste = true,
+    onbeforechange,
     onchange = () => {},
     onsubmit = () => {},
     onkeydown = () => {},
@@ -32,6 +33,7 @@
     stopcontenteventpropagation?: boolean
     autopaste?: boolean
     autofocus?: boolean
+    onbeforechange?: (val: string) => string
     onchange?: (val: string) => void
     onsubmit?: (val: string) => void
     onkeydown?: KeyboardEventHandler<HTMLInputElement>
@@ -69,10 +71,11 @@
     str = str.replace(/\s+/g, ' ')
     const text = domInput.value
     // if (domInput.selectionStart == domInput.selectionEnd) {
-    const newValue =
+    let newValue =
       text.substring(0, domInput.selectionStart) +
       str +
       text.substring(domInput.selectionEnd ?? domInput.selectionStart, text.length)
+    if (onbeforechange) newValue = onbeforechange(newValue)
     domInput.value = newValue
     handleInput()
     onchange(domInput.value.trim())
@@ -104,7 +107,13 @@
   oninput={handleInput}
   onchange={() => {
     if (readonly) return
-    onchange(domInput.value.trim())
+    let newValue = domInput.value.trim()
+    if (onbeforechange) newValue = onbeforechange(newValue)
+    if (newValue !== domInput.value) {
+      domInput.value = newValue
+      handleInput()
+    }
+    onchange(newValue)
   }}
   onkeyup={handleKeyup}
   oncontextmenu={handleContextMenu}

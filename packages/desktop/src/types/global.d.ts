@@ -54,11 +54,11 @@ declare namespace AnyListen {
     mode?: Electron.ProgressBarOptions['mode']
   }
   interface TaskBarButtonFlags {
-    empty: boolean
-    collect: boolean
-    play: boolean
-    next: boolean
-    prev: boolean
+    empty?: boolean
+    collect?: boolean
+    play?: boolean
+    next?: boolean
+    prev?: boolean
   }
   type TaskBarButtonActions = 'unCollect' | 'collect' | 'prev' | 'pause' | 'play' | 'next'
 }

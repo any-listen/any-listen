@@ -1,0 +1,17 @@
+export {
+  play,
+  pause,
+  togglePlay,
+  stop,
+  skipPrev,
+  skipNext,
+  seekTo,
+  playId,
+  setLyricOffset,
+  setPlaybackRate,
+  collectMusic,
+  uncollectMusic,
+  dislikeMusic,
+  setVolume,
+  setVolumeMute,
+} from './store/actions'

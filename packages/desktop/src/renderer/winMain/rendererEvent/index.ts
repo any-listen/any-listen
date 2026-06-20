@@ -19,7 +19,14 @@ import { createExposeTheme } from './theme'
 
 export type ExposeFunctions = Omit<
   AnyListen.IPC.ServerIPCActions<Electron.IpcRendererEvent>,
-  'fileSystemAction' | 'getLoginDevices' | 'removeLoginDevice' | 'logout' | 'messageBoxConfirm' | 'setSystemThemeMode'
+  | 'fileSystemAction'
+  | 'getLoginDevices'
+  | 'removeLoginDevice'
+  | 'logout'
+  | 'messageBoxConfirm'
+  | 'setSystemThemeMode'
+  | 'showDesktopLyric'
+  | 'hideDesktopLyric'
 >
 
 let isInitialized = false

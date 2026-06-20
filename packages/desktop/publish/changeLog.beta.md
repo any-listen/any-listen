@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Improved
+### Added
 
-- Added a confirmation step before removing items from **My List** ([#234](https://github.com/any-listen/any-listen/issues/234)).
+- Added desktop lyrics.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 优化
+### 新增
 
-- 移除 **「我的列表」** 条目前新增二次确认（[#234](https://github.com/any-listen/any-listen/issues/234)）。
+- 新增桌面歌词。

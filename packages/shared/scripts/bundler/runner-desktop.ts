@@ -62,7 +62,7 @@ const runMainThread = async () => {
 
   const spinners = new Spinnies({ color: 'blue' })
   spinners.add('view-main', { text: 'view-main compiling' })
-  // spinners.add('renderer-lyric', { text: 'renderer-lyric compiling' })
+  spinners.add('view-lyric', { text: 'view-lyric compiling' })
   // spinners.add('renderer-scripts', { text: 'renderer-scripts compiling' })
   spinners.add('desktop', { text: 'desktop compiling' })
   spinners.add('extension-preload', { text: 'extension-preload compiling' })
@@ -79,6 +79,7 @@ const runMainThread = async () => {
 
   const buildTasks = [
     runBuildWorkerStatus('view-main', noop).then(handleResult('view-main')),
+    runBuildWorkerStatus('view-lyric', noop).then(handleResult('view-lyric')),
     // runBuildWorkerStatus('renderer-lyric', noop).then(handleResult('renderer-lyric')),
     // runBuildWorkerStatus('renderer-scripts', handleUpdate).then(handleResult('renderer-scripts')),
     runBuildWorkerStatus('extension-preload', handleUpdate).then(handleResult('extension-preload')),

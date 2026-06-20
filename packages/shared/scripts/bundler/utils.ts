@@ -7,7 +7,7 @@ import { dynamicImport } from './import-esm.cjs'
 import type { Vite } from './types'
 
 export type BuildSuatus = 'success' | 'error' | 'updated'
-export type TaskName = 'desktop' | 'web-server' | 'web-preload' | 'view-main' | 'extension-preload'
+export type TaskName = 'desktop' | 'web-server' | 'web-preload' | 'view-main' | 'view-lyric' | 'extension-preload'
 export type Target = 'desktop' | 'web' | 'mobile'
 
 /**

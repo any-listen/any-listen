@@ -10,15 +10,7 @@ import { getThemeList } from '@/modules/theme/store/action'
 import { i18n, langList, type Message } from '@/plugins/i18n'
 
 import About from './About.svelte'
-import DislikedList from './DislikedList.svelte'
-import ExtensionGHMirrorHosts from './ExtensionGHMirrorHosts.svelte'
 import Font from './Font.svelte'
-import LoginDevices from './LoginDevices.svelte'
-import MediaDevice from './MediaDevice.svelte'
-import MusicCache from './MusicCache.svelte'
-import Network from './Network.svelte'
-import ResourceCache from './ResourceCache.svelte'
-import Update from './Update.svelte'
 
 interface SettingBase<T = unknown> {
   field: keyof AnyListen.AppSetting
@@ -36,7 +28,7 @@ export interface SettingListComponentItem {
   name: keyof Message
   description?: keyof Message
   type: 'component'
-  component: Component
+  component: () => Promise<{ default: Component }> | Component
 }
 interface SettingInput extends SettingBase<string> {
   type: 'input'
@@ -138,7 +130,7 @@ export const settings: SettingListSection[] = [
       {
         name: 'settings.basic.font',
         type: 'component',
-        component: Font,
+        component: () => Font,
       },
       {
         field: 'common.langId',
@@ -244,7 +236,7 @@ export const settings: SettingListSection[] = [
       {
         name: 'settings.player.media_device',
         type: 'component',
-        component: MediaDevice,
+        component: async () => import('./MediaDevice.svelte'),
       },
     ],
   },
@@ -317,6 +309,114 @@ export const settings: SettingListSection[] = [
     ],
   },
   {
+    id: 'desktopLyric',
+    // t('settings.desktop_lyric.style_font_weight_extended')
+    name: 'settings.desktop_lyric',
+    list: [
+      {
+        field: 'desktopLyric.style.isZoomActiveLrc',
+        name: 'desktop_lyric.lrc_active_zoom_on',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isDelayScroll',
+        name: 'settings.desktop_lyric.delay_scroll',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.style.isFontWeightFont',
+        name: 'settings.desktop_lyric.style_font_weight_font',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.style.isFontWeightLine',
+        name: 'settings.desktop_lyric.style_font_weight_line',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.style.isFontWeightExtended',
+        name: 'settings.desktop_lyric.style_font_weight_extended',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.pauseHide',
+        name: 'settings.desktop_lyric.pause_hide',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isLockScreen',
+        name: 'settings.desktop_lyric.lock_screen',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isAlwaysOnTop',
+        name: 'settings.desktop_lyric.always_on_top',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isAlwaysOnTopLoop',
+        name: 'settings.desktop_lyric.always_on_top_loop',
+        description: 'settings.desktop_lyric.always_on_top_loop_tip',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isHoverHide',
+        name: 'settings.desktop_lyric.hover_hide',
+        description: 'settings.desktop_lyric.hover_hide_tip',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isShowTaskbar',
+        name: 'settings.desktop_lyric.show_taskbar',
+        description: 'settings.desktop_lyric.show_taskbar_tip',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.direction',
+        name: 'settings.desktop_lyric.direction',
+        type: 'radio',
+        enum: [
+          { value: 'horizontal', name: 'settings.desktop_lyric.direction_horizontal' },
+          { value: 'vertical', name: 'settings.desktop_lyric.direction_vertical' },
+        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.direction']; name: keyof Message }>,
+      },
+      {
+        field: 'desktopLyric.style.align',
+        name: 'settings.desktop_lyric.style_align',
+        type: 'radio',
+        enum: [
+          { value: 'left', name: 'settings.desktop_lyric.style_align_left' },
+          { value: 'center', name: 'settings.desktop_lyric.style_align_center' },
+          { value: 'right', name: 'settings.desktop_lyric.style_align_right' },
+        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.style.align']; name: keyof Message }>,
+      },
+      {
+        field: 'desktopLyric.scrollAlign',
+        name: 'settings.desktop_lyric.scroll_align',
+        type: 'radio',
+        enum: [
+          { value: 'top', name: 'settings.desktop_lyric.scroll_align_top' },
+          { value: 'center', name: 'settings.desktop_lyric.scroll_align_center' },
+        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.scrollAlign']; name: keyof Message }>,
+      },
+      {
+        name: 'settings.desktop_lyric.line_gap',
+        type: 'component',
+        component: async () => import('./DesktopLyricGap.svelte'),
+      },
+      {
+        name: 'settings.desktop_lyric.font',
+        type: 'component',
+        component: async () => import('./DesktopLyricFont.svelte'),
+      },
+      {
+        name: 'settings.desktop_lyric.color',
+        type: 'component',
+        component: async () => import('./DesktopLyricTheme.svelte'),
+      },
+    ],
+  },
+  {
     id: 'extension',
     // t('settings.extension')
     name: 'settings.extension',
@@ -324,7 +424,7 @@ export const settings: SettingListSection[] = [
       {
         name: 'settings.extension.gh_mirror_hosts',
         type: 'component',
-        component: ExtensionGHMirrorHosts,
+        component: async () => import('./ExtensionGHMirrorHosts.svelte'),
       },
     ],
   },
@@ -357,7 +457,7 @@ export const settings: SettingListSection[] = [
       {
         name: 'settings.network.proxy',
         type: 'component',
-        component: Network,
+        component: async () => import('./Network.svelte'),
       },
     ],
   },
@@ -397,17 +497,17 @@ export const settings: SettingListSection[] = [
       {
         name: 'settings.other.resource_cache',
         type: 'component',
-        component: ResourceCache,
+        component: async () => import('./ResourceCache.svelte'),
       },
       {
         name: 'settings.other.music_cache',
         type: 'component',
-        component: MusicCache,
+        component: async () => import('./MusicCache.svelte'),
       },
       {
         name: 'settings.other.dislike_list',
         type: 'component',
-        component: DislikedList,
+        component: async () => import('./DislikedList.svelte'),
       },
     ],
   },
@@ -437,7 +537,7 @@ export const settings: SettingListSection[] = [
       {
         name: 'settings.update',
         type: 'component',
-        component: Update,
+        component: async () => import('./Update.svelte'),
       },
     ],
   },
@@ -448,7 +548,7 @@ export const settings: SettingListSection[] = [
       {
         name: 'settings__about',
         type: 'component',
-        component: About,
+        component: () => About,
       },
     ],
   },
@@ -462,7 +562,7 @@ if (import.meta.env.VITE_IS_WEB) {
       {
         name: 'settings__security_login_devices',
         type: 'component',
-        component: LoginDevices,
+        component: async () => import('./LoginDevices.svelte'),
       },
     ],
   })

@@ -306,6 +306,9 @@ importers:
       '@any-listen/types':
         specifier: workspace:@shared/types@*
         version: link:../types
+      '@any-listen/view-lyric':
+        specifier: workspace:view-lyric@*
+        version: link:../../view-lyric
       '@any-listen/view-main':
         specifier: workspace:view-main@*
         version: link:../../view-main
@@ -354,6 +357,9 @@ importers:
       '@any-listen/common':
         specifier: workspace:@shared/common@*
         version: link:../common
+      '@simonwep/pickr':
+        specifier: ^1.9.1
+        version: 1.9.1
       js-sha256:
         specifier: ^0.11.1
         version: 0.11.1
@@ -364,6 +370,85 @@ importers:
       '@any-listen/types':
         specifier: workspace:@shared/types@*
         version: link:../types
+
+  packages/view-lyric:
+    dependencies:
+      '@any-listen/common':
+        specifier: workspace:@shared/common@*
+        version: link:../shared/common
+      '@any-listen/i18n':
+        specifier: workspace:@shared/i18n@*
+        version: link:../shared/i18n
+      '@any-listen/theme':
+        specifier: workspace:@shared/theme@*
+        version: link:../shared/theme
+      '@any-listen/web':
+        specifier: workspace:@shared/web@*
+        version: link:../shared/web
+      message2call:
+        specifier: ^2.0.3
+        version: 2.0.3
+    devDependencies:
+      '@any-listen/eslint':
+        specifier: workspace:@shared/eslint@*
+        version: link:../shared/eslint
+      '@any-listen/types':
+        specifier: workspace:@shared/types@*
+        version: link:../shared/types
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^7.1.2
+        version: 7.1.2(svelte@5.56.3(@typescript-eslint/types@8.61.1))(vite@8.0.16(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6))
+      '@swc/html':
+        specifier: ^1.15.41
+        version: 1.15.41
+      '@types/postcss-pxtorem':
+        specifier: ^6.1.0
+        version: 6.1.0
+      '@types/sortablejs':
+        specifier: ^1.15.9
+        version: 1.15.9
+      eslint-plugin-svelte:
+        specifier: ^3.19.0
+        version: 3.19.0(eslint@9.39.4(jiti@2.7.0))(svelte@5.56.3(@typescript-eslint/types@8.61.1))(ts-node@10.9.2(@types/node@24.13.2)(typescript@6.0.3))
+      less:
+        specifier: ^4.6.6
+        version: 4.6.6
+      postcss:
+        specifier: ^8.5.15
+        version: 8.5.15
+      postcss-pxtorem:
+        specifier: ^6.1.0
+        version: 6.1.0(postcss@8.5.15)
+      stylelint:
+        specifier: ^17.13.0
+        version: 17.13.0(typescript@6.0.3)
+      stylelint-config-html:
+        specifier: ^1.1.0
+        version: 1.1.0(postcss-html@1.8.1)(stylelint@17.13.0(typescript@6.0.3))
+      stylelint-config-recess-order:
+        specifier: ^7.7.0
+        version: 7.7.0(stylelint-order@8.1.1(stylelint@17.13.0(typescript@6.0.3)))(stylelint@17.13.0(typescript@6.0.3))
+      stylelint-config-standard-less:
+        specifier: ^4.1.0
+        version: 4.1.0(postcss@8.5.15)(stylelint@17.13.0(typescript@6.0.3))
+      svelte:
+        specifier: ^5.56.3
+        version: 5.56.3(@typescript-eslint/types@8.61.1)
+      svelte-check:
+        specifier: ^4.6.0
+        version: 4.6.0(picomatch@4.0.4)(svelte@5.56.3(@typescript-eslint/types@8.61.1))(typescript@6.0.3)
+      svelte-eslint-parser:
+        specifier: ^1.8.0
+        version: 1.8.0(svelte@5.56.3(@typescript-eslint/types@8.61.1))
+      svelte-preprocess:
+        specifier: 6.0.5
+        version: 6.0.5(less@4.6.6)(postcss-load-config@3.1.4(postcss@8.5.15)(ts-node@10.9.2(@types/node@24.13.2)(typescript@6.0.3)))(postcss@8.5.15)(svelte@5.56.3(@typescript-eslint/types@8.61.1))(typescript@6.0.3)
+      vite:
+        specifier: ^8.0.16
+        version: 8.0.16(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6)
+      vite-plugin-svg-icons:
+        specifier: ^2.0.1
+        version: 2.0.1(vite@8.0.16(@types/node@24.13.2)(esbuild@0.28.1)(jiti@2.7.0)(less@4.6.6))
 
   packages/view-main:
     dependencies:
@@ -1188,6 +1273,9 @@ packages:
   '@rtsao/scc@1.1.0':
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
 
+  '@simonwep/pickr@1.9.1':
+    resolution: {integrity: sha512-fR3qmfAcPf/HSFS7GEnTmZLM3+xERv1+jyMBbzT63ilRRM8veYjI7ELvkHHKk0/du3lHp7uh/FqatjM3646X1g==}
+
   '@sindresorhus/is@4.6.0':
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
     engines: {node: '>=10'}
@@ -1933,6 +2021,9 @@ packages:
   copy-anything@3.0.5:
     resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
     engines: {node: '>=12.13'}
+
+  core-js@3.37.0:
+    resolution: {integrity: sha512-fu5vHevQ8ZG4og+LXug8ulUtVxjOcEYvifJr7L5Bfq9GOztVqsKd9/59hUk2ZSbCrS3BqUr3EpaYGIYzq7g3Ug==}
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -3442,6 +3533,9 @@ packages:
     resolution: {integrity: sha512-ZB9RH/39qpq5Vu6Y+NmUaFhQR6pp+M2Xt76XBnEwDaGcVAqhlvxrl3B2bKS5D3NH3QR76v3aSrKaF/Kiy7lEtQ==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  nanopop@2.4.2:
+    resolution: {integrity: sha512-NzOgmMQ+elxxHeIha+OG/Pv3Oc3p4RU2aBhwWwAqDpXrdTbtRylbRLQztLy8dMMwfl6pclznBdfUhccEn9ZIzw==}
 
   napi-build-utils@2.0.0:
     resolution: {integrity: sha512-GEbrYkbfF7MoNaoh2iGG84Mnf/WZfB0GdGEsM8wz7Expx/LlWf5U8t9nvJKXSp3qr5IsEbK04cBGhol/KwOsWA==}
@@ -5237,6 +5331,11 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
+  '@simonwep/pickr@1.9.1':
+    dependencies:
+      core-js: 3.37.0
+      nanopop: 2.4.2
+
   '@sindresorhus/is@4.6.0': {}
 
   '@sindresorhus/merge-streams@2.3.0': {}
@@ -6078,6 +6177,8 @@ snapshots:
   copy-anything@3.0.5:
     dependencies:
       is-what: 4.1.16
+
+  core-js@3.37.0: {}
 
   core-util-is@1.0.3: {}
 
@@ -7783,6 +7884,8 @@ snapshots:
 
   nanoid@3.3.12: {}
 
+  nanopop@2.4.2: {}
+
   napi-build-utils@2.0.0: {}
 
   natural-compare@1.4.0: {}
@@ -7805,7 +7908,7 @@ snapshots:
 
   node-api-version@0.2.1:
     dependencies:
-      semver: 7.7.4
+      semver: 7.8.4
 
   node-exports-info@1.6.0:
     dependencies:

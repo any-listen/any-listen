@@ -41,6 +41,7 @@
     "@any-listen/extension-preload": "workspace:@shared/extension-preload@*",
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
     "@any-listen/types": "workspace:@shared/types@*",
+    "@any-listen/view-lyric": "workspace:view-lyric@*",
     "@any-listen/view-main": "workspace:view-main@*",
     "@any-listen/web-server": "workspace:web-server@*",
     "@types/spinnies": "^0.5.3",

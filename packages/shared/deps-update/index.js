@@ -11,6 +11,7 @@ const packages = [
   '.',
   'packages/desktop',
   'packages/view-main',
+  'packages/view-lyric',
   'packages/web-server',
   ...fs.readdirSync(path.join(root, 'packages/shared')).map((p) => `packages/shared/${p}`),
 ].map((p) => path.join(root, p, 'package.json'))

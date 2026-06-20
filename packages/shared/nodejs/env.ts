@@ -1,7 +1,6 @@
 import { URL_SCHEME_RXP } from '@any-listen/common/constants'
 
 export const parseEnvParams = <T extends object>(): { cmdParams: T; deeplink: string | null } => {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const cmdParams: T = {} as T
   let deeplink = null
   const rx = /^-\w+/

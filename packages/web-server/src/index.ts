@@ -127,6 +127,7 @@ console.log(`Login Password: ${global.anylisten.config.password || 'No Password'
 if (import.meta.env.DEV) {
   global.anylisten.config['cors.enabled'] = true
   global.anylisten.config['cors.whitelist'].push(`http://localhost:${DEV_SERVER_PORTS['view-main']}`)
+  global.anylisten.config['cors.whitelist'].push(`http://localhost:${DEV_SERVER_PORTS['view-lyric']}`)
 }
 
 checkAndCreateDir(logPath)

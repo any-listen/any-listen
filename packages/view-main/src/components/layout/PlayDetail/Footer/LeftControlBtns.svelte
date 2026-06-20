@@ -5,6 +5,7 @@
   // import PlaylistBtn from '@/components/common/PlaylistBtn/index.svelte'
   import PlaybackRateBtn from '@/components/common/PlaybackRateBtn.svelte'
   import CommentBtn from '@/components/common/CommentBtn.svelte'
+  import DesktopLyricBtn from '@/components/common/DesktopLyricBtn/index.svelte'
 </script>
 
 <div class="container">
@@ -14,6 +15,7 @@
   <SoundEffectBtn />
   <PlaybackRateBtn />
   <CommentBtn />
+  <DesktopLyricBtn />
 </div>
 
 <style lang="less">

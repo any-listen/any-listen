@@ -14,6 +14,7 @@
 - Added a **Show List Action Buttons** setting. Enabled by default.
 - Added a **Favorite** button to the playback bar for toggling the favorite status of the current track.
 - Added song index numbers and **Play** / **Favorite** action buttons to song list items.
+- Added desktop lyrics.
 
 ### Improved
 
@@ -60,6 +61,7 @@
 - 新增 **「显示列表操作按钮」** 设置，默认开启。
 - 播放栏新增 **「收藏歌曲」** 按钮，点击可切换当前播放歌曲的收藏状态。
 - 歌曲列表项新增歌曲序号与 **「播放」**、**「收藏」** 操作按钮。
+- 新增桌面歌词。
 
 ### 优化
 

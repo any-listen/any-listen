@@ -1,0 +1,504 @@
+@import './reset.less';
+// @import './animate.less';
+// @import './mixin.less';
+
+*,
+*::after,
+*::before {
+  -webkit-user-drag: none;
+}
+
+:root {
+  --color-primary: rgb(79 98 208);
+  --color-primary-dark-100: rgb(71 88 187);
+  --color-primary-dark-100-alpha-100: rgb(71 88 187 / 90%);
+  --color-primary-alpha-100: rgb(79 98 208 / 90%);
+  --color-primary-dark-100-alpha-200: rgb(71 88 187 / 80%);
+  --color-primary-alpha-200: rgb(79 98 208 / 80%);
+  --color-primary-dark-100-alpha-300: rgb(71 88 187 / 70%);
+  --color-primary-alpha-300: rgb(79 98 208 / 70%);
+  --color-primary-dark-100-alpha-400: rgb(71 88 187 / 60%);
+  --color-primary-alpha-400: rgb(79 98 208 / 60%);
+  --color-primary-dark-100-alpha-500: rgb(71 88 187 / 50%);
+  --color-primary-alpha-500: rgb(79 98 208 / 50%);
+  --color-primary-dark-100-alpha-600: rgb(71 88 187 / 40%);
+  --color-primary-alpha-600: rgb(79 98 208 / 40%);
+  --color-primary-dark-100-alpha-700: rgb(71 88 187 / 30%);
+  --color-primary-alpha-700: rgb(79 98 208 / 30%);
+  --color-primary-dark-100-alpha-800: rgb(71 88 187 / 20%);
+  --color-primary-alpha-800: rgb(79 98 208 / 20%);
+  --color-primary-dark-100-alpha-900: rgb(71 88 187 / 10%);
+  --color-primary-alpha-900: rgb(79 98 208 / 10%);
+  --color-primary-dark-200: rgb(64 79 168);
+  --color-primary-dark-200-alpha-100: rgb(64 79 168 / 90%);
+  --color-primary-dark-200-alpha-200: rgb(64 79 168 / 80%);
+  --color-primary-dark-200-alpha-300: rgb(64 79 168 / 70%);
+  --color-primary-dark-200-alpha-400: rgb(64 79 168 / 60%);
+  --color-primary-dark-200-alpha-500: rgb(64 79 168 / 50%);
+  --color-primary-dark-200-alpha-600: rgb(64 79 168 / 40%);
+  --color-primary-dark-200-alpha-700: rgb(64 79 168 / 30%);
+  --color-primary-dark-200-alpha-800: rgb(64 79 168 / 20%);
+  --color-primary-dark-200-alpha-900: rgb(64 79 168 / 10%);
+  --color-primary-dark-300: rgb(58 71 151);
+  --color-primary-dark-300-alpha-100: rgb(58 71 151 / 90%);
+  --color-primary-dark-300-alpha-200: rgb(58 71 151 / 80%);
+  --color-primary-dark-300-alpha-300: rgb(58 71 151 / 70%);
+  --color-primary-dark-300-alpha-400: rgb(58 71 151 / 60%);
+  --color-primary-dark-300-alpha-500: rgb(58 71 151 / 50%);
+  --color-primary-dark-300-alpha-600: rgb(58 71 151 / 40%);
+  --color-primary-dark-300-alpha-700: rgb(58 71 151 / 30%);
+  --color-primary-dark-300-alpha-800: rgb(58 71 151 / 20%);
+  --color-primary-dark-300-alpha-900: rgb(58 71 151 / 10%);
+  --color-primary-dark-400: rgb(52 64 136);
+  --color-primary-dark-400-alpha-100: rgb(52 64 136 / 90%);
+  --color-primary-dark-400-alpha-200: rgb(52 64 136 / 80%);
+  --color-primary-dark-400-alpha-300: rgb(52 64 136 / 70%);
+  --color-primary-dark-400-alpha-400: rgb(52 64 136 / 60%);
+  --color-primary-dark-400-alpha-500: rgb(52 64 136 / 50%);
+  --color-primary-dark-400-alpha-600: rgb(52 64 136 / 40%);
+  --color-primary-dark-400-alpha-700: rgb(52 64 136 / 30%);
+  --color-primary-dark-400-alpha-800: rgb(52 64 136 / 20%);
+  --color-primary-dark-400-alpha-900: rgb(52 64 136 / 10%);
+  --color-primary-dark-500: rgb(47 58 122);
+  --color-primary-dark-500-alpha-100: rgb(47 58 122 / 90%);
+  --color-primary-dark-500-alpha-200: rgb(47 58 122 / 80%);
+  --color-primary-dark-500-alpha-300: rgb(47 58 122 / 70%);
+  --color-primary-dark-500-alpha-400: rgb(47 58 122 / 60%);
+  --color-primary-dark-500-alpha-500: rgb(47 58 122 / 50%);
+  --color-primary-dark-500-alpha-600: rgb(47 58 122 / 40%);
+  --color-primary-dark-500-alpha-700: rgb(47 58 122 / 30%);
+  --color-primary-dark-500-alpha-800: rgb(47 58 122 / 20%);
+  --color-primary-dark-500-alpha-900: rgb(47 58 122 / 10%);
+  --color-primary-dark-600: rgb(42 52 110);
+  --color-primary-dark-600-alpha-100: rgb(42 52 110 / 90%);
+  --color-primary-dark-600-alpha-200: rgb(42 52 110 / 80%);
+  --color-primary-dark-600-alpha-300: rgb(42 52 110 / 70%);
+  --color-primary-dark-600-alpha-400: rgb(42 52 110 / 60%);
+  --color-primary-dark-600-alpha-500: rgb(42 52 110 / 50%);
+  --color-primary-dark-600-alpha-600: rgb(42 52 110 / 40%);
+  --color-primary-dark-600-alpha-700: rgb(42 52 110 / 30%);
+  --color-primary-dark-600-alpha-800: rgb(42 52 110 / 20%);
+  --color-primary-dark-600-alpha-900: rgb(42 52 110 / 10%);
+  --color-primary-dark-700: rgb(38 47 99);
+  --color-primary-dark-700-alpha-100: rgb(38 47 99 / 90%);
+  --color-primary-dark-700-alpha-200: rgb(38 47 99 / 80%);
+  --color-primary-dark-700-alpha-300: rgb(38 47 99 / 70%);
+  --color-primary-dark-700-alpha-400: rgb(38 47 99 / 60%);
+  --color-primary-dark-700-alpha-500: rgb(38 47 99 / 50%);
+  --color-primary-dark-700-alpha-600: rgb(38 47 99 / 40%);
+  --color-primary-dark-700-alpha-700: rgb(38 47 99 / 30%);
+  --color-primary-dark-700-alpha-800: rgb(38 47 99 / 20%);
+  --color-primary-dark-700-alpha-900: rgb(38 47 99 / 10%);
+  --color-primary-dark-800: rgb(34 42 89);
+  --color-primary-dark-800-alpha-100: rgb(34 42 89 / 90%);
+  --color-primary-dark-800-alpha-200: rgb(34 42 89 / 80%);
+  --color-primary-dark-800-alpha-300: rgb(34 42 89 / 70%);
+  --color-primary-dark-800-alpha-400: rgb(34 42 89 / 60%);
+  --color-primary-dark-800-alpha-500: rgb(34 42 89 / 50%);
+  --color-primary-dark-800-alpha-600: rgb(34 42 89 / 40%);
+  --color-primary-dark-800-alpha-700: rgb(34 42 89 / 30%);
+  --color-primary-dark-800-alpha-800: rgb(34 42 89 / 20%);
+  --color-primary-dark-800-alpha-900: rgb(34 42 89 / 10%);
+  --color-primary-dark-900: rgb(31 38 80);
+  --color-primary-dark-900-alpha-100: rgb(31 38 80 / 90%);
+  --color-primary-dark-900-alpha-200: rgb(31 38 80 / 80%);
+  --color-primary-dark-900-alpha-300: rgb(31 38 80 / 70%);
+  --color-primary-dark-900-alpha-400: rgb(31 38 80 / 60%);
+  --color-primary-dark-900-alpha-500: rgb(31 38 80 / 50%);
+  --color-primary-dark-900-alpha-600: rgb(31 38 80 / 40%);
+  --color-primary-dark-900-alpha-700: rgb(31 38 80 / 30%);
+  --color-primary-dark-900-alpha-800: rgb(31 38 80 / 20%);
+  --color-primary-dark-900-alpha-900: rgb(31 38 80 / 10%);
+  --color-primary-dark-1000: rgb(28 34 72);
+  --color-primary-dark-1000-alpha-100: rgb(28 34 72 / 90%);
+  --color-primary-dark-1000-alpha-200: rgb(28 34 72 / 80%);
+  --color-primary-dark-1000-alpha-300: rgb(28 34 72 / 70%);
+  --color-primary-dark-1000-alpha-400: rgb(28 34 72 / 60%);
+  --color-primary-dark-1000-alpha-500: rgb(28 34 72 / 50%);
+  --color-primary-dark-1000-alpha-600: rgb(28 34 72 / 40%);
+  --color-primary-dark-1000-alpha-700: rgb(28 34 72 / 30%);
+  --color-primary-dark-1000-alpha-800: rgb(28 34 72 / 20%);
+  --color-primary-dark-1000-alpha-900: rgb(28 34 72 / 10%);
+  --color-primary-light-100: rgb(114 129 217);
+  --color-primary-light-100-alpha-100: rgb(114 129 217 / 90%);
+  --color-primary-light-100-alpha-200: rgb(114 129 217 / 80%);
+  --color-primary-light-100-alpha-300: rgb(114 129 217 / 70%);
+  --color-primary-light-100-alpha-400: rgb(114 129 217 / 60%);
+  --color-primary-light-100-alpha-500: rgb(114 129 217 / 50%);
+  --color-primary-light-100-alpha-600: rgb(114 129 217 / 40%);
+  --color-primary-light-100-alpha-700: rgb(114 129 217 / 30%);
+  --color-primary-light-100-alpha-800: rgb(114 129 217 / 20%);
+  --color-primary-light-100-alpha-900: rgb(114 129 217 / 10%);
+  --color-primary-light-200: rgb(142 154 225);
+  --color-primary-light-200-alpha-100: rgb(142 154 225 / 90%);
+  --color-primary-light-200-alpha-200: rgb(142 154 225 / 80%);
+  --color-primary-light-200-alpha-300: rgb(142 154 225 / 70%);
+  --color-primary-light-200-alpha-400: rgb(142 154 225 / 60%);
+  --color-primary-light-200-alpha-500: rgb(142 154 225 / 50%);
+  --color-primary-light-200-alpha-600: rgb(142 154 225 / 40%);
+  --color-primary-light-200-alpha-700: rgb(142 154 225 / 30%);
+  --color-primary-light-200-alpha-800: rgb(142 154 225 / 20%);
+  --color-primary-light-200-alpha-900: rgb(142 154 225 / 10%);
+  --color-primary-light-300: rgb(165 174 231);
+  --color-primary-light-300-alpha-100: rgb(165 174 231 / 90%);
+  --color-primary-light-300-alpha-200: rgb(165 174 231 / 80%);
+  --color-primary-light-300-alpha-300: rgb(165 174 231 / 70%);
+  --color-primary-light-300-alpha-400: rgb(165 174 231 / 60%);
+  --color-primary-light-300-alpha-500: rgb(165 174 231 / 50%);
+  --color-primary-light-300-alpha-600: rgb(165 174 231 / 40%);
+  --color-primary-light-300-alpha-700: rgb(165 174 231 / 30%);
+  --color-primary-light-300-alpha-800: rgb(165 174 231 / 20%);
+  --color-primary-light-300-alpha-900: rgb(165 174 231 / 10%);
+  --color-primary-light-400: rgb(183 190 236);
+  --color-primary-light-400-alpha-100: rgb(183 190 236 / 90%);
+  --color-primary-light-400-alpha-200: rgb(183 190 236 / 80%);
+  --color-primary-light-400-alpha-300: rgb(183 190 236 / 70%);
+  --color-primary-light-400-alpha-400: rgb(183 190 236 / 60%);
+  --color-primary-light-400-alpha-500: rgb(183 190 236 / 50%);
+  --color-primary-light-400-alpha-600: rgb(183 190 236 / 40%);
+  --color-primary-light-400-alpha-700: rgb(183 190 236 / 30%);
+  --color-primary-light-400-alpha-800: rgb(183 190 236 / 20%);
+  --color-primary-light-400-alpha-900: rgb(183 190 236 / 10%);
+  --color-primary-light-500: rgb(197 203 240);
+  --color-primary-light-500-alpha-100: rgb(197 203 240 / 90%);
+  --color-primary-light-500-alpha-200: rgb(197 203 240 / 80%);
+  --color-primary-light-500-alpha-300: rgb(197 203 240 / 70%);
+  --color-primary-light-500-alpha-400: rgb(197 203 240 / 60%);
+  --color-primary-light-500-alpha-500: rgb(197 203 240 / 50%);
+  --color-primary-light-500-alpha-600: rgb(197 203 240 / 40%);
+  --color-primary-light-500-alpha-700: rgb(197 203 240 / 30%);
+  --color-primary-light-500-alpha-800: rgb(197 203 240 / 20%);
+  --color-primary-light-500-alpha-900: rgb(197 203 240 / 10%);
+  --color-primary-light-600: rgb(209 213 243);
+  --color-primary-light-600-alpha-100: rgb(209 213 243 / 90%);
+  --color-primary-light-600-alpha-200: rgb(209 213 243 / 80%);
+  --color-primary-light-600-alpha-300: rgb(209 213 243 / 70%);
+  --color-primary-light-600-alpha-400: rgb(209 213 243 / 60%);
+  --color-primary-light-600-alpha-500: rgb(209 213 243 / 50%);
+  --color-primary-light-600-alpha-600: rgb(209 213 243 / 40%);
+  --color-primary-light-600-alpha-700: rgb(209 213 243 / 30%);
+  --color-primary-light-600-alpha-800: rgb(209 213 243 / 20%);
+  --color-primary-light-600-alpha-900: rgb(209 213 243 / 10%);
+  --color-primary-light-700: rgb(218 221 245);
+  --color-primary-light-700-alpha-100: rgb(218 221 245 / 90%);
+  --color-primary-light-700-alpha-200: rgb(218 221 245 / 80%);
+  --color-primary-light-700-alpha-300: rgb(218 221 245 / 70%);
+  --color-primary-light-700-alpha-400: rgb(218 221 245 / 60%);
+  --color-primary-light-700-alpha-500: rgb(218 221 245 / 50%);
+  --color-primary-light-700-alpha-600: rgb(218 221 245 / 40%);
+  --color-primary-light-700-alpha-700: rgb(218 221 245 / 30%);
+  --color-primary-light-700-alpha-800: rgb(218 221 245 / 20%);
+  --color-primary-light-700-alpha-900: rgb(218 221 245 / 10%);
+  --color-primary-light-800: rgb(225 228 247);
+  --color-primary-light-800-alpha-100: rgb(225 228 247 / 90%);
+  --color-primary-light-800-alpha-200: rgb(225 228 247 / 80%);
+  --color-primary-light-800-alpha-300: rgb(225 228 247 / 70%);
+  --color-primary-light-800-alpha-400: rgb(225 228 247 / 60%);
+  --color-primary-light-800-alpha-500: rgb(225 228 247 / 50%);
+  --color-primary-light-800-alpha-600: rgb(225 228 247 / 40%);
+  --color-primary-light-800-alpha-700: rgb(225 228 247 / 30%);
+  --color-primary-light-800-alpha-800: rgb(225 228 247 / 20%);
+  --color-primary-light-800-alpha-900: rgb(225 228 247 / 10%);
+  --color-primary-light-900: rgb(231 233 249);
+  --color-primary-light-900-alpha-100: rgb(231 233 249 / 90%);
+  --color-primary-light-900-alpha-200: rgb(231 233 249 / 80%);
+  --color-primary-light-900-alpha-300: rgb(231 233 249 / 70%);
+  --color-primary-light-900-alpha-400: rgb(231 233 249 / 60%);
+  --color-primary-light-900-alpha-500: rgb(231 233 249 / 50%);
+  --color-primary-light-900-alpha-600: rgb(231 233 249 / 40%);
+  --color-primary-light-900-alpha-700: rgb(231 233 249 / 30%);
+  --color-primary-light-900-alpha-800: rgb(231 233 249 / 20%);
+  --color-primary-light-900-alpha-900: rgb(231 233 249 / 10%);
+  --color-primary-light-1000: rgb(255 255 255);
+  --color-primary-light-1000-alpha-100: rgb(255 255 255 / 90%);
+  --color-primary-light-1000-alpha-200: rgb(255 255 255 / 80%);
+  --color-primary-light-1000-alpha-300: rgb(255 255 255 / 70%);
+  --color-primary-light-1000-alpha-400: rgb(255 255 255 / 60%);
+  --color-primary-light-1000-alpha-500: rgb(255 255 255 / 50%);
+  --color-primary-light-1000-alpha-600: rgb(255 255 255 / 40%);
+  --color-primary-light-1000-alpha-700: rgb(255 255 255 / 30%);
+  --color-primary-light-1000-alpha-800: rgb(255 255 255 / 20%);
+  --color-primary-light-1000-alpha-900: rgb(255 255 255 / 10%);
+  --color-theme: rgb(79 98 208);
+  --color-1000: rgb(33 33 33);
+  --color-950: rgb(44 44 44);
+  --color-900: rgb(55 55 55);
+  --color-850: rgb(66 66 66);
+  --color-800: rgb(77 77 77);
+  --color-750: rgb(89 89 89);
+  --color-700: rgb(100 100 100);
+  --color-650: rgb(111 111 111);
+  --color-600: rgb(122 122 122);
+  --color-550: rgb(133 133 133);
+  --color-500: rgb(144 144 144);
+  --color-450: rgb(155 155 155);
+  --color-400: rgb(166 166 166);
+  --color-350: rgb(177 177 177);
+  --color-300: rgb(188 188 188);
+  --color-250: rgb(200 200 200);
+  --color-200: rgb(211 211 211);
+  --color-150: rgb(222 222 222);
+  --color-100: rgb(233 233 233);
+  --color-050: rgb(244 244 244);
+  --color-000: rgb(255 255 255);
+  // --color-scrollbar-track:
+
+  // --color-900: #fff;
+  // --color-800: #fafafa;
+  // --color-700: #f5f5f5;
+  // --color-600: #eeeeee;
+  // --color-500: #e0e0e0;
+  // --color-400: #bdbdbd;
+  // --color-300: #9e9e9e;
+  // --color-200: #757575;
+  // --color-100: #616161;
+  // --color-050: #424242;
+  // --color-000: #212121;
+  // --color-000: #fff;
+  // --color-050: #fafafa;
+  // --color-100: #f5f5f5;
+  // --color-200: #eeeeee;
+  // --color-300: #e0e0e0;
+  // --color-400: #bdbdbd;
+  // --color-500: #9e9e9e;
+  // --color-600: #757575;
+  // --color-700: #616161;
+  // --color-800: #424242;
+  // --color-900: #212121;
+
+  // --color-000: rgb(255 255 255);
+  // --color-050: rgb(244 244 244);
+  // --color-100: rgb(233 233 233);
+  // --color-150: rgb(222 222 222);
+  // --color-200: rgb(211 211 211);
+  // --color-250: rgb(200 200 200);
+  // --color-300: rgb(188 188 188);
+  // --color-350: rgb(177 177 177);
+  // --color-400: rgb(166 166 166);
+  // --color-450: rgb(155 155 155);
+  // --color-500: rgb(144 144 144);
+  // --color-550: rgb(133 133 133);
+  // --color-600: rgb(122 122 122);
+  // --color-650: rgb(111 111 111);
+  // --color-700: rgb(100 100 100);
+  // --color-750: rgb(89 89 89);
+  // --color-800: rgb(77 77 77);
+  // --color-850: rgb(66 66 66);
+  // --color-900: rgb(55 55 55);
+  // --color-950: rgb(44 44 44);
+  // --color-1000: rgb(33 33 33);
+  --color-app-background: var(--color-primary-light-900-alpha-900);
+  --color-main-background: rgb(255 255 255 / 90%);
+  --color-nav-font: var(--color-primary);
+  // --color-app-background: rgba(0, 0, 0, .5);
+  // --color-main-background: rgba(0, 0, 0, 0.26);
+  --color-btn-hide: #3bc2b2;
+  --color-btn-min: #85c43b;
+  // --color-btn-max: #e7aa36;
+  --color-btn-close: #fab4a0;
+  --color-badge-primary: var(--color-primary);
+  --color-badge-secondary: #b080db;
+  --color-badge-tertiary: #db80c4;
+  --color-font: var(--color-850);
+  // --color-font-label: var(--color-primary-dark-1000-alpha-600);
+  --color-font-label: var(--color-450);
+  --color-font-warning: var(--color-badge-tertiary);
+  --color-font-error: var(--color-badge-tertiary);
+  --color-primary-font: var(--color-primary);
+  --color-primary-font-hover: var(--color-primary-alpha-300);
+  --color-primary-font-active: var(--color-primary-dark-100-alpha-200);
+  --color-primary-background: var(--color-primary-light-400-alpha-700);
+  --color-primary-background-hover: var(--color-primary-light-300-alpha-700);
+  --color-primary-background-selected: var(--color-primary-alpha-900);
+  --color-primary-background-active: var(--color-primary-light-200-alpha-700);
+  --color-button-font: var(--color-primary-alpha-100);
+  --color-button-font-selected: var(--color-primary-dark-100-alpha-100);
+  --color-button-background: var(--color-primary-light-400-alpha-700);
+  --color-button-background-selected: var(--color-primary-alpha-800);
+  --color-button-background-hover: var(--color-primary-light-300-alpha-600);
+  --color-button-background-active: var(--color-primary-light-100-alpha-600);
+  --color-border: var(--color-primary-alpha-900);
+  --color-content-background: var(--color-primary-light-1000);
+  --background-image: none;
+  --background-image-position: center;
+  --background-image-size: cover;
+  --background-blur: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+small {
+  font-size: 0.8em;
+}
+.small {
+  font-size: 0.9em;
+}
+.tip {
+  color: var(--color-label);
+}
+strong {
+  font-weight: bold;
+}
+.nobreak {
+  white-space: nowrap;
+}
+.auto-hidden {
+  .mixin-ellipsis-1();
+}
+.break {
+  word-break: break-all;
+}
+.select {
+  user-select: text;
+}
+.no-select {
+  user-select: none;
+}
+.underline {
+  text-decoration: underline;
+}
+
+svg {
+  transition: @transition-normal;
+  transition-property: fill;
+}
+
+button,
+input,
+textarea,
+a {
+  color: var(--color-font);
+}
+button {
+  svg {
+    filter: drop-shadow(0 0 2px rgb(0 0 0 / 20%));
+  }
+}
+
+::placeholder {
+  color: var(--color-font-label);
+}
+::selection {
+  color: var(--color-primary-dark-500-alpha-200);
+  background: var(--color-primary-light-100-alpha-500);
+}
+
+.hover,
+a {
+  cursor: pointer;
+  transition: color 0.2s ease;
+  &:hover {
+    color: var(--color-primary-font-hover);
+  }
+  &:active {
+    color: var(--color-primary-font-active);
+  }
+}
+
+.hide-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE / Edge Legacy */
+  -ms-overflow-style: none;
+}
+
+.scroll,
+textarea {
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: var(--color-primary-light-100-alpha-800);
+    border-radius: 3px;
+    // background-color: rgba(0, 0, 0, 0.1);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-alpha-600);
+    border-radius: 3px;
+    // background-color: rgba(0, 0, 0, 0.2);
+    transition: background-color 0.4s ease;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-primary-alpha-400);
+    border-radius: 3px;
+    // background-color: rgba(0, 0, 0, 0.4);
+    transition: background-color 0.4s ease;
+  }
+}
+textarea::-webkit-resizer {
+  border-color: transparent var(--color-primary-light-100-alpha-600) var(--color-primary-light-100-alpha-600) transparent;
+  border-style: solid;
+  border-width: 3px;
+}
+
+.custom-scrollbar {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  width: 8px;
+  height: 100%;
+  background-color: var(--color-primary-light-100-alpha-800);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 1.6s ease-out;
+
+  &:hover,
+  &.visible {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+}
+.custom-scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-primary-alpha-600);
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--color-primary-alpha-400);
+  }
+}
+
+.thead {
+  flex: none;
+  padding-right: 6px;
+  border-bottom: var(--color-border);
+
+  .num {
+    .nobreak();
+    .center();
+
+    color: var(--color-font-label);
+  }
+  // box-shadow: 0 0 2px var(--color-primary-dark-500-alpha-800);
+  // position: relative;
+  // z-index: 2;
+}
+table {
+  width: 100%;
+  overflow: hidden;
+  color: var(--color-font);
+  border-spacing: 0;
+  border-collapse: collapse;
+  th {
+    padding: 0 6px;
+    font-size: 12px;
+    line-height: 38px;
+    text-align: left;
+  }
+}

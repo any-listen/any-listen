@@ -1,3 +1,6 @@
+import { IPC_CHANNEL_NAMES } from '@any-listen/common/constants'
+import { ipcRenderer } from 'electron'
+
 import { IPC_NAMES } from '@/shared/ipc/names'
 import { createMainCall } from '@/shared/ipc/renderer'
 
@@ -10,16 +13,22 @@ import { createClientList, createExposeList } from './list'
 import { createClientMusic } from './music'
 import { createClientPlayer, createExposePlayer } from './player'
 import { createClientResource } from './resource'
+import './env'
 import { createClientSoundEffect } from './soundEffect'
 import { createClientTheme, createExposeTheme } from './theme'
-import './env'
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
 
 export type ExposeFunctions = AnyListen.IPC.ClientIPCActions<Electron.IpcRendererEvent>
 export type ExposeServerFunctions = Omit<
   AnyListen.IPC.ServerIPC,
-  'fileSystemAction' | 'getLoginDevices' | 'removeLoginDevice' | 'logout' | 'setSystemThemeMode'
+  | 'fileSystemAction'
+  | 'getLoginDevices'
+  | 'removeLoginDevice'
+  | 'logout'
+  | 'setSystemThemeMode'
+  | 'showDesktopLyric'
+  | 'hideDesktopLyric'
 >
 export type MainCall = AnyListen.IPC.ServerIPC
 export type ClientCall = AnyListen.IPC.ClientIPC
@@ -27,6 +36,11 @@ export type ClientCall = AnyListen.IPC.ClientIPC
 console.log('preload')
 
 const connectIPCService: AnyListen.IPC.ConnectIPCSrivice = ({ onConnected, clientCall }) => {
+  ipcRenderer.on(IPC_CHANNEL_NAMES.WIN_LYRIC_CHANNEL_PORT, (event) => {
+    // @ts-expect-error
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    window.postMessage(IPC_CHANNEL_NAMES.WIN_LYRIC_CHANNEL_PORT, '*', event.ports)
+  })
   const exposeObj: ExposeFunctions = {
     ...createExposeApp(clientCall),
     ...createExposePlayer(clientCall),

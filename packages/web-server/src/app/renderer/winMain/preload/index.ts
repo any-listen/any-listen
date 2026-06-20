@@ -3,6 +3,7 @@ import type { IPCSocket } from '@/preload/ws'
 
 import { createClientApp, createExposeApp } from './app'
 import { createClientData } from './data'
+import { createClientDesktopLyric } from './desktopLyric'
 import { createClientDislike, createExposeDislike } from './dislike'
 import { createClientExtension, createExposeExtension } from './extension'
 import { createClientHotkey, createExposeHotkey } from './hotkey'
@@ -18,7 +19,14 @@ console.log('preload win main')
 export type ExposeFunctions = AnyListen.IPC.ClientIPCActions<IPCSocket>
 export type ExposeServerFunctions = Omit<
   AnyListen.IPC.ServerIPC,
-  'showOpenDialog' | 'showSaveDialog' | 'openDirInExplorer' | 'openDevTools' | 'getSystemFonts' | 'minWindow' | 'fullscreenWindow'
+  | 'exitApp'
+  | 'showOpenDialog'
+  | 'showSaveDialog'
+  | 'openDirInExplorer'
+  | 'openDevTools'
+  | 'getSystemFonts'
+  | 'minWindow'
+  | 'fullscreenWindow'
 >
 export type ClientCall = AnyListen.IPC.ClientIPC
 
@@ -63,6 +71,7 @@ const connectIPCService: AnyListen.IPC.ConnectIPCSrivice = ({
         ...createClientTheme(ipcSocket),
         ...createClientExtension(ipcSocket),
         ...createClientSoundEffect(ipcSocket),
+        ...createClientDesktopLyric(ipcSocket),
       }
       onConnected(ipc as AnyListen.IPC.ServerIPC)
     },

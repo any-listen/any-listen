@@ -492,7 +492,12 @@ declare namespace AnyListen {
       | IPCAction<'toggle'>
       | IPCAction<'skip', string>
       | IPCAction<'seek', number>
+      | IPCAction<'volume', number>
+      | IPCAction<'volumeMute', boolean>
+      | IPCAction<'playbackRate', number>
+      | IPCAction<'lyricOffset', number>
       | IPCAction<'collectStatus', boolean>
+      | IPCAction<'dislike'>
 
     interface PlayerActionSet {
       listId: string | null

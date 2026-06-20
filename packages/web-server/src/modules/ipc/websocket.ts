@@ -42,7 +42,7 @@ interface ServerSocketBase extends WS.WebSocket {
   // remoteQueueDislike: AnyListen.IPC.ServerDislikeActions
 }
 export interface ServerSocketWinMain extends ServerSocketBase {
-  winType: 'main'
+  winType: 'main' | 'desktopLyric'
   remote: AnyListen.IPC.ClientICPCommonActions
   remoteQueueTheme: AnyListen.IPCTheme.ClientIPCActions
   remoteQueuePlayer: AnyListen.IPCPlayer.ClientIPCActions
@@ -67,7 +67,7 @@ let wss: SocketServer = new WebSocketServer({ noServer: true })
 //   }
 // }
 
-const winTypes: AnyListen.IPC.WinType[] = ['main'] as const
+const winTypes: AnyListen.IPC.WinType[] = ['main', 'desktopLyric'] as const
 const handleConnection = async (socket: ServerSocket, request: IncomingMessage) => {
   const queryData = new URL(request.url!, host).searchParams
   const winType = queryData.get('t') as AnyListen.IPC.WinType | null

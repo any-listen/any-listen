@@ -9,9 +9,6 @@ export const createExposeApp = (client: ClientCall) => {
     async deeplink(event, deeplink) {
       return client.deeplink(deeplink)
     },
-    async createDesktopLyricProcess(event) {
-      return client.createDesktopLyricProcess(event.ports)
-    },
     async winShow(event, show) {
       return client.winShow(show)
     },

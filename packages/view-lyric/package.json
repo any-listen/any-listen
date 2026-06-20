@@ -1,0 +1,41 @@
+{
+  "name": "view-lyric",
+  "type": "module",
+  "main": "vite.config.js",
+  "scripts": {
+    "build:desktop": "vite build --mode desktop",
+    "build:web": "vite build --mode web",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "dev:desktop": "vite --mode desktop",
+    "dev:web": "vite --mode web"
+  },
+  "dependencies": {
+    "@any-listen/common": "workspace:@shared/common@*",
+    "@any-listen/i18n": "workspace:@shared/i18n@*",
+    "@any-listen/theme": "workspace:@shared/theme@*",
+    "@any-listen/web": "workspace:@shared/web@*",
+    "message2call": "^2.0.3"
+  },
+  "devDependencies": {
+    "@any-listen/eslint": "workspace:@shared/eslint@*",
+    "@any-listen/types": "workspace:@shared/types@*",
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@swc/html": "^1.15.41",
+    "@types/postcss-pxtorem": "^6.1.0",
+    "@types/sortablejs": "^1.15.9",
+    "eslint-plugin-svelte": "^3.19.0",
+    "less": "^4.6.6",
+    "postcss": "^8.5.15",
+    "postcss-pxtorem": "^6.1.0",
+    "stylelint": "^17.13.0",
+    "stylelint-config-html": "^1.1.0",
+    "stylelint-config-recess-order": "^7.7.0",
+    "stylelint-config-standard-less": "^4.1.0",
+    "svelte": "^5.56.3",
+    "svelte-check": "^4.6.0",
+    "svelte-eslint-parser": "^1.8.0",
+    "svelte-preprocess": "6.0.5",
+    "vite": "^8.0.16",
+    "vite-plugin-svg-icons": "^2.0.1"
+  }
+}

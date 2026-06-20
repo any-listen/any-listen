@@ -2,6 +2,7 @@
   "name": "@shared/web",
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
+    "@simonwep/pickr": "^1.9.1",
     "js-sha256": "^0.11.1"
   },
   "devDependencies": {

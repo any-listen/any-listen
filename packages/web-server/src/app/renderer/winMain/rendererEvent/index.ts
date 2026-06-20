@@ -38,6 +38,8 @@ export type ExposeClientFunctions = Omit<
   | 'openUrl'
   | 'messageBoxConfirm'
   | 'getSystemFonts'
+  | 'showDesktopLyric'
+  | 'hideDesktopLyric'
 >
 
 let isInitialized = false
@@ -60,7 +62,6 @@ export const init = () => {
   }
 
   socketEvent.on('new_socket', (socket) => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (socket.winType != 'main') return
     const msg2call = createMessage2Call<AnyListen.IPC.ClientCommonActions>({
       exposeObj,

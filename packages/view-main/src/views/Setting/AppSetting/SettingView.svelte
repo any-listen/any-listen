@@ -35,6 +35,7 @@
     flex: auto;
     flex-flow: column nowrap;
     min-height: 0;
+    padding-bottom: 30px;
     margin: 0 10px;
     // gap: 14px;
   }

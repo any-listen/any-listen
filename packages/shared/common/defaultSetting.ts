@@ -69,6 +69,36 @@ const defaultSetting: AnyListen.AppSetting = {
   'list.isShowActionBtn': true,
   'list.addMusicLocationType': 'top',
 
+  'desktopLyric.enable': false,
+  'desktopLyric.isLock': false,
+  'desktopLyric.isAlwaysOnTop': false,
+  'desktopLyric.isAlwaysOnTopLoop': false,
+  'desktopLyric.isShowTaskbar': false,
+  'desktopLyric.fullscreenHide': true,
+  'desktopLyric.pauseHide': true,
+  'desktopLyric.width': 450,
+  'desktopLyric.height': 300,
+  'desktopLyric.x': null,
+  'desktopLyric.y': null,
+  'desktopLyric.isLockScreen': true,
+  'desktopLyric.isDelayScroll': false,
+  'desktopLyric.scrollAlign': 'center',
+  'desktopLyric.isHoverHide': false,
+  'desktopLyric.direction': 'horizontal',
+  'desktopLyric.style.align': 'center',
+  'desktopLyric.style.font': '',
+  'desktopLyric.style.fontSize': 26,
+  'desktopLyric.style.lineGap': 15,
+  'desktopLyric.style.lyricUnplayColor': 'rgba(255, 255, 255, 1)',
+  'desktopLyric.style.lyricPlayedColor': 'rgba(87, 112, 255, 1)',
+  'desktopLyric.style.lyricShadowColor': 'rgba(0, 0, 0, 0.6)',
+  'desktopLyric.style.opacity': 100,
+  // 'desktopLyric.style.ellipsis': false,
+  'desktopLyric.style.isZoomActiveLrc': true,
+  'desktopLyric.style.isFontWeightFont': true,
+  'desktopLyric.style.isFontWeightLine': true,
+  'desktopLyric.style.isFontWeightExtended': true,
+
   'download.savePath': '',
   'download.fileName': '%name% - %singer%',
 
@@ -97,7 +127,7 @@ const defaultSetting: AnyListen.AppSetting = {
 // 使用新年皮肤
 if (new Date().getMonth() < 2) {
   defaultSetting['theme.id'] = 'happy_new_year'
-  // defaultSetting['desktopLyric.style.lyricPlayedColor'] = 'rgba(255, 57, 71, 1)'
+  defaultSetting['desktopLyric.style.lyricPlayedColor'] = 'rgba(255, 57, 71, 1)'
 }
 
 export default defaultSetting
