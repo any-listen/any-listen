@@ -176,8 +176,10 @@ export const createWindow = () => {
   }
 
   winEvent()
-  // browserWindow.webContents.openDevTools()
   winLyricEvent.created(browserWindow)
+  if (appState.envParams.cmdParams.odt) browserWindow.webContents.openDevTools()
+
+  // browserWindow.webContents.openDevTools()
 }
 export const isExistWindow = (): boolean => !!browserWindow
 

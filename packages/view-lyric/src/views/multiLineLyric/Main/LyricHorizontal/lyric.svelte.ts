@@ -57,7 +57,10 @@ export default (onMsDown: (isDown: boolean) => void) => {
         let padding: number
         if (lyricState.line < 0) {
           padding = Math.trunc(settingState.setting['desktopLyric.style.fontSize']) * 2
-        } else if (!settingState.setting['playDetail.isDelayScroll'] && settingState.setting['playDetail.isZoomActiveLrc']) {
+        } else if (
+          !settingState.setting['desktopLyric.isDelayScroll'] &&
+          settingState.setting['desktopLyric.style.isZoomActiveLrc']
+        ) {
           padding = Math.trunc(settingState.setting['desktopLyric.style.fontSize']) * 1.1 * 2
           lineHeight += padding
           lineHeight *= 1.14

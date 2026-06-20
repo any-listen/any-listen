@@ -74,9 +74,10 @@ const handleInitIpc = (port: MessagePort) => {
 export const initIpcWinMain = () => {
   window.onmessage = (event) => {
     console.log('window message', event.data, event.origin, IPC_CHANNEL_NAMES.WIN_MAIN_CHANNEL_PORT)
-    if (import.meta.env.DEV) {
-      if (event.data !== IPC_CHANNEL_NAMES.WIN_MAIN_CHANNEL_PORT) return
-    } else if (event.origin !== location.origin || event.data !== IPC_CHANNEL_NAMES.WIN_MAIN_CHANNEL_PORT) return
+    if (event.data !== IPC_CHANNEL_NAMES.WIN_MAIN_CHANNEL_PORT) return
+    if (!import.meta.env.DEV && import.meta.env.VITE_IS_WEB) {
+      if (event.origin !== location.origin) return
+    }
     // event.source === window means the message is coming from the preload
     // script, as opposed to from an <iframe> or other source.
     // console.log('initIpcDesktopLyric', event)
