@@ -82,7 +82,7 @@ export const getMusicPicUrl = async ({
         }
       } else {
         return {
-          url: await writeProxyCache(`${musicInfo.meta.filePath}.${pic.format}`, pic.data),
+          url: await writeProxyCache(`${musicInfo.meta.filePath}.${Date.now()}.${pic.format}`, pic.data),
           isFromCache: false,
         }
       }
