@@ -39,7 +39,7 @@
     "@any-listen/i18n": "workspace:@shared/i18n@*",
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
     "@any-listen/theme": "workspace:@shared/theme@*",
-    "better-sqlite3": "^12.10.1",
+    "better-sqlite3": "^12.11.1",
     "electron-log": "5.4.4",
     "electron-updater": "^6.8.9",
     "font-list": "^2.1.0",
@@ -48,10 +48,10 @@
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "electron": "42.4.0",
+    "electron": "42.4.1",
     "electron-builder": "26.15.3",
     "electron-debug": "^4.1.0",
-    "electron-to-chromium": "^1.5.372",
+    "electron-to-chromium": "^1.5.376",
     "node-abi": "^4.31.0",
     "tar": "^7.5.16",
     "vite": "^8.0.16"
