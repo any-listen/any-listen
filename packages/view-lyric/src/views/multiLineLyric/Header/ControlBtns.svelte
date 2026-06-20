@@ -16,12 +16,6 @@
 <!-- </div> -->
 
 <style lang="less">
-  .container {
-    position: relative;
-    width: 100%;
-    transition: opacity @transition-normal;
-  }
-
   .btns {
     display: flex;
     flex-flow: row wrap;
@@ -29,6 +23,9 @@
 
     :global {
       .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         min-height: 38px;
         padding: 0 10px;
         color: #fff;

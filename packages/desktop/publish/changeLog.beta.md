@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Added
+### Improved
 
-- Added desktop lyrics.
+- Added support for resizing the **Desktop Lyrics** window.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 新增
+### 优化
 
-- 新增桌面歌词。
+- 支持调整 **「桌面歌词窗口」** 大小。

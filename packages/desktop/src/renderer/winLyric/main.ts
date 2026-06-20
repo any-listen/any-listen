@@ -137,7 +137,7 @@ export const createWindow = () => {
     frame: false,
     transparent: true,
     hasShadow: false,
-    resizable: false,
+    resizable: isWin,
     minimizable: false,
     maximizable: false,
     fullscreenable: false,
