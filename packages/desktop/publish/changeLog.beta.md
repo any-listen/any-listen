@@ -2,11 +2,11 @@
 
 ### Improved
 
-- Added support for resizing the **Desktop Lyrics** window.
+- Improved the generation rules for resource cache links.
 
 ### Fixed
 
-- Fixed an issue where desktop lyrics were not displayed properly.
+- Fixed an issue where query parameters were displayed incorrectly when navigating to online lists.
 
 ---
 
@@ -14,8 +14,8 @@
 
 ### 优化
 
-- 支持调整 **「桌面歌词窗口」** 大小。
+- 优化资源缓存链接生成规则。
 
 ### 修复
 
-- 修复桌面歌词显示异常的问题。
+- 修复跳转在线列表时的查询参数显示不正确的问题。
