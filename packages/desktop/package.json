@@ -31,6 +31,7 @@
     "publish:linux": "node build-config/build-pack.cjs target=linux arch=x64,arm64,armv7l type=deb,appImage,rpm,pacman publish=always",
     "publish": "node publish",
     "build": "vite build",
+    "install:deps": "node ./node_modules/electron/install.js",
     "rebuild:deps": "node ./node_modules/electron/install.js && node ./build-config/before-install.cjs && electron-builder install-app-deps && node ./build-config/post-install.cjs"
   },
   "dependencies": {

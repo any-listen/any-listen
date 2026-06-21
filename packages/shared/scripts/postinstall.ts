@@ -1,6 +1,12 @@
 import { execSync } from 'node:child_process'
 
-if (process.env.SKIP_LIB_COPY) process.exit(0)
+if (process.env.SKIP_LIB_COPY) {
+  if (process.env.DESKTOP_ONLY) {
+    execSync('pnpm -F desktop install:deps', { stdio: 'inherit' })
+  }
+
+  process.exit(0)
+}
 
 try {
   if (process.env.DESKTOP_ONLY) {
