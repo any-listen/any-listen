@@ -48,9 +48,11 @@ const winEvent = () => {
 
   browserWindow.on('enter-full-screen', () => {
     winMainState.isFullScreen = true
+    winMainEvent.fullscreen(true)
   })
   browserWindow.on('leave-full-screen', () => {
     winMainState.isFullScreen = false
+    winMainEvent.fullscreen(false)
   })
 
   browserWindow.once('ready-to-show', () => {
@@ -122,6 +124,7 @@ export const createWindow = () => {
   if (appState.envParams.cmdParams.dt) options.backgroundColor = theme.colors['--color-primary-light-1000']
   if (appState.appSetting['common.startInFullscreen']) {
     options.fullscreen = true
+    winMainState.isFullScreen = true
     if (isLinux) options.resizable = true
   }
   browserWindow = new BrowserWindow(options)

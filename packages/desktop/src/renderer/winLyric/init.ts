@@ -19,7 +19,10 @@ export const initWinLyric = () => {
   })
 
   winMainEvent.on('inited', () => {
-    if (appState.appSetting['desktopLyric.enable'] && !winMainState.isFullScreen) {
+    if (
+      appState.appSetting['desktopLyric.enable'] &&
+      (!winMainState.isFullScreen || !appState.appSetting['desktopLyric.fullscreenHide'])
+    ) {
       createWindow()
     }
   })
@@ -27,6 +30,7 @@ export const initWinLyric = () => {
     closeWindow()
   })
   winMainEvent.on('fullscreen', (isFullscreen) => {
+    if (!appState.appSetting['desktopLyric.fullscreenHide']) return
     if (isFullscreen) {
       closeWindow()
     } else if (appState.appSetting['desktopLyric.enable']) {

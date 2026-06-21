@@ -314,6 +314,21 @@ export const settings: SettingListSection[] = [
     name: 'settings.desktop_lyric',
     list: [
       {
+        field: 'desktopLyric.enable',
+        name: 'settings.desktop_lyric.enable',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isLock',
+        name: 'settings.desktop_lyric.lock',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.fullscreenHide',
+        name: 'settings.desktop_lyric.fullscreen_hide',
+        type: 'boolean',
+      },
+      {
         field: 'desktopLyric.style.isZoomActiveLrc',
         name: 'desktop_lyric.lrc_active_zoom_on',
         type: 'boolean',
