@@ -1,6 +1,7 @@
 import { createPlayMusicInfo } from '@any-listen/common/tools'
 
 import { onRelease } from '@/modules/app/shared'
+import { hasDislike } from '@/modules/dislikeList/store/actions'
 import { dislikeListEvent } from '@/modules/dislikeList/store/event'
 import { dislikeListState } from '@/modules/dislikeList/store/state'
 import { getListMusics } from '@/modules/musicLibrary/store/actions'
@@ -148,6 +149,10 @@ const updateDislikeIds = async () => {
       singerNames: dislikeListState.singerNames,
     })
   )
+
+  if (playerState.playMusicInfo && hasDislike(playerState.playMusicInfo.musicInfo)) {
+    void skipNext()
+  }
 }
 
 let unregistered = createUnsubscriptionSet()

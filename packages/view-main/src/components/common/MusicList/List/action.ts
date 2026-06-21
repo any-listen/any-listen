@@ -2,11 +2,9 @@ import { buildMusicName } from '@any-listen/common/tools'
 
 import { showSimpleConfirmModal } from '@/components/apis/dialog'
 import { addInfo } from '@/modules/dislikeList/actions'
-import { hasDislike } from '@/modules/dislikeList/store/actions'
 import { getListMusics, removeListMusics } from '@/modules/musicLibrary/actions'
-import { addPlayLaterMusic, playList, playOnlineList, skipNext } from '@/modules/player/store/actions'
+import { addPlayLaterMusic, playList, playOnlineList } from '@/modules/player/store/actions'
 import type { OnlineListMetaInfo } from '@/modules/player/store/playerActions'
-import { playerState } from '@/modules/player/store/state'
 import { settingState } from '@/modules/setting/store/state'
 import { i18n } from '@/plugins/i18n'
 import { clipboardWriteText, openDirInExplorer } from '@/shared/ipc/app'
@@ -102,9 +100,6 @@ export const dislikeMusic = async (musicInfo: AnyListen.Music.MusicInfo) => {
   )
   if (!confirm) return
   await addInfo([{ name: musicInfo.name, singer: musicInfo.singer }])
-  if (playerState.playMusicInfo && hasDislike(playerState.playMusicInfo.musicInfo)) {
-    void skipNext()
-  }
 }
 
 export const removeMusic = async (
