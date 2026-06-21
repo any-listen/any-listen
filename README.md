@@ -13,6 +13,7 @@ This project is under active development and currently provides both a **Desktop
 - Add and play local songs (standard playlists and local lists)
 - Add and play songs stored on WebDAV (remote lists)
 - Online song metadata matching (cover, lyrics; install the relevant extension via Extension Manager)
+- Add and play online resources (playlists, charts; install the relevant extension via Extension Manager)
 - Experimental audio effects
 - Karaoke lyrics and title bar lyrics
 
