@@ -1,10 +1,14 @@
 import { execSync } from 'node:child_process'
 
 if (process.env.SKIP_LIB_COPY) {
-  if (process.env.DESKTOP_ONLY) {
-    execSync('pnpm -F desktop install:deps', { stdio: 'inherit' })
+  try {
+    if (process.env.DESKTOP_ONLY) {
+      execSync('pnpm -F desktop install:deps', { stdio: 'inherit' })
+    }
+  } catch (error) {
+    console.error('Postinstall failed:', error)
+    process.exit(1)
   }
-
   process.exit(0)
 }
 
