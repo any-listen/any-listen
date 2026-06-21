@@ -24,7 +24,7 @@ const unzip = async (filePath) => {
   return targetDir
 }
 
-const files = ['qrc_decode', 'better_sqlite3']
+const files = ['better_sqlite3']
 const moveFile = async (filePath) => {
   const name = `electron-${path.basename(filePath).split('-electron-')[1]}`
   for (const fileName of files) {
