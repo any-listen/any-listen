@@ -1,21 +1,13 @@
 <!--- @lang: en-us -->
 
-### Improved
-
-- Improved the generation rules for resource cache links.
-
 ### Fixed
 
-- Fixed an issue where query parameters were displayed incorrectly when navigating to online lists.
+- Fixed an issue where **WebDAV** file reads could fail in some cases due to inconsistent URL encoding ([#235](https://github.com/any-listen/any-listen/issues/235)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 优化
-
-- 优化资源缓存链接生成规则。
-
 ### 修复
 
-- 修复跳转在线列表时的查询参数显示不正确的问题。
+- 修复 **「WebDAV」** 在某些情况下因 URL 编码不一致导致文件读取失败的问题（[#235](https://github.com/any-listen/any-listen/issues/235)）。
