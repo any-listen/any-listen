@@ -28,7 +28,7 @@
       padding: 0;
       color: inherit !important;
       opacity: 0.5;
-      transition-property: opacity @transition-normal;
+      transition: opacity @transition-normal;
 
       svg {
         filter: drop-shadow(0 0 1px rgb(0 0 0 / 20%));

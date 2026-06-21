@@ -25,8 +25,8 @@
       <use xlink:href="#icon-desktop-lyric-off" />
     </svg>
   </button> -->
-  <DesktopLyricBtn />
   <PlayerMusicHeartBtn />
+  <DesktopLyricBtn />
   <PlaylistBtn />
   <!-- <CommentBtn /> -->
   <!-- <CommentBtn /> -->
