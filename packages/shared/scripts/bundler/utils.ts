@@ -1,6 +1,8 @@
+import os from 'node:os'
 import path from 'node:path'
 import { MessageChannel, Worker } from 'node:worker_threads'
 
+import Spinnies from 'spinnies'
 import type { UserConfig } from 'vite'
 
 import { dynamicImport } from './import-esm.cjs'
@@ -174,4 +176,56 @@ export const buildSuatus = async (config: UserConfig, onUpdated: () => void) => 
 
 export const runBuildWorkerStatus = async (taskName: TaskName, onUpdated: () => void) => {
   return runBuildWorker(taskName, onUpdated).then(({ status }) => status)
+}
+
+export const taskTools = {
+  tasks: [] as Array<[string, () => Promise<boolean>]>,
+  maxTaskNum: os.cpus().length,
+  runningTaskNum: 0,
+  spinners: null as unknown as Spinnies,
+  taskPromise: null as [() => void, (err: Error) => void] | null,
+  runNextTask() {
+    if (this.runningTaskNum >= this.maxTaskNum) return
+    if (!this.tasks.length) {
+      if (!this.runningTaskNum) {
+        this.taskPromise?.[0]()
+      }
+      return
+    }
+    const [name, task] = this.tasks.shift()!
+    this.runningTaskNum++
+    this.spinners.update(name, { text: `${name} running...` })
+    task()
+      .then((success) => {
+        if (!success) {
+          this.spinners.fail(name, { text: `${name} failed!` })
+          this.taskPromise?.[1](new Error(`${name} build failed`))
+          return
+        }
+        // console.log(`Finish task: ${name}`)
+        this.spinners.succeed(name, { text: `${name} success!` })
+      })
+      .catch((err) => {
+        console.error(`Error in task: ${name}`, err)
+        this.spinners.fail(name, { text: `${name} failed!` })
+        this.taskPromise?.[1](err as Error)
+      })
+      .finally(() => {
+        this.runningTaskNum--
+        this.runNextTask()
+      })
+    if (this.runningTaskNum < this.maxTaskNum) this.runNextTask()
+  },
+  addTask(name: string, run: () => Promise<boolean>) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    this.spinners ||= new Spinnies({ color: 'blue' })
+    this.spinners.add(name, { text: `${name} waiting...` })
+    this.tasks.push([name, run])
+  },
+  async runTasks() {
+    return new Promise<void>((resolve, reject) => {
+      this.taskPromise = [resolve, reject]
+      this.runNextTask()
+    })
+  },
 }

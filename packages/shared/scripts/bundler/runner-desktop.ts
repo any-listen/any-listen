@@ -4,13 +4,12 @@ import type { ChildProcessWithoutNullStreams } from 'node:child_process'
 import { debounce } from '@any-listen/common/utils'
 import { Arch, buildConfig, replaceLib, runDesktop } from '@any-listen/desktop'
 import colors from 'picocolors'
-import Spinnies from 'spinnies'
 import type { Logger } from 'vite'
 
 import copyAssets from './copyAssets'
 import { dynamicImport } from './import-esm.cjs'
 import type { Vite } from './types'
-import { type TaskName, buildSuatus, runBuildWorkerStatus } from './utils'
+import { buildSuatus, runBuildWorkerStatus, taskTools } from './utils'
 
 let logger: Logger
 
@@ -60,35 +59,16 @@ const runMainThread = async () => {
     logger.info(colors.green('\nrestart desktop app...'))
   }
 
-  const spinners = new Spinnies({ color: 'blue' })
-  spinners.add('view-main', { text: 'view-main compiling' })
-  spinners.add('view-lyric', { text: 'view-lyric compiling' })
-  // spinners.add('renderer-scripts', { text: 'renderer-scripts compiling' })
-  spinners.add('desktop', { text: 'desktop compiling' })
-  spinners.add('extension-preload', { text: 'extension-preload compiling' })
-  const handleResult = (name: TaskName) => {
-    return (success: boolean) => {
-      if (success) {
-        spinners.succeed(name, { text: `${name} compile success!` })
-      } else {
-        spinners.fail(name, { text: `${name} compile fail!` })
-      }
-      return success
-    }
-  }
-
-  const buildTasks = [
-    runBuildWorkerStatus('view-main', noop).then(handleResult('view-main')),
-    runBuildWorkerStatus('view-lyric', noop).then(handleResult('view-lyric')),
-    // runBuildWorkerStatus('renderer-lyric', noop).then(handleResult('renderer-lyric')),
-    // runBuildWorkerStatus('renderer-scripts', handleUpdate).then(handleResult('renderer-scripts')),
-    runBuildWorkerStatus('extension-preload', handleUpdate).then(handleResult('extension-preload')),
+  taskTools.addTask('view-main', async () => runBuildWorkerStatus('view-main', noop))
+  taskTools.addTask('view-lyric', async () => runBuildWorkerStatus('view-lyric', noop))
+  taskTools.addTask('extension-preload', async () => runBuildWorkerStatus('extension-preload', handleUpdate))
+  taskTools.addTask('desktop', async () =>
     replaceLib({ desktopPlatformName: process.platform, arch: Arch[process.arch as keyof typeof Arch] }).then(async () => {
-      return buildSuatus(buildConfig('desktop'), handleUpdate).then(handleResult('desktop'))
-    }),
-  ]
+      return buildSuatus(buildConfig('desktop'), handleUpdate)
+    })
+  )
 
-  if (!(await Promise.all(buildTasks).then((result) => result.every((s) => s)))) return
+  await taskTools.runTasks()
   // listr.run().then(() => {
   await copyAssets('desktop')
   desktopProcess = runDesktop(desktopLog)

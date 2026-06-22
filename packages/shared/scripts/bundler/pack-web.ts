@@ -3,13 +3,12 @@ import path from 'node:path'
 
 import { deleteSync } from 'del'
 import colors from 'picocolors'
-import Spinnies from 'spinnies'
 
 // import rendererConfig from './configs/renderer'
 import copyAssets from './copyAssets'
 import { dynamicImport } from './import-esm.cjs'
 import type { Vite } from './types'
-import { type TaskName, runBuildWorkerStatus } from './utils'
+import { runBuildWorkerStatus, taskTools } from './utils'
 
 // process.env.VITE_CJS_TRACE = 'true'
 
@@ -31,36 +30,13 @@ const runMainThread = async () => {
 
   const noop = () => {}
 
-  const spinners = new Spinnies({ color: 'blue' })
-  spinners.add('view-main', { text: 'view-main compiling' })
-  spinners.add('view-lyric', { text: 'view-lyric compiling' })
-  spinners.add('web-preload', { text: 'web-preload compiling' })
-  spinners.add('extension-preload', { text: 'extension-preload compiling' })
-  spinners.add('web-server', { text: 'web-server compiling' })
-  const handleResult = (name: TaskName) => {
-    return (success: boolean) => {
-      if (success) {
-        spinners.succeed(name, { text: `${name} compile success!` })
-      } else {
-        spinners.fail(name, { text: `${name} compile fail!` })
-      }
-      return success
-    }
-  }
+  taskTools.addTask('view-main', async () => runBuildWorkerStatus('view-main', noop))
+  taskTools.addTask('view-lyric', async () => runBuildWorkerStatus('view-lyric', noop))
+  taskTools.addTask('web-preload', async () => runBuildWorkerStatus('web-preload', noop))
+  taskTools.addTask('extension-preload', async () => runBuildWorkerStatus('extension-preload', noop))
+  taskTools.addTask('web-server', async () => runBuildWorkerStatus('web-server', noop))
 
-  const buildTasks = [
-    runBuildWorkerStatus('view-main', noop).then(handleResult('view-main')),
-    runBuildWorkerStatus('view-lyric', noop).then(handleResult('view-lyric')),
-    runBuildWorkerStatus('web-server', noop).then(handleResult('web-server')),
-    runBuildWorkerStatus('extension-preload', noop).then(handleResult('extension-preload')),
-    runBuildWorkerStatus('web-preload', noop).then(handleResult('web-preload')),
-    // build(rendererConfig, noop).then(handleResult('renderer')),
-  ]
-
-  if (!(await Promise.all(buildTasks).then((result) => result.every((s) => s)))) {
-    console.timeEnd('Build time')
-    throw new Error('Build failed')
-  }
+  await taskTools.runTasks()
 
   await copyAssets('web')
   await updateWebPreloadFileName('view-main')

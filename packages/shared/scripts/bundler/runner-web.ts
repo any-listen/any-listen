@@ -4,13 +4,12 @@ import type { ChildProcessWithoutNullStreams } from 'node:child_process'
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
 import { buildConfig, runServer } from '@any-listen/web-server'
 import colors from 'picocolors'
-import Spinnies from 'spinnies'
 import type { Logger } from 'vite'
 
 import copyAssets from './copyAssets'
 import { dynamicImport } from './import-esm.cjs'
 import type { Vite } from './types'
-import { type TaskName, buildSuatus, runBuildWorker, runBuildWorkerStatus } from './utils'
+import { buildSuatus, runBuildWorker, runBuildWorkerStatus, taskTools } from './utils'
 
 let logger: Logger
 
@@ -47,46 +46,28 @@ const runMainThread = async () => {
     logger.info(colors.green('\nrestart web server...'))
   }
 
-  const spinners = new Spinnies({ color: 'blue' })
-  spinners.add('view-main', { text: 'view-main compiling' })
-  spinners.add('view-lyric', { text: 'view-lyric compiling' })
-  spinners.add('web-preload', { text: 'web-preload compiling' })
-  spinners.add('extension-preload', { text: 'extension-preload compiling' })
-  // spinners.add('renderer-lyric', { text: 'renderer-lyric compiling' })
-  spinners.add('web-server', { text: 'web-server compiling' })
-  const handleResult = (name: TaskName) => {
-    return (success: boolean) => {
-      if (success) {
-        spinners.succeed(name, { text: `${name} compile success!` })
-      } else {
-        spinners.fail(name, { text: `${name} compile fail!` })
-      }
-      return success
-    }
-  }
-
   let viewMainBuild: { status: boolean; reload: () => void }
-  const buildTasks = [
-    runBuildWorker('view-main', noop)
-      .then((result) => {
-        viewMainBuild = result
-        return result.status
-      })
-      .then(handleResult('view-main')),
-    runBuildWorker('view-lyric', noop)
-      .then((result) => {
-        viewMainBuild = result
-        return result.status
-      })
-      .then(handleResult('view-lyric')),
+  taskTools.addTask('view-main', async () =>
+    runBuildWorker('view-main', noop).then((result) => {
+      viewMainBuild = result
+      return result.status
+    })
+  )
+  taskTools.addTask('view-lyric', async () =>
+    runBuildWorker('view-lyric', noop).then((result) => {
+      viewMainBuild = result
+      return result.status
+    })
+  )
+  taskTools.addTask('web-preload', async () =>
     runBuildWorkerStatus('web-preload', () => {
       viewMainBuild.reload()
-    }).then(handleResult('web-preload')),
-    runBuildWorkerStatus('extension-preload', handleUpdate).then(handleResult('extension-preload')),
-    buildSuatus(buildConfig('web-server'), handleUpdate).then(handleResult('web-server')),
-  ]
+    })
+  )
+  taskTools.addTask('extension-preload', async () => runBuildWorkerStatus('extension-preload', handleUpdate))
+  taskTools.addTask('web-server', async () => buildSuatus(buildConfig('web-server'), handleUpdate))
 
-  if (!(await Promise.all(buildTasks).then((result) => result.every((s) => s)))) return
+  await taskTools.runTasks()
   // listr.run().then(() => {
   await copyAssets('web')
   serverProcess = runServer(serverLog)
