@@ -25,7 +25,7 @@
     }}
     aria-label={toggleDesktopLyricBtnTitle}
   >
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 0 443.12 364.71">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 0 480.29 365.42">
       <use xlink:href={`#icon-lrc_${desktopLyricEnable.val ? 'on' : 'off'}`} />
     </svg>
   </Btn>
