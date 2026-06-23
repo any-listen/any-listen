@@ -61,6 +61,7 @@ const heartbeatTools = {
     this.clearTimeout()
     // eslint-disable-next-line @typescript-eslint/unbound-method
     this.port?.removeEventListener('message', this.handleMessage)
+    this.port?.close()
     this.port = null
   },
 }
