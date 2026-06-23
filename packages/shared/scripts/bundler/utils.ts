@@ -180,7 +180,7 @@ export const runBuildWorkerStatus = async (taskName: TaskName, onUpdated: () => 
 
 export const taskTools = {
   tasks: [] as Array<[string, () => Promise<boolean>]>,
-  maxTaskNum: os.cpus().length,
+  maxTaskNum: Math.max(Math.floor(os.cpus().length / 2), 1),
   runningTaskNum: 0,
   spinners: null as unknown as Spinnies,
   taskPromise: null as [() => void, (err: Error) => void] | null,
