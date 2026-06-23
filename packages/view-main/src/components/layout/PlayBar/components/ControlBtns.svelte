@@ -26,12 +26,12 @@
     </svg>
   </button> -->
   <PlayerMusicHeartBtn />
-  <DesktopLyricBtn />
   <PlaylistBtn />
   <!-- <CommentBtn /> -->
   <!-- <CommentBtn /> -->
   <VolumeBtn />
   <TogglePlayModeBtn />
+  <DesktopLyricBtn />
   <!-- <PlaybackRateBtn /> -->
   <!-- <SoundEffectBtn /> -->
   <!-- <common-toggle-play-mode-btn />

@@ -121,7 +121,7 @@
         line-height: 1.2;
         color: var(--color-lyric-unplay);
         overflow-wrap: break-word;
-        transition: @transition-slow !important;
+        transition: 0.6s ease !important;
         transition-property: padding, transform !important;
 
         .font-lrc {
@@ -177,8 +177,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             background-size: 0 100%;
-            transition: @transition-slow;
-            transition-property: font-size;
             -webkit-text-fill-color: transparent;
           }
         }
