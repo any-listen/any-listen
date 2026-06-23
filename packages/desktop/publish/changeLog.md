@@ -1,5 +1,10 @@
 <!--- @lang: en-us -->
 
+### Improved
+
+- Updated the **Desktop Lyrics** button icon.
+- Adjusted the position of the **Desktop Lyrics** button in the playback bar.
+
 ### Fixed
 
 - Fixed an issue where **WebDAV** file reads could fail in some cases due to inconsistent URL encoding ([#235](https://github.com/any-listen/any-listen/issues/235)).
@@ -7,6 +12,11 @@
 ---
 
 <!--- @lang: zh-cn -->
+
+### 优化
+
+- 更新 **「桌面歌词」** 按钮图标。
+- 调整播放栏 **「桌面歌词」** 按钮位置。
 
 ### 修复
 
