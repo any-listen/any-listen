@@ -1,15 +1,13 @@
 <!--- @lang: en-us -->
 
-### Improved
+### Fixed
 
-- Updated the **Desktop Lyrics** button icon.
-- Adjusted the position of the **Desktop Lyrics** button in the playback bar.
+- Fixed build failures.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 优化
+### 修复
 
-- 更新 **「桌面歌词」** 按钮图标。
-- 调整播放栏 **「桌面歌词」** 按钮位置。
+- 修复构建失败。
