@@ -151,6 +151,7 @@ export const buildConfig = (target, port = 9200, ipcScript) => {
         less: {
           ...lessConfig,
           javascriptEnabled: true,
+          timeout: 900_000,
         },
       },
       postcss: {
