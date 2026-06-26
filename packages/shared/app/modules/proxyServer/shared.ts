@@ -14,18 +14,18 @@ export const checkAllowedExt = (ext: string) => {
 
 const RANGE_REGEX = /bytes=(?:\d*)-(?:\d*)/
 export const parseRange = (range?: string) => {
-  if (!range) return undefined
+  if (!range) return null
   const matches = RANGE_REGEX.exec(range)
   if (!matches) return null
   let start: number | undefined
   if (matches[1]) {
     start = parseInt(matches[1], 10)
-    if (isNaN(start) || start < 0) return null
+    if (isNaN(start) || start < 0) start = undefined
   }
   let end: number | undefined
   if (matches[2]) {
     end = parseInt(matches[2], 10)
-    if (isNaN(end) || (start && end < start)) return null
+    if (isNaN(end) || (start && end < start)) end = undefined
   }
 
   return { start, end }

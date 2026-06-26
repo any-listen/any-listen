@@ -4,6 +4,7 @@
 
 - Updated the **Desktop Lyrics** button icon.
 - Adjusted the position of the **Desktop Lyrics** button in the playback bar.
+- Improved the resource proxy service logic ([#236](https://github.com/any-listen/any-listen/issues/236)).
 
 ### Fixed
 
@@ -17,6 +18,7 @@
 
 - 更新 **「桌面歌词」** 按钮图标。
 - 调整播放栏 **「桌面歌词」** 按钮位置。
+- 优化资源代理服务逻辑（[#236](https://github.com/any-listen/any-listen/issues/236)）。
 
 ### 修复
 

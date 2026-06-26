@@ -18,7 +18,7 @@ const createProxyServer = async () => {
     const path = req.url.split('?')[0]
     if (path.startsWith(PROXY_PATH_PREFIX)) {
       const name = decodeURIComponent(path.replace(PROXY_PATH_PREFIX, ''))
-      const result = await proxyRequest(name, req.headers.range)
+      const result = await proxyRequest(name, req.headers)
       if (result) {
         res.writeHead(result.statusCode, result.headers)
         if (result.body) {

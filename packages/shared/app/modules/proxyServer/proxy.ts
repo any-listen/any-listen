@@ -1,4 +1,5 @@
 import fs, { type ReadStream } from 'node:fs'
+import type { IncomingHttpHeaders } from 'node:http'
 import { PassThrough } from 'node:stream'
 
 import { getMimeType } from '@any-listen/common/mime'
@@ -28,10 +29,11 @@ const RANGE_NOT_SATISFIABLE_RESULT: Result = {
   },
 }
 
-const getCachedFile = async (id: string, range?: { start?: number; end?: number }): Promise<Result | null> => {
+const getCachedFile = async (id: string, rangeHeader?: string): Promise<Result | null> => {
   const filePath = joinPath(proxyServerState.cacheDir, id)
   const stat = await getFileStats(filePath)
   if (!stat) return null
+  const range = parseRange(rangeHeader)
   const size = stat.size
   let finalStart = 0
   let finalEnd = size - 1
@@ -60,38 +62,62 @@ const getCachedFile = async (id: string, range?: { start?: number; end?: number 
   }
 }
 
-export const proxyRequest = async (name: string, rangeHeader?: string): Promise<Result | null> => {
+const isFullRange = (contentRange?: string, size?: number) => {
+  if (!contentRange || size == null) return true
+  const result = /bytes (\d+)-(\d+)(?:\/(\d+))?/.exec(contentRange)
+  if (!result) return true
+  const start = parseInt(result[1], 10)
+  const end = parseInt(result[2], 10)
+  const total = result[3] ? parseInt(result[3], 10) : size
+  return start === 0 && end === total - 1
+}
+const excludeHeaders = ['host', 'connection', 'origin', 'referer']
+const removeExcludeHeaders = (headers?: IncomingHttpHeaders) => {
+  if (headers) {
+    for (const header of excludeHeaders) {
+      if (header in headers) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete headers[header]
+      }
+    }
+  }
+}
+export const proxyRequest = async (name: string, rawHeaders?: IncomingHttpHeaders): Promise<Result | null> => {
   if (name.length > 128 || !/^[\w.]+$/.test(name)) return null
 
   const ext = extname(name)
   if (ext && !checkAllowedExt(ext)) return null
 
-  const range = parseRange(rangeHeader)
-  if (range === null) return RANGE_NOT_SATISFIABLE_RESULT
-
   // check cache
-  const result = await getCachedFile(name, range)
+  const result = await getCachedFile(name, rawHeaders?.range)
   if (result) return result
 
   const proxyInfo = proxyServerState.proxyMap.get(name)
   if (!proxyInfo) return null
 
+  removeExcludeHeaders(rawHeaders)
+
   const resp = await request<ReadStream>(proxyInfo.url, {
     ...proxyInfo.requestOptions,
     headers: {
+      ...((rawHeaders ?? {}) as Record<string, string | string[]>),
       ...(proxyInfo.requestOptions.headers ?? {}),
-      ...(range ? { Range: `bytes=${range.start || 0}-${range.end || ''}` } : {}),
     },
     needBody: true,
   })
 
-  if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode >= 300) {
+  if (!resp.statusCode || resp.statusCode < 200 || (resp.statusCode >= 300 && resp.statusCode !== 304)) {
     console.log(`Proxy request failed: ${resp.statusCode}`)
     return null
   }
 
   let tee: PassThrough | undefined
-  if (proxyInfo.enabledCache && range && !range.start && !range.end && !proxyServerState.activeWriteStreams.has(name)) {
+  if (
+    proxyInfo.enabledCache &&
+    resp.statusCode !== 304 &&
+    isFullRange(resp.headers['content-range'], parseInt(resp.headers['content-length'] ?? '0', 10)) &&
+    !proxyServerState.activeWriteStreams.has(name)
+  ) {
     // If the range is not specified, we can cache the entire file
     const filePath = joinPath(proxyServerState.cacheDir, name)
     const tempPath = `${filePath}${TEMP_FILE_EXT}`
@@ -119,51 +145,34 @@ export const proxyRequest = async (name: string, rangeHeader?: string): Promise<
     })
     proxyServerState.activeWriteStreams.set(name, writeStream)
   }
-  const headers: Record<string, string> = {}
-  if (resp.headers['content-type']) headers['content-type'] = resp.headers['content-type']
-  if (resp.headers['content-length']) headers['content-length'] = resp.headers['content-length']
-  if (resp.headers['content-range']) headers['content-range'] = resp.headers['content-range']
-  if (resp.headers['accept-ranges']) headers['accept-ranges'] = resp.headers['accept-ranges']
-  if (resp.headers['last-modified']) headers['last-modified'] = resp.headers['last-modified']
-  if (resp.headers['cache-control']) headers['cache-control'] = resp.headers['cache-control']
   return {
     statusCode: resp.statusCode,
-    headers,
+    headers: resp.headers,
     body: tee || resp.body,
   }
 }
 
-export const proxyRequestByUrl = async (url: string, rangeHeader?: string): Promise<Result | null> => {
+export const proxyRequestByUrl = async (url: string, rawHeaders?: IncomingHttpHeaders): Promise<Result | null> => {
   if (url.length > 4096 || !isUrl(url)) return null
 
   const ext = extname(url)
   if (ext && !checkAllowedExt(ext)) return null
 
-  const range = parseRange(rangeHeader)
-  if (range === null) return RANGE_NOT_SATISFIABLE_RESULT
+  removeExcludeHeaders(rawHeaders)
 
   const resp = await request<ReadStream>(url, {
-    headers: {
-      ...(range ? { Range: `bytes=${range.start || 0}-${range.end || ''}` } : {}),
-    },
+    headers: rawHeaders as Record<string, string | string[]>,
     needBody: true,
   })
 
-  if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode >= 300) {
+  if (!resp.statusCode || resp.statusCode < 200 || (resp.statusCode >= 300 && resp.statusCode !== 304)) {
     console.log(`Proxy request failed: ${resp.statusCode}`)
     return null
   }
 
-  const headers: Record<string, string> = {}
-  if (resp.headers['content-type']) headers['content-type'] = resp.headers['content-type']
-  if (resp.headers['content-length']) headers['content-length'] = resp.headers['content-length']
-  if (resp.headers['content-range']) headers['content-range'] = resp.headers['content-range']
-  if (resp.headers['accept-ranges']) headers['accept-ranges'] = resp.headers['accept-ranges']
-  if (resp.headers['last-modified']) headers['last-modified'] = resp.headers['last-modified']
-  if (resp.headers['cache-control']) headers['cache-control'] = resp.headers['cache-control']
   return {
     statusCode: resp.statusCode,
-    headers,
+    headers: resp.headers,
     body: resp.body,
   }
 }

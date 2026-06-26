@@ -26,14 +26,14 @@ const parseRange = (range: string, total: number): Range | null => {
   let start: number
   if (matches[1]) {
     start = parseInt(matches[1], 10)
-    if (isNaN(start) || start < 0) return null
+    if (isNaN(start) || start < 0) start = 0
   } else {
     start = 0
   }
   let end: number
   if (matches[2]) {
     end = parseInt(matches[2], 10)
-    if (isNaN(end) || (start && end < start)) return null
+    if (isNaN(end) || (start && end < start)) end = total - 1
   } else {
     end = total - 1
   }
