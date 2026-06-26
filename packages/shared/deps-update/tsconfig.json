@@ -6,7 +6,7 @@
     // ],
     "rootDir": "./",
     "moduleResolution": "nodenext",
-    "module": "ESNext",
+    "module": "nodenext",
     "target": "ESNext",
     "checkJs": true,
     "types": ["@any-listen/types", "@any-listen/nodejs/node_modules/@types/node"]

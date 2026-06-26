@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "skipLibCheck": false,
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node16",
     "rootDir": "./",
     // "composite": true,
     "outDir": "./dist"
