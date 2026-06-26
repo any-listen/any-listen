@@ -52,9 +52,9 @@
     "electron": "41.2.0",
     "electron-builder": "26.15.3",
     "electron-debug": "^4.1.0",
-    "electron-to-chromium": "^1.5.377",
+    "electron-to-chromium": "^1.5.378",
     "node-abi": "^4.31.0",
-    "tar": "^7.5.16",
+    "tar": "^7.5.17",
     "vite": "^8.1.0"
   }
 }

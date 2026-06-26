@@ -5,7 +5,7 @@
     //   "./types"
     // ],
     "rootDir": "./",
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "module": "ESNext",
     "target": "ESNext",
     "checkJs": true,
