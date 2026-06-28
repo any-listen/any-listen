@@ -156,6 +156,17 @@
             label={$t('list_sort_modal_by_update_time')}
           />
         </li>
+        <li class="list-item">
+          <Radio
+            id="list_sort_modal_field_trackno"
+            checked={sortField == 'trackNo'}
+            name="list_sort_modal_field"
+            value="trackNo"
+            disabled={disabledSortFislds}
+            onselect={handleSortFieldSelect}
+            label={$t('list_sort_modal_by_track_no')}
+          />
+        </li>
         {#if sortFileTime}
           <li class="list-item">
             <Radio

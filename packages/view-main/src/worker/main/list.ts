@@ -143,7 +143,8 @@ const getIntv = (musicInfo: AnyListen.Music.MusicInfo) => {
   return intv
 }
 
-export type SortFieldName = 'name' | 'singer' | 'albumName' | 'interval' | 'createTime' | 'updateTime'
+export type SortFieldName = 'name' | 'singer' | 'albumName' | 'interval' | 'createTime' | 'updateTime' | 'trackNo'
+
 export type SortFieldType = 'up' | 'down' | 'random'
 /**
  * 排序歌曲
@@ -201,6 +202,14 @@ export const sortListMusicInfo = async (
               return b.meta.albumName == null ? 1 : a.meta.albumName.localeCompare(b.meta.albumName, localeId)
             })
             break
+          case 'trackNo':
+            list.sort((a, b) => {
+              if (a.meta.trackNo == null) {
+                return b.meta.trackNo == null ? 0 : -1
+              }
+              return b.meta.trackNo == null ? 1 : a.meta.trackNo - b.meta.trackNo
+            })
+            break
         }
       }
       break
@@ -238,6 +247,14 @@ export const sortListMusicInfo = async (
                 return b.meta.albumName == null ? 0 : 1
               }
               return b.meta.albumName == null ? -1 : b.meta.albumName.localeCompare(a.meta.albumName, localeId)
+            })
+            break
+          case 'trackNo':
+            list.sort((a, b) => {
+              if (a.meta.trackNo == null) {
+                return b.meta.trackNo == null ? 0 : 1
+              }
+              return b.meta.trackNo == null ? -1 : b.meta.trackNo - a.meta.trackNo
             })
             break
         }

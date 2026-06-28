@@ -13,7 +13,7 @@ export const bitrateFormat = (formate: IAudioMetadata['format']) => {
   return ''
 }
 
-type IComment = NonNullable<IAudioMetadata['common']['comment']> extends (infer U)[] ? U : never
+type IComment = NonNullable<IAudioMetadata['common']['comment']> extends Array<infer U> ? U : never
 const getMetadataLyric = (metadata: IAudioMetadata | null) => {
   if (!metadata) return null
   // let lyricInfo = metadata.common.lyrics?.[0]
@@ -96,6 +96,7 @@ export const parseBufferMetadata = async (buffer: Buffer, mimeType: string, ext:
     albumName,
     bitrateLabel: bitrateFormat(metadata.format),
     year: metadata.common.year ?? 0,
+    trackNo: metadata.common.track.no,
     pic: selectCover(metadata.common.picture) || null,
     lyric: getMetadataLyric(metadata),
   }
@@ -137,6 +138,7 @@ export const parseFileMetadata = async (path: string) => {
     ext: ext.replace(/^\./, ''),
     bitrateLabel: bitrateFormat(metadata.format),
     year: metadata.common.year ?? 0,
+    trackNo: metadata.common.track.no,
   }
 }
 export const buildFileMetadata = async (path: string, parseMetadata = true) => {
@@ -153,6 +155,7 @@ export const buildFileMetadata = async (path: string, parseMetadata = true) => {
     ext: ext.replace(/^\./, ''),
     bitrateLabel: '',
     year: 0,
+    trackNo: null,
   }
 }
 

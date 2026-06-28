@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Improved
+### Added
 
-- Improved the resource proxy service logic ([#236](https://github.com/any-listen/any-listen/issues/236)).
+- Added a **Track Number** sorting option for song lists ([#152](https://github.com/any-listen/any-listen/issues/152)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 优化
+### 新增
 
-- 优化资源代理服务逻辑（[#236](https://github.com/any-listen/any-listen/issues/236)）。
+- 新增歌曲列表排序方式 **「按曲目编号」** 选项（[#152](https://github.com/any-listen/any-listen/issues/152)）。

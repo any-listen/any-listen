@@ -102,7 +102,7 @@ export const createLocalMusicInfo = async (
 ): Promise<AnyListen.Music.MusicInfoLocal | null> => {
   let result = await buildFileMetadata(path, parseMetadata)
   if (!result) return null
-  const { unparsed, name, singer, interval, albumName, sizeStr, ext, bitrateLabel, year } = result
+  const { unparsed, name, singer, interval, albumName, sizeStr, ext, bitrateLabel, year, trackNo } = result
 
   const now = Date.now()
 
@@ -122,6 +122,7 @@ export const createLocalMusicInfo = async (
       bitrateLabel,
       sizeStr,
       year,
+      trackNo,
       createTime: now,
       updateTime: now,
       posTime: now,
@@ -131,7 +132,7 @@ export const createLocalMusicInfo = async (
 export const parseLocalMusicInfoMetadata = async (path: string) => {
   let result = await buildFileMetadata(path, true)
   if (!result) return null
-  const { name, singer, interval, albumName, sizeStr, ext, bitrateLabel, year } = result
+  const { name, singer, interval, albumName, sizeStr, ext, bitrateLabel, year, trackNo } = result
   return {
     name,
     singer,
@@ -143,6 +144,7 @@ export const parseLocalMusicInfoMetadata = async (path: string) => {
       bitrateLabel,
       sizeStr,
       year,
+      trackNo,
       updateTime: Date.now(),
     },
   }
