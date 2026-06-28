@@ -280,7 +280,6 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
             meta: {
               ext: item.name.substring(lastDotIndex + 1).toLowerCase(),
               unparsed: true,
-              trackNo: null,
               createTime: 0,
               musicId: id,
               albumName: '',
@@ -317,6 +316,7 @@ export const listProviderActions: AnyListen.IPCExtension.ListProviderAction = {
         albumName: meta.albumName || musicInfo.meta.albumName || '',
         year: meta.year || musicInfo.meta.year || 0,
         trackNo: meta.trackNo || musicInfo.meta.trackNo || null,
+        discNo: meta.discNo || musicInfo.meta.discNo || null,
         bitrateLabel: meta.bitrateLabel || musicInfo.meta.bitrateLabel || '',
       },
     }

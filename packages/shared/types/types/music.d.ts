@@ -19,6 +19,7 @@ declare namespace AnyListen {
       albumName: string // 歌曲专辑名称
       year?: number // 歌曲年份
       trackNo?: number | null // 歌曲在专辑中的序号
+      discNo?: number | null // 歌曲在专辑中的碟片序号
       picUrl?: string | null // 歌曲图片链接
       createTime: number
       updateTime: number

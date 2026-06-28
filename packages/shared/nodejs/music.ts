@@ -97,6 +97,7 @@ export const parseBufferMetadata = async (buffer: Buffer, mimeType: string, ext:
     bitrateLabel: bitrateFormat(metadata.format),
     year: metadata.common.year ?? 0,
     trackNo: metadata.common.track.no,
+    discNo: metadata.common.disk.no,
     pic: selectCover(metadata.common.picture) || null,
     lyric: getMetadataLyric(metadata),
   }
@@ -139,6 +140,7 @@ export const parseFileMetadata = async (path: string) => {
     bitrateLabel: bitrateFormat(metadata.format),
     year: metadata.common.year ?? 0,
     trackNo: metadata.common.track.no,
+    discNo: metadata.common.disk.no,
   }
 }
 export const buildFileMetadata = async (path: string, parseMetadata = true) => {
@@ -156,6 +158,7 @@ export const buildFileMetadata = async (path: string, parseMetadata = true) => {
     bitrateLabel: '',
     year: 0,
     trackNo: null,
+    discNo: null,
   }
 }
 

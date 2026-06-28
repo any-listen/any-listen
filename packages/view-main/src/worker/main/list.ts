@@ -209,6 +209,12 @@ export const sortListMusicInfo = async (
               }
               return b.meta.trackNo == null ? 1 : a.meta.trackNo - b.meta.trackNo
             })
+            list.sort((a, b) => {
+              if (a.meta.discNo == null) {
+                return b.meta.discNo == null ? 0 : -1
+              }
+              return b.meta.discNo == null ? 1 : a.meta.discNo - b.meta.discNo
+            })
             break
         }
       }
@@ -255,6 +261,12 @@ export const sortListMusicInfo = async (
                 return b.meta.trackNo == null ? 0 : 1
               }
               return b.meta.trackNo == null ? -1 : b.meta.trackNo - a.meta.trackNo
+            })
+            list.sort((a, b) => {
+              if (a.meta.discNo == null) {
+                return b.meta.discNo == null ? 0 : 1
+              }
+              return b.meta.discNo == null ? -1 : b.meta.discNo - a.meta.discNo
             })
             break
         }
