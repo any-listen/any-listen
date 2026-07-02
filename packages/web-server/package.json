@@ -33,6 +33,6 @@
     "@types/koa__cors": "^5.0.1",
     "@types/koa__router": "^12.0.5",
     "@types/ws": "8.5.4",
-    "vite": "^8.1.0"
+    "vite": "^8.1.2"
   }
 }
