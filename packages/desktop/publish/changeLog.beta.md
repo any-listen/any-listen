@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Improved
+### Fixed
 
-- Improved song list sorting behavior for **Track Number** ([#152](https://github.com/any-listen/any-listen/issues/152)).
+- Fixed an issue where moving songs could result in an incorrect saved order in some cases.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 优化
+### 修复
 
-- 改进歌曲列表排序 **「按曲目编号」** 排序方式（[#152](https://github.com/any-listen/any-listen/issues/152)）。
+- 修复在某些情况下移动歌曲时可能导致保存的顺序不对的问题。
