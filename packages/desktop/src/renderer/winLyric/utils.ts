@@ -50,12 +50,12 @@ export const getLyricWindowBounds = (
   return { width: w, height: h, x, y }
 }
 
-export const initWindowSize = (
-  x: AnyListen.AppSetting['desktopLyric.x'],
-  y: AnyListen.AppSetting['desktopLyric.y'],
-  width: AnyListen.AppSetting['desktopLyric.width'],
-  height: AnyListen.AppSetting['desktopLyric.height']
-) => {
+const initMultiLineWindowSize = () => {
+  let x = appState.appSetting['desktopLyric.multiLine.x']
+  let y = appState.appSetting['desktopLyric.multiLine.y']
+  let width = appState.appSetting['desktopLyric.multiLine.width']
+  let height = appState.appSetting['desktopLyric.multiLine.height']
+
   if (x == null || y == null) {
     if (width < minWidth) width = minWidth
     if (height < minHeight) height = minHeight
@@ -79,4 +79,49 @@ export const initWindowSize = (
     width,
     height,
   }
+}
+const getFontSizeLevel = (fontSize: number) => {
+  if (fontSize <= 30) return 1
+  if (fontSize <= 50) return 1.2
+  if (fontSize <= 66) return 1.6
+  return 2
+}
+export const getClassicWindowSize = () => {
+  let fontSize = appState.appSetting['desktopLyric.classic.style.fontSize']
+  const lines = appState.appSetting['desktopLyric.classic.showExtendedLyrics'] ? 6 : 4
+  let height = Math.ceil(fontSize * lines * 1.2 + fontSize / 2 + fontSize * 0.16 * 4)
+  let width = fontSize * 30 * getFontSizeLevel(fontSize)
+  let x = appState.appSetting['desktopLyric.classic.x']
+  let y = appState.appSetting['desktopLyric.classic.y']
+
+  if (x == null || y == null) {
+    if (width < minWidth) width = minWidth
+    if (height < minHeight) height = minHeight
+    if (appState.envParams.workAreaSize) {
+      if (width > appState.envParams.workAreaSize.width) width = appState.envParams.workAreaSize.width
+      if (height > appState.envParams.workAreaSize.height) height = appState.envParams.workAreaSize.height
+      x = (appState.envParams.workAreaSize.width - width) / 2
+      y = appState.envParams.workAreaSize.height - height
+    } else {
+      x = 0
+      y = 0
+    }
+  } else {
+    let bounds = getLyricWindowBounds({ x, y, width, height }, { x: 0, y: 0, w: width, h: height })
+    x = bounds.x
+    y = bounds.y
+    width = bounds.width
+    height = bounds.height
+  }
+
+  return {
+    x,
+    y,
+    width,
+    height,
+  }
+}
+
+export const initWindowSize = () => {
+  return appState.appSetting['desktopLyric.mode'] === 'classic' ? getClassicWindowSize() : initMultiLineWindowSize()
 }

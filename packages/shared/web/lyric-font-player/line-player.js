@@ -202,6 +202,18 @@ export default class LinePlayer {
     this._refresh()
   }
 
+  setTime(curTime) {
+    if (!this.lines.length) return
+    this.pause()
+
+    this._performanceTime = getNow() - parseInt(this.tags.offset + this.offset)
+    this._startTime = curTime
+
+    this.curLineNum = this._findCurLineNum(this._currentTime()) - 1
+
+    this.onPlay(this.curLineNum, this.lines[this.curLineNum]?.text ?? '', curTime)
+  }
+
   pause() {
     if (!this.isPlay) return
     this.isPlay = false

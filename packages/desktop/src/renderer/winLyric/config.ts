@@ -14,7 +14,7 @@ import {
 import { mouseCheckTools } from './mouseCheckTools'
 import { rendererIPC } from './rendererEvent'
 import { winLyricState } from './state'
-import { getLyricWindowBounds, initWindowSize } from './utils'
+import { getClassicWindowSize, getLyricWindowBounds, initWindowSize } from './utils'
 
 export const handleConfigUpdated = (keys: Array<keyof AnyListen.AppSetting>, setting: Partial<AnyListen.AppSetting>) => {
   if (!keys.some((key) => key.startsWith('desktopLyric.'))) return
@@ -71,25 +71,42 @@ export const handleConfigUpdated = (keys: Array<keyof AnyListen.AppSetting>, set
     if (keys.includes('desktopLyric.isLockScreen') && winLyricState.isLockScreen != setting['desktopLyric.isLockScreen']!) {
       winLyricState.isLockScreen = setting['desktopLyric.isLockScreen']!
       if (winLyricState.isLockScreen) {
-        setBounds(
-          getLyricWindowBounds(getBounds()!, {
+        let newBounds: { x: number; y: number; w: number; h: number }
+        if (appState.appSetting['desktopLyric.mode'] === 'classic') {
+          const classicSize = getClassicWindowSize()
+          newBounds = {
             x: 0,
             y: 0,
-            w: appState.appSetting['desktopLyric.width'],
-            h: appState.appSetting['desktopLyric.height'],
-          })
-        )
+            w: classicSize.width,
+            h: classicSize.height,
+          }
+        } else {
+          newBounds = {
+            x: 0,
+            y: 0,
+            w: appState.appSetting['desktopLyric.multiLine.width'],
+            h: appState.appSetting['desktopLyric.multiLine.height'],
+          }
+        }
+        setBounds(getLyricWindowBounds(getBounds()!, newBounds))
       }
     }
-    if (keys.includes('desktopLyric.x') && setting['desktopLyric.x'] == null) {
-      setBounds(
-        initWindowSize(
-          appState.appSetting['desktopLyric.x'],
-          appState.appSetting['desktopLyric.y'],
-          appState.appSetting['desktopLyric.width'],
-          appState.appSetting['desktopLyric.height']
-        )
-      )
+    if (
+      keys.includes('desktopLyric.mode') ||
+      (keys.includes('desktopLyric.multiLine.x') &&
+        setting['desktopLyric.multiLine.x'] == null &&
+        appState.appSetting['desktopLyric.mode'] === 'multiLine') ||
+      (keys.includes('desktopLyric.classic.x') &&
+        setting['desktopLyric.classic.x'] == null &&
+        appState.appSetting['desktopLyric.mode'] === 'classic')
+    ) {
+      setBounds(initWindowSize())
+    }
+    if (
+      (keys.includes('desktopLyric.classic.style.fontSize') || keys.includes('desktopLyric.classic.showExtendedLyrics')) &&
+      appState.appSetting['desktopLyric.mode'] === 'classic'
+    ) {
+      setBounds(getClassicWindowSize())
     }
   }
   if (keys.includes('desktopLyric.enable') && winLyricState.enabled != setting['desktopLyric.enable']!) {

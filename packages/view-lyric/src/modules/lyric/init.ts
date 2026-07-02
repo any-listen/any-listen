@@ -6,7 +6,7 @@ import { createUnsubscriptionSet } from '@/shared'
 
 import { onWinMainIPCDisconnected } from '../app/shared'
 import * as lyric from './lyric'
-import { setVertical } from './lyric'
+import { buildLyricConfig, setOptions } from './lyric'
 import { getPlayerCurrentTime, setOffset } from './store/action'
 
 const getCurrentTime = async () => {
@@ -21,6 +21,10 @@ const play = async () => {
 const pause = () => {
   lyric.pause()
 }
+const setTime = async () => {
+  const currentTime = await getCurrentTime()
+  lyric.setTime(currentTime)
+}
 
 const stop = () => {
   lyric.stop()
@@ -32,12 +36,14 @@ const setLyricOffset = (offset: number) => {
   playerEvent.lyricOffsetUpdated(offset)
   // console.log('setLyricOffset', offset)
   if (playerState.playerPlaying) setTimeout(play)
+  else setTimeout(setTime)
 }
 
 const setPlaybackRate = (rate: number) => {
   lyric.setPlaybackRate(rate)
 
   if (playerState.playerPlaying) setTimeout(play)
+  else setTimeout(setTime)
 }
 
 const setLyric = (lyricInfo?: Omit<AnyListen.Music.LyricInfo, 'id' | 'name' | 'singer' | 'interval'>) => {
@@ -66,6 +72,7 @@ const setLyric = (lyricInfo?: Omit<AnyListen.Music.LyricInfo, 'id' | 'name' | 's
   }
 
   if (playerState.playerPlaying) setTimeout(play)
+  else setTimeout(setTime)
 }
 const watchSettings = [
   'player.isShowLyricTranslation',
@@ -78,6 +85,7 @@ const init = () => {
   setLyric()
   setPlaybackRate(playerState.playbackRate)
   if (playerState.playerPlaying) setTimeout(play)
+  else setTimeout(setTime)
 }
 
 const unregistered = createUnsubscriptionSet()
@@ -95,7 +103,15 @@ export const initLyric = () => {
       subscriptions.add(
         settingEvent.on('updated', (keys, settings) => {
           if (watchSettings.some((k) => keys.includes(k))) setLyric()
-          if (keys.includes('desktopLyric.direction')) setVertical(settings['desktopLyric.direction'] == 'vertical')
+          if (
+            keys.includes('desktopLyric.mode') ||
+            keys.includes('desktopLyric.classic.showExtendedLyrics') ||
+            keys.includes('desktopLyric.multiLine.direction')
+          ) {
+            setOptions(buildLyricConfig())
+            if (playerState.playerPlaying) setTimeout(play)
+            else setTimeout(setTime)
+          }
         })
       )
       subscriptions.add(

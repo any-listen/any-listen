@@ -364,39 +364,9 @@ declare global {
       'desktopLyric.pauseHide': boolean
 
       /**
-       * 桌面歌词窗口宽度
-       */
-      'desktopLyric.width': number
-
-      /**
-       * 桌面歌词窗口高度
-       */
-      'desktopLyric.height': number
-
-      /**
-       * 桌面歌词窗口x坐标
-       */
-      'desktopLyric.x': number | null
-
-      /**
-       * 桌面歌词窗口y坐标
-       */
-      'desktopLyric.y': number | null
-
-      /**
        * 是否允许桌面歌词窗口拖出主屏幕之外
        */
       'desktopLyric.isLockScreen': boolean
-
-      /**
-       * 是否延迟桌面歌词滚动
-       */
-      'desktopLyric.isDelayScroll': boolean
-
-      /**
-       * 歌词滚动位置
-       */
-      'desktopLyric.scrollAlign': 'top' | 'center'
 
       /**
        * 是否在鼠标划过桌面歌词窗口时降低歌词透明度
@@ -404,68 +374,167 @@ declare global {
       'desktopLyric.isHoverHide': boolean
 
       /**
-       * 歌词方向
+       * 桌面歌词模式
        */
-      'desktopLyric.direction': 'horizontal' | 'vertical'
+      'desktopLyric.mode': 'classic' | 'multiLine'
 
       /**
-       * 歌词对齐方式
+       * 桌面歌词窗口x坐标
        */
-      'desktopLyric.style.align': 'center' | 'left' | 'right'
+      'desktopLyric.classic.x': number | null
+
+      /**
+       * 桌面歌词窗口y坐标
+       */
+      'desktopLyric.classic.y': number | null
+
+      /**
+       * 是否显示扩展歌词
+       */
+      'desktopLyric.classic.showExtendedLyrics': boolean
 
       /**
        * 桌面歌词字体
        */
-      'desktopLyric.style.font': string
+      'desktopLyric.classic.style.font': string
 
       /**
        * 桌面歌词字体大小
        */
-      'desktopLyric.style.fontSize': number
+      'desktopLyric.classic.style.fontSize': number
       /**
        * 桌面歌词字体透明度
        */
-      'desktopLyric.style.opacity': number
+      'desktopLyric.classic.style.opacity': number
 
       /**
-       * 歌词间距大小
+       * 歌词对齐方式
        */
-      'desktopLyric.style.lineGap': number
+      'desktopLyric.classic.style.align': 'top' | 'bottom'
 
       /**
        * 桌面歌词未播放字体颜色
        */
-      'desktopLyric.style.lyricUnplayColor': string
+      'desktopLyric.classic.style.lyricUnplayColor': string
 
       /**
        * 桌面歌词已播放字体颜色
        */
-      'desktopLyric.style.lyricPlayedColor': string
+      'desktopLyric.classic.style.lyricPlayedColor': string
 
       /**
        * 桌面歌词字体阴影颜色
        */
-      'desktopLyric.style.lyricShadowColor': string
-
-      /**
-       * 是否缩放当前正在播放的桌面歌词
-       */
-      'desktopLyric.style.isZoomActiveLrc': boolean
+      'desktopLyric.classic.style.lyricShadowColor': string
 
       /**
        * 是否加粗逐字歌词字体
        */
-      'desktopLyric.style.isFontWeightFont': boolean
+      'desktopLyric.classic.style.isFontWeightFont': boolean
 
       /**
        * 是否加粗逐行歌词字体
        */
-      'desktopLyric.style.isFontWeightLine': boolean
+      'desktopLyric.classic.style.isFontWeightLine': boolean
 
       /**
        * 是否加粗翻译、罗马音字体
        */
-      'desktopLyric.style.isFontWeightExtended': boolean
+      'desktopLyric.classic.style.isFontWeightExtended': boolean
+
+      /**
+       * 桌面歌词窗口宽度
+       */
+      'desktopLyric.multiLine.width': number
+
+      /**
+       * 桌面歌词窗口高度
+       */
+      'desktopLyric.multiLine.height': number
+
+      /**
+       * 桌面歌词窗口x坐标
+       */
+      'desktopLyric.multiLine.x': number | null
+
+      /**
+       * 桌面歌词窗口y坐标
+       */
+      'desktopLyric.multiLine.y': number | null
+
+      /**
+       * 是否延迟桌面歌词滚动
+       */
+      'desktopLyric.multiLine.isDelayScroll': boolean
+
+      /**
+       * 歌词滚动位置
+       */
+      'desktopLyric.multiLine.scrollAlign': 'top' | 'center'
+
+      /**
+       * 歌词方向
+       */
+      'desktopLyric.multiLine.direction': 'horizontal' | 'vertical'
+
+      /**
+       * 歌词对齐方式
+       */
+      'desktopLyric.multiLine.style.align': 'center' | 'left' | 'right'
+
+      /**
+       * 桌面歌词字体
+       */
+      'desktopLyric.multiLine.style.font': string
+
+      /**
+       * 桌面歌词字体大小
+       */
+      'desktopLyric.multiLine.style.fontSize': number
+      /**
+       * 桌面歌词字体透明度
+       */
+      'desktopLyric.multiLine.style.opacity': number
+
+      /**
+       * 歌词间距大小
+       */
+      'desktopLyric.multiLine.style.lineGap': number
+
+      /**
+       * 桌面歌词未播放字体颜色
+       */
+      'desktopLyric.multiLine.style.lyricUnplayColor': string
+
+      /**
+       * 桌面歌词已播放字体颜色
+       */
+      'desktopLyric.multiLine.style.lyricPlayedColor': string
+
+      /**
+       * 桌面歌词字体阴影颜色
+       */
+      'desktopLyric.multiLine.style.lyricShadowColor': string
+
+      /**
+       * 是否缩放当前正在播放的桌面歌词
+       */
+      'desktopLyric.multiLine.style.isZoomActiveLrc': boolean
+
+      /**
+       * 是否加粗逐字歌词字体
+       */
+      'desktopLyric.multiLine.style.isFontWeightFont': boolean
+
+      /**
+       * 是否加粗逐行歌词字体
+       */
+      'desktopLyric.multiLine.style.isFontWeightLine': boolean
+
+      /**
+       * 是否加粗翻译、罗马音字体
+       */
+      'desktopLyric.multiLine.style.isFontWeightExtended': boolean
 
       /**
        * 下载路径

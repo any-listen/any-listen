@@ -6,11 +6,11 @@
   import Btn from '@/components/base/Btn.svelte'
   import { useSettingValue } from '@/modules/setting/reactive.svelte'
 
-  const lineGap = useSettingValue('desktopLyric.style.lineGap')
+  const lineGap = useSettingValue('desktopLyric.multiLine.style.lineGap')
 
   const changeLineGap = (step: number) => {
-    let gap = settingState.setting['desktopLyric.style.lineGap'] + step
-    void updateSetting({ 'desktopLyric.style.lineGap': Math.min(Math.max(gap, 0), 25) })
+    let gap = settingState.setting['desktopLyric.multiLine.style.lineGap'] + step
+    void updateSetting({ 'desktopLyric.multiLine.style.lineGap': Math.min(Math.max(gap, 0), 25) })
   }
 </script>
 

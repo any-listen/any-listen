@@ -8,7 +8,7 @@
   import Input from '@/components/base/Input.svelte'
   import { getSystemFonts } from '@/shared/ipc/app'
 
-  let font = useSettingValue('desktopLyric.multiLine.style.font')
+  let font = useSettingValue('desktopLyric.classic.style.font')
   let fonts = $derived.by(() => {
     if (!font.val) return ['', '']
     let [f1 = '', f2 = ''] = font.val.split(',')
@@ -16,12 +16,12 @@
   })
   let systemFontList = $state.raw<Array<{ value: string; label: string }>>([])
   let fontList = $derived([{ value: '', label: $t('settings.basic.font_family_default') }, ...systemFontList])
-  let fontSize = useSettingValue('desktopLyric.multiLine.style.fontSize')
+  let fontSize = useSettingValue('desktopLyric.classic.style.fontSize')
   const updateFonts = (font1: string, font2: string) => {
     let font: string[] = []
     if (font1) font.push(font1)
     if (font2) font.push(font2)
-    void updateSetting({ 'desktopLyric.multiLine.style.font': font.join(', ') })
+    void updateSetting({ 'desktopLyric.classic.style.font': font.join(', ') })
   }
 
   onMount(() => {
@@ -41,64 +41,72 @@
 
 <TitleContent name={$t('settings.basic.font')}>
   <div class="settings-item-content">
-    <div class="settings-item-content-item">
-      {#if import.meta.env.VITE_IS_DESKTOP}
-        <span>{$t('settings.basic.font_family')}</span>
-        <Selection
-          --selection-width="11rem"
-          itemkey="value"
-          itemname="label"
-          value={fonts[0]}
-          list={fontList}
-          onchange={(val) => {
-            updateFonts(val, fonts[1])
-          }}
-        />
-        {#if font.val}
+    <div class="settings-item-content-row">
+      <div class="settings-item-content-item">
+        {#if import.meta.env.VITE_IS_DESKTOP}
+          <span>{$t('settings.basic.font_family')}</span>
           <Selection
             --selection-width="11rem"
             itemkey="value"
             itemname="label"
-            value={fonts[1]}
+            value={fonts[0]}
             list={fontList}
             onchange={(val) => {
-              updateFonts(fonts[0], val)
+              updateFonts(val, fonts[1])
+            }}
+          />
+          {#if font.val}
+            <Selection
+              --selection-width="11rem"
+              itemkey="value"
+              itemname="label"
+              value={fonts[1]}
+              list={fontList}
+              onchange={(val) => {
+                updateFonts(fonts[0], val)
+              }}
+            />
+          {/if}
+        {:else}
+          <Input
+            value={font.val}
+            placeholder={$t('settings.basic.font_family_default')}
+            onchange={(val) => {
+              void updateSetting({ 'common.font': val })
             }}
           />
         {/if}
-      {:else}
+      </div>
+      <div class="settings-item-content-item font">
+        <span>{$t('settings.basic.font_size')}</span>
         <Input
-          value={font.val}
+          value={String(fontSize.val)}
+          type="number"
           placeholder={$t('settings.basic.font_family_default')}
+          onbeforechange={(val) => {
+            const valNum = parseInt(val)
+            if (valNum < 10) return '10'
+            if (valNum > 150) return '150'
+            if (isNaN(valNum)) return fontSize.val.toString()
+            return valNum.toString()
+          }}
           onchange={(val) => {
-            void updateSetting({ 'common.font': val })
+            void updateSetting({ 'desktopLyric.classic.style.fontSize': Number(val) })
           }}
         />
-      {/if}
+      </div>
     </div>
-    <div class="settings-item-content-item font">
-      <span>{$t('settings.basic.font_size')}</span>
-      <Input
-        value={String(fontSize.val)}
-        type="number"
-        placeholder={$t('settings.basic.font_family_default')}
-        onbeforechange={(val) => {
-          const valNum = parseInt(val)
-          if (valNum < 10) return '10'
-          if (valNum > 100) return '100'
-          if (isNaN(valNum)) return fontSize.val.toString()
-          return valNum.toString()
-        }}
-        onchange={(val) => {
-          void updateSetting({ 'desktopLyric.multiLine.style.fontSize': Number(val) })
-        }}
-      />
-    </div>
+    <p class="tip">{$t('settings.basic.font_description')}</p>
   </div>
 </TitleContent>
 
 <style lang="less">
   .settings-item-content {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 13px;
+  }
+  .settings-item-content-row {
     display: flex;
     flex-flow: row wrap;
     gap: 25px;
@@ -121,5 +129,9 @@
         width: 68px;
       }
     }
+  }
+  .tip {
+    font-size: 12px;
+    color: var(--color-font-label);
   }
 </style>

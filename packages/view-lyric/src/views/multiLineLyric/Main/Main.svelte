@@ -3,7 +3,7 @@
   import LyricHorizontal from './LyricHorizontal/LyricHorizontal.svelte'
   import LyricVertical from './LyricVertical/LyricVertical.svelte'
 
-  let direction = useSettingValue('desktopLyric.direction')
+  let direction = useSettingValue('desktopLyric.multiLine.direction')
 </script>
 
 <main class="main">

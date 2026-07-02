@@ -37,6 +37,8 @@ export default class FontPlayer {
     fontLrcClassName = 'font-lrc',
     extendedLrcClassName = 'extended',
     shadowContent = false,
+    mergeExtendedLyrics = false,
+    showExtendedLyrics = true,
     extendedLyrics = [],
     isVertical = false,
   }) {
@@ -54,6 +56,8 @@ export default class FontPlayer {
     this.shadowClassName = shadowClassName
 
     this.extendedLyrics = extendedLyrics
+    this.mergeExtendedLyrics = mergeExtendedLyrics
+    this.showExtendedLyrics = showExtendedLyrics
     this.fontModeClassName = fontModeClassName
     this.fontLrcClassName = fontLrcClassName
     this.extendedLrcClassName = extendedLrcClassName
@@ -97,25 +101,44 @@ export default class FontPlayer {
     // }
     this.line.appendChild(this.lrcContent)
 
-    for (const lrc of this.extendedLyrics) {
-      const extendedLrcContent = document.createElement('div')
-      extendedLrcContent.style = 'position:relative;display:inline-block;'
-      extendedLrcContent.className = this.extendedLrcClassName
-      this.lineContent.appendChild(document.createElement('br'))
-      this.lineContent.appendChild(extendedLrcContent)
+    if (this.extendedLyrics.length && this.showExtendedLyrics) {
+      if (this.mergeExtendedLyrics) {
+        const extendedLrcContent = document.createElement('div')
+        extendedLrcContent.style = 'position:relative;display:inline-block;'
+        extendedLrcContent.className = this.extendedLrcClassName
+        this.lineContent.appendChild(document.createElement('br'))
+        this.lineContent.appendChild(extendedLrcContent)
 
-      // if (this.shadowContent) {
-      //   const extendedLrcShadowContent = document.createElement('div')
-      //   extendedLrcShadowContent.style = 'position:absolute;top:0;left:0;width:100%;z-index:-1;'
-      //   extendedLrcShadowContent.className = this.shadowClassName
-      //   extendedLrcShadowContent.textContent = lrc
-      //   extendedLrcContent.appendChild(extendedLrcShadowContent)
-      // }
+        const lineContent = document.createElement('div')
+        lineContent.className = this.fontLrcClassName
+        let lrc = this.extendedLyrics[0]
+        if (this.extendedLyrics.length > 1) {
+          lrc += ` (${this.extendedLyrics.slice(1).join(') (')})`
+        }
+        lineContent.textContent = lrc.replace(timeRxpAll, '')
+        extendedLrcContent.appendChild(lineContent)
+      } else {
+        for (const lrc of this.extendedLyrics) {
+          const extendedLrcContent = document.createElement('div')
+          extendedLrcContent.style = 'position:relative;display:inline-block;'
+          extendedLrcContent.className = this.extendedLrcClassName
+          this.lineContent.appendChild(document.createElement('br'))
+          this.lineContent.appendChild(extendedLrcContent)
 
-      const lineContent = document.createElement('div')
-      lineContent.className = this.fontLrcClassName
-      lineContent.textContent = lrc.replace(timeRxpAll, '')
-      extendedLrcContent.appendChild(lineContent)
+          // if (this.shadowContent) {
+          //   const extendedLrcShadowContent = document.createElement('div')
+          //   extendedLrcShadowContent.style = 'position:absolute;top:0;left:0;width:100%;z-index:-1;'
+          //   extendedLrcShadowContent.className = this.shadowClassName
+          //   extendedLrcShadowContent.textContent = lrc
+          //   extendedLrcContent.appendChild(extendedLrcShadowContent)
+          // }
+
+          const lineContent = document.createElement('div')
+          lineContent.className = this.fontLrcClassName
+          lineContent.textContent = lrc.replace(timeRxpAll, '')
+          extendedLrcContent.appendChild(lineContent)
+        }
+      }
     }
     this._parseLyric()
   }

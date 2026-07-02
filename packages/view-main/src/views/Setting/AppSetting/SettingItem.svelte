@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { SettingListItem } from './settings'
   import SettingCommonItem from './SettingCommonItem.svelte'
+  import HrItem from '../components/HrItem.svelte'
+  import { t } from '@/plugins/i18n'
 
   let {
     item,
@@ -18,6 +20,8 @@
         <Component />
       {/if}
     {/await}
+  {:else if item.type === 'hr'}
+    <HrItem name={$t(item.name)} />
   {:else}
     <SettingCommonItem {item} />
   {/if}

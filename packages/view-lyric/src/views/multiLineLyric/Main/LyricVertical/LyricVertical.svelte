@@ -8,51 +8,51 @@
   import lyric from './lyric.svelte'
 
   let msDown = $state(false)
-  let isZoomActiveLrc = $state(settingState.setting['desktopLyric.style.isZoomActiveLrc'])
+  let isZoomActiveLrc = $state(settingState.setting['desktopLyric.multiLine.style.isZoomActiveLrc'])
 
-  let fontFamily = $state(settingState.setting['desktopLyric.style.font'])
-  let fontSize = $state(`${Math.trunc(settingState.setting['desktopLyric.style.fontSize'])}px`)
-  let opacity = $state(settingState.setting['desktopLyric.style.opacity'] / 100)
-  let textAlign = $state(settingState.setting['desktopLyric.style.align'])
-  let lineGap = $state(`${settingState.setting['desktopLyric.style.lineGap']}px`)
-  let lineExtendedGap = $state(`${(settingState.setting['desktopLyric.style.lineGap'] / 3).toFixed(2)}px`)
-  let isFontWeightFont = $state(settingState.setting['desktopLyric.style.isFontWeightFont'])
-  let isFontWeightLine = $state(settingState.setting['desktopLyric.style.isFontWeightLine'])
-  let isFontWeightExtended = $state(settingState.setting['desktopLyric.style.isFontWeightExtended'])
+  let fontFamily = $state(settingState.setting['desktopLyric.multiLine.style.font'])
+  let fontSize = $state(`${Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize'])}px`)
+  let opacity = $state(settingState.setting['desktopLyric.multiLine.style.opacity'] / 100)
+  let textAlign = $state(settingState.setting['desktopLyric.multiLine.style.align'])
+  let lineGap = $state(`${settingState.setting['desktopLyric.multiLine.style.lineGap']}px`)
+  let lineExtendedGap = $state(`${(settingState.setting['desktopLyric.multiLine.style.lineGap'] / 3).toFixed(2)}px`)
+  let isFontWeightFont = $state(settingState.setting['desktopLyric.multiLine.style.isFontWeightFont'])
+  let isFontWeightLine = $state(settingState.setting['desktopLyric.multiLine.style.isFontWeightLine'])
+  let isFontWeightExtended = $state(settingState.setting['desktopLyric.multiLine.style.isFontWeightExtended'])
 
-  let colorUnplay = $state(settingState.setting['desktopLyric.style.lyricUnplayColor'])
-  let colorPlayed = $state(settingState.setting['desktopLyric.style.lyricPlayedColor'])
-  let colorShadow = $state(settingState.setting['desktopLyric.style.lyricShadowColor'])
-  let colorShadowFont = $state(RGB_Alpha_Shade(0.49, settingState.setting['desktopLyric.style.lyricShadowColor']))
+  let colorUnplay = $state(settingState.setting['desktopLyric.multiLine.style.lyricUnplayColor'])
+  let colorPlayed = $state(settingState.setting['desktopLyric.multiLine.style.lyricPlayedColor'])
+  let colorShadow = $state(settingState.setting['desktopLyric.multiLine.style.lyricShadowColor'])
+  let colorShadowFont = $state(RGB_Alpha_Shade(0.49, settingState.setting['desktopLyric.multiLine.style.lyricShadowColor']))
 
   onMount(() => {
     return settingEvent.on('updated', (keys, setting) => {
       for (const key of keys) {
-        if (key === 'desktopLyric.style.isZoomActiveLrc') {
-          isZoomActiveLrc = setting['desktopLyric.style.isZoomActiveLrc']!
-        } else if (key === 'desktopLyric.style.font') {
-          fontFamily = setting['desktopLyric.style.font']!
-        } else if (key === 'desktopLyric.style.fontSize') {
-          fontSize = `${Math.trunc(setting['desktopLyric.style.fontSize']!)}px`
-        } else if (key === 'desktopLyric.style.opacity') {
-          opacity = setting['desktopLyric.style.opacity']! / 100
-        } else if (key === 'desktopLyric.style.align') {
-          textAlign = setting['desktopLyric.style.align']!
-        } else if (key === 'desktopLyric.style.lineGap') {
-          lineGap = `${setting['desktopLyric.style.lineGap']}px`
-          lineExtendedGap = `${(setting['desktopLyric.style.lineGap']! / 3).toFixed(2)}px`
-        } else if (key === 'desktopLyric.style.isFontWeightFont') {
-          isFontWeightFont = setting['desktopLyric.style.isFontWeightFont']!
-        } else if (key === 'desktopLyric.style.isFontWeightLine') {
-          isFontWeightLine = setting['desktopLyric.style.isFontWeightLine']!
-        } else if (key === 'desktopLyric.style.isFontWeightExtended') {
-          isFontWeightExtended = setting['desktopLyric.style.isFontWeightExtended']!
-        } else if (key === 'desktopLyric.style.lyricUnplayColor') {
-          colorUnplay = setting['desktopLyric.style.lyricUnplayColor']!
-        } else if (key === 'desktopLyric.style.lyricPlayedColor') {
-          colorPlayed = setting['desktopLyric.style.lyricPlayedColor']!
-        } else if (key === 'desktopLyric.style.lyricShadowColor') {
-          colorShadow = setting['desktopLyric.style.lyricShadowColor']!
+        if (key === 'desktopLyric.multiLine.style.isZoomActiveLrc') {
+          isZoomActiveLrc = setting['desktopLyric.multiLine.style.isZoomActiveLrc']!
+        } else if (key === 'desktopLyric.multiLine.style.font') {
+          fontFamily = setting['desktopLyric.multiLine.style.font']!
+        } else if (key === 'desktopLyric.multiLine.style.fontSize') {
+          fontSize = `${Math.trunc(setting['desktopLyric.multiLine.style.fontSize']!)}px`
+        } else if (key === 'desktopLyric.multiLine.style.opacity') {
+          opacity = setting['desktopLyric.multiLine.style.opacity']! / 100
+        } else if (key === 'desktopLyric.multiLine.style.align') {
+          textAlign = setting['desktopLyric.multiLine.style.align']!
+        } else if (key === 'desktopLyric.multiLine.style.lineGap') {
+          lineGap = `${setting['desktopLyric.multiLine.style.lineGap']}px`
+          lineExtendedGap = `${(setting['desktopLyric.multiLine.style.lineGap']! / 3).toFixed(2)}px`
+        } else if (key === 'desktopLyric.multiLine.style.isFontWeightFont') {
+          isFontWeightFont = setting['desktopLyric.multiLine.style.isFontWeightFont']!
+        } else if (key === 'desktopLyric.multiLine.style.isFontWeightLine') {
+          isFontWeightLine = setting['desktopLyric.multiLine.style.isFontWeightLine']!
+        } else if (key === 'desktopLyric.multiLine.style.isFontWeightExtended') {
+          isFontWeightExtended = setting['desktopLyric.multiLine.style.isFontWeightExtended']!
+        } else if (key === 'desktopLyric.multiLine.style.lyricUnplayColor') {
+          colorUnplay = setting['desktopLyric.multiLine.style.lyricUnplayColor']!
+        } else if (key === 'desktopLyric.multiLine.style.lyricPlayedColor') {
+          colorPlayed = setting['desktopLyric.multiLine.style.lyricPlayedColor']!
+        } else if (key === 'desktopLyric.multiLine.style.lyricShadowColor') {
+          colorShadow = setting['desktopLyric.multiLine.style.lyricShadowColor']!
           colorShadowFont = RGB_Alpha_Shade(0.49, colorShadow)
         }
       }

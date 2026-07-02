@@ -145,7 +145,7 @@ const handleScrollX = (
 }
 
 const getOffsetLeft = (contentWidth: number, lineWidth: number, padding: number) => {
-  switch (settingState.setting['desktopLyric.scrollAlign']) {
+  switch (settingState.setting['desktopLyric.multiLine.scrollAlign']) {
     case 'top':
       return contentWidth - lineWidth - -(padding / 2)
     default:
@@ -192,13 +192,13 @@ export default (onMsDown: (isDown: boolean) => void) => {
         let lineWidth = width
         let padding: number
         if (lyricState.line < 0) {
-          padding = Math.trunc(settingState.setting['desktopLyric.style.fontSize']) * 2
-        } else if (settingState.setting['desktopLyric.style.isZoomActiveLrc']) {
-          padding = Math.trunc(settingState.setting['desktopLyric.style.fontSize']) * 1.1 * 2
+          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 2
+        } else if (settingState.setting['desktopLyric.multiLine.style.isZoomActiveLrc']) {
+          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 1.1 * 2
           lineWidth += padding
           lineWidth *= 1.14
         } else {
-          padding = Math.trunc(settingState.setting['desktopLyric.style.fontSize']) * 2
+          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 2
           lineWidth += padding
         }
         const offset = getOffsetLeft(domLyric.clientWidth, lineWidth, padding)
@@ -377,7 +377,7 @@ export default (onMsDown: (isDown: boolean) => void) => {
         return
       }
 
-      if (settingState.setting['desktopLyric.isDelayScroll']) {
+      if (settingState.setting['desktopLyric.multiLine.isDelayScroll']) {
         delayScrollTimeout ??= setTimeout(() => {
           delayScrollTimeout = null
           handleScrollLrc(600)

@@ -15,6 +15,7 @@ import Font from './Font.svelte'
 interface SettingBase<T = unknown> {
   field: keyof AnyListen.AppSetting
   name: keyof Message
+  id?: string
   description?: keyof Message
   onChnaged?: (value: T) => void
   onUpdate?: (value: T) => void
@@ -24,8 +25,14 @@ export interface EnumItem {
   disabled?: boolean
   value: string | number
 }
+interface SettingHr {
+  type: 'hr'
+  id?: string
+  name: keyof Message
+}
 export interface SettingListComponentItem {
   name: keyof Message
+  id?: string
   description?: keyof Message
   type: 'component'
   component: () => Promise<{ default: Component }> | Component
@@ -48,7 +55,7 @@ interface SettingSelection extends SettingBase<EnumItem['value']> {
   enum: EnumItem[]
 }
 export type SettingListCommonItem = SettingInput | SettingBoolean | SettingSelection | SettingRadio
-export type SettingListItem = SettingListCommonItem | SettingListComponentItem
+export type SettingListItem = SettingListCommonItem | SettingListComponentItem | SettingHr
 
 export interface SettingListSection {
   id: string
@@ -309,129 +316,6 @@ export const settings: SettingListSection[] = [
     ],
   },
   {
-    id: 'desktopLyric',
-    // t('settings.desktop_lyric.style_font_weight_extended')
-    name: 'settings.desktop_lyric',
-    list: [
-      {
-        field: 'desktopLyric.enable',
-        name: 'settings.desktop_lyric.enable',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.isLock',
-        name: 'settings.desktop_lyric.lock',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.fullscreenHide',
-        name: 'settings.desktop_lyric.fullscreen_hide',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.style.isZoomActiveLrc',
-        name: 'desktop_lyric.lrc_active_zoom_on',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.isDelayScroll',
-        name: 'settings.desktop_lyric.delay_scroll',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.style.isFontWeightFont',
-        name: 'settings.desktop_lyric.style_font_weight_font',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.style.isFontWeightLine',
-        name: 'settings.desktop_lyric.style_font_weight_line',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.style.isFontWeightExtended',
-        name: 'settings.desktop_lyric.style_font_weight_extended',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.pauseHide',
-        name: 'settings.desktop_lyric.pause_hide',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.isLockScreen',
-        name: 'settings.desktop_lyric.lock_screen',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.isAlwaysOnTop',
-        name: 'settings.desktop_lyric.always_on_top',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.isAlwaysOnTopLoop',
-        name: 'settings.desktop_lyric.always_on_top_loop',
-        description: 'settings.desktop_lyric.always_on_top_loop_tip',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.isHoverHide',
-        name: 'settings.desktop_lyric.hover_hide',
-        description: 'settings.desktop_lyric.hover_hide_tip',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.isShowTaskbar',
-        name: 'settings.desktop_lyric.show_taskbar',
-        description: 'settings.desktop_lyric.show_taskbar_tip',
-        type: 'boolean',
-      },
-      {
-        field: 'desktopLyric.direction',
-        name: 'settings.desktop_lyric.direction',
-        type: 'radio',
-        enum: [
-          { value: 'horizontal', name: 'settings.desktop_lyric.direction_horizontal' },
-          { value: 'vertical', name: 'settings.desktop_lyric.direction_vertical' },
-        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.direction']; name: keyof Message }>,
-      },
-      {
-        field: 'desktopLyric.style.align',
-        name: 'settings.desktop_lyric.style_align',
-        type: 'radio',
-        enum: [
-          { value: 'left', name: 'settings.desktop_lyric.style_align_left' },
-          { value: 'center', name: 'settings.desktop_lyric.style_align_center' },
-          { value: 'right', name: 'settings.desktop_lyric.style_align_right' },
-        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.style.align']; name: keyof Message }>,
-      },
-      {
-        field: 'desktopLyric.scrollAlign',
-        name: 'settings.desktop_lyric.scroll_align',
-        type: 'radio',
-        enum: [
-          { value: 'top', name: 'settings.desktop_lyric.scroll_align_top' },
-          { value: 'center', name: 'settings.desktop_lyric.scroll_align_center' },
-        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.scrollAlign']; name: keyof Message }>,
-      },
-      {
-        name: 'settings.desktop_lyric.line_gap',
-        type: 'component',
-        component: async () => import('./DesktopLyricGap.svelte'),
-      },
-      {
-        name: 'settings.desktop_lyric.font',
-        type: 'component',
-        component: async () => import('./DesktopLyricFont.svelte'),
-      },
-      {
-        name: 'settings.desktop_lyric.color',
-        type: 'component',
-        component: async () => import('./DesktopLyricTheme.svelte'),
-      },
-    ],
-  },
-  {
     id: 'extension',
     // t('settings.extension')
     name: 'settings.extension',
@@ -568,6 +452,199 @@ export const settings: SettingListSection[] = [
     ],
   },
 ]
+
+if (import.meta.env.VITE_IS_DESKTOP) {
+  settings.splice(4, 0, {
+    id: 'desktopLyric',
+    // t('settings.desktop_lyric.style_font_weight_extended')
+    name: 'settings.desktop_lyric',
+    list: [
+      {
+        field: 'desktopLyric.enable',
+        name: 'settings.desktop_lyric.enable',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isLock',
+        name: 'settings.desktop_lyric.lock',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.fullscreenHide',
+        name: 'settings.desktop_lyric.fullscreen_hide',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.pauseHide',
+        name: 'settings.desktop_lyric.pause_hide',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isLockScreen',
+        name: 'settings.desktop_lyric.lock_screen',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isAlwaysOnTop',
+        name: 'settings.desktop_lyric.always_on_top',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isAlwaysOnTopLoop',
+        name: 'settings.desktop_lyric.always_on_top_loop',
+        description: 'settings.desktop_lyric.always_on_top_loop_tip',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isHoverHide',
+        name: 'settings.desktop_lyric.hover_hide',
+        description: 'settings.desktop_lyric.hover_hide_tip',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.isShowTaskbar',
+        name: 'settings.desktop_lyric.show_taskbar',
+        description: 'settings.desktop_lyric.show_taskbar_tip',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.mode',
+        id: 'desktopLyric.mode',
+        name: 'settings.desktop_lyric.mode',
+        type: 'radio',
+        enum: [
+          { value: 'classic', name: 'settings.desktop_lyric.classic_mode' },
+          { value: 'multiLine', name: 'settings.desktop_lyric.multiLine_mode' },
+        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.mode']; name: keyof Message }>,
+      },
+
+      {
+        type: 'hr',
+        name: 'settings.desktop_lyric.classic',
+      },
+      // t('settings.desktop_lyric.show_extended_lyrics')
+      {
+        field: 'desktopLyric.classic.showExtendedLyrics',
+        id: 'desktopLyric.classic.showExtendedLyrics',
+        name: 'settings.desktop_lyric.show_extended_lyrics',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.classic.style.isFontWeightFont',
+        id: 'desktopLyric.classic.style.isFontWeightFont',
+        name: 'settings.desktop_lyric.style_font_weight_font',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.classic.style.isFontWeightLine',
+        id: 'desktopLyric.classic.style.isFontWeightLine',
+        name: 'settings.desktop_lyric.style_font_weight_line',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.classic.style.isFontWeightExtended',
+        id: 'desktopLyric.classic.style.isFontWeightExtended',
+        name: 'settings.desktop_lyric.style_font_weight_extended',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.classic.style.align',
+        id: 'desktopLyric.classic.style.align',
+        name: 'settings.desktop_lyric.style_align',
+        type: 'radio',
+        enum: [
+          { value: 'top', name: 'settings.desktop_lyric.style_align_top' },
+          { value: 'bottom', name: 'settings.desktop_lyric.style_align_bottom' },
+        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.classic.style.align']; name: keyof Message }>,
+      },
+      {
+        name: 'settings.desktop_lyric.font',
+        id: 'desktopLyric.classic.style.font',
+        type: 'component',
+        component: async () => import('./DesktopLyricFontClassic.svelte'),
+      },
+      {
+        name: 'settings.desktop_lyric.color',
+        id: 'desktopLyric.classic.style.lyricPlayedColor',
+        type: 'component',
+        component: async () => import('./DesktopLyricThemeClassic.svelte'),
+      },
+
+      {
+        type: 'hr',
+        name: 'settings.desktop_lyric.multiLine',
+      },
+      {
+        field: 'desktopLyric.multiLine.style.isZoomActiveLrc',
+        name: 'desktop_lyric.lrc_active_zoom_on',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.multiLine.isDelayScroll',
+        name: 'settings.desktop_lyric.delay_scroll',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.multiLine.style.isFontWeightFont',
+        name: 'settings.desktop_lyric.style_font_weight_font',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.multiLine.style.isFontWeightLine',
+        name: 'settings.desktop_lyric.style_font_weight_line',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.multiLine.style.isFontWeightExtended',
+        name: 'settings.desktop_lyric.style_font_weight_extended',
+        type: 'boolean',
+      },
+      {
+        field: 'desktopLyric.multiLine.direction',
+        name: 'settings.desktop_lyric.direction',
+        type: 'radio',
+        enum: [
+          { value: 'horizontal', name: 'settings.desktop_lyric.direction_horizontal' },
+          { value: 'vertical', name: 'settings.desktop_lyric.direction_vertical' },
+        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.multiLine.direction']; name: keyof Message }>,
+      },
+      {
+        field: 'desktopLyric.multiLine.style.align',
+        name: 'settings.desktop_lyric.style_align',
+        type: 'radio',
+        enum: [
+          { value: 'left', name: 'settings.desktop_lyric.style_align_left' },
+          { value: 'center', name: 'settings.desktop_lyric.style_align_center' },
+          { value: 'right', name: 'settings.desktop_lyric.style_align_right' },
+        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.multiLine.style.align']; name: keyof Message }>,
+      },
+      {
+        field: 'desktopLyric.multiLine.scrollAlign',
+        name: 'settings.desktop_lyric.scroll_align',
+        type: 'radio',
+        enum: [
+          { value: 'top', name: 'settings.desktop_lyric.scroll_align_top' },
+          { value: 'center', name: 'settings.desktop_lyric.scroll_align_center' },
+        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.multiLine.scrollAlign']; name: keyof Message }>,
+      },
+      {
+        name: 'settings.desktop_lyric.line_gap',
+        type: 'component',
+        component: async () => import('./DesktopLyricGap.svelte'),
+      },
+      {
+        name: 'settings.desktop_lyric.font',
+        type: 'component',
+        component: async () => import('./DesktopLyricFont.svelte'),
+      },
+      {
+        name: 'settings.desktop_lyric.color',
+        type: 'component',
+        component: async () => import('./DesktopLyricTheme.svelte'),
+      },
+    ],
+  })
+}
 
 if (import.meta.env.VITE_IS_WEB) {
   settings.splice(settings.length - 3, 0, {

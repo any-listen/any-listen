@@ -8,7 +8,7 @@ import { settingState } from '@/modules/setting/store/state'
 import { setWinBounds } from '@/shared/ipc/app'
 
 const getOffsetTop = (contentHeight: number, lineHeight: number, padding: number) => {
-  switch (settingState.setting['desktopLyric.scrollAlign']) {
+  switch (settingState.setting['desktopLyric.multiLine.scrollAlign']) {
     case 'top':
       return -(padding / 2)
     default:
@@ -56,12 +56,12 @@ export default (onMsDown: (isDown: boolean) => void) => {
         let lineHeight = height
         let padding: number
         if (lyricState.line < 0) {
-          padding = Math.trunc(settingState.setting['desktopLyric.style.fontSize']) * 2
+          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 2
         } else if (
-          !settingState.setting['desktopLyric.isDelayScroll'] &&
-          settingState.setting['desktopLyric.style.isZoomActiveLrc']
+          !settingState.setting['desktopLyric.multiLine.isDelayScroll'] &&
+          settingState.setting['desktopLyric.multiLine.style.isZoomActiveLrc']
         ) {
-          padding = Math.trunc(settingState.setting['desktopLyric.style.fontSize']) * 1.1 * 2
+          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 1.1 * 2
           lineHeight += padding
           lineHeight *= 1.14
           if (prevActiveLine < line) {
@@ -70,7 +70,7 @@ export default (onMsDown: (isDown: boolean) => void) => {
             if (preDomP && preDomP !== domP) offsetTop -= preDomP.clientHeight - preHeight
           }
         } else {
-          padding = Math.trunc(settingState.setting['desktopLyric.style.fontSize']) * 2
+          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 2
         }
         cancelScrollFn = handleScroll(
           domLyric,
@@ -255,7 +255,7 @@ export default (onMsDown: (isDown: boolean) => void) => {
         return
       }
 
-      if (settingState.setting['desktopLyric.isDelayScroll']) {
+      if (settingState.setting['desktopLyric.multiLine.isDelayScroll']) {
         delayScrollTimeout ??= setTimeout(() => {
           delayScrollTimeout = null
           handleScrollLrc(600)

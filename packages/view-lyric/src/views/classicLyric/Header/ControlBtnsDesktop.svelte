@@ -18,38 +18,32 @@
     await updateSetting({ 'desktopLyric.isAlwaysOnTop': !settingState.setting['desktopLyric.isAlwaysOnTop'] })
   }
 
-  const handleZoomLrc = async () => {
-    await updateSetting({
-      'desktopLyric.multiLine.style.isZoomActiveLrc': !settingState.setting['desktopLyric.multiLine.style.isZoomActiveLrc'],
-    })
-  }
-
   const handleFontChange = async (action: 'increase' | 'decrease', step: number) => {
-    let num = settingState.setting['desktopLyric.multiLine.style.fontSize']
+    let num = settingState.setting['desktopLyric.classic.style.fontSize']
     switch (action) {
       case 'increase':
-        num = Math.min(settingState.setting['desktopLyric.multiLine.style.fontSize'] + step, 80)
+        num = Math.min(settingState.setting['desktopLyric.classic.style.fontSize'] + step, 80)
         break
       case 'decrease':
-        num = Math.max(settingState.setting['desktopLyric.multiLine.style.fontSize'] - step, 10)
+        num = Math.max(settingState.setting['desktopLyric.classic.style.fontSize'] - step, 10)
         break
     }
-    if (settingState.setting['desktopLyric.multiLine.style.fontSize'] == num) return
-    await updateSetting({ 'desktopLyric.multiLine.style.fontSize': num })
+    if (settingState.setting['desktopLyric.classic.style.fontSize'] == num) return
+    await updateSetting({ 'desktopLyric.classic.style.fontSize': num })
   }
 
   const handleOpacityChange = async (action: 'increase' | 'decrease', step: number) => {
-    let num = settingState.setting['desktopLyric.multiLine.style.opacity']
+    let num = settingState.setting['desktopLyric.classic.style.opacity']
     switch (action) {
       case 'increase':
-        num = Math.min(settingState.setting['desktopLyric.multiLine.style.opacity'] + step, 100)
+        num = Math.min(settingState.setting['desktopLyric.classic.style.opacity'] + step, 100)
         break
       case 'decrease':
-        num = Math.max(settingState.setting['desktopLyric.multiLine.style.opacity'] - step, 6)
+        num = Math.max(settingState.setting['desktopLyric.classic.style.opacity'] - step, 6)
         break
     }
-    if (settingState.setting['desktopLyric.multiLine.style.opacity'] == num) return
-    await updateSetting({ 'desktopLyric.multiLine.style.opacity': num })
+    if (settingState.setting['desktopLyric.classic.style.opacity'] == num) return
+    await updateSetting({ 'desktopLyric.classic.style.opacity': num })
   }
 
   const stopMenu = (event: MouseEvent) => {
@@ -57,11 +51,6 @@
   }
 </script>
 
-<button class="btn" title={$t('desktop_lyric.close')} onclick={handleClose}>
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24">
-    <use xlink:href="#icon-close" />
-  </svg>
-</button>
 <button class="btn" title={$t(`desktop_lyric.${setting.val['desktopLyric.isLock'] ? 'unlock' : 'lock'}`)} onclick={handleLock}>
   {#if setting.val['desktopLyric.isLock']}
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24">
@@ -111,23 +100,6 @@
 </button>
 <button
   class="btn"
-  title={$t(
-    `desktop_lyric.${setting.val['desktopLyric.multiLine.style.isZoomActiveLrc'] ? 'lrc_active_zoom_off' : 'lrc_active_zoom_on'}`
-  )}
-  onclick={handleZoomLrc}
->
-  {#if setting.val['desktopLyric.multiLine.style.isZoomActiveLrc']}
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24">
-      <use xlink:href="#icon-vibrate-off" />
-    </svg>
-  {:else}
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24">
-      <use xlink:href="#icon-vibrate" />
-    </svg>
-  {/if}
-</button>
-<button
-  class="btn"
   title={$t(`desktop_lyric.${setting.val['desktopLyric.isAlwaysOnTop'] ? 'win_top_off' : 'win_top_on'}`)}
   onclick={handleAlwaysOnTop}
 >
@@ -140,4 +112,9 @@
       <use xlink:href="#icon-top-on" />
     </svg>
   {/if}
+</button>
+<button class="btn" title={$t('desktop_lyric.close')} onclick={handleClose}>
+  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 0 24 24">
+    <use xlink:href="#icon-close" />
+  </svg>
 </button>

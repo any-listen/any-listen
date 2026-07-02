@@ -20,6 +20,20 @@ const saveBoundsConfig = debounce((config: Partial<AnyListen.AppSetting>) => {
   isWinBoundsUpdateing &&= false
 }, 500)
 
+const buildConfig = (bounds: { x: number; y: number; width: number; height: number }): Partial<AnyListen.AppSetting> => {
+  return appState.appSetting['desktopLyric.mode'] === 'classic'
+    ? {
+        'desktopLyric.classic.x': bounds.x,
+        'desktopLyric.classic.y': bounds.y,
+      }
+    : {
+        'desktopLyric.multiLine.x': bounds.x,
+        'desktopLyric.multiLine.y': bounds.y,
+        'desktopLyric.multiLine.width': bounds.width,
+        'desktopLyric.multiLine.height': bounds.height,
+      }
+}
+
 const winEvent = () => {
   if (!browserWindow) return
 
@@ -39,21 +53,23 @@ const winEvent = () => {
     // console.log('move', isWinBoundsUpdateing)
     if (isWinBoundsUpdateing) {
       const bounds = browserWindow!.getBounds()
-      saveBoundsConfig({
-        'desktopLyric.x': bounds.x,
-        'desktopLyric.y': bounds.y,
-        'desktopLyric.width': bounds.width,
-        'desktopLyric.height': bounds.height,
-      })
+      saveBoundsConfig(buildConfig(bounds))
     } else if (isWin) {
       // Linux 不允许将窗口设置出屏幕之外，MacOS未知，故只在Windows下执行强制设置
       // 非主动调整窗口触发的窗口位置变化将重置回设置值
-      browserWindow!.setBounds({
-        x: appState.appSetting['desktopLyric.x'] ?? 0,
-        y: appState.appSetting['desktopLyric.y'] ?? 0,
-        width: appState.appSetting['desktopLyric.width'],
-        height: appState.appSetting['desktopLyric.height'],
-      })
+      browserWindow!.setBounds(
+        appState.appSetting['desktopLyric.mode'] === 'classic'
+          ? {
+              x: appState.appSetting['desktopLyric.classic.x'] ?? 0,
+              y: appState.appSetting['desktopLyric.classic.y'] ?? 0,
+            }
+          : {
+              x: appState.appSetting['desktopLyric.multiLine.x'] ?? 0,
+              y: appState.appSetting['desktopLyric.multiLine.y'] ?? 0,
+              width: appState.appSetting['desktopLyric.multiLine.width'],
+              height: appState.appSetting['desktopLyric.multiLine.height'],
+            }
+      )
     }
   })
 
@@ -62,12 +78,7 @@ const winEvent = () => {
     // console.log(bounds)
     isWinBoundsUpdateing = true
     const bounds = browserWindow!.getBounds()
-    saveBoundsConfig({
-      'desktopLyric.x': bounds.x,
-      'desktopLyric.y': bounds.y,
-      'desktopLyric.width': bounds.width,
-      'desktopLyric.height': bounds.height,
-    })
+    saveBoundsConfig(buildConfig(bounds))
   })
 
   // browserWindow.on('restore', () => {
@@ -96,21 +107,12 @@ const winEvent = () => {
 export const createWindow = () => {
   closeWindow()
   if (!appState.envParams.workAreaSize) return
-  let x = appState.appSetting['desktopLyric.x']
-  let y = appState.appSetting['desktopLyric.y']
-  let width = appState.appSetting['desktopLyric.width']
-  let height = appState.appSetting['desktopLyric.height']
   let isAlwaysOnTop = appState.appSetting['desktopLyric.isAlwaysOnTop']
   // let isLockScreen = appState.appSetting['desktopLyric.isLockScreen']
   let isShowTaskbar = appState.appSetting['desktopLyric.isShowTaskbar']
   // let { width: screenWidth, height: screenHeight } = appState.envParams.workAreaSize
-  const winSize = initWindowSize(x, y, width, height)
-  updateSetting({
-    'desktopLyric.x': winSize.x,
-    'desktopLyric.y': winSize.y,
-    'desktopLyric.width': winSize.width,
-    'desktopLyric.height': winSize.height,
-  })
+  const winSize = initWindowSize()
+  updateSetting(buildConfig(winSize))
 
   const theme = themeState
   const ses = session.fromPartition('persist:view-lyric')
@@ -137,7 +139,7 @@ export const createWindow = () => {
     frame: false,
     transparent: true,
     hasShadow: false,
-    resizable: isWin,
+    resizable: isWin && appState.appSetting['desktopLyric.mode'] === 'multiLine',
     minimizable: false,
     maximizable: false,
     fullscreenable: false,

@@ -8,28 +8,28 @@
   import Btn from '@/components/base/Btn.svelte'
 
   const lyricUnplayColor = colorPick(
-    settingState.setting['desktopLyric.multiLine.style.lyricUnplayColor'],
+    settingState.setting['desktopLyric.classic.style.lyricUnplayColor'],
     [
       'rgba(255, 255, 255, 1)',
       'rgba(255, 236, 144, 1)',
       'rgba(144, 255, 206, 1)',
       'rgba(32, 255, 132, 1)',
       'rgba(255, 226, 32, 1)',
+      'rgba(255, 153, 52, 1)',
       'rgba(57, 203, 255, 1)',
       'rgba(217, 57, 255, 1)',
       'rgba(255, 57, 71, 1)',
     ],
     (val) => {
-      void updateSetting({ 'desktopLyric.multiLine.style.lyricUnplayColor': val })
+      void updateSetting({ 'desktopLyric.classic.style.lyricUnplayColor': val })
     }
   )
   const lyricPlayedColor = colorPick(
-    settingState.setting['desktopLyric.multiLine.style.lyricPlayedColor'],
+    settingState.setting['desktopLyric.classic.style.lyricPlayedColor'],
     [
-      'rgba(255, 236, 144, 1)',
+      'rgba(255, 242, 87, 1)',
       'rgba(144, 255, 206, 1)',
       'rgba(32, 255, 132, 1)',
-      'rgba(255, 226, 32, 1)',
       'rgba(57, 203, 255, 1)',
       'rgba(25, 181, 254, 1)',
       'rgba(113, 135, 255, 1)',
@@ -37,45 +37,46 @@
       'rgba(255, 57, 71, 1)',
     ],
     (val) => {
-      void updateSetting({ 'desktopLyric.multiLine.style.lyricPlayedColor': val })
+      void updateSetting({ 'desktopLyric.classic.style.lyricPlayedColor': val })
     }
   )
   const lyricShadowColor = colorPick(
-    settingState.setting['desktopLyric.multiLine.style.lyricShadowColor'],
+    settingState.setting['desktopLyric.classic.style.lyricShadowColor'],
     [
       'rgba(0, 0, 0, 0.6)',
+      'rgba(254, 72, 72, 1)',
+      'rgba(71, 0, 255, 0.69)',
       //  'rgba(0, 0, 0, 0.15)'
     ],
     (val) => {
-      void updateSetting({ 'desktopLyric.multiLine.style.lyricShadowColor': val })
+      void updateSetting({ 'desktopLyric.classic.style.lyricShadowColor': val })
     }
   )
 
   const resetColor = () => {
     const defaultSetting = {
-      'desktopLyric.multiLine.style.lyricUnplayColor': 'rgba(255, 255, 255, 1)',
-      'desktopLyric.multiLine.style.lyricPlayedColor': 'rgba(113, 135, 255, 1)',
-      'desktopLyric.multiLine.style.lyricShadowColor': 'rgba(0, 0, 0, 0.6)',
+      'desktopLyric.classic.style.lyricUnplayColor': 'rgba(87, 143, 255, 1)',
+      'desktopLyric.classic.style.lyricPlayedColor': 'rgba(39, 249, 192, 1)',
+      'desktopLyric.classic.style.lyricShadowColor': 'rgba(0, 0, 0, 0.6)',
     }
     void updateSetting(defaultSetting)
-    lyricUnplayColor.setColor(defaultSetting['desktopLyric.multiLine.style.lyricUnplayColor'])
-    lyricPlayedColor.setColor(defaultSetting['desktopLyric.multiLine.style.lyricPlayedColor'])
-    lyricShadowColor.setColor(defaultSetting['desktopLyric.multiLine.style.lyricShadowColor'])
+    lyricUnplayColor.setColor(defaultSetting['desktopLyric.classic.style.lyricUnplayColor'])
+    lyricPlayedColor.setColor(defaultSetting['desktopLyric.classic.style.lyricPlayedColor'])
+    lyricShadowColor.setColor(defaultSetting['desktopLyric.classic.style.lyricShadowColor'])
   }
 
   const resetWindow = () => {
     void updateSetting({
-      'desktopLyric.multiLine.width': 450,
-      'desktopLyric.multiLine.height': 290,
-      'desktopLyric.multiLine.x': null,
-      'desktopLyric.multiLine.y': null,
+      'desktopLyric.classic.x': null,
+      'desktopLyric.classic.y': null,
+      // 'desktopLyric.classic.style.fontSize': 25,
     })
   }
 
   onMount(() => {
-    lyricUnplayColor.setColor(settingState.setting['desktopLyric.multiLine.style.lyricUnplayColor'])
-    lyricPlayedColor.setColor(settingState.setting['desktopLyric.multiLine.style.lyricPlayedColor'])
-    lyricShadowColor.setColor(settingState.setting['desktopLyric.multiLine.style.lyricShadowColor'])
+    lyricUnplayColor.setColor(settingState.setting['desktopLyric.classic.style.lyricUnplayColor'])
+    lyricPlayedColor.setColor(settingState.setting['desktopLyric.classic.style.lyricPlayedColor'])
+    lyricShadowColor.setColor(settingState.setting['desktopLyric.classic.style.lyricShadowColor'])
   })
 </script>
 

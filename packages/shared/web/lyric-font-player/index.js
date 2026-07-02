@@ -18,6 +18,8 @@ export default class Lyric {
     extendedLrcClassName = 'extended',
     activeLineClassName = 'active',
     shadowContent = false,
+    mergeExtendedLyrics = false,
+    showExtendedLyrics = true,
     isVertical = false,
     onPlay = function (line, text) {},
     onSetLyric = function (lines, offset) {},
@@ -40,6 +42,8 @@ export default class Lyric {
     this.extendedLrcClassName = extendedLrcClassName
     this.activeLineClassName = activeLineClassName
     this.shadowContent = shadowContent
+    this.mergeExtendedLyrics = mergeExtendedLyrics
+    this.showExtendedLyrics = showExtendedLyrics
 
     this.isVertical = isVertical
     this.playingLineNum = -1
@@ -115,6 +119,7 @@ export default class Lyric {
     // console.log(lyricLines)
     // this._lines = lyricsLines
     this.isLineMode = lyricLines.length && !/^<\d+,\d+>/.test(lyricLines[0].text)
+    this.playingLineNum = -1
 
     this._lineFonts = []
     if (this.isLineMode) {
@@ -132,6 +137,8 @@ export default class Lyric {
           fontLrcClassName: this.fontLrcClassName,
           extendedLrcClassName: this.extendedLrcClassName,
           shadowContent: this.shadowContent,
+          mergeExtendedLyrics: this.mergeExtendedLyrics,
+          showExtendedLyrics: this.showExtendedLyrics,
           isVertical: this.isVertical,
         })
 
@@ -158,6 +165,8 @@ export default class Lyric {
           fontLrcClassName: this.fontLrcClassName,
           extendedLrcClassName: this.extendedLrcClassName,
           shadowContent: this.shadowContent,
+          mergeExtendedLyrics: this.mergeExtendedLyrics,
+          showExtendedLyrics: this.showExtendedLyrics,
           isVertical: this.isVertical,
         })
 
@@ -184,6 +193,11 @@ export default class Lyric {
     this.playingLineNum = 0
     this.initInfo.lines = lyricLines
     this.initInfo.offset = offset
+  }
+
+  setTime(curTime) {
+    if (!this.linePlayer) return
+    this.linePlayer.setTime(curTime)
   }
 
   play(curTime) {
@@ -219,7 +233,30 @@ export default class Lyric {
   }
 
   setVertical(isVertical) {
+    if (this.isVertical === isVertical) return
     this.isVertical = isVertical
+    this._initLines(this.initInfo.lines, this.initInfo.offset, true)
+    if (this.linePlayer.isPlay) {
+      const num = this.playingLineNum
+      this.playingLineNum = 0
+      this._handleLinePlayerOnPlay(num, '', this.linePlayer._currentTime())
+    } else this.playingLineNum = 0
+  }
+
+  setMergeExtendedLyrics(merge) {
+    if (this.mergeExtendedLyrics === merge) return
+    this.mergeExtendedLyrics = merge
+    this._initLines(this.initInfo.lines, this.initInfo.offset, true)
+    if (this.linePlayer.isPlay) {
+      const num = this.playingLineNum
+      this.playingLineNum = 0
+      this._handleLinePlayerOnPlay(num, '', this.linePlayer._currentTime())
+    } else this.playingLineNum = 0
+  }
+
+  setShowExtendedLyrics(show) {
+    if (this.showExtendedLyrics === show) return
+    this.showExtendedLyrics = show
     this._initLines(this.initInfo.lines, this.initInfo.offset, true)
     if (this.linePlayer.isPlay) {
       const num = this.playingLineNum
@@ -230,5 +267,24 @@ export default class Lyric {
 
   setTimeoutTools(tools) {
     this.linePlayer.setTimeoutTools(tools)
+  }
+
+  setOptions(options) {
+    let updated = false
+    if (options.isVertical !== undefined && this.isVertical !== options.isVertical) {
+      this.isVertical = options.isVertical
+      updated ||= true
+    }
+    if (options.mergeExtendedLyrics !== undefined && this.mergeExtendedLyrics !== options.mergeExtendedLyrics) {
+      this.mergeExtendedLyrics = options.mergeExtendedLyrics
+      updated ||= true
+    }
+    if (options.showExtendedLyrics !== undefined && this.showExtendedLyrics !== options.showExtendedLyrics) {
+      this.showExtendedLyrics = options.showExtendedLyrics
+      updated ||= true
+    }
+    if (updated) {
+      this._initLines(this.initInfo.lines, this.initInfo.offset, true)
+    }
   }
 }

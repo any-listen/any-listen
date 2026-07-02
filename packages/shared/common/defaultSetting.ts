@@ -1,5 +1,5 @@
 const defaultSetting: AnyListen.AppSetting = {
-  version: '1.0.2',
+  version: '1.0.3',
 
   'common.windowSizeId': 3,
   'common.fontSize': 16,
@@ -76,28 +76,44 @@ const defaultSetting: AnyListen.AppSetting = {
   'desktopLyric.isShowTaskbar': false,
   'desktopLyric.fullscreenHide': true,
   'desktopLyric.pauseHide': true,
-  'desktopLyric.width': 450,
-  'desktopLyric.height': 300,
-  'desktopLyric.x': null,
-  'desktopLyric.y': null,
   'desktopLyric.isLockScreen': true,
-  'desktopLyric.isDelayScroll': false,
-  'desktopLyric.scrollAlign': 'center',
   'desktopLyric.isHoverHide': false,
-  'desktopLyric.direction': 'horizontal',
-  'desktopLyric.style.align': 'center',
-  'desktopLyric.style.font': '',
-  'desktopLyric.style.fontSize': 26,
-  'desktopLyric.style.lineGap': 15,
-  'desktopLyric.style.lyricUnplayColor': 'rgba(255, 255, 255, 1)',
-  'desktopLyric.style.lyricPlayedColor': 'rgba(87, 112, 255, 1)',
-  'desktopLyric.style.lyricShadowColor': 'rgba(0, 0, 0, 0.6)',
-  'desktopLyric.style.opacity': 100,
+  'desktopLyric.mode': 'classic',
+
+  'desktopLyric.classic.x': null,
+  'desktopLyric.classic.y': null,
+  'desktopLyric.classic.showExtendedLyrics': true,
+  'desktopLyric.classic.style.font': '',
+  'desktopLyric.classic.style.fontSize': 26,
+  'desktopLyric.classic.style.opacity': 100,
+  'desktopLyric.classic.style.align': 'bottom',
+  'desktopLyric.classic.style.lyricUnplayColor': 'rgba(87, 143, 255, 1)',
+  'desktopLyric.classic.style.lyricPlayedColor': 'rgba(39, 249, 192, 1)',
+  'desktopLyric.classic.style.lyricShadowColor': 'rgba(0, 0, 0, 0.6)',
+  'desktopLyric.classic.style.isFontWeightFont': true,
+  'desktopLyric.classic.style.isFontWeightLine': true,
+  'desktopLyric.classic.style.isFontWeightExtended': false,
+
+  'desktopLyric.multiLine.width': 450,
+  'desktopLyric.multiLine.height': 300,
+  'desktopLyric.multiLine.x': null,
+  'desktopLyric.multiLine.y': null,
+  'desktopLyric.multiLine.isDelayScroll': false,
+  'desktopLyric.multiLine.scrollAlign': 'center',
+  'desktopLyric.multiLine.direction': 'horizontal',
+  'desktopLyric.multiLine.style.align': 'center',
+  'desktopLyric.multiLine.style.font': '',
+  'desktopLyric.multiLine.style.fontSize': 26,
+  'desktopLyric.multiLine.style.lineGap': 15,
+  'desktopLyric.multiLine.style.lyricUnplayColor': 'rgba(255, 255, 255, 1)',
+  'desktopLyric.multiLine.style.lyricPlayedColor': 'rgba(113, 135, 255, 1)',
+  'desktopLyric.multiLine.style.lyricShadowColor': 'rgba(0, 0, 0, 0.6)',
+  'desktopLyric.multiLine.style.opacity': 100,
   // 'desktopLyric.style.ellipsis': false,
-  'desktopLyric.style.isZoomActiveLrc': true,
-  'desktopLyric.style.isFontWeightFont': true,
-  'desktopLyric.style.isFontWeightLine': true,
-  'desktopLyric.style.isFontWeightExtended': true,
+  'desktopLyric.multiLine.style.isZoomActiveLrc': true,
+  'desktopLyric.multiLine.style.isFontWeightFont': true,
+  'desktopLyric.multiLine.style.isFontWeightLine': true,
+  'desktopLyric.multiLine.style.isFontWeightExtended': true,
 
   'download.savePath': '',
   'download.fileName': '%name% - %singer%',
@@ -127,7 +143,8 @@ const defaultSetting: AnyListen.AppSetting = {
 // 使用新年皮肤
 if (new Date().getMonth() < 2) {
   defaultSetting['theme.id'] = 'happy_new_year'
-  defaultSetting['desktopLyric.style.lyricPlayedColor'] = 'rgba(255, 57, 71, 1)'
+  defaultSetting['desktopLyric.classic.style.lyricPlayedColor'] = 'rgba(255, 57, 71, 1)'
+  defaultSetting['desktopLyric.multiLine.style.lyricPlayedColor'] = 'rgba(255, 57, 71, 1)'
 }
 
 export default defaultSetting

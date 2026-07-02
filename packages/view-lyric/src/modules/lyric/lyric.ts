@@ -21,6 +21,9 @@ export const setLyric = (lrcStr: string, extLrc: string[]) => {
 export const play = (currentTime: number) => {
   lrc?.play(currentTime)
 }
+export const setTime = (currentTime: number) => {
+  lrc?.setTime(currentTime)
+}
 export const pause = () => {
   lrc?.pause()
 }
@@ -32,13 +35,30 @@ export const stop = () => {
 export const setVertical = (isVertical: boolean) => {
   lrc?.setVertical(isVertical)
 }
+export const setMergeExtendedLyrics = (merge: boolean) => {
+  lrc?.setMergeExtendedLyrics(merge)
+}
+export const setShowExtendedLyrics = (show: boolean) => {
+  lrc?.setShowExtendedLyrics(show)
+}
+export const setOptions = (options: { isVertical?: boolean; mergeExtendedLyrics?: boolean; showExtendedLyrics?: boolean }) => {
+  lrc?.setOptions(options)
+}
+export const buildLyricConfig = () => {
+  const classicMode = settingState.setting['desktopLyric.mode'] === 'classic'
+  return {
+    isVertical: !classicMode && settingState.setting['desktopLyric.multiLine.direction'] == 'vertical',
+    mergeExtendedLyrics: classicMode,
+    showExtendedLyrics: !classicMode || settingState.setting['desktopLyric.classic.showExtendedLyrics'],
+  }
+}
 
 export const initLyric = () => {
   lrc = new Lyric({
     shadowContent: true,
     activeLineClassName: 'active',
     rate: settingState.setting['player.playbackRate'],
-    isVertical: settingState.setting['desktopLyric.direction'] == 'vertical',
+    ...buildLyricConfig(),
     onPlay(line: number, text: string) {
       setText(text, line)
       // setStatusText(text)

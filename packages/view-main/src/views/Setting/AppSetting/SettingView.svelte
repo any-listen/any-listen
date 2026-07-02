@@ -15,7 +15,7 @@
 <div class="settings-list-container">
   <div class="settings-list" {@attach verticalScrollbar()}>
     <h3 class="settings-title">{$t(settings.name)}</h3>
-    {#each filterList as item (item.name)}
+    {#each filterList as item (item.id || item.name)}
       <SettingItem {item} />
     {/each}
   </div>
