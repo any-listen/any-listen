@@ -7,7 +7,7 @@
  */
 export const getRandom = (min: number, max: number): number => Math.floor(Math.random() * (max - min)) + min
 
-const units = ['B', 'KB', 'MB', 'GB', 'TB']
+const units = ['B', 'KiB', 'MiB', 'GiB', 'TiB']
 export const sizeFormate = (size: number): string => {
   // https://gist.github.com/thomseddon/3511330
   if (!size) return '0 B'
