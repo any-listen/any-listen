@@ -84,12 +84,15 @@ export class WebDAV {
     return true
   }
 
-  lock(onLocked: () => void) {
+  lock(onEnd: (locked: boolean) => void) {
     let cancelled = false
     let timer: NodeJS.Timeout | null = null
     const lock = async () => {
       if (!(await this.checkLocked())) {
-        if (cancelled) return
+        if (cancelled) {
+          onEnd(false)
+          return
+        }
         const locked = await this.handleLock().catch((err) => {
           console.error('Sync WebDAVClient handleLock', err)
           return false
@@ -98,11 +101,13 @@ export class WebDAV {
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           if (cancelled) {
             await this.unlock().catch(() => {})
+            onEnd(false)
             return
           }
-          onLocked()
+          onEnd(true)
           return
         }
+        onEnd(false)
       }
       timer = setTimeout(() => {
         timer = null
@@ -113,7 +118,10 @@ export class WebDAV {
     void lock()
     return () => {
       cancelled = true
-      if (timer) clearTimeout(timer)
+      if (timer) {
+        clearTimeout(timer)
+        onEnd(false)
+      }
     }
   }
 

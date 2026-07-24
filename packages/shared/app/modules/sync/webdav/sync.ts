@@ -24,13 +24,24 @@ export const runSyncWebDAV = async (options: WebDAVClientOptions, syncOptions?: 
     sendSyncWebDAVStatus()
     return
   }
-  state.cancelTask = webDAV.lock(() => {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (state.status !== 'waiting') {
+    console.warn('WebDAV sync was cancelled before starting')
+    return
+  }
+  state.cancelTask = webDAV.lock((locked) => {
     state.cancelTask = undefined
+    if (!locked) {
+      state.status = 'idle'
+      sendSyncWebDAVStatus()
+      return
+    }
     console.log('WebDAV locked')
     state.status = 'syncing'
     sendSyncWebDAVStatus()
     state.cancelTask = runSync(webDAV, {
       onEnd: (error) => {
+        state.cancelTask = undefined
         state.status = error ? 'error' : 'idle'
         state.error = error
         sendSyncWebDAVStatus()
@@ -42,9 +53,15 @@ export const runSyncWebDAV = async (options: WebDAVClientOptions, syncOptions?: 
   })
 }
 export const cancelSyncWebDAV = () => {
+  // console.log('cancel', state.cancelTask, state.status)
   if (state.cancelTask) {
     state.cancelTask()
-    state.cancelTask = undefined
+    return
+  }
+  if (state.status !== 'idle' && state.status !== 'error') {
+    state.status = 'idle'
+    state.error = undefined
+    sendSyncWebDAVStatus()
   }
 }
 export const getSyncWebDAVState = () => {
