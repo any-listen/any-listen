@@ -64,7 +64,7 @@ export const createUserList = async (position: number, info: AnyListen.List.User
           playCount: 0,
           songCount: 0,
           pic: '',
-          posTime: 0,
+          posTime: Date.now(),
           updateTime: Date.now(),
         },
       }
@@ -87,7 +87,7 @@ export const createUserList = async (position: number, info: AnyListen.List.User
           playCount: 0,
           songCount: 0,
           pic: '',
-          posTime: 0,
+          posTime: Date.now(),
           updateTime: Date.now(),
         },
       }
@@ -110,7 +110,7 @@ export const createUserList = async (position: number, info: AnyListen.List.User
           playCount: 0,
           songCount: 0,
           pic: '',
-          posTime: 0,
+          posTime: Date.now(),
           updateTime: Date.now(),
         },
       }
@@ -131,7 +131,7 @@ export const createUserList = async (position: number, info: AnyListen.List.User
           createTime: Date.now(),
           playCount: 0,
           songCount: 0,
-          posTime: 0,
+          posTime: Date.now(),
           updateTime: Date.now(),
         },
       }

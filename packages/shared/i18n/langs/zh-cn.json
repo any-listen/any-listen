@@ -644,6 +644,7 @@
   "settings__basic_font_size_19px": "非常大",
   "settings__basic_lang": "语言",
   "settings__basic_theme": "主题颜色",
+  "settings__basic_theme_auto_desc": "勾选 “道法自然”时，应用会根据当前系统的亮/暗模式，在之前选定的亮色主题与 “黑灯瞎火” 主题之间切换",
   "settings__basic_tray": "关闭软件时不退出软件将其最小化到系统托盘",
   "settings__basic_window_size": "窗口尺寸",
   "settings__basic_window_size_big": "大",

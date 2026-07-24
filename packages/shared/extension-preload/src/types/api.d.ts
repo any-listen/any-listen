@@ -794,7 +794,22 @@ declare global {
 
     type ParamsData = Record<string, string | number | null | undefined | boolean>
     interface RequestOptions {
-      method?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'OPTIONS' | 'PATCH'
+      method?:
+        | 'GET'
+        | 'HEAD'
+        | 'POST'
+        | 'PUT'
+        | 'DELETE'
+        | 'OPTIONS'
+        | 'PATCH'
+        | 'PROPFIND'
+        | 'COPY'
+        | 'MOVE'
+        | 'MKCOL'
+        | 'PROPPATCH'
+        | 'QUOTA'
+        | 'LOCK'
+        | 'UNLOCK'
       query?: Record<string, string | number | null | undefined | boolean>
       headers?: Record<string, string | string[]>
       timeout?: number

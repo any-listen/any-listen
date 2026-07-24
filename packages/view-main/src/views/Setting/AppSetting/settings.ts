@@ -84,7 +84,7 @@ export const settings: SettingListSection[] = [
         name: 'settings__basic_theme',
         type: 'radio',
         async asyncEnum() {
-          // t('settings__basic_window_size_tip')
+          // t('settings__basic_theme_auto_desc')
           const themeList = (await getThemeList()).themes.map((t) => ({ name: `theme_${t.id}` as keyof Message, value: t.id }))
           // console.log(themeList)
           return [...themeList, { name: 'theme_auto', value: 'auto' }]
@@ -95,6 +95,7 @@ export const settings: SettingListSection[] = [
               'theme.id': value,
               'theme.lightId': settingState.setting['theme.id'] === 'black' ? undefined : settingState.setting['theme.id'],
             })
+            showNotify(i18n.t('settings__basic_theme_auto_desc'))
           } else {
             void updateSetting({
               'theme.id': value as string,

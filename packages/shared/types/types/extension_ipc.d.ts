@@ -343,6 +343,8 @@ declare namespace AnyListen {
         | 'MKCOL'
         | 'PROPPATCH'
         | 'QUOTA'
+        | 'LOCK'
+        | 'UNLOCK'
       query?: Record<string, string | number | null | undefined | boolean>
       headers?: Record<string, string | string[]>
       timeout?: number

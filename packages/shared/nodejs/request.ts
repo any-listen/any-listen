@@ -238,6 +238,8 @@ const buildRequestDispatcher = (options: Options) => {
   return dispatcher
 }
 
+export type NeedBodyType = Dispatcher.ResponseData['body']
+
 export const request = async <T = unknown>(url: string, options: Options = {}): Promise<Response<T>> => {
   const method = options.method?.toUpperCase() ?? 'GET'
   const timeout = options.timeout ?? defaultOptions.timeout

@@ -645,6 +645,7 @@
   "settings__basic_font_size_19px": "Very big",
   "settings__basic_lang": "Language",
   "settings__basic_theme": "Theme",
+  "settings__basic_theme_auto_desc": "When \"Auto\" is checked, the application will switch between the previously selected light theme and the \"black light and blind fire\" theme according to the light/dark mode of the current system.",
   "settings__basic_tray": "Close the software without exiting it and minimizing it to the system tray",
   "settings__basic_window_size": "Window size",
   "settings__basic_window_size_big": "Large",
