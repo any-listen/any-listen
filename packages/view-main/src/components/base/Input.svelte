@@ -124,7 +124,7 @@
 <style lang="less">
   .input {
     display: inline-block;
-    padding: 7px 8px;
+    padding: 5px 8px;
     font-size: 14px;
     color: var(--color-button-font);
     outline: none;
