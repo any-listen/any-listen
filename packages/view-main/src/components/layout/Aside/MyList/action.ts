@@ -1,4 +1,4 @@
-import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
+import { MEDIA_FILE_TYPES_LOCAL } from '@any-listen/common/constants'
 
 import { showSimpleConfirmModal } from '@/components/apis/dialog'
 import { showNotify } from '@/components/apis/notify'
@@ -47,7 +47,7 @@ export const importLocalFile = async (listInfo: AnyListen.List.MyListInfo) => {
     filters: [
       // https://support.google.com/chromebook/answer/183093
       // 3gp, .avi, .mov, .m4v, .m4a, .mp3, .mkv, .ogm, .ogg, .oga, .webm, .wav
-      { name: 'Media File', extensions: [...MEDIA_FILE_TYPES] },
+      { name: 'Media File', extensions: [...MEDIA_FILE_TYPES_LOCAL] },
     ],
   })
   if (canceled || !filePaths.length) return
@@ -72,7 +72,7 @@ export const importLocalFileFolder = async (listInfo: AnyListen.List.MyListInfo)
     filters: [
       // https://support.google.com/chromebook/answer/183093
       // 3gp, .avi, .mov, .m4v, .m4a, .mp3, .mkv, .ogm, .ogg, .oga, .webm, .wav
-      { name: 'Media File', extensions: [...MEDIA_FILE_TYPES] },
+      { name: 'Media File', extensions: [...MEDIA_FILE_TYPES_LOCAL] },
     ],
   })
   if (canceled || !filePaths.length) return

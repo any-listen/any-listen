@@ -44,7 +44,7 @@ const _scanFolderMusics = (
             const stat = await fs.promises.stat(fullPath)
             if (stat.isDirectory()) {
               directoryQueue.push(fullPath)
-            } else if (isMusicFile(name)) {
+            } else if (isMusicFile(name, true)) {
               musicFilesInCurrentDir.push(fullPath)
             }
           } catch (err) {

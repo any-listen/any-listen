@@ -21,8 +21,16 @@ export const getMusicUrl = async ({
   if (!isRefresh) {
     const path = await getLocalFilePath(musicInfo)
     if (path) {
+      let url: string
+      if (path.endsWith('.strm')) {
+        const strmUrl = await workers.utilService.getStrmFileUrl(path)
+        if (strmUrl) url = strmUrl
+        else return null
+      } else {
+        url = encodePath(path)
+      }
       return {
-        url: encodePath(path),
+        url,
         // toggleSource: false,
         // quality: (musicInfo.meta.bitrateLabel as AnyListen.Music.Quality | null) ?? '128k',
         quality: '128k',

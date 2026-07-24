@@ -235,3 +235,5 @@ export const getLocalMusicFileLyric = async (path: string): Promise<string | nul
   // 尝试读取文件内歌词
   return getFileLyric(path)
 }
+
+export { getStrmFileUrl } from '@any-listen/nodejs/strm'

@@ -103,6 +103,7 @@ export const DOWNLOAD_STATUS = {
 export const QUALITYS = ['128k', '192k', '320k', 'wav', 'flac', 'flac24bit', 'dolby', 'master'] as const
 
 export const MEDIA_FILE_TYPES = ['mp3', 'flac', 'ogg', 'oga', 'wav', 'm4a'] as const
+export const MEDIA_FILE_TYPES_LOCAL = [...MEDIA_FILE_TYPES, 'strm'] as const
 export const PIC_FILE_TYPES = ['jpg', 'jpeg', 'gif', 'png', 'webp'] as const
 
 // https://developer.mozilla.org/zh-CN/docs/Web/API/CloseEvent#status_codes

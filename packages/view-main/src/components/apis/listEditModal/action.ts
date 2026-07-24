@@ -1,4 +1,4 @@
-import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
+import { MEDIA_FILE_TYPES_LOCAL } from '@any-listen/common/constants'
 
 import { i18n } from '@/plugins/i18n'
 import { showOpenDialog } from '@/shared/ipc/app'
@@ -10,7 +10,7 @@ export const selectLocalFolder = async () => {
     filters: [
       // https://support.google.com/chromebook/answer/183093
       // 3gp, .avi, .mov, .m4v, .m4a, .mp3, .mkv, .ogm, .ogg, .oga, .webm, .wav
-      { name: 'Media File', extensions: [...MEDIA_FILE_TYPES] },
+      { name: 'Media File', extensions: [...MEDIA_FILE_TYPES_LOCAL] },
     ],
   })
   if (canceled || !filePaths.length) return

@@ -96,3 +96,5 @@ export const lyricS2T = async (lyricInfo: AnyListen.Music.LyricInfo) => {
   }
   return lyricInfo
 }
+
+export { getStrmFileUrl } from './shared/music'

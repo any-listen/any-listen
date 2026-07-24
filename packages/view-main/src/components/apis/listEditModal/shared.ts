@@ -1,4 +1,4 @@
-import { LIST_IDS, MEDIA_FILE_TYPES } from '@any-listen/common/constants'
+import { LIST_IDS, MEDIA_FILE_TYPES_LOCAL } from '@any-listen/common/constants'
 
 import { createUserList as createUserListRemote, getSubUserLists, updateUserList } from '@/modules/musicLibrary/store/actions'
 import { musicLibraryState } from '@/modules/musicLibrary/store/state'
@@ -32,7 +32,7 @@ export const selectLocalFolder = async () => {
     filters: [
       // https://support.google.com/chromebook/answer/183093
       // 3gp, .avi, .mov, .m4v, .m4a, .mp3, .mkv, .ogm, .ogg, .oga, .webm, .wav
-      { name: 'Media File', extensions: [...MEDIA_FILE_TYPES] },
+      { name: 'Media File', extensions: [...MEDIA_FILE_TYPES_LOCAL] },
     ],
   })
   if (canceled || !filePaths.length) return

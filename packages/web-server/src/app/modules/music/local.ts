@@ -20,8 +20,19 @@ export const getMusicUrl = async ({
 }): Promise<AnyListen.IPCMusic.MusicUrlInfo | null> => {
   if (musicInfo.meta.deviceId !== appState.machineId) return null
   if (!isRefresh) {
-    const filePath = await getLocalFilePath(musicInfo)
+    let filePath = await getLocalFilePath(musicInfo)
     if (filePath) {
+      if (filePath.endsWith('.strm')) {
+        const strmUrl = await workers.utilService.getStrmFileUrl(filePath)
+        if (!strmUrl) return null
+        return {
+          url: strmUrl,
+          // toggleSource: false,
+          quality: '128k',
+          // quality: (musicInfo.meta.bitrateLabel as AnyListen.Music.Quality | null) ?? '128k',
+          isFromCache: false,
+        }
+      }
       if (import.meta.env.DEV) {
         const url = await createMediaPublicPath(filePath)
         if (url) {

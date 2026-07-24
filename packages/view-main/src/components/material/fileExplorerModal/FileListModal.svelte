@@ -6,7 +6,7 @@
   import { useListItemHeight } from '@/modules/app/reactive.svelte'
   import { onMount, tick, type ComponentExports, type Snippet } from 'svelte'
   import { formatPath, getParentDir, type File, type FileExplorerOptions } from './shared'
-  import { MEDIA_FILE_TYPES } from '@any-listen/common/constants'
+  import { MEDIA_FILE_TYPES_LOCAL } from '@any-listen/common/constants'
   import SvgIcon from '@/components/base/SvgIcon.svelte'
   import { keyboardEvent } from '@/modules/hotkey/keyboard'
 
@@ -93,8 +93,8 @@
               id: `${file.name}_${file.isFile}`,
               musicFile:
                 file.isFile &&
-                MEDIA_FILE_TYPES.includes(
-                  file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase() as (typeof MEDIA_FILE_TYPES)[number]
+                MEDIA_FILE_TYPES_LOCAL.includes(
+                  file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase() as (typeof MEDIA_FILE_TYPES_LOCAL)[number]
                 ),
             }
           })
