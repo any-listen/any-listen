@@ -11,17 +11,21 @@ interface WindowInfo {
   offsetY: number
   isMaximized: boolean
 }
+const DEFAULT_OFFSET = 8
 const getWindowInfo = (): WindowInfo => {
   let info = getItem(LOCAL_STORE_KEYS.windowInfo)
   if (info) {
     try {
       const parsed = JSON.parse(info) as WindowInfo
+      parsed.offsetX ||= DEFAULT_OFFSET
+      parsed.offsetY ||= DEFAULT_OFFSET
+      parsed.isMaximized ||= false
       return parsed
     } catch {}
   }
   return {
-    offsetX: 8,
-    offsetY: 8,
+    offsetX: DEFAULT_OFFSET,
+    offsetY: DEFAULT_OFFSET,
     isMaximized: false,
   }
 }
@@ -150,8 +154,10 @@ export const windowDarg = (dom: HTMLElement) => {
     msEvent.msDownY = clientY
     msEvent.isMsDown = true
     msEvent.winX = parseInt(document.body.style.left)
+    if (isNaN(msEvent.winX)) msEvent.winX = DEFAULT_OFFSET
     msEvent.winY = parseInt(document.body.style.top)
-    msEvent.minLeft = -parseInt(document.body.style.width) + 80
+    if (isNaN(msEvent.winY)) msEvent.winY = DEFAULT_OFFSET
+    msEvent.minLeft = -document.body.clientWidth + 80
     // msEvent.minTop = parseInt(document.body.style.height)
   }
 
