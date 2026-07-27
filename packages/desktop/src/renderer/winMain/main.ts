@@ -245,15 +245,16 @@ export const toggleDevTools = () => {
 export const setFullScreen = (isFullscreen: boolean): boolean => {
   if (!browserWindow) return false
   // https://github.com/any-listen/any-listen/issues/190
-  // windows -dt mode need to set resizable to true before setting full screen
-  if (appState.envParams.cmdParams.dt || isLinux) {
+  // in electron ^41.2.0, windows -dt mode need to set resizable to true before setting full screen
+  // if (appState.envParams.cmdParams.dt || isLinux) {
+  if (isLinux) {
     // linux 需要先设置为可调整窗口大小才能全屏
     if (isFullscreen) {
       browserWindow.setResizable(isFullscreen)
       browserWindow.setFullScreen(isFullscreen)
     } else {
       browserWindow.setFullScreen(isFullscreen)
-      if (isLinux) browserWindow.setResizable(isFullscreen)
+      browserWindow.setResizable(isFullscreen)
     }
   } else {
     browserWindow.setFullScreen(isFullscreen)

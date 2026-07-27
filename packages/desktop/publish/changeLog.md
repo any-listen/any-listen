@@ -23,6 +23,7 @@
 - Fixed an issue where full-screen window state on macOS might not sync correctly ([#257](https://github.com/any-listen/any-listen/issues/257)).
 - Fixed an issue where the progress bar could display incorrectly when updating media control bar information on macOS ([#256](https://github.com/any-listen/any-listen/issues/256)).
 - Fixed an issue where the underline in input fields could disappear with certain fonts ([#258](https://github.com/any-listen/any-listen/issues/258)).
+- Fixed an issue where the window size did not restore after exiting fullscreen in Windows non-transparent mode ([#261](https://github.com/any-listen/any-listen/issues/261)).
 
 ### Changed
 
@@ -55,6 +56,7 @@
 - 修复 macOS 全屏窗口状态可能不同步的问题（[#257](https://github.com/any-listen/any-listen/issues/257)）。
 - 修复 macOS 更新媒体控制栏信息时的进度条显示问题（[#256](https://github.com/any-listen/any-listen/issues/256)）
 - 修复输入框在某些字体下下划线不显示的问题（[#258](https://github.com/any-listen/any-listen/issues/258)）。
+- 修复 Windows 非透明模式下退出全屏时窗口大小未恢复的问题（[#261](https://github.com/any-listen/any-listen/issues/261)）。
 
 ### 变更
 
