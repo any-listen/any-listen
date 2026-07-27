@@ -105,3 +105,10 @@ export const importData: AnyListen.IPC.ServerIPC['importData'] = async (path, se
 export const setBackupPath: AnyListen.IPC.ServerIPC['setBackupPath'] = async (path) => {
   return ipc.setBackupPath(path)
 }
+
+export const getAppLogs: AnyListen.IPC.ServerIPC['getAppLogs'] = async (type) => {
+  return ipc.getAppLogs(type)
+}
+export const clearAppLog: AnyListen.IPC.ServerIPC['clearAppLog'] = async (type) => {
+  return ipc.clearAppLog(type)
+}

@@ -1,3 +1,4 @@
+import { logs } from '../../logs'
 import { runSync } from './modules'
 import { sendSyncWebDAVStatus } from './shared'
 import { state } from './state'
@@ -10,7 +11,7 @@ export interface SyncWebDAVOptions {
 
 export const runSyncWebDAV = async (options: WebDAVClientOptions, syncOptions?: SyncWebDAVOptions) => {
   if (state.status !== 'idle' && state.status !== 'error') {
-    console.warn('WebDAV sync is already running')
+    logs.WebdavSync.logcat.warn('WebDAV sync is already running')
     throw new Error('WebDAV sync is already running')
   }
   state.status = 'waiting'
@@ -26,7 +27,7 @@ export const runSyncWebDAV = async (options: WebDAVClientOptions, syncOptions?: 
   }
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (state.status !== 'waiting') {
-    console.warn('WebDAV sync was cancelled before starting')
+    logs.WebdavSync.logcat.warn('WebDAV sync was cancelled before starting')
     return
   }
   state.cancelTask = webDAV.lock((locked) => {
@@ -36,7 +37,7 @@ export const runSyncWebDAV = async (options: WebDAVClientOptions, syncOptions?: 
       sendSyncWebDAVStatus()
       return
     }
-    console.log('WebDAV locked')
+    // logs.WebdavSync.logcat.debug('WebDAV locked')
     state.status = 'syncing'
     sendSyncWebDAVStatus()
     state.cancelTask = runSync(webDAV, {
@@ -46,6 +47,7 @@ export const runSyncWebDAV = async (options: WebDAVClientOptions, syncOptions?: 
         state.error = error
         sendSyncWebDAVStatus()
         void webDAV.unlock()
+        logs.WebdavSync.logcat.info('Sync ended,', error ? `with error: ${error.message}` : 'successfully')
       },
       getListMergeMode: syncOptions?.getListMergeMode,
       getDislikeMergeMode: syncOptions?.getDislikeMergeMode,

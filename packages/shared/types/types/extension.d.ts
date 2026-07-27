@@ -201,6 +201,13 @@ declare global {
       //   enabled: boolean
       //   latest: boolean
       // }
+      interface LogInfo {
+        type: 'debug' | 'info' | 'warn' | 'error'
+        id: string
+        timestamp: number
+        name: string
+        message: string
+      }
     }
   }
 }

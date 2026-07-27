@@ -3,7 +3,6 @@ import { derived, writable } from 'svelte/store'
 const $messages = writable<Record<string, string>>({})
 
 export const extI18n = {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   message: {} as unknown as Record<string, string>,
   cache: new Map<string, string>(),
   setMessage(messages: Record<string, string>) {

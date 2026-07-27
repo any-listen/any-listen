@@ -116,6 +116,7 @@ const defaultSetting: AnyListen.AppSetting = {
   'desktopLyric.multiLine.style.isFontWeightExtended': true,
 
   'sync.webdav.enable': false,
+  'sync.webdav.debugEnable': false,
   'sync.webdav.url': '',
   'sync.webdav.username': '',
   'sync.webdav.password': '',

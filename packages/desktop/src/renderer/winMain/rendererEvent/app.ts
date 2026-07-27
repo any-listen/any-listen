@@ -1,5 +1,6 @@
 import { clearCache, getCacheSize } from '@any-listen/app/cache'
 import { exportData, importData } from '@any-listen/app/modules/backup'
+import { logs } from '@any-listen/app/modules/logs'
 import { proxyServerState } from '@any-listen/app/modules/proxyServer/state'
 
 import { appState, updateSetting } from '@/app'
@@ -109,6 +110,12 @@ export const createExposeApp = () => {
     async setBackupPath(event, path) {
       await workers.dbService.setBackupPath(path)
       updateSetting({ 'backup.backupPath': path })
+    },
+    async getAppLogs(event, type) {
+      return logs[type].getLogs()
+    },
+    async clearAppLog(event, type) {
+      await logs[type].clearLog()
     },
   } satisfies Partial<ExposeFunctions>
 }

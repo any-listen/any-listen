@@ -36,6 +36,9 @@ export const createExposeApp = (client: ClientCall) => {
     async updateInfo(event, info) {
       return client.updateInfo(info)
     },
+    async appLog(event, type, log) {
+      return client.appLog(type, log)
+    },
   } satisfies Partial<ExposeFunctions>
 }
 
@@ -122,6 +125,12 @@ export const createClientApp = (main: MainCall) => {
     },
     async setBackupPath(path) {
       return main.setBackupPath(path)
+    },
+    async getAppLogs(type) {
+      return main.getAppLogs(type)
+    },
+    async clearAppLog(type) {
+      return main.clearAppLog(type)
     },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }

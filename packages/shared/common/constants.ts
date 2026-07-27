@@ -234,3 +234,10 @@ export const PROXY_URL_KEY_COOKIE_NAME = 'p_urlkey'
 export const CANCELED_ERROR_MSG = 'canceled'
 
 export const CONFIG_FILE_EXT = '.alcfg'
+
+export const LOG_NAMES = {
+  LOG_DIR: 'logs',
+  APP: 'app.log',
+  EXTENSION_SERVICE: 'extensionService.log',
+  WEBDAV_SYNC: 'webdavSync.log',
+} as const

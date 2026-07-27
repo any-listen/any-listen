@@ -1,4 +1,5 @@
 import { winMainReadyEvent } from '@any-listen/app/common/event'
+import { appLogEvent } from '@any-listen/app/modules/logs'
 import { APP_EVENT_NAMES } from '@any-listen/common/constants'
 import { isMac } from '@any-listen/nodejs/index'
 
@@ -115,6 +116,9 @@ export const initWinMain = () => {
   })
   playerEvent.on('collectStatus', (status) => {
     void rendererIPC.playerAction({ action: 'collectStatus', data: status })
+  })
+  appLogEvent.on('logOutput', (type, log) => {
+    void rendererIPC.appLog(type, log)
   })
   onWebDAVSyncStatusChanged((state) => {
     void rendererIPC.webdavSyncStatus(state)

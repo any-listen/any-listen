@@ -41,6 +41,9 @@ export const createExposeApp = (client: ClientCall) => {
     async updateInfo(event, info) {
       return client.updateInfo(info)
     },
+    async appLog(event, type, log) {
+      return client.appLog(type, log)
+    },
   } satisfies Partial<ExposeFunctions>
 }
 
@@ -132,6 +135,12 @@ export const createClientApp = (ipcSocket: IPCSocket) => {
     },
     async setBackupPath(path) {
       return ipcSocket.remote.setBackupPath(path)
+    },
+    async getAppLogs(type) {
+      return ipcSocket.remote.getAppLogs(type)
+    },
+    async clearAppLog(type) {
+      return ipcSocket.remote.clearAppLog(type)
     },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }

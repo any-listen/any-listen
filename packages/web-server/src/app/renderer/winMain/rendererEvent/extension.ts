@@ -111,7 +111,6 @@ export const createServerExtension = () => {
   const actions = {
     async extensionEvent(event) {
       broadcast((socket) => {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (socket.winType != 'main' || !socket.isInited) return
         void socket.remoteQueueExtension.extensionEvent(event)
       })

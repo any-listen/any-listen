@@ -116,7 +116,7 @@ export const buildSourceLabel = (musicinfo: AnyListen.Music.MusicInfo): string[]
   return [musicinfo.meta.source.toLowerCase(), label ?? ''].filter((s) => s)
 }
 
-export const logFormat = (log: AnyListen.LogInfo) => {
+export const logFormat = (log: AnyListen.LogInfo | AnyListen.Extension.LogInfo) => {
   return `${dateFormat(log.timestamp)} ${log.type.toUpperCase()} ${log.message}`
 }
 

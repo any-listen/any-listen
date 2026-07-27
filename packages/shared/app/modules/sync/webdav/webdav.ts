@@ -1,6 +1,8 @@
 import { generateId } from '@any-listen/common/utils'
 import { WebDAVClient } from '@any-listen/nodejs/webdav-client'
 
+import { getSettings } from '../../../common'
+import { logs } from '../../logs'
 import { CONSTANTS } from './shared'
 
 export interface WebDAVClientOptions {
@@ -21,11 +23,14 @@ export class WebDAV {
       username: options.username,
       password: options.password,
       onError(err) {
-        console.error('Sync WebDAVClient', err)
+        logs.WebdavSync.logcat.error(err)
       },
       async onDebugLog(logMessage) {
         // void debugLog(logMessage)
         // console.log('Sync WebDAVClient debugLog', logMessage)
+        if (getSettings()['sync.webdav.debugEnable']) {
+          logs.WebdavSync.logcat.debug(logMessage)
+        }
       },
     })
   }
@@ -39,7 +44,7 @@ export class WebDAV {
       await this.webDAVClient.ls()
       return null
     } catch (err) {
-      console.error('Sync WebDAVClient checkConnection', err)
+      logs.WebdavSync.logcat.error(err)
       return err as Error
     }
   }
@@ -94,7 +99,7 @@ export class WebDAV {
           return
         }
         const locked = await this.handleLock().catch((err) => {
-          console.error('Sync WebDAVClient handleLock', err)
+          logs.WebdavSync.logcat.error(err)
           return false
         })
         if (locked) {
@@ -109,6 +114,7 @@ export class WebDAV {
         }
         onEnd(false)
       }
+      logs.WebdavSync.logcat.info('Other locks detected, retrying in 2 seconds...')
       timer = setTimeout(() => {
         timer = null
         void lock()

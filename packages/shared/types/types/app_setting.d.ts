@@ -562,6 +562,11 @@ declare global {
       'sync.webdav.enable': boolean
 
       /**
+       * 是否启用 WebDAV 同步调试日志
+       */
+      'sync.webdav.debugEnable': boolean
+
+      /**
        * WebDAV 服务器地址
        */
       'sync.webdav.url': string

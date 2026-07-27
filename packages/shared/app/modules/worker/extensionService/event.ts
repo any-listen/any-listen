@@ -101,7 +101,7 @@ export class Event extends _Event {
     this.listChanged()
   }
 
-  logOutput(info: AnyListen.LogInfo) {
+  logOutput(info: AnyListen.Extension.LogInfo) {
     this.emitEvent('logOutput', info)
     this.extensionEvent({ action: 'logOutput', data: info })
   }

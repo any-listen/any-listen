@@ -113,14 +113,6 @@ declare global {
       version: string
     }
 
-    interface LogInfo {
-      type: 'debug' | 'info' | 'warn' | 'error'
-      id: string
-      timestamp: number
-      name: string
-      message: string
-    }
-
     interface Logger {
       debug: (message: unknown, ...args: unknown[]) => void
       info: (message: unknown, ...args: unknown[]) => void
@@ -140,6 +132,17 @@ declare global {
     interface BackupData {
       songlist: SongListBackupData
       settings: SettingsBackupData
+    }
+    type LogType = 'App' | 'ExtensionService' | 'WebdavSync'
+    interface LogItem {
+      log: string
+      type: LogType
+    }
+    interface LogInfo {
+      type: 'debug' | 'info' | 'warn' | 'error'
+      logType: LogType
+      timestamp: number
+      message: string
     }
   }
 }

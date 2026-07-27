@@ -80,4 +80,6 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
     getListMergeMode: () => Promise<AnyListen.List.MergeMode>
   ) => void
   setBackupPath: (path: string) => Promise<void>
+  getAppLogs: (type: AnyListen.LogType) => Promise<string>
+  clearAppLog: (type: AnyListen.LogType) => Promise<void>
 }>

@@ -12,6 +12,7 @@
   import { showDataMergeModeModal } from '@/components/apis/dataMergeModeModal'
   import Btn from '@/components/base/Btn.svelte'
   const webdavEnable = useSettingValue('sync.webdav.enable')
+  const webdavDebugEnable = useSettingValue('sync.webdav.debugEnable')
   const webdavUrl = useSettingValue('sync.webdav.url')
   const webdavUsername = useSettingValue('sync.webdav.username')
   const webdavPath = useSettingValue('sync.webdav.path')
@@ -71,6 +72,14 @@
         checked={webdavEnable.val}
         onchange={handleEnableWebdav}
         {disabled}
+      />
+    </div>
+    <div class="gap-top">
+      <Checkbox
+        label={$t('settings.dataSync.webdav_debug_enable')}
+        id="settings.dataSync.webdav_debug_enable"
+        checked={webdavDebugEnable.val}
+        onchange={async (enabled) => updateSetting({ 'sync.webdav.debugEnable': enabled })}
       />
     </div>
     <div class="gap-top">

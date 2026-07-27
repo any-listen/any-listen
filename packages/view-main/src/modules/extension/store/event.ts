@@ -35,7 +35,7 @@ class Event extends WebEvent {
     this.emitEvent('newVersionInfoUpdated', info)
   }
 
-  logOutput(info: AnyListen.LogInfo) {
+  logOutput(info: AnyListen.Extension.LogInfo) {
     this.emitEvent('logOutput', info)
   }
 }

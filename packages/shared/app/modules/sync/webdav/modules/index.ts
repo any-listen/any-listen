@@ -1,4 +1,5 @@
 import { getSettings } from '../../../../common'
+import { logs } from '../../../logs'
 import type { WebDAV } from '../webdav'
 import { runSyncDislike } from './dislike'
 import { runSyncList } from './list'
@@ -50,7 +51,7 @@ export const runSync = (webDAV: WebDAV, options: SyncOptions) => {
       await syncTasks[index](webDAV)
       void runNextTask(index + 1)
     } catch (error) {
-      console.error('Sync task error:', error)
+      logs.WebdavSync.logcat.error('Sync task error:', error)
       options.onEnd(error as Error)
     }
   }

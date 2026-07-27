@@ -25,6 +25,7 @@ export declare type ClientCommonActions = WarpPromiseRecord<{
   showSaveBox: (key: string, extensionId: string, options: AnyListen.IPCCommon.SaveDialogOptions) => Promise<string>
   closeMessageBox: (key: string) => void
   updateInfo: (event: AnyListen.IPCCommon.UpdateInfo) => void
+  appLog: (type: AnyListen.LogType, log: string) => void
 }>
 
 declare global {

@@ -13,3 +13,5 @@ export const updateInfoEvent = new SingleEvent<[info: AnyListen.IPCCommon.Update
 export const closeMessageBoxEvent = new SingleEvent<[key: string]>()
 
 export const createDesktopLyricProcessEvent = new SingleEvent<[posts: MessagePort[]]>()
+
+export const appLogEvent = new SingleEvent<[type: AnyListen.LogType, log: string]>()

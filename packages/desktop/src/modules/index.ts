@@ -1,5 +1,7 @@
 import { initDislikeList } from '@any-listen/app/modules/dislikeList'
+import { initAppLog } from '@any-listen/app/modules/logs'
 
+import { appState } from '@/app'
 // import { initMusicList } from './musicList'
 import { workers } from '@/worker'
 
@@ -29,6 +31,7 @@ export const initModules = async () => {
     initResources(),
     initProxyServer(),
     initSync(),
+    initAppLog(appState.dataPath),
   ])
   // initMusicList()
   // initDielikeList()

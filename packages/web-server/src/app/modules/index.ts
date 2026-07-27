@@ -1,5 +1,6 @@
 // import { initDielikeList } from './dislikeList'
 import { initDislikeList } from '@any-listen/app/modules/dislikeList'
+import { initAppLog } from '@any-listen/app/modules/logs'
 import { initProxyServer } from '@any-listen/app/modules/proxyServer'
 import { API_PREFIX, PROXY_SERVER_PATH } from '@any-listen/common/constants'
 
@@ -30,6 +31,7 @@ export const initModules = async () => {
       `${API_PREFIX}${PROXY_SERVER_PATH}`,
       appState.cacheDataPath
     ),
+    initAppLog(appState.dataPath),
   ])
   // initMusicList()
   // initDielikeList()

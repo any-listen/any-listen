@@ -3,3 +3,7 @@ export interface LogItem {
   name: string
   log: string
 }
+
+export type LogType = 'app' | 'extension'
+
+export const LogTypeTabs: LogType[] = ['app', 'extension']

@@ -1,4 +1,5 @@
 import { winMainReadyEvent } from '@any-listen/app/common/event'
+import { appLogEvent } from '@any-listen/app/modules/logs'
 import { playerEvent } from '@any-listen/app/modules/player'
 
 import { appEvent } from '@/app/app'
@@ -34,5 +35,8 @@ export const initWinMain = () => {
   })
   playerEvent.on('collectStatus', (status) => {
     void rendererIPC.playerAction({ action: 'collectStatus', data: status })
+  })
+  appLogEvent.on('logOutput', (type, log) => {
+    void rendererIPC.appLog(type, log)
   })
 }

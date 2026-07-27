@@ -1,5 +1,6 @@
 import { clearCache, getCacheSize } from '@any-listen/app/cache'
 import { exportData, importData } from '@any-listen/app/modules/backup'
+import { logs } from '@any-listen/app/modules/logs'
 import { proxyServerState } from '@any-listen/app/modules/proxyServer/state'
 
 import { appState, setSystemMode, updateSetting } from '@/app/app'
@@ -82,6 +83,12 @@ export const createExposeApp = () => {
       checkAllowPathError(path)
       await importData(path, selectData, getListMergeMode)
     },
+    async getAppLogs(event, type) {
+      return logs[type].getLogs()
+    },
+    async clearAppLog(event, type) {
+      return logs[type].clearLog()
+    },
   } satisfies Partial<ExposeClientFunctions>
 }
 
@@ -117,6 +124,12 @@ export const createServerApp = () => {
       broadcast((socket) => {
         if (socket.winType != 'main' || !socket.isInited) return
         void socket.remote.updateInfo(info)
+      })
+    },
+    async appLog(type, log) {
+      broadcast((socket) => {
+        if (socket.winType != 'main' || !socket.isInited) return
+        void socket.remote.appLog(type, log)
       })
     },
   } satisfies Partial<ExposeServerFunctions>

@@ -8,6 +8,8 @@
 - Added support for local **strm** files. Currently, only song links over HTTP are supported ([#227](https://github.com/any-listen/any-listen/issues/227)).
 - Added **Classic Lyrics** mode for Desktop Lyrics.
 - Added **Desktop Lyrics** controls to the **Tray Menu**.
+- Added a **Record debug logs** option for WebDAV data synchronization.
+- Added logging output views for the app and extension service.
 
 ### Improved
 
@@ -41,6 +43,8 @@
 - 新增本地 **「strm」** 类型文件支持，当前仅支持 HTTP 协议的歌曲链接（[#227](https://github.com/any-listen/any-listen/issues/227)）。
 - 桌面歌词新增 **「经典歌词」** 模式。
 - 在 **「托盘菜单」** 中新增 **「桌面歌词」** 相关控制。
+- 新增 WebDAV 数据同步的 **「记录调试日志」** 选项。
+- 新增 APP、扩展服务 等日志输出界面。
 
 ### 优化
 

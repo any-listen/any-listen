@@ -7,7 +7,7 @@ import { extensionState } from '@/modules/extension/store/state'
 
 import { showOpenDialog, showSaveDialog } from '.'
 import { showFileSaveModal, showFileSelectModal } from '../fs/fileSelectModal'
-import { closeMessageBoxEvent, deeplinkEvent, settingChangedEvent, updateInfoEvent, winShowEvent } from './event'
+import { appLogEvent, closeMessageBoxEvent, deeplinkEvent, settingChangedEvent, updateInfoEvent, winShowEvent } from './event'
 
 export default {
   async settingChanged(keys, setting) {
@@ -107,5 +107,8 @@ export default {
   },
   async updateInfo(info) {
     updateInfoEvent.emit(info)
+  },
+  async appLog(type, log) {
+    appLogEvent.emit(type, log)
   },
 } satisfies Partial<AnyListen.IPC.ClientIPC>

@@ -2,38 +2,37 @@
   import Btn from '@/components/base/Btn.svelte'
   import Selection from '@/components/base/Selection.svelte'
   // import SvgIcon from '@/components/base/SvgIcon.svelte'
-  import type { LogItem } from './shared'
+  import type { LogType } from './shared'
   import SvgIcon from '@/components/base/SvgIcon.svelte'
   import { t } from '@/plugins/i18n'
+  import Tab from '@/components/base/Tab.svelte'
+  import { LogTypeTabs } from './shared'
 
   let {
     logs,
+    activeLogType = $bindable(),
     avtiveLog,
     onchange,
     onclear,
   }: {
-    logs: LogItem[]
-    avtiveLog: { id: string; log: string }
-    onchange: (log: LogItem) => void
+    logs: Array<{ value: string; name: string }>
+    activeLogType: LogType
+    avtiveLog: string
+    onchange: (id: string) => void
     onclear: () => void
   } = $props()
 
-  let logsFormat = $derived(logs.map((log) => ({ ...log, name: `${log.name} (${log.id})` })))
+  // t(`logs.app`)
+  let logTypeTabs = $derived(LogTypeTabs.map((type) => ({ name: $t(`logs.${type}`), value: type })))
 </script>
 
 <div class="log-header">
-  <div class="log-header-title">Logs</div>
+  <div class="log-header-type">
+    <Tab list={logTypeTabs} bind:value={activeLogType} itemkey="value" itemlabel="name"></Tab>
+  </div>
   <div class="log-header-action">
     {#if logs.length}
-      <Selection
-        value={avtiveLog.id}
-        list={logsFormat}
-        itemkey="id"
-        itemname="name"
-        onchange={(id) => {
-          onchange(logs.find((log) => log.id === id)!)
-        }}
-      />
+      <Selection value={avtiveLog} list={logs} itemkey="value" itemname="name" {onchange} />
       <Btn icon onclick={onclear} aria-label={$t('logs.btn_clear')}><SvgIcon name="erase" /></Btn>
     {/if}
     <!-- <Btn icontext>
@@ -48,17 +47,18 @@
     flex: none;
     flex-flow: row nowrap;
     align-items: center;
+    justify-content: space-between;
     min-width: 0;
-    padding: 10px 2px;
+    padding: 0 2px 10px;
 
     :global(.btn) {
       width: 28px;
       height: 28px;
     }
   }
-  .log-header-title {
-    flex: auto;
-  }
+  // .log-header-type {
+  // flex: auto;
+  // }
   .log-header-action {
     display: flex;
     flex-flow: row nowrap;

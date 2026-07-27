@@ -9,7 +9,7 @@ import { playerEvent } from '@/app/modules/player'
 import { startExtensionServiceWorker } from '@/app/worker'
 import { extensionLog } from '@/shared/log4js'
 
-const handleExtensionLog = (info: AnyListen.LogInfo) => {
+const handleExtensionLog = (info: AnyListen.Extension.LogInfo) => {
   switch (info.type) {
     case 'info':
       extensionLog.info(`[${info.id}] ${info.message}`)

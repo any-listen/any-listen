@@ -40,7 +40,7 @@ declare namespace AnyListen {
       | IPCAction<'listUpdate', Extension.Extension>
       | IPCAction<'listSet', Extension.Extension[]>
       | IPCAction<'newVersionInfoUpdated', EventVersionInfoUpdated>
-      | IPCAction<'logOutput', LogInfo>
+      | IPCAction<'logOutput', Extension.LogInfo>
       | IPCAction<'resourceUpdated', Extension.ResourceList>
       | IPCAction<'extenstionSettingUpdated', EventExtensionSettingUpdated>
 

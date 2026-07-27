@@ -42,7 +42,7 @@
       }
     }}
   >
-    <pre class="code">{@html highlightLog}</pre>
+    <pre class="code select">{@html highlightLog}</pre>
   </div>
 </div>
 
@@ -64,7 +64,6 @@
       line-height: 1.5;
       overflow-wrap: break-word;
       white-space: pre-wrap;
-      user-select: text;
     }
   }
 </style>
