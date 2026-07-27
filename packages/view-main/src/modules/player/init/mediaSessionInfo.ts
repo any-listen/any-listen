@@ -72,9 +72,11 @@ export const initMediaSessionInfo = () => {
       playbackRate?: number
     } = {}
   ) => {
+    const duration = state.duration ?? getDuration()
+    if (isNaN(duration)) return
     try {
       navigator.mediaSession.setPositionState({
-        duration: state.duration ?? getDuration(),
+        duration,
         playbackRate: state.playbackRate ?? getPlaybackRate(),
         position: state.position ?? getCurrentTime(),
       })
