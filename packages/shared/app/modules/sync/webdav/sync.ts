@@ -30,8 +30,14 @@ export const runSyncWebDAV = async (options: WebDAVClientOptions, syncOptions?: 
     logs.WebdavSync.logcat.warn('WebDAV sync was cancelled before starting')
     return
   }
-  state.cancelTask = webDAV.lock((locked) => {
+  state.cancelTask = webDAV.lock((locked, error) => {
     state.cancelTask = undefined
+    if (error) {
+      state.status = 'error'
+      state.error = error
+      sendSyncWebDAVStatus()
+      return
+    }
     if (!locked) {
       state.status = 'idle'
       sendSyncWebDAVStatus()

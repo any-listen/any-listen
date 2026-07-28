@@ -1,15 +1,13 @@
 <!--- @lang: en-us -->
 
-### Added
+### Fixed
 
-- Added logging output views for the app and extension service.
-- Added a **Record debug logs** option for WebDAV data synchronization.
+- Fixed the error handling logic for WebDAV data synchronization ([#258](https://github.com/any-listen/any-listen/issues/258)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 新增
+### 修复
 
-- 新增 APP、扩展服务 等日志输出界面。
-- 新增 WebDAV 数据同步的 **「记录调试日志」** 选项。
+- 修复 WebDAV 数据同步的错误处理逻辑（[#258](https://github.com/any-listen/any-listen/issues/258)）。
