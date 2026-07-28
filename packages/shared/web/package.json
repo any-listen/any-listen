@@ -3,7 +3,7 @@
   "dependencies": {
     "@any-listen/common": "workspace:@shared/common@*",
     "@simonwep/pickr": "^1.10.0",
-    "js-sha256": "^0.12.0"
+    "js-sha256": "^1.0.0"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
