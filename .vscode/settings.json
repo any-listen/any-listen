@@ -26,49 +26,22 @@
   "i18n-ally.review.gutters": false,
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
-      "text": "Generate exactly one Conventional Commit subject in the format: <type>(<optional-scope>): <description>."
+      "text": "Use format: <type>(<optional-scope>): <description>."
     },
     {
-      "text": "Use English only. Output the subject only—no body, footer, quotes, markdown, or code block."
+      "text": "Output one English subject line only."
     },
     {
-      "text": "Allowed types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert."
+      "text": "Use allowed types only: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert."
     },
     {
-      "text": "Use present tense. Keep the description concise (8-14 words) and do not end with a period."
+      "text": "Use present tense, 8-14 words in <description>, and no trailing period before any issue suffix."
     },
     {
-      "text": "Describe only observable code, configuration, or file changes. Do not mention intent, motivation, benefits, or impact."
+      "text": "Describe observable changes only; add scope only when obvious from changed files."
     },
     {
-      "text": "Focus on the 1-2 most significant changes. Avoid filler words, vague adjectives, and long enumerations."
-    },
-    {
-      "text": "Include a scope only when it is obvious from the changes."
-    },
-    {
-      "text": "If CHANGELOG.md or any changelog file is updated, match the wording of its corresponding entry."
-    },
-    {
-      "text": "If the matching changelog entry references an issue, append the issue reference at the end (for example: (#123))."
-    },
-    {
-      "text": "Example: feat: add SingleEvent and update event API"
-    },
-    {
-      "text": "Counterexample: feat: add event handling improvements for better management and future extensibility"
-    },
-    {
-      "text": "Prefer strong action verbs such as add, remove, update, rename, fix, refactor, optimize, simplify, and replace."
-    },
-    {
-      "text": "Do not mention implementation details unless they are the primary change."
-    },
-    {
-      "text": "Avoid generic words such as improve, enhance, adjust, update code, and miscellaneous unless they accurately describe the actual change."
-    },
-    {
-      "text": "Prefer singular nouns and concise technical terms over verbose phrases."
+      "text": "If changed changelog contains issue link [#N](...), commit subject MUST end with (#N)."
     }
   ]
 }
