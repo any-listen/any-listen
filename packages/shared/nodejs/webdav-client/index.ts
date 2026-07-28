@@ -80,6 +80,12 @@ export const is404Error = (error: unknown) => {
   return error instanceof Error && error.message.startsWith('404')
 }
 
+const fixPath = (path?: string): string => {
+  if (!path) return '/'
+  if (!path.startsWith('/')) path = `/${path}`
+  return path
+}
+
 export class WebDAVClient {
   private readonly options: WebDAVClientOptions
   private readonly baseUrl: string
@@ -138,7 +144,7 @@ export class WebDAVClient {
   ) {
     const headers = options.headers || {}
     if (this.authHeader) headers.Authorization = this.authHeader
-    const url = this.getFullUrl(path)
+    const url = this.getFullUrl(fixPath(path))
     this.options.onDebugLog?.(`request: [${method} ${url}]`)
     const res = await request<string>(url, {
       method,
@@ -191,7 +197,7 @@ export class WebDAVClient {
 
   async ls(path = '/'): Promise<WebDAVItem[]> {
     this.options.onDebugLog?.(`ls: [${path}]`)
-    if (!path.startsWith('/')) path = `/${path}`
+    path = fixPath(path)
     const res = await this.request<Ls>('PROPFIND', { headers: { Depth: '1' }, path })
     // console.log(JSON.stringify(res.multistatus.response))
     const currentFullPath = this.getFullUrl(path)
