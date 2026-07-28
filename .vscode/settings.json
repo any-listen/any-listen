@@ -41,7 +41,7 @@
       "text": "Describe observable changes only; add scope only when obvious from changed files."
     },
     {
-      "text": "If changed changelog contains issue link [#N](...), commit subject MUST end with (#N)."
+      "text": "If included changed changelog and it contains issue link [#N](...), commit subject MUST end with (#N)."
     }
   ]
 }
