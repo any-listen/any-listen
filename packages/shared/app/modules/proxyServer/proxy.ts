@@ -7,6 +7,7 @@ import { isUrl } from '@any-listen/common/utils'
 import { extname, getFileStats, joinPath, removeFileIgnoreError } from '@any-listen/nodejs'
 import { request, type Response } from '@any-listen/nodejs/request'
 
+import { logs } from '../logs'
 import { checkAllowedExt, parseRange, TEMP_FILE_EXT } from './shared'
 import { proxyServerState } from './state'
 
@@ -129,6 +130,7 @@ export const proxyRequest = async (name: string, rawHeaders?: IncomingHttpHeader
     resp.body.pipe(writeStream)
     resp.body.on('error', (err) => {
       console.log('resp body error', err)
+      logs.ProxyService.logcat.error(`resp body error, name: ${name}`, err)
       writeStream.destroy()
       void removeFileIgnoreError(filePath)
     })
@@ -137,7 +139,8 @@ export const proxyRequest = async (name: string, rawHeaders?: IncomingHttpHeader
         if (err) fs.unlink(tempPath, () => {})
       })
     })
-    writeStream.on('error', () => {
+    writeStream.on('error', (err) => {
+      logs.ProxyService.logcat.error(`writeStream error, name: ${name}`, err)
       fs.unlink(filePath, () => {})
     })
     writeStream.on('close', () => {
@@ -153,10 +156,16 @@ export const proxyRequest = async (name: string, rawHeaders?: IncomingHttpHeader
 }
 
 export const proxyRequestByUrl = async (url: string, rawHeaders?: IncomingHttpHeaders): Promise<Result | null> => {
-  if (url.length > 4096 || !isUrl(url)) return null
+  if (url.length > 4096 || !isUrl(url)) {
+    logs.ProxyService.logcat.warn(`Invalid URL: ${url}`)
+    return null
+  }
 
   const ext = extname(url)
-  if (ext && !checkAllowedExt(ext)) return null
+  if (ext && !checkAllowedExt(ext)) {
+    logs.ProxyService.logcat.warn(`Not allowed file type: ${ext}, url: ${url}`)
+    return null
+  }
 
   removeExcludeHeaders(rawHeaders)
 
@@ -166,6 +175,7 @@ export const proxyRequestByUrl = async (url: string, rawHeaders?: IncomingHttpHe
   })
 
   if (!resp.statusCode || resp.statusCode < 200 || (resp.statusCode >= 300 && resp.statusCode !== 304)) {
+    logs.ProxyService.logcat.warn(`Proxy request failed: ${resp.statusCode}, url: ${url}, headers: ${JSON.stringify(rawHeaders)}`)
     console.log(`Proxy request failed: ${resp.statusCode}`)
     return null
   }

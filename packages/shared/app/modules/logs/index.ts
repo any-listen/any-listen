@@ -78,6 +78,7 @@ const createLogcat = (logType: AnyListen.LogType) => {
 export const logs: Record<AnyListen.LogType, ReturnType<typeof createLogcat>> = {
   App: createLogcat('App'),
   ExtensionService: createLogcat('ExtensionService'),
+  ProxyService: createLogcat('ProxyService'),
   WebdavSync: createLogcat('WebdavSync'),
 }
 export const initAppLog = async (dataPath: string) => {

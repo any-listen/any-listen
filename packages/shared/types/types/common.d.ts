@@ -133,7 +133,7 @@ declare global {
       songlist: SongListBackupData
       settings: SettingsBackupData
     }
-    type LogType = 'App' | 'ExtensionService' | 'WebdavSync'
+    type LogType = 'App' | 'ExtensionService' | 'ProxyService' | 'WebdavSync'
     interface LogItem {
       log: string
       type: LogType

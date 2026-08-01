@@ -17,7 +17,8 @@ export const useAppLog = (data: {
   let isUnmount = false
   // eslint-disable-next-line svelte/prefer-svelte-reactivity
   const appLogs = new Map<AnyListen.LogType, string>()
-  const appTypes: AnyListen.LogType[] = ['App', 'ExtensionService', 'WebdavSync']
+  const appTypes: AnyListen.LogType[] = ['App', 'ExtensionService', 'ProxyService', 'WebdavSync']
+  // i18n.t(`logs.type_ProxyService`)
   let appLogTabs = $derived(appTypes.map((type) => ({ name: i18n.t(`logs.type_${type}`), value: type })))
 
   $effect(() => {

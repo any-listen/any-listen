@@ -250,6 +250,7 @@
   "logs.extension": "Extension",
   "logs.type_App": "APP",
   "logs.type_ExtensionService": "Extended services",
+  "logs.type_ProxyService": "Proxy Service",
   "logs.type_WebdavSync": "WebDAV data synchronization",
   "lyric__load_error": "Failed to obtain lyrics",
   "lyric_menu.align": "Lyric alignment",

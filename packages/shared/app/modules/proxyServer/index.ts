@@ -4,6 +4,7 @@ import { buildVirtualPublicPath } from '@any-listen/common/tools'
 import { checkAndCreateDir, checkFile, extname, joinPath, randomBytes, toMD5, toSha256 } from '@any-listen/nodejs'
 import { verifyResource, type Options } from '@any-listen/nodejs/request'
 
+// import { logs } from '../logs'
 import { checkAllowedExt } from './shared'
 import { proxyServerState } from './state'
 
@@ -17,6 +18,7 @@ export const generateName = (url: string) => {
 }
 
 export const createProxy = async (url: string, reqOptions: Options = {}, enabledCache?: boolean) => {
+  // logs.ProxyService.logcat.info('createProxy', url, reqOptions, enabledCache)
   await verifyResource(url, reqOptions)
 
   const name = generateName(url)

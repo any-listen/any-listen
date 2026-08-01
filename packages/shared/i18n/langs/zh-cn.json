@@ -250,6 +250,7 @@
   "logs.extension": "扩展程序",
   "logs.type_App": "APP",
   "logs.type_ExtensionService": "扩展服务",
+  "logs.type_ProxyService": "代理服务",
   "logs.type_WebdavSync": "WebDAV 数据同步",
   "lyric__load_error": "歌词获取失败",
   "lyric_menu.align": "歌词对齐方式",
