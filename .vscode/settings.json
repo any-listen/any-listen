@@ -26,22 +26,55 @@
   "i18n-ally.review.gutters": false,
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
-      "text": "Use format: <type>(<optional-scope>): <description>."
+      "text": "Generate exactly one commit subject line using Conventional Commits: <type>(<optional-scope>): <description> (<optional-issue-number>)."
     },
     {
-      "text": "Output one English subject line only."
+      "text": "Use English only."
     },
     {
-      "text": "Use allowed types only: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert."
+      "text": "Allowed types: feat, fix, docs, style, refactor, perf, test, build, ci, chore, revert."
     },
     {
-      "text": "Use present tense, 8-14 words in <description>, and no trailing period before any issue suffix."
+      "text": "Keep the subject concise: 8-14 words, present tense, no ending period."
     },
     {
-      "text": "Describe observable changes only; add scope only when obvious from changed files."
+      "text": "Describe only observable code/config/file changes; do not explain intent, impact, or motivation."
     },
     {
-      "text": "If included changed changelog and it contains issue link [#N](...), commit subject MUST end with (#N)."
+      "text": "Mention 1-2 most important changes only; avoid long lists and filler words."
+    },
+    {
+      "text": "If scope is clear, include it (for example: feat(shared): ..., fix(desktop): ...)."
+    },
+    {
+      "text": "If CHANGELOG.md or changelog files are updated, align wording with their updated entry."
+    },
+    {
+      "text": "If changelog entries include issue links, append the related issue number reference in subject (for example: (#123))."
+    },
+    {
+      "text": "Output subject only. No body, no footer, no code block, no quotes."
+    },
+    {
+      "text": "Good: feat(shared): add SingleEvent and update event API"
+    },
+    {
+      "text": "Bad: feat: add event handling improvements for better management and future extensibility"
     }
+    // {
+    //   "text": "Use format: `<type>(<optional-scope>): <description> (<optional-issue-number>)`."
+    // },
+    // {
+    //   "text": "Use English only."
+    // },
+    // {
+    //   "text": "Use present tense, 8-14 words in <description>."
+    // },
+    // {
+    //   "text": "Describe observable changes only."
+    // },
+    // {
+    //   "text": "Example: `feat: add SingleEvent API (#123)`"
+    // }
   ]
 }
