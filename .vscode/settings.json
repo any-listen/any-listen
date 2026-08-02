@@ -47,10 +47,10 @@
       "text": "If scope is clear, include it (for example: feat(shared): ..., fix(desktop): ...)."
     },
     {
-      "text": "If CHANGELOG.md or changelog files are updated, align wording with their updated entry."
+      "text": "If changelog.md or changelog.beta.md files are updated, align wording with their updated entry."
     },
     {
-      "text": "If changelog entries include issue links, append the related issue number reference in subject (for example: (#123))."
+      "text": "If changelog.md or changelog.beta.md entries include issue links, append the related issue number reference in subject (for example: (#123))."
     },
     {
       "text": "Output subject only. No body, no footer, no code block, no quotes."
