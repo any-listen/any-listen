@@ -112,9 +112,9 @@ const removeExcludeHeaders = (headers?: IncomingHttpHeaders, excludeList: string
   }
 }
 
-const filterResponseHeaders = (headers: Record<string, string | string[]>, excludeList: string[] = excludeResponseHeaders) => {
+const filterResponseHeaders = (headers: Record<string, string | string[]>) => {
   const newHeaders = { ...headers }
-  removeExcludeHeaders(newHeaders, excludeList)
+  removeExcludeHeaders(newHeaders, excludeResponseHeaders)
   if (newHeaders['content-disposition']) {
     const value = newHeaders['content-disposition'] as string
     const match = /filename\*=UTF-8''[^;]+/i.exec(value)
