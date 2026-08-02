@@ -2,7 +2,7 @@
 
 ### Fixed
 
-- Fixed the error handling logic for WebDAV data synchronization ([#258](https://github.com/any-listen/any-listen/issues/258)).
+- Fixed an issue where the proxy service threw errors when proxying certain resources ([#263](https://github.com/any-listen/any-listen/issues/263)).
 
 ---
 
@@ -10,4 +10,4 @@
 
 ### 修复
 
-- 修复 WebDAV 数据同步的错误处理逻辑（[#258](https://github.com/any-listen/any-listen/issues/258)）。
+- 修复代理服务在代理某些资源时报错的问题（[#263](https://github.com/any-listen/any-listen/issues/263)）。

@@ -15,7 +15,12 @@ export const registerProxyRouter = (router: Router<unknown, AnyListen.RequestCon
     }
     ctx.status = result.statusCode
     for (const [k, v] of Object.entries(result.headers)) {
-      ctx.set(k, v)
+      if (!v) continue
+      try {
+        ctx.set(k, v)
+      } catch (e) {
+        logs.ProxyService.logcat.warn(`invalid header: ${k}`, v, e)
+      }
     }
     ctx.body = result.body
   })

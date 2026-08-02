@@ -22,7 +22,15 @@ const createProxyServer = async () => {
         const name = decodeURIComponent(path.replace(PROXY_PATH_PREFIX, ''))
         const result = await proxyRequest(name, req.headers)
         if (result) {
-          res.writeHead(result.statusCode, result.headers)
+          for (const [key, value] of Object.entries(result.headers)) {
+            if (!value) continue
+            try {
+              res.setHeader(key, value)
+            } catch (e) {
+              logs.ProxyService.logcat.warn(`invalid header: ${key}`, value, e)
+            }
+          }
+          res.statusCode = result.statusCode
           if (result.body) {
             result.body.pipe(res)
 

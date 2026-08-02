@@ -26,6 +26,7 @@
 - Fixed an issue where the progress bar could display incorrectly when updating media control bar information on macOS ([#256](https://github.com/any-listen/any-listen/issues/256)).
 - Fixed an issue where the underline in input fields could disappear with certain fonts ([#258](https://github.com/any-listen/any-listen/issues/258)).
 - Fixed an issue where the window size did not restore after exiting fullscreen in Windows non-transparent mode ([#261](https://github.com/any-listen/any-listen/issues/261)).
+- Fixed an issue where the proxy service threw errors when proxying certain resources ([#263](https://github.com/any-listen/any-listen/issues/263)).
 
 ### Changed
 
@@ -61,6 +62,7 @@
 - 修复 macOS 更新媒体控制栏信息时的进度条显示问题（[#256](https://github.com/any-listen/any-listen/issues/256)）
 - 修复输入框在某些字体下下划线不显示的问题（[#258](https://github.com/any-listen/any-listen/issues/258)）。
 - 修复 Windows 非透明模式下退出全屏时窗口大小未恢复的问题（[#261](https://github.com/any-listen/any-listen/issues/261)）。
+- 修复代理服务在代理某些资源时报错的问题（[#263](https://github.com/any-listen/any-listen/issues/263)）。
 
 ### 变更
 

@@ -72,16 +72,57 @@ const isFullRange = (contentRange?: string, size?: number) => {
   const total = result[3] ? parseInt(result[3], 10) : size
   return start === 0 && end === total - 1
 }
-const excludeHeaders = ['host', 'connection', 'origin', 'referer']
-const removeExcludeHeaders = (headers?: IncomingHttpHeaders) => {
+const hopByHopHeaders = [
+  'connection',
+  'keep-alive',
+  'proxy-authenticate',
+  'proxy-authorization',
+  'te',
+  'trailer',
+  'transfer-encoding',
+  'upgrade',
+]
+const excludeHeaders = [
+  // hop-by-hop
+  ...hopByHopHeaders,
+
+  // source leaking
+  'host',
+  'origin',
+  'referer',
+  'forwarded',
+  'via',
+  'x-forwarded-for',
+  'x-forwarded-host',
+  'x-forwarded-proto',
+  'x-real-ip',
+
+  // optional
+  'cookie',
+]
+const excludeResponseHeaders = [...hopByHopHeaders, 'set-cookie']
+const removeExcludeHeaders = (headers?: IncomingHttpHeaders, excludeList: string[] = excludeHeaders) => {
   if (headers) {
-    for (const header of excludeHeaders) {
+    for (const header of excludeList) {
       if (header in headers) {
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete headers[header]
       }
     }
   }
+}
+
+const filterResponseHeaders = (headers: Record<string, string | string[]>, excludeList: string[] = excludeResponseHeaders) => {
+  const newHeaders = { ...headers }
+  removeExcludeHeaders(newHeaders, excludeList)
+  if (newHeaders['content-disposition']) {
+    const value = newHeaders['content-disposition'] as string
+    const match = /filename\*=UTF-8''[^;]+/i.exec(value)
+    if (match) {
+      newHeaders['content-disposition'] = `attachment; ${match[0]}`
+    }
+  }
+  return newHeaders
 }
 export const proxyRequest = async (name: string, rawHeaders?: IncomingHttpHeaders): Promise<Result | null> => {
   if (name.length > 128 || !/^[\w.]+$/.test(name)) return null
@@ -150,7 +191,7 @@ export const proxyRequest = async (name: string, rawHeaders?: IncomingHttpHeader
   }
   return {
     statusCode: resp.statusCode,
-    headers: resp.headers,
+    headers: filterResponseHeaders(resp.headers),
     body: tee || resp.body,
   }
 }
@@ -182,7 +223,7 @@ export const proxyRequestByUrl = async (url: string, rawHeaders?: IncomingHttpHe
 
   return {
     statusCode: resp.statusCode,
-    headers: resp.headers,
+    headers: filterResponseHeaders(resp.headers),
     body: resp.body,
   }
 }
