@@ -23,5 +23,6 @@ export {
   parseMusicInfoMetadata as parseRemoteMusicInfoMetadata,
   sortUserList as sortRemoteUserList,
   syncList as syncRemoteUserList,
+  syncAllList as syncAllRemoteUserList,
 } from './remoteListProvider'
-export { syncList as syncOnlineUserList } from './onlineListProvider'
+export { syncList as syncOnlineUserList, syncAllList as syncAllOnlineUserList } from './onlineListProvider'

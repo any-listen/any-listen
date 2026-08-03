@@ -12,6 +12,7 @@
 ### Improved
 
 - Improved song cover loading logic and fixed an issue where cover images were not displayed in some cases ([#225](https://github.com/any-listen/any-listen/issues/225)).
+- Added initial support for scheduled auto-sync for **Remote Lists** and **Online Lists**. It is currently fixed to run once daily at 11:00 AM ([#264](https://github.com/any-listen/any-listen/issues/264)).
 
 ### Fixed
 
@@ -39,6 +40,7 @@
 ### 优化
 
 - 优化歌曲封面加载逻辑，修复某些情况下封面不显示的问题（[#225](https://github.com/any-listen/any-listen/issues/225)）。
+- 初步新增 **「远程列表」** 与 **「在线列表」** 的定时自动同步功能，当前固定为每天上午 11 点同步一次（[#264](https://github.com/any-listen/any-listen/issues/264)）。
 
 ### 修复
 

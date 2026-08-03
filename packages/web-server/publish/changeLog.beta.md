@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Improved
 
-- Fixed an issue where the proxy service threw errors when proxying certain resources ([#263](https://github.com/any-listen/any-listen/issues/263)).
+- Added initial support for scheduled auto-sync for **Remote Lists** and **Online Lists**. It is currently fixed to run once daily at 11:00 AM ([#264](https://github.com/any-listen/any-listen/issues/264)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 优化
 
-- 修复代理服务在代理某些资源时报错的问题（[#263](https://github.com/any-listen/any-listen/issues/263)）。
+- 初步新增 **「远程列表」** 与 **「在线列表」** 的定时自动同步功能，当前固定为每天上午 11 点同步一次（[#264](https://github.com/any-listen/any-listen/issues/264)）。

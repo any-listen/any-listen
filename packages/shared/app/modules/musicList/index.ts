@@ -3,7 +3,14 @@ import { arrPush, throttle } from '@any-listen/common/utils'
 
 import { getSettings } from '../../common'
 import { getDeviceId } from '../../common/deviceId'
-import { parseRemoteMusicInfoMetadata, sortRemoteUserList, syncOnlineUserList, syncRemoteUserList } from '../../modules/extension'
+import {
+  parseRemoteMusicInfoMetadata,
+  sortRemoteUserList,
+  syncOnlineUserList,
+  syncRemoteUserList,
+  syncAllRemoteUserList,
+  syncAllOnlineUserList,
+} from '../../modules/extension'
 import { workers } from '../worker'
 import { proxyCallback, type DBSeriveTypes } from '../worker/utils'
 import { initMusicListEvent, musicListEvent } from './event'
@@ -252,6 +259,21 @@ export const syncUserList = async (id: string) => {
       console.log('not sync list', targetList)
       throw new Error('not supported list type')
   }
+}
+
+export const runSyncUserListTask = () => {
+  const now = new Date()
+  const next = new Date(now)
+  next.setHours(11, 0, 0, 0)
+  if (next.getTime() - now.getTime() <= 1800_000) next.setDate(next.getDate() + 1)
+  const nextDelay = next.getTime() - now.getTime()
+
+  setTimeout(() => {
+    syncAllRemoteUserList()
+    syncAllOnlineUserList()
+
+    runSyncUserListTask()
+  }, nextDelay)
 }
 
 export const parseMusicMetadata = async (listId: string, musicInfo: AnyListen.Music.MusicInfo) => {

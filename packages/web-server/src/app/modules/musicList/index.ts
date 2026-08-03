@@ -3,9 +3,11 @@ import {
   getListsCover as _getListsCover,
   musicListEvent,
   clearListCoverCache,
+  runSyncUserListTask,
 } from '@any-listen/app/modules/musicList'
 import { STORE_NAMES } from '@any-listen/common/constants'
 
+import { appEvent } from '@/app/app'
 import getStore from '@/app/shared/store'
 import { workers } from '@/app/worker'
 
@@ -58,5 +60,8 @@ export const initMusicList = async () => {
       default:
         break
     }
+  })
+  appEvent.on('inited', () => {
+    runSyncUserListTask()
   })
 }

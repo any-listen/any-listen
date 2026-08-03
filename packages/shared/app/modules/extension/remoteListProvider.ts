@@ -222,7 +222,7 @@ const handleSyncList = async () => {
   }
   state.syncing = false
 }
-const runSyncList = throttle(async () => {
+export const syncAllList = throttle(async () => {
   if (!state.loadedExtensions.length) return
   // console.log('run list provider sync')
   const extensionList = await workers.extensionService.getLocalExtensionList()
@@ -258,7 +258,7 @@ export const initListProvider = async () => {
   let initCount = 0
   const handleRunSyncList = () => {
     initCount++
-    if (initCount < 2) runSyncList()
+    if (initCount < 2) syncAllList()
   }
   winMainReadyEvent.on(handleRunSyncList)
   extensionEvent.on('extensionEvent', (event) => {
@@ -272,7 +272,7 @@ export const initListProvider = async () => {
         break
       case 'loaded':
         state.loadedExtensions.push(event.data.id)
-        if (!state.initing) runSyncList()
+        if (!state.initing) syncAllList()
         break
       default:
         break
