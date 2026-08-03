@@ -153,14 +153,38 @@ export const getLyricInfo = async ({
   listId?: string | null
   isRefresh?: boolean
 }): Promise<AnyListen.IPCMusic.MusicLyricInfo> => {
-  if (!isRefresh) {
-    const lyricInfo = await getCachedLyricInfo(musicInfo)
-    if (lyricInfo) return { info: await buildLyricInfo(lyricInfo), isFromCache: false }
+  const [remote, local] = await Promise.all([
+    getMusicLyricResource({ musicInfo }).catch(() => null),
+    getCachedLyricInfo(musicInfo),
+  ])
+  if (remote) {
+    let isSave = true
+    if (local) {
+      if (remote.lyric === local.rawlrcInfo?.lyric) {
+        if (!isRefresh) return { info: await buildLyricInfo(local), isFromCache: true }
+        isSave = false
+      } else if (remote.lyric == local.lyric) {
+        isSave = false
+      }
+    }
+    if (isSave) void saveLyricInfo(musicInfo, remote)
+    return {
+      info: remote,
+      isFromCache: false,
+    }
   }
-  const info = await getMusicLyricResource({ musicInfo })
-  void saveLyricInfo(musicInfo, info)
-  return {
-    info,
-    isFromCache: false,
+  if (!isRefresh && local) {
+    return { info: await buildLyricInfo(local), isFromCache: true }
   }
+  throw new Error('get lyric info failed')
+  // if (!isRefresh) {
+  //   const lyricInfo = await getCachedLyricInfo(musicInfo)
+  //   if (lyricInfo) return { info: await buildLyricInfo(lyricInfo), isFromCache: false }
+  // }
+  // const info = await getMusicLyricResource({ musicInfo })
+  // void saveLyricInfo(musicInfo, info)
+  // return {
+  //   info,
+  //   isFromCache: false,
+  // }
 }
