@@ -32,6 +32,7 @@ minimumReleaseAgeExclude:
   - npm-check-updates
   - vite
   - rolldown
+  - '@rolldown/*'
   - oxfmt
 
 overrides:
