@@ -218,7 +218,7 @@ export const handlePreloadCall = <T extends keyof AnyListen.ExtensionVM.HostCall
       if (info.message.length > 50000) {
         info.message = `${info.message.substring(0, 50000)}...`
       }
-      if (import.meta.env.DEV) {
+      if (import.meta.env.DEV && info.type !== 'debug' && info.type !== 'info') {
         console.log(`[ExtensionHost ${dateFormat(info.timestamp)} ${info.type.toUpperCase()} - ${info.id}] ${info.message}`)
       }
       // console.log(`[ExtensionHost ${dateFormat(info.timestamp)} ${info.type.toUpperCase()} - ${info.id}] ${info.message}`)

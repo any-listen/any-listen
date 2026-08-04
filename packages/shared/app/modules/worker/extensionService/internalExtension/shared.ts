@@ -18,7 +18,7 @@ export const createLogTools = async (extension: AnyListen.Extension.Extension) =
         .map((m) => (typeof m == 'string' ? m : m instanceof Error ? (m.stack ?? m.message) : JSON.stringify(m)))
         .join(' '),
     }
-    if (import.meta.env.DEV) {
+    if (import.meta.env.DEV && type !== 'debug' && type !== 'info') {
       console.log(`[ExtensionHost ${dateFormat(info.timestamp)} ${info.type.toUpperCase()} - ${info.id}] ${info.message}`)
     }
     log(logFormat(info))

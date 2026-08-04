@@ -20,7 +20,7 @@ const createLogcat = (logType: AnyListen.LogType) => {
         .map((m) => (typeof m == 'string' ? m : m instanceof Error ? (m.stack ?? m.message) : JSON.stringify(m)))
         .join(' '),
     }
-    if (import.meta.env.DEV) {
+    if (import.meta.env.DEV && type !== 'debug' && type !== 'info') {
       console.log(`[${logType} ${dateFormat(info.timestamp)} ${info.type.toUpperCase()}] ${info.message}`)
     }
     const msg = logFormat(info)

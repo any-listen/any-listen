@@ -3,6 +3,7 @@ import { throttle } from '@any-listen/common/utils'
 import { getSettings, showMessageBox, t } from '../../common'
 import { winMainReadyEvent } from '../../common/event'
 import { musicListEvent, sendMusicListAction, updateMusicBaseInfo } from '../../modules/musicList'
+import { logs } from '../logs'
 import { workers } from '../worker'
 import { extensionEvent } from './event'
 import { extensionState } from './state'
@@ -118,90 +119,96 @@ const state = {
   waitingSyncLists: [] as AnyListen.List.RemoteListInfo[],
 }
 export const syncList = async (list: AnyListen.List.RemoteListInfo) => {
+  logs.App.logcat.debug(`[Remote List]Sync: ${list.name} (${list.id})`)
   // console.log(`Sync list: ${list.name} (${list.id})`)
-  const [musics, ids] = await Promise.all([
-    workers.dbService.getListMusics(list.id),
-    workers.extensionService.listProviderAction('getListMusicIds', {
-      data: list,
-      extensionId: list.meta.extensionId,
-      source: list.meta.source,
-    }),
-  ])
-  const remoteIds = new Set(ids)
-  const newMusicIds = new Set<string>()
-  const removedMusicIds = new Set<string>()
-  const localIds = new Set<string>()
-  for (const music of musics) {
-    if (!remoteIds.has(music.id)) {
-      removedMusicIds.add(music.id)
-      continue
-    }
-    localIds.add(music.id)
-  }
-  for (const id of remoteIds) {
-    if (!localIds.has(id)) {
-      newMusicIds.add(id)
-    }
-  }
-  const { musics: newMusics, waitingParseMetadata } = newMusicIds.size
-    ? await workers.extensionService.listProviderAction('getMusicInfoByIds', {
+  try {
+    const [musics, ids] = await Promise.all([
+      workers.dbService.getListMusics(list.id),
+      workers.extensionService.listProviderAction('getListMusicIds', {
+        data: list,
         extensionId: list.meta.extensionId,
         source: list.meta.source,
+      }),
+    ])
+    const remoteIds = new Set(ids)
+    const newMusicIds = new Set<string>()
+    const removedMusicIds = new Set<string>()
+    const localIds = new Set<string>()
+    for (const music of musics) {
+      if (!remoteIds.has(music.id)) {
+        removedMusicIds.add(music.id)
+        continue
+      }
+      localIds.add(music.id)
+    }
+    for (const id of remoteIds) {
+      if (!localIds.has(id)) {
+        newMusicIds.add(id)
+      }
+    }
+    const { musics: newMusics, waitingParseMetadata } = newMusicIds.size
+      ? await workers.extensionService.listProviderAction('getMusicInfoByIds', {
+          extensionId: list.meta.extensionId,
+          source: list.meta.source,
+          data: {
+            list,
+            ids: Array.from(newMusicIds),
+          },
+        })
+      : { musics: [], waitingParseMetadata: false }
+    let updated = false
+    if (removedMusicIds.size) {
+      await sendMusicListAction({
+        action: 'list_music_remove',
         data: {
-          list,
-          ids: Array.from(newMusicIds),
+          listId: list.id,
+          ids: Array.from(removedMusicIds),
+          sync: true,
         },
       })
-    : { musics: [], waitingParseMetadata: false }
-  let updated = false
-  if (removedMusicIds.size) {
-    await sendMusicListAction({
-      action: 'list_music_remove',
-      data: {
-        listId: list.id,
-        ids: Array.from(removedMusicIds),
-        sync: true,
-      },
-    })
-    updated ||= true
-  }
-  if (newMusics.length) {
-    const addMusicLocationType = getSettings()['list.addMusicLocationType']
-    await sendMusicListAction({
-      action: 'list_music_add',
-      data: {
-        addMusicLocationType,
-        id: list.id,
-        musicInfos: newMusics,
-      },
-    })
-    if (waitingParseMetadata && list.meta.lazzyParseMeta !== true) {
-      await handleMusicsParseBatch(list.meta.extensionId, list.meta.source, list.id, newMusics)
+      updated ||= true
     }
-    updated ||= true
-  }
-  if (list.meta.lazzyParseMeta !== true) {
-    const unparsedMusics = musics.filter((m) => m.meta.unparsed) as AnyListen.Music.MusicInfoOnline[]
-    if (!unparsedMusics.length) return
-    await handleMusicsParseBatch(list.meta.extensionId, list.meta.source, list.id, unparsedMusics)
-    updated ||= true
-  }
-  if (updated) {
-    await sendMusicListAction({
-      action: 'list_update',
-      data: {
-        lists: [
-          {
-            ...list,
-            meta: {
-              ...list.meta,
-              syncTime: Date.now(),
+    if (newMusics.length) {
+      const addMusicLocationType = getSettings()['list.addMusicLocationType']
+      await sendMusicListAction({
+        action: 'list_music_add',
+        data: {
+          addMusicLocationType,
+          id: list.id,
+          musicInfos: newMusics,
+        },
+      })
+      if (waitingParseMetadata && list.meta.lazzyParseMeta !== true) {
+        await handleMusicsParseBatch(list.meta.extensionId, list.meta.source, list.id, newMusics)
+      }
+      updated ||= true
+    }
+    if (list.meta.lazzyParseMeta !== true) {
+      const unparsedMusics = musics.filter((m) => m.meta.unparsed) as AnyListen.Music.MusicInfoOnline[]
+      if (!unparsedMusics.length) return
+      await handleMusicsParseBatch(list.meta.extensionId, list.meta.source, list.id, unparsedMusics)
+      updated ||= true
+    }
+    if (updated) {
+      await sendMusicListAction({
+        action: 'list_update',
+        data: {
+          lists: [
+            {
+              ...list,
+              meta: {
+                ...list.meta,
+                syncTime: Date.now(),
+              },
             },
-          },
-        ],
-        sync: true,
-      },
-    })
+          ],
+          sync: true,
+        },
+      })
+    }
+  } catch (err) {
+    logs.App.logcat.error(`[Remote List]Sync error: ${list.name} (${list.id})`, err)
+    throw err
   }
 }
 const handleSyncList = async () => {
@@ -211,7 +218,6 @@ const handleSyncList = async () => {
     // TODO multi sync
     const list = state.waitingSyncLists.shift()!
     await syncList(list).catch((err: Error) => {
-      console.error('Sync list error:', err)
       void showMessageBox({
         detail: t('extension.list_provider.get_list_music_ids_error', {
           name: list.name,
@@ -223,6 +229,33 @@ const handleSyncList = async () => {
   state.syncing = false
 }
 export const syncAllList = throttle(async () => {
+  const extensionList = await workers.extensionService.getLocalExtensionList()
+  const userLists = (await workers.dbService.getAllUserLists()).userList
+  const filteredExts = new Map<string, Set<string>>()
+  for (const ext of extensionList) {
+    if (!ext.loaded || !ext.contributes.listProviders?.length) continue
+    let filteredExt = filteredExts.get(ext.id)
+    if (!filteredExt) filteredExts.set(ext.id, (filteredExt = new Set()))
+    for (const lp of ext.contributes.listProviders) {
+      if (lp.id) filteredExt.add(lp.id)
+    }
+  }
+  if (!filteredExts.size) return
+  state.waitingSyncLists = Array.from(
+    new Set([
+      ...state.waitingSyncLists,
+      ...(userLists.filter((l) => {
+        if (l.type !== 'remote') return false
+        const ids = filteredExts.get(l.meta.extensionId)
+        if (!ids) return false
+        if (ids.has(l.meta.source)) return true
+        return false
+      }) as AnyListen.List.RemoteListInfo[]),
+    ])
+  )
+  void handleSyncList()
+}, 500)
+export const runSyncLoadedExtensionList = throttle(async () => {
   if (!state.loadedExtensions.length) return
   // console.log('run list provider sync')
   const extensionList = await workers.extensionService.getLocalExtensionList()
@@ -258,7 +291,7 @@ export const initListProvider = async () => {
   let initCount = 0
   const handleRunSyncList = () => {
     initCount++
-    if (initCount < 2) syncAllList()
+    if (initCount < 2) runSyncLoadedExtensionList()
   }
   winMainReadyEvent.on(handleRunSyncList)
   extensionEvent.on('extensionEvent', (event) => {
@@ -272,7 +305,7 @@ export const initListProvider = async () => {
         break
       case 'loaded':
         state.loadedExtensions.push(event.data.id)
-        if (!state.initing) syncAllList()
+        if (!state.initing) runSyncLoadedExtensionList()
         break
       default:
         break

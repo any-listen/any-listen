@@ -33,7 +33,7 @@ declare global {
       // | AnyListen.IPCAction<'clear'>
 
       // call host actions
-      type HostCallTypes = IPCAction<'logcat', LogInfo> | IPCAction<'message', unknown> | IPCAction<'connected_client'>
+      type HostCallTypes = IPCAction<'logcat', Extension.LogInfo> | IPCAction<'message', unknown> | IPCAction<'connected_client'>
 
       type HostCallActions = Actions<HostCallTypes>
 

@@ -3,6 +3,7 @@ import { throttle } from '@any-listen/common/utils'
 import { showMessageBox, t } from '../../common'
 import { winMainReadyEvent } from '../../common/event'
 import { musicListEvent, sendMusicListAction } from '../../modules/musicList'
+import { logs } from '../logs'
 import { songlistDetailAll, topSongsDetailAll } from '../resources'
 import { workers } from '../worker'
 import { extensionEvent } from './event'
@@ -26,44 +27,50 @@ const detailAll = async (list: AnyListen.List.OnlineListInfo) => {
 }
 
 export const syncList = async (list: AnyListen.List.OnlineListInfo) => {
+  logs.App.logcat.debug(`[Online List]Sync: ${list.name} (${list.id})`)
   // console.log(`Sync list: ${list.name} (${list.id})`)
-  const [localMusics, onlineMusics] = await Promise.all([
-    workers.dbService.getListMusics(list.id) as Promise<AnyListen.Music.MusicInfoOnline[]>,
-    detailAll(list),
-  ])
-  const localMusicMap = new Map<string, AnyListen.Music.MusicInfoOnline>()
-  for (const m of localMusics) localMusicMap.set(m.id, m)
-  let isUpdated = false
-  const newList = onlineMusics.map((m, i) => {
-    const local = localMusicMap.get(m.id)
-    if (localMusics[i]?.id !== m.id) isUpdated ||= true
-    if (local) return local
-    return m
-  })
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (!isUpdated) return
-  await sendMusicListAction({
-    action: 'list_music_overwrite',
-    data: {
-      listId: list.id,
-      musicInfos: newList,
-    },
-  })
-  await sendMusicListAction({
-    action: 'list_update',
-    data: {
-      lists: [
-        {
-          ...list,
-          meta: {
-            ...list.meta,
-            syncTime: Date.now(),
+  try {
+    const [localMusics, onlineMusics] = await Promise.all([
+      workers.dbService.getListMusics(list.id) as Promise<AnyListen.Music.MusicInfoOnline[]>,
+      detailAll(list),
+    ])
+    const localMusicMap = new Map<string, AnyListen.Music.MusicInfoOnline>()
+    for (const m of localMusics) localMusicMap.set(m.id, m)
+    let isUpdated = false
+    const newList = onlineMusics.map((m, i) => {
+      const local = localMusicMap.get(m.id)
+      if (localMusics[i]?.id !== m.id) isUpdated ||= true
+      if (local) return local
+      return m
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (!isUpdated) return
+    await sendMusicListAction({
+      action: 'list_music_overwrite',
+      data: {
+        listId: list.id,
+        musicInfos: newList,
+      },
+    })
+    await sendMusicListAction({
+      action: 'list_update',
+      data: {
+        lists: [
+          {
+            ...list,
+            meta: {
+              ...list.meta,
+              syncTime: Date.now(),
+            },
           },
-        },
-      ],
-      sync: true,
-    },
-  })
+        ],
+        sync: true,
+      },
+    })
+  } catch (err) {
+    logs.App.logcat.error(`[Online List]Sync error: ${list.name} (${list.id})`, err)
+    throw err
+  }
 }
 const handleSyncList = async () => {
   if (state.syncing || !state.waitingSyncLists.length) return
@@ -72,7 +79,6 @@ const handleSyncList = async () => {
     // TODO multi sync
     const list = state.waitingSyncLists.shift()!
     await syncList(list).catch((err: Error) => {
-      console.error('Sync list error:', err)
       void showMessageBox({
         detail: t('extension.list_provider.get_list_music_ids_error', {
           name: list.name,
@@ -83,17 +89,13 @@ const handleSyncList = async () => {
   }
   state.syncing = false
 }
+
 export const syncAllList = throttle(async () => {
-  if (!state.loadedExtensions.length) return
-  // console.log('run list provider sync')
   const extensionList = await workers.extensionService.getLocalExtensionList()
   const userLists = (await workers.dbService.getAllUserLists()).userList
   const filteredExts = new Map<string, Set<string>>()
-  const exts = new Map(extensionList.map((e) => [e.id, e]))
-  while (state.loadedExtensions.length) {
-    const extId = state.loadedExtensions.shift()!
-    const ext = exts.get(extId)
-    if (!ext?.loaded || !ext.contributes.resource?.length) continue
+  for (const ext of extensionList) {
+    if (!ext.loaded || !ext.contributes.resource?.length) continue
     let filteredExt = filteredExts.get(ext.id)
     if (!filteredExt) filteredExts.set(ext.id, (filteredExt = new Set()))
     for (const lp of ext.contributes.resource) {
@@ -115,11 +117,47 @@ export const syncAllList = throttle(async () => {
   )
   void handleSyncList()
 }, 500)
+
+const runSyncLoadedExtensionList = throttle(async () => {
+  // console.log('run list provider sync', state.loadedExtensions.length, state.waitingSyncLists.length)
+  if (!state.loadedExtensions.length) return
+  const extensionList = await workers.extensionService.getLocalExtensionList()
+  const userLists = (await workers.dbService.getAllUserLists()).userList
+  const filteredExts = new Map<string, Set<string>>()
+  const exts = new Map(extensionList.map((e) => [e.id, e]))
+  while (state.loadedExtensions.length) {
+    const extId = state.loadedExtensions.shift()!
+    const ext = exts.get(extId)
+    if (!ext?.loaded || !ext.contributes.resource?.length) continue
+    let filteredExt = filteredExts.get(ext.id)
+    if (!filteredExt) filteredExts.set(ext.id, (filteredExt = new Set()))
+    for (const lp of ext.contributes.resource) {
+      if (lp.id && lp.resource.length) filteredExt.add(lp.id)
+    }
+  }
+  // console.log('filteredExts.size', filteredExts.size)
+  if (!filteredExts.size) return
+  state.waitingSyncLists = Array.from(
+    new Set([
+      ...state.waitingSyncLists,
+      ...(userLists.filter((l) => {
+        if (l.type !== 'online') return false
+        const ids = filteredExts.get(l.meta.extensionId)
+        if (!ids) return false
+        if (ids.has(l.meta.source)) return true
+        return false
+      }) as AnyListen.List.OnlineListInfo[]),
+    ])
+  )
+  // console.log('state.waitingSyncLists.length', state.waitingSyncLists.length)
+  void handleSyncList()
+}, 500)
+
 export const initListProvider = async () => {
   let initCount = 0
   const handleRunSyncList = () => {
     initCount++
-    if (initCount < 2) syncAllList()
+    if (initCount < 2) runSyncLoadedExtensionList()
   }
   winMainReadyEvent.on(handleRunSyncList)
   extensionEvent.on('extensionEvent', (event) => {
@@ -133,7 +171,7 @@ export const initListProvider = async () => {
         break
       case 'loaded':
         state.loadedExtensions.push(event.data.id)
-        if (!state.initing) syncAllList()
+        if (!state.initing) runSyncLoadedExtensionList()
         break
       default:
         break
