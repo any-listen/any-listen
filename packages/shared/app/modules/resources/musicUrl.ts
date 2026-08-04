@@ -65,9 +65,9 @@ export const getMusicUrl = async (data: {
 }): Promise<AnyListen.IPCExtension.MusicUrlInfo> => {
   return findMusic(data.musicInfo, async (musicInfo) => {
     return handleGetMusicUrl({
-        musicInfo,
-        quality: data.quality,
-        type: data.type,
-      })
+      musicInfo,
+      quality: data.quality,
+      type: data.type,
+    })
   })
 }

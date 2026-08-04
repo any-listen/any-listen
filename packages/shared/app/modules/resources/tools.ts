@@ -1,5 +1,5 @@
 import { findMusic as findMusicByExt } from './search/music'
-import { buildExtSourceId, getExtSource } from './utils'
+import { buildExtSourceId, getExtSource, getSourceAllExtSourceIds } from './utils'
 
 const findSourceMusic = async <T>(
   info: {
@@ -12,6 +12,7 @@ const findSourceMusic = async <T>(
   excludeList: string[] = []
 ): Promise<T> => {
   const source = getExtSource('musicSearch', excludeList)
+  // console.log('excludeList', excludeList, source)
   if (!source) throw new Error('Get url failed, no source')
   const music = await findMusicByExt({ extensionId: source.extensionId, source: source.id, ...info })
   if (music) {
@@ -36,7 +37,7 @@ const handleFindMusic = async <T>(
   },
   handler: (info: AnyListen.Music.MusicInfoOnline) => Promise<T>
 ) => {
-  const excludeList: string[] = musicInfo.source ? [musicInfo.source] : []
+  const excludeList: string[] = musicInfo.source ? getSourceAllExtSourceIds('musicSearch', musicInfo.source) : []
   try {
     return await findSourceMusic<T>(
       {

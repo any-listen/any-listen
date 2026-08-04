@@ -24,6 +24,12 @@ export const TRY_QUALITYS_LIST = ['flac24bit', 'flac', '320k'] as const
 // }
 
 export const buildExtSourceId = (source: string, extensionId: string) => `${extensionId}__${source}`
+
+export const getSourceAllExtSourceIds = <T extends AnyListen.Extension.ResourceAction>(action: T, source: string) => {
+  const list = resourceState.resources[action] ?? []
+  return list.filter((r) => r.id == source).map((r) => buildExtSourceId(r.extensionId, r.id))
+}
+
 /**
  * @description 获取资源来源的扩展信息
  * @param action 资源行为，如 musicSearch、lyricSearch 等

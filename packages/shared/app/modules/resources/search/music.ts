@@ -2,6 +2,7 @@
 import { SINGERS_RXP } from '@any-listen/common/constants'
 
 import { services } from '../../resources/shared'
+import { versionChars } from './versionChars'
 
 export const musicSearch = async (
   extensionId: string,
@@ -67,6 +68,14 @@ export const findMusic = async ({
   albumName: string
   interval: string | null
 }): Promise<AnyListen.Music.MusicInfoOnline | null> => {
+  // console.log({
+  //   extensionId,
+  //   name,
+  //   singer,
+  //   albumName,
+  //   interval,
+  //   source: s,
+  // })
   // TODO: auto reversal of singer and name
   const list = await musicSearch(extensionId, s, name, singer, 1, 20).catch((err) => {
     console.error(err)
@@ -118,10 +127,18 @@ export const findMusic = async ({
   const fSinger = filterStr(sortSingle(singer)).toLowerCase()
   const fAlbumName = filterStr(albumName).toLowerCase()
   const fInterval = getIntv(interval)
-  const isEqualsInterval = (intv: number) => Math.abs((fInterval || intv) - (intv || fInterval)) < 5
-  const isIncludesName = (name: string) => fMusicName.includes(name) || name.includes(fMusicName)
+  const isEqualsInterval = (intv: number) => Math.abs((fInterval || intv) - (intv || fInterval)) <= 5
+  const isEqualsVersionMusicNameChar = (name: string) => {
+    for (const char of versionChars) {
+      if (name.includes(char) != fMusicName.includes(char)) return false
+    }
+    return true
+  }
+  const isIncludesName = (name: string) =>
+    (fMusicName.includes(name) || name.includes(fMusicName)) && isEqualsVersionMusicNameChar(name)
   const isIncludesSinger = (singer: string) => (fSinger ? fSinger.includes(singer) || singer.includes(fSinger) : true)
   const isEqualsAlbum = (album: string) => (fAlbumName ? fAlbumName == album : true)
+  // console.log(fMusicName, fSinger, fAlbumName, fInterval)
 
   const handleSource = (source: { list: AnyListen.Music.MusicInfoOnline[]; total: number }) => {
     for (const _item of source.list) {
@@ -132,7 +149,7 @@ export const findMusic = async ({
       item.fMusicName = filterStr(String(item.name ?? '').toLowerCase())
       item.fAlbumName = filterStr(String(item.meta.albumName ?? '').toLowerCase())
       item.fInterval = getIntv(item.interval)
-      // console.log(fMusicName, item.fMusicName, item.source)
+      // console.log(item.fMusicName, item.fSinger, item.fAlbumName, item.fInterval)
       if (!isEqualsInterval(item.fInterval)) {
         item.name = null
         continue
