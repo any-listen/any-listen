@@ -57,7 +57,7 @@ const handleGetMusicPicFromRemote = async (info: AnyListen.IPCMusic.GetMusicPicI
 }
 
 const handleGetMusicPic = async (info: GetMusicPicInfo) => {
-  // console.log('handleGetMusicPicFromRemote', info.musicInfo.name, info.isRefresh)
+  // console.trace('handleGetMusicPicFromRemote', info.musicInfo.name, info.isRefresh)
   if (picRemoteGettingPromises.has(info.musicInfo.id)) return picRemoteGettingPromises.get(info.musicInfo.id)!
   const promise = handleGetMusicPicFromRemote(info)
     .then((urlInfo) => {
@@ -123,11 +123,25 @@ export const getMusicPic = async (info: GetMusicPicInfo): Promise<AnyListen.IPCM
 //     })
 //   }, 1000)
 // }
-const findUpdatedMusic = (targetId: string, infos: Map<string, AnyListen.Music.MusicInfo[]>) => {
+const findUpdatedMusic = (
+  listId: string | null | undefined,
+  targetId: string,
+  infos: Map<string, AnyListen.Music.MusicInfo[]>
+) => {
+  if (listId) {
+    const list = infos.get(listId)
+    if (list) {
+      for (const m of list) {
+        if (m.id === targetId) {
+          return [m, null] as const
+        }
+      }
+    }
+  }
   for (const list of infos.values()) {
     for (const m of list) {
       if (m.id === targetId) {
-        return m
+        return [null, m] as const
       }
     }
   }
@@ -160,14 +174,15 @@ export const getMusicPicDelay = (info: GetMusicPicInfo, onUrl: (url: string) => 
   }
   const unsub = musicLibraryEvent.on('listMusicUpdated', (infos) => {
     if (isCanceled) return
-    let targetMusic = findUpdatedMusic(info.musicInfo.id, infos)
-    if (!targetMusic) return
+    let result = findUpdatedMusic(info.listId, info.musicInfo.id, infos)
+    if (!result) return
+    let targetMusic = result[0] || result[1]
     if (targetMusic.meta.picUrl) {
       if (targetMusic.meta.picUrl == lastPicUrl) return
       handleOnUrl(targetMusic.meta.picUrl)
-    } else if (targetMusic.meta.unparsed != info.musicInfo.meta.unparsed) {
+    } else if (result[0] && targetMusic.meta.unparsed != info.musicInfo.meta.unparsed) {
       // Metadata has been parsed, fetch the pic again
-      void handleGetMusicPic(info).then((urlInfo) => {
+      void handleGetMusicPic({ ...info, musicInfo: result[0] }).then((urlInfo) => {
         if (isCanceled) return
         handleOnUrl(urlInfo.url)
       })
