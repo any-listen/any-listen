@@ -5,6 +5,7 @@ export interface ListInfo {
   limit: number
   searchKey: string | null
   requestKey: string | null
+  cacheTime: number
 }
 export interface InitState {
   lists: Map<string, ListInfo>

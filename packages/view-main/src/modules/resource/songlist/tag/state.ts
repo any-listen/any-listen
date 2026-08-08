@@ -1,5 +1,11 @@
 export interface InitState {
-  lists: Map<string, Promise<AnyListen.IPCExtension.SonglistTagResult>>
+  lists: Map<
+    string,
+    {
+      requestPromise?: Promise<AnyListen.IPCExtension.SonglistTagResult>
+      cacheTime: number
+    }
+  >
 }
 
 export const tagsState: InitState = {

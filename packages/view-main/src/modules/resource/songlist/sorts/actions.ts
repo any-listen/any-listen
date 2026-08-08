@@ -2,6 +2,8 @@ import { songlistSorts } from '@/shared/ipc/resource'
 
 import { sortsState } from './state'
 
+const CACHE_TIME = 60 * 60_000 * 6 // 6 hours
+
 const buildSourceKey = (extId: string, source: string) => `${extId}.${source}`
 
 export const resetSorts = (extId: string, source: string) => {
@@ -16,19 +18,22 @@ export const resetAllSorts = () => {
 
 const getCachedListInfo = (extId: string, source: string): Promise<AnyListen.Resource.TagItem[]> | null => {
   const listInfo = sortsState.lists.get(buildSourceKey(extId, source))
-  return listInfo ?? null
+  if (listInfo && performance.now() - listInfo.cacheTime < CACHE_TIME) {
+    return listInfo.requestPromise ?? null
+  }
+  return null
 }
 const setCachedListInfo = (extId: string, source: string, promise: Promise<AnyListen.Resource.TagItem[]>) => {
   const sourceKey = buildSourceKey(extId, source)
 
-  sortsState.lists.set(
-    sourceKey,
-    promise.catch((error) => {
+  sortsState.lists.set(sourceKey, {
+    requestPromise: promise.catch((error) => {
       sortsState.lists.delete(sourceKey)
       console.log(error)
       throw error
-    })
-  )
+    }),
+    cacheTime: performance.now(),
+  })
 }
 
 export const getData = async (extensionId: string, source: string): Promise<AnyListen.Resource.TagItem[]> => {

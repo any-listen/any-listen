@@ -1,5 +1,11 @@
 export interface InitState {
-  lists: Map<string, Promise<AnyListen.Resource.TagItem[]>>
+  lists: Map<
+    string,
+    {
+      requestPromise?: Promise<AnyListen.Resource.TagItem[]>
+      cacheTime: number
+    }
+  >
 }
 
 export const sortsState: InitState = {

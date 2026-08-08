@@ -4,6 +4,8 @@ import { songlistDetail } from '@/shared/ipc/resource'
 
 import { musicState } from './state'
 
+const CACHE_TIME = 60 * 60_000 * 6 // 6 hours
+
 const buildSourceKey = (extId: string, source: string) => `${extId}.${source}`
 const buildSearchKey = (extId: string, source: string, limit: number, id: string) => {
   return `${extId}.${source}.${limit}.${id}`
@@ -21,6 +23,7 @@ export const resetListInfo = (extId: string, source: string) => {
   listInfo.searchKey = null
   listInfo.requestKey = null
   listInfo.info = null
+  listInfo.cacheTime = 0
 }
 export const resetAllListInfo = () => {
   musicState.lists.forEach((listInfo) => {
@@ -30,6 +33,7 @@ export const resetAllListInfo = () => {
     listInfo.searchKey = null
     listInfo.requestKey = null
     listInfo.info = null
+    listInfo.cacheTime = 0
   })
 }
 
@@ -41,7 +45,7 @@ const getCachedListInfo = (
   id: string
 ): [Promise<AnyListen.IPCResource.SonglistDetailResult> | null, number, AnyListen.Resource.SongListDetailInfo | null] | null => {
   const listInfo = musicState.lists.get(buildSourceKey(extId, source))
-  if (listInfo) {
+  if (listInfo && performance.now() - listInfo.cacheTime < CACHE_TIME) {
     if (listInfo.requestKey == buildRequestKey(extId, source, page, limit, id)) {
       return [listInfo.requestPromise!, listInfo.total, listInfo.info]
     }
@@ -72,6 +76,7 @@ const setCachedListInfo = (
       requestKey: null,
       requestPromise: undefined,
       info: null,
+      cacheTime: performance.now(),
     }
     musicState.lists.set(sourceKey, listInfo)
   }
@@ -85,6 +90,7 @@ const setCachedListInfo = (
         listInfo.limit = limit
         listInfo.total = result.total
         listInfo.info = result.info
+        listInfo.cacheTime = performance.now()
       }
       return result
     })
@@ -94,6 +100,7 @@ const setCachedListInfo = (
         listInfo.requestPromise = undefined
         listInfo.page = 0
         listInfo.total = 0
+        listInfo.cacheTime = 0
       }
       console.log(error)
       throw error

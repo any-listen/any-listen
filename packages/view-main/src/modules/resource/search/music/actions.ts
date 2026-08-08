@@ -2,6 +2,8 @@ import { musicSearch } from '@/shared/ipc/resource'
 
 import { musicState } from './state'
 
+const CACHE_TIME = 60 * 60_000 * 6 // 6 hours
+
 const buildSourceKey = (extId: string, source: string) => `${extId}.${source}`
 const buildSearchKey = (extId: string, source: string, limit: number, text: string) => {
   return `${extId}.${source}.${limit}.${text}`
@@ -25,6 +27,7 @@ export const resetListInfo = (extId: string, source: string) => {
   listInfo.total = 0
   listInfo.searchKey = null
   listInfo.requestKey = null
+  listInfo.cacheTime = 0
 }
 export const resetAllListInfo = () => {
   musicState.lists.forEach((listInfo) => {
@@ -33,6 +36,7 @@ export const resetAllListInfo = () => {
     listInfo.total = 0
     listInfo.searchKey = null
     listInfo.requestKey = null
+    listInfo.cacheTime = 0
   })
 }
 
@@ -44,7 +48,7 @@ const getCachedListInfo = (
   text: string
 ): [Promise<AnyListen.IPCResource.MusicListResult> | null, number] | null => {
   const listInfo = musicState.lists.get(buildSourceKey(extId, source))
-  if (listInfo) {
+  if (listInfo && performance.now() - listInfo.cacheTime < CACHE_TIME) {
     if (listInfo.requestKey == buildRequestKey(extId, source, page, limit, text)) {
       return [listInfo.requestPromise!, listInfo.total]
     }
@@ -73,6 +77,7 @@ const setCachedListInfo = (
       limit,
       searchKey: null,
       requestKey: null,
+      cacheTime: performance.now(),
     }
     musicState.lists.set(sourceKey, listInfo)
   }
@@ -85,6 +90,7 @@ const setCachedListInfo = (
         listInfo.page = page
         listInfo.limit = limit
         listInfo.total = result.total
+        listInfo.cacheTime = performance.now()
       }
       return result
     })
@@ -94,6 +100,7 @@ const setCachedListInfo = (
         listInfo.requestPromise = undefined
         listInfo.page = 0
         listInfo.total = 0
+        listInfo.cacheTime = 0
       }
       console.log(error)
       throw error

@@ -6,6 +6,7 @@ export interface ListInfo {
   searchKey: string | null
   requestKey: string | null
   info: AnyListen.Resource.TopSongsDetailInfo | null
+  cacheTime: number
 }
 export interface InitState {
   lists: Map<string, ListInfo>

@@ -1,5 +1,11 @@
 export interface InitState {
-  lists: Map<string, Promise<AnyListen.Resource.TopSongsItem[]>>
+  lists: Map<
+    string,
+    {
+      requestPromise?: Promise<AnyListen.Resource.TopSongsItem[]>
+      cacheTime: number
+    }
+  >
 }
 
 export const topSongsState: InitState = {
