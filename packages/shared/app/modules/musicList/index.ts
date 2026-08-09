@@ -1,5 +1,5 @@
 import { LIST_IDS } from '@any-listen/common/constants'
-import { arrPush, throttle } from '@any-listen/common/utils'
+import { arrPush, throttle, getRandom } from '@any-listen/common/utils'
 
 import { getSettings } from '../../common'
 import { getDeviceId } from '../../common/deviceId'
@@ -264,7 +264,7 @@ export const syncUserList = async (id: string) => {
 export const runSyncUserListTask = () => {
   const now = new Date()
   const next = new Date(now)
-  next.setHours(11, 0, 0, 0)
+  next.setHours(getRandom(11, 12), getRandom(0, 59), getRandom(0, 59), getRandom(0, 999))
   if (next.getTime() - now.getTime() <= 1800_000) next.setDate(next.getDate() + 1)
   const nextDelay = next.getTime() - now.getTime()
 
