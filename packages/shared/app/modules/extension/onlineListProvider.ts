@@ -27,7 +27,7 @@ const detailAll = async (list: AnyListen.List.OnlineListInfo) => {
 }
 
 export const syncList = async (list: AnyListen.List.OnlineListInfo) => {
-  logs.App.logcat.debug(`[Online List]Sync: ${list.name} (${list.id})`)
+  // logs.App.logcat.debug(`[Online List]Sync: ${list.name} (${list.id})`)
   // console.log(`Sync list: ${list.name} (${list.id})`)
   try {
     const [localMusics, onlineMusics] = await Promise.all([

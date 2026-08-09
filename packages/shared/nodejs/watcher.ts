@@ -1,10 +1,13 @@
 import chokidar from 'chokidar'
+import type { EventName } from 'chokidar/handler.js'
 
 import { isMusicFile } from './music'
 
-export type FileAction = 'add' | 'change' | 'unlink'
+export type FileAction = Extract<EventName, 'add' | 'change' | 'unlink'>
+// export type FileAction = 'add' | 'change' | 'unlink'
 export const watchMusicDir = (
   dir: string,
+  logger: AnyListen.Logger,
   callback: (action: FileAction, path: string, ctimeMs?: number, mtimeMs?: number, size?: number) => void,
   onReady: () => void,
   onError: (message: string) => void,
@@ -19,7 +22,9 @@ export const watchMusicDir = (
         }
   } = {}
 ) => {
-  // console.log(`Start watching music dir: ${dir}, recursive: ${options.recursive ? 'yes' : 'no'}`)
+  logger.debug(
+    `[Watcher]Watching. recursive: ${options.recursive ? 'yes' : 'no'}, usePolling: ${options.usePolling ? 'yes' : 'no'}, dir: [${dir}]`
+  )
   const watcher = chokidar.watch(dir, {
     ignored: (filePath, stats) => {
       if (stats && !stats.isDirectory() && !isMusicFile(filePath, true)) {
@@ -44,19 +49,28 @@ export const watchMusicDir = (
     atomic: 300,
   })
 
+  let ready = false
+  let counts: Partial<Record<EventName, number>> = {}
   watcher.on('all', (event, path, stats) => {
     // console.log(path, stats)
     // console.log(`File ${event}: ${path}`)
+    if (!ready) counts[event] = (counts[event] ?? 0) + 1
     callback(event as FileAction, path, stats?.ctimeMs, stats?.mtimeMs, stats?.size)
   })
 
   watcher.on('ready', () => {
-    // console.log(`Initial scan complete. Watching for changes in: ${dir}`)
+    logger.debug(
+      `[Watcher]Ready. ${Object.entries(counts)
+        .map(([event, count]) => `${event}: ${count}`)
+        .join(', ')}. dir: [${dir}]`
+    )
+    ready = true
+    counts = {}
     onReady()
   })
 
   watcher.on('error', (error) => {
-    console.error('Watcher error:', error)
+    logger.error(`[Watcher]Error. dir: [${dir}], ${error instanceof Error ? error.message : String(error)}`)
     onError(error instanceof Error ? error.message : String(error))
   })
 

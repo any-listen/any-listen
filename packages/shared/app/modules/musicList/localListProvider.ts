@@ -5,6 +5,7 @@ import type { FileAction } from '@any-listen/nodejs/watcher'
 import { getSettings, showMessageBox, t } from '../../common'
 import { getDeviceId } from '../../common/deviceId'
 import { winMainReadyEvent } from '../../common/event'
+import { logs } from '../logs'
 import { workers } from '../worker'
 import { proxyCallback } from '../worker/utils'
 import { musicListEvent } from './event'
@@ -318,6 +319,9 @@ const syncList = async (list: AnyListen.List.LocalListInfo) => {
   })
   const onReadyProxy = proxyCallback(async () => {
     const [addFiles, removedFiles] = flushChangedFiles()
+    logs.App.logcat.debug(
+      `[Local list]Watcher ready: ${list.name} (${list.id}), add: ${addFiles.length}, remove: ${removedFiles.length}`
+    )
     for (const id of removedFiles) {
       const idx = addFiles.indexOf(id)
       if (idx !== -1) addFiles.splice(idx, 1)

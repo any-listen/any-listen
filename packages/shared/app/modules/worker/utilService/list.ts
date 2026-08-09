@@ -1,6 +1,8 @@
 import { generateId } from '@any-listen/common/utils'
 import { type FileAction, watchMusicDir } from '@any-listen/nodejs/watcher'
 
+import { logger } from './shared/logger'
+
 const watchers = new Map<string, () => Promise<void>>()
 export const createMusicDirWatcher = (
   dir: string,
@@ -12,7 +14,7 @@ export const createMusicDirWatcher = (
   const id = generateId()
   watchers.set(
     id,
-    watchMusicDir(dir, onFile, onReady, onError, {
+    watchMusicDir(dir, logger, onFile, onReady, onError, {
       ...options,
       usePolling: options.usePolling
         ? {

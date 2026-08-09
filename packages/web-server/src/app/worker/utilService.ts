@@ -1,6 +1,5 @@
+import { logs } from '@any-listen/app/modules/logs'
 import { startUtilServiceWorker as _startUtilServiceWorker } from '@any-listen/app/modules/worker'
-
-import { logger } from '@/shared/log4js'
 
 // const registerExtensionServiceEvent = () => {
 //   workers.extensionServiceWorker.on('messageerror', (err) => {
@@ -18,7 +17,7 @@ import { logger } from '@/shared/log4js'
 export const startUtilServiceWorker = async () => {
   return new Promise<void>((resolve, reject) => {
     void _startUtilServiceWorker(resolve, {
-      logger,
+      logger: logs.App.logcat,
     }).catch(reject)
   })
 }
