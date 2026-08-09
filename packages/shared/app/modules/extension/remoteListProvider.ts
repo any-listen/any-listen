@@ -119,7 +119,7 @@ const state = {
   waitingSyncLists: [] as AnyListen.List.RemoteListInfo[],
 }
 export const syncList = async (list: AnyListen.List.RemoteListInfo) => {
-  logs.App.logcat.debug(`[Remote List]Sync: ${list.name} (${list.id})`)
+  // logs.App.logcat.debug(`[Remote List]Sync: ${list.name} (${list.id})`)
   // console.log(`Sync list: ${list.name} (${list.id})`)
   try {
     const [musics, ids] = await Promise.all([
