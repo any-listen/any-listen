@@ -1,13 +1,15 @@
 import zlib from 'node:zlib'
 
+const COMPRESS_THRESHOLD = 1024
+
 const gzip = async (data: string) => {
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<Buffer>((resolve, reject) => {
     zlib.gzip(data, (err, buf) => {
       if (err) {
-        reject(err)
+        reject(new Error(err.message, { cause: err }))
         return
       }
-      resolve(buf.toString('base64'))
+      resolve(buf)
     })
   })
 }
@@ -15,7 +17,7 @@ const unGzip = async (data: string) => {
   return new Promise<string>((resolve, reject) => {
     zlib.gunzip(Buffer.from(data, 'base64'), (err, buf) => {
       if (err) {
-        reject(err)
+        reject(new Error(err.message, { cause: err }))
         return
       }
       resolve(buf.toString())
@@ -24,7 +26,11 @@ const unGzip = async (data: string) => {
 }
 
 export const encodeData = async (data: string): Promise<string> => {
-  return data.length > 1024 ? `cg_${await gzip(data)}` : data
+  const originalSize = Buffer.byteLength(data, 'utf8')
+  if (originalSize <= COMPRESS_THRESHOLD) return data
+  const compressed = await gzip(data)
+  if (compressed.length >= originalSize) return data
+  return `cg_${compressed.toString('base64')}`
 }
 
 export const decodeData = async (data: string): Promise<string> => {
