@@ -1,6 +1,6 @@
 import type { workerDBSeriveTypes } from '../modules/worker/dbService'
 import type { workerExtensionSeriveTypes } from '../modules/worker/extensionService'
-import type { workerUtilSeriveTypes } from '../modules/worker/utilService'
+import type { workerUtilSeriveTypes, ExposedWorkerUtilService } from '../modules/worker/utilService'
 
 declare global {
   // interface WorkerDBSeriveTypes {
@@ -9,6 +9,7 @@ declare global {
   namespace AnyListen {
     type WorkerDBSeriveListTypes = workerDBSeriveTypes
     type WorkerUtilSeriveTypes = workerUtilSeriveTypes
+    type WorkerUtilSeriveExposedTypes = ExposedWorkerUtilService
     type WorkerExtensionSeriveTypes = workerExtensionSeriveTypes
   }
 }

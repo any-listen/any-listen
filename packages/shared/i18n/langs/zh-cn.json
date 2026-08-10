@@ -461,6 +461,8 @@
   "settings.basic.play_bar_style_full": "全宽进度条",
   "settings.basic.play_bar_style_middle": "中等进度条",
   "settings.basic.play_bar_style_mini": "迷你进度条",
+  "settings.common.enable_debug": "启用调试日志",
+  "settings.common.enable_debug_desc": "启用后会记录调试日志，仅在需要调试程序时启用它，并且在调试完毕后将其关闭",
   "settings.common.enable_trash": "在删除文件或文件夹时，将它们移动到操作系统的“回收站”（MacOS为“废纸篓”）",
   "settings.common.enable_trash_desc": "关闭后将永久删除文件或文件夹",
   "settings.common.transparent_window": "主窗口使用软件内置的圆角及阴影",

@@ -10,6 +10,7 @@
 - Added **Desktop Lyrics** controls to the **Tray Menu**.
 - Added a **Record debug logs** option for WebDAV data synchronization.
 - Added logging output views for the app and extension service.
+- Added an **Enable Debug Logging** toggle under _Settings > Other Settings_. Disabled by default.
 
 ### Improved
 
@@ -49,6 +50,7 @@
 - 在 **「托盘菜单」** 中新增 **「桌面歌词」** 相关控制。
 - 新增 WebDAV 数据同步的 **「记录调试日志」** 选项。
 - 新增 APP、扩展服务 等日志输出界面。
+- 新增 **「启用调试日志」** 开关，位于 _设置 > 其他设置_，默认关闭。
 
 ### 优化
 

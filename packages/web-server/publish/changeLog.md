@@ -8,6 +8,7 @@
 - Added support for local **strm** files. Currently, only song links over HTTP are supported ([#227](https://github.com/any-listen/any-listen/issues/227)).
 - Added a **Record debug logs** option for WebDAV data synchronization.
 - Added logging output views for the app and extension service.
+- Added an **Enable Debug Logging** toggle under _Settings > Other Settings_. Disabled by default.
 
 ### Improved
 
@@ -38,6 +39,7 @@
 - 新增本地 **「strm」** 类型文件支持，当前仅支持 HTTP 协议的歌曲链接（[#227](https://github.com/any-listen/any-listen/issues/227)）。
 - 新增 WebDAV 数据同步的 **「记录调试日志」** 选项。
 - 新增 APP、扩展服务 等日志输出界面。
+- 新增 **「启用调试日志」** 开关，位于 _设置 > 其他设置_，默认关闭。
 
 ### 优化
 

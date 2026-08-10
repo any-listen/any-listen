@@ -64,6 +64,8 @@ export const watchMusicDir = (
         .map(([event, count]) => `${event}: ${count}`)
         .join(', ')}. dir: [${dir}]`
     )
+    const watched = Object.entries(watcher.getWatched()).map(([dir, files]) => `[${dir}]: ${files.length}`)
+    logger.debug(`[Watcher]Watched: ${JSON.stringify(watched)}`)
     ready = true
     counts = {}
     onReady()

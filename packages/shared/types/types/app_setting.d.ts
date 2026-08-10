@@ -74,6 +74,11 @@ declare global {
       'common.enableTrash': boolean
 
       /**
+       * 是否启用调试日志
+       */
+      'common.enableDebug': boolean
+
+      /**
        * 启动时自动播放歌曲
        */
       'player.startupAutoPlay': boolean

@@ -462,6 +462,8 @@
   "settings.basic.play_bar_style_full": "Full width progress bar",
   "settings.basic.play_bar_style_middle": "Medium progress bar",
   "settings.basic.play_bar_style_mini": "Mini progress bar",
+  "settings.common.enable_debug": "Enable debug logging",
+  "settings.common.enable_debug_desc": "When enabled, debug logs are recorded, enable it only when you need to debug the program, and turn it off when you are done debugging",
   "settings.common.enable_trash": "When you delete files or folders, move them to your operating system's Recycle Bin (Trash for MacOS)",
   "settings.common.enable_trash_desc": "File or folder will be permanently deleted when closed",
   "settings.common.transparent_window": "The main window uses the built-in rounded corners and shadows",

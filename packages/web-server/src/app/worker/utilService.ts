@@ -1,6 +1,8 @@
 import { logs } from '@any-listen/app/modules/logs'
 import { startUtilServiceWorker as _startUtilServiceWorker } from '@any-listen/app/modules/worker'
 
+import { appState } from '../app'
+
 // const registerExtensionServiceEvent = () => {
 //   workers.extensionServiceWorker.on('messageerror', (err) => {
 //     console.error('extensionServiceWorker messageerror: ', err)
@@ -18,6 +20,9 @@ export const startUtilServiceWorker = async () => {
   return new Promise<void>((resolve, reject) => {
     void _startUtilServiceWorker(resolve, {
       logger: logs.App.logcat,
+      getSettings: async (key) => {
+        return appState.appSetting[key]
+      },
     }).catch(reject)
   })
 }

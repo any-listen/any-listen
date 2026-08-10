@@ -399,6 +399,13 @@ export const settings: SettingListSection[] = [
     id: 'other',
     name: 'settings.other',
     list: [
+      // t('settings.common.enable_debug_desc')
+      {
+        field: 'common.enableDebug',
+        name: 'settings.common.enable_debug',
+        description: 'settings.common.enable_debug_desc',
+        type: 'boolean',
+      },
       (import.meta.env.VITE_IS_DESKTOP && import.meta.env.VITE_IS_MAC) || import.meta.env.VITE_IS_WEB
         ? null
         : {

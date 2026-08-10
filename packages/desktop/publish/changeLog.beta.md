@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Fixed an issue where local song metadata updates could conflict.
+- Added an **Enable Debug Logging** toggle under _Settings > Other Settings_. Disabled by default.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复本地歌曲信息更新时的冲突问题。
+- 新增 **「启用调试日志」** 开关，位于 _设置 > 其他设置_，默认关闭。

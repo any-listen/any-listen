@@ -4,12 +4,9 @@ import * as list from './list'
 import * as music from './music'
 import { setLogger } from './shared/logger'
 import { setRemoveFile } from './shared/music'
+import { setGetSettings } from './shared/settings'
 
-void exposeWorker<{
-  inited: () => void
-  logger: AnyListen.Logger
-  removeFile?: (filePath: string) => Promise<void>
-}>({
+void exposeWorker<ExposedWorkerUtilService>({
   ...common,
   ...music,
   ...list,
@@ -20,7 +17,15 @@ void exposeWorker<{
     })
   }
   setLogger(remote.logger)
+  setGetSettings(remote.getSettings)
   remote.inited()
 })
 
 export type workerUtilSeriveTypes = typeof common & typeof music & typeof list
+
+export interface ExposedWorkerUtilService {
+  inited: () => void
+  logger: AnyListen.Logger
+  getSettings: <T extends keyof AnyListen.AppSetting>(key: T) => Promise<AnyListen.AppSetting[T]>
+  removeFile?: (filePath: string) => Promise<void>
+}
