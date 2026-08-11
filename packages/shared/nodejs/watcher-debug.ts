@@ -1,9 +1,8 @@
 import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
-import path from 'node:path'
 
-import chokidar, { type FSWatcher, type ChokidarOptions } from 'chokidar'
+import { readdirp } from 'readdirp'
 
 export const watcherDebug = async (logger: AnyListen.Logger, root: string) => {
   const TAG = '[WatcherDiagnostic]'
@@ -12,17 +11,11 @@ export const watcherDebug = async (logger: AnyListen.Logger, root: string) => {
   // 配置
   // ============================================================
 
-  // 目录 / 文件样本最多输出多少个
+  // 日志中最多输出多少个文件样本
   const SAMPLE_COUNT = 5
 
-  // Comparison 中最多输出多少个缺失文件
-  const MISSING_SAMPLE_COUNT = 10
-
-  // 单个 Chokidar 测试最多等待多久
-  const CHOKIDAR_TIMEOUT = 15_000
-
-  // Polling 间隔
-  const POLLING_INTERVAL = 1000
+  // readdirp 单次测试超时时间
+  const READDIRP_TIMEOUT = 30_000
 
   // ============================================================
   // Logger helpers
@@ -79,22 +72,6 @@ export const watcherDebug = async (logger: AnyListen.Logger, root: string) => {
   }
 
   // ============================================================
-  // Chokidar watched summary
-  // ============================================================
-
-  const summarizeWatched = (watched: Record<string, string[]>) => {
-    return Object.fromEntries(
-      Object.entries(watched).map(([dir, names]) => [
-        dir,
-        {
-          count: names.length,
-          samples: names.slice(0, SAMPLE_COUNT),
-        },
-      ])
-    )
-  }
-
-  // ============================================================
   // Start
   // ============================================================
 
@@ -141,21 +118,14 @@ export const watcherDebug = async (logger: AnyListen.Logger, root: string) => {
 
   debug('========== SYSTEM COMMANDS ==========')
 
-  // Kernel
   logCommand('uname', ['-a'])
 
-  // Linux distribution
   logCommand('cat', ['/etc/os-release'])
 
-  // Filesystem
   logCommand('df', ['-T', root])
 
-  // Mount
   logCommand('findmnt', ['-T', root])
 
-  // /proc/mounts
-  //
-  // 这里不使用 shell，root 会作为 grep 的参数。
   logCommand('grep', [root, '/proc/mounts'])
 
   // ============================================================
@@ -165,11 +135,11 @@ export const watcherDebug = async (logger: AnyListen.Logger, root: string) => {
   debug('========== FILESYSTEM ==========')
 
   try {
-    let rootExists = fs.existsSync(root)
+    const exists = fs.existsSync(root)
 
-    debug('[exists]', rootExists)
+    debug('[exists]', exists)
 
-    if (!rootExists) {
+    if (!exists) {
       debug('[Diagnosis]', 'ROOT_NOT_EXISTS')
 
       debug('========== END ==========')
@@ -241,6 +211,11 @@ export const watcherDebug = async (logger: AnyListen.Logger, root: string) => {
 
   // ============================================================
   // 7. Node readdir
+  //
+  // 这是对照组。
+  //
+  // 如果这里能看到文件，而 readdirp 看不到，
+  // 问题就可以进一步缩小到 readdirp / recursive traversal。
   // ============================================================
 
   debug('========== NODE READDIR ==========')
@@ -276,402 +251,302 @@ export const watcherDebug = async (logger: AnyListen.Logger, root: string) => {
     error('[readdir ERROR]', err instanceof Error ? err.stack : String(err))
   }
 
-  // ============================================================
-  // 8. File stat
-  //
-  // 只检查前 3 个文件。
-  // ============================================================
+  const directFiles = entries.filter((entry) => entry.isFile())
 
-  debug('========== NODE FILE STAT ==========')
-
-  const files = entries.filter((entry) => entry.isFile())
-
-  const sampleFiles = files.slice(0, Math.min(3, files.length))
-
-  for (const entry of sampleFiles) {
-    const fullPath = path.join(root, entry.name)
-
-    try {
-      const stat = fs.statSync(fullPath)
-
-      debug(
-        '[file stat]',
-        JSON.stringify({
-          name: entry.name,
-          size: stat.size,
-          ino: stat.ino,
-          dev: stat.dev,
-          mode: stat.mode,
-          uid: stat.uid,
-          gid: stat.gid,
-          mtimeMs: stat.mtimeMs,
-        })
-      )
-    } catch (err) {
-      error('[file stat ERROR]', entry.name, err instanceof Error ? err.stack : String(err))
-    }
-  }
+  const directFileCount = directFiles.length
 
   // ============================================================
-  // 9. System command check
-  //
-  // 只检查一个文件，避免日志过多。
+  // 8. readdirp test helper
   // ============================================================
 
-  debug('========== FILE COMMAND CHECK ==========')
-
-  if (files.length > 0) {
-    const sampleFile = path.join(root, files[0].name)
-
-    debug('[sample file]', sampleFile)
-
-    logCommand('ls', ['-la', sampleFile])
-
-    logCommand('stat', [sampleFile])
-  }
-
-  // ============================================================
-  // 10. Chokidar test helper
-  // ============================================================
-
-  const runChokidarTest = async (
-    name: string,
-    target: string | string[],
-    options: ChokidarOptions,
-    timeout = CHOKIDAR_TIMEOUT
-  ) => {
-    debug(`========== CHOKIDAR TEST: ${name} ==========`)
-
-    debug('[target]', JSON.stringify(target))
+  const runReaddirpTest = async (name: string, options: Parameters<typeof readdirp>[1]) => {
+    debug(`========== READDIRP TEST: ${name} ==========`)
 
     debug('[options]', JSON.stringify(options))
 
-    const events: Array<{
-      event: string
+    let fileCount = 0
+    let directoryCount = 0
+    let otherCount = 0
+
+    const fileSamples: Array<{
       path: string
+      fullPath?: string
+      basename?: string
     }> = []
 
-    const rawEvents: Array<{
-      event: string
+    const directorySamples: Array<{
       path: string
-      details?: unknown
+      fullPath?: string
     }> = []
 
-    const eventStats = {
-      add: 0,
-      addDir: 0,
-      change: 0,
-      unlink: 0,
-      unlinkDir: 0,
-      other: 0,
-    }
-
-    const rawEventStats: Record<string, number> = {}
-
-    let ready = false
-
-    let watcher: FSWatcher | undefined
+    let stream: ReturnType<typeof readdirp>
 
     try {
-      watcher = chokidar.watch(target, options)
+      stream = readdirp(root, options)
+    } catch (err) {
+      error(`[READDIRP][${name}] CREATE ERROR`, err instanceof Error ? err.stack : String(err))
 
-      // --------------------------------------------------------
-      // all event
-      //
-      // 不逐条输出，只统计。
-      // --------------------------------------------------------
-
-      watcher.on('all', (event, filePath) => {
-        if (event === 'add' || event === 'addDir' || event === 'change' || event === 'unlink' || event === 'unlinkDir') {
-          eventStats[event]++
-        } else {
-          eventStats.other++
-        }
-
-        // 只保留前几个样本
-        if (events.length < SAMPLE_COUNT) {
-          events.push({
-            event,
-            path: filePath,
-          })
-        }
-      })
-
-      // --------------------------------------------------------
-      // raw event
-      //
-      // raw 事件可能非常多，因此也只统计。
-      // --------------------------------------------------------
-
-      watcher.on('raw', (event, filePath, details) => {
-        rawEventStats[event] = (rawEventStats[event] ?? 0) + 1
-
-        if (rawEvents.length < SAMPLE_COUNT) {
-          rawEvents.push({
-            event,
-            path: filePath,
-            details,
-          })
-        }
-      })
-
-      // --------------------------------------------------------
-      // error
-      // --------------------------------------------------------
-
-      watcher.on('error', (err) => {
-        error(`[CHOKIDAR][${name}][ERROR]`, err instanceof Error ? err.stack : String(err))
-      })
-
-      // --------------------------------------------------------
-      // ready
-      // --------------------------------------------------------
-
-      await new Promise<void>((resolve) => {
-        let resolved = false
-
-        const finish = () => {
-          if (resolved) {
-            return
-          }
-
-          resolved = true
-          resolve()
-        }
-
-        watcher!.on('ready', () => {
-          ready = true
-
-          finish()
-        })
-
-        setTimeout(() => {
-          if (!ready) {
-            debug(`[CHOKIDAR][${name}] TIMEOUT`)
-          }
-
-          finish()
-        }, timeout)
-      })
-
-      // 给 polling 一次额外扫描机会
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1500)
-      })
-
-      let watched: Record<string, string[]> = {}
-
-      try {
-        watched = watcher.getWatched()
-      } catch (err) {
-        error(`[CHOKIDAR][${name}][getWatched ERROR]`, err instanceof Error ? err.stack : String(err))
+      return {
+        success: false,
+        fileCount: 0,
+        directoryCount: 0,
+        otherCount: 0,
+        fileSamples,
+        directorySamples,
+        error: err instanceof Error ? err.message : String(err),
       }
+    }
 
-      // --------------------------------------------------------
-      // 输出结果
-      // --------------------------------------------------------
+    try {
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => {
+          reject(new Error(`readdirp timeout after ${READDIRP_TIMEOUT}ms`))
+        }, READDIRP_TIMEOUT)
+      })
+
+      const consumePromise = (async () => {
+        for await (const entry of stream) {
+          if (entry.dirent.isFile()) {
+            fileCount++
+
+            if (fileSamples.length < SAMPLE_COUNT) {
+              fileSamples.push({
+                path: entry.path,
+                fullPath: entry.fullPath,
+                basename: entry.basename,
+              })
+            }
+          } else if (entry.dirent.isDirectory()) {
+            directoryCount++
+
+            if (directorySamples.length < SAMPLE_COUNT) {
+              directorySamples.push({
+                path: entry.path,
+                fullPath: entry.fullPath,
+              })
+            }
+          } else {
+            otherCount++
+          }
+        }
+      })()
+
+      await Promise.race([consumePromise, timeoutPromise])
 
       debug(
-        `[CHOKIDAR][${name}][RESULT]`,
+        `[READDIRP][${name}][RESULT]`,
         JSON.stringify({
-          ready,
+          success: true,
 
-          eventStats,
+          fileCount,
 
-          eventSamples: events,
+          directoryCount,
 
-          rawEventStats,
+          otherCount,
 
-          rawEventSamples: rawEvents,
+          fileSamples,
 
-          watched: summarizeWatched(watched),
+          directorySamples,
         })
       )
 
       return {
-        ready,
-        events,
-        rawEvents,
-        eventStats,
-        rawEventStats,
-        watched,
+        success: true,
+        fileCount,
+        directoryCount,
+        otherCount,
+        fileSamples,
+        directorySamples,
       }
     } catch (err) {
-      error(`[CHOKIDAR][${name}][EXCEPTION]`, err instanceof Error ? err.stack : String(err))
+      error(
+        `[READDIRP][${name}][ERROR]`,
+        JSON.stringify({
+          message: err instanceof Error ? err.message : String(err),
+
+          fileCount,
+
+          directoryCount,
+
+          otherCount,
+
+          fileSamples,
+
+          directorySamples,
+        })
+      )
+
+      try {
+        stream.destroy()
+      } catch {
+        // ignore
+      }
 
       return {
-        ready,
-        events,
-        rawEvents,
-        eventStats,
-        rawEventStats,
-        watched: {},
-      }
-    } finally {
-      if (watcher) {
-        try {
-          await watcher.close()
-
-          debug(`[CHOKIDAR][${name}] CLOSED`)
-        } catch (err) {
-          error(`[CHOKIDAR][${name}][CLOSE ERROR]`, err instanceof Error ? err.stack : String(err))
-        }
+        success: false,
+        fileCount,
+        directoryCount,
+        otherCount,
+        fileSamples,
+        directorySamples,
+        error: err instanceof Error ? err.message : String(err),
       }
     }
   }
 
   // ============================================================
-  // 11. Test A
+  // 9. readdirp test A
   //
-  // 普通 Chokidar，不使用 polling。
+  // 最接近 chokidar 默认递归扫描的行为：
+  // 只查文件和目录，不使用过滤器。
   // ============================================================
 
-  const normalResult = await runChokidarTest('A_NORMAL', root, {
-    persistent: true,
-    ignoreInitial: false,
+  const recursiveResult = await runReaddirpTest('A_RECURSIVE', {
+    type: 'files_directories',
   })
 
   // ============================================================
-  // 12. Test B
+  // 10. readdirp test B
   //
-  // Polling。
+  // 只扫描文件。
+  //
+  // 如果 A 正常、B 正常：
+  // readdirp 基本递归扫描没有问题。
   // ============================================================
 
-  const pollingResult = await runChokidarTest('B_POLLING', root, {
-    persistent: true,
-    ignoreInitial: false,
-    usePolling: true,
-    interval: POLLING_INTERVAL,
-    binaryInterval: POLLING_INTERVAL,
+  const filesOnlyResult = await runReaddirpTest('B_FILES_ONLY', {
+    type: 'files',
   })
 
   // ============================================================
-  // 13. Test C
+  // 11. readdirp test C
   //
-  // 直接 watch 一个确定存在的文件。
-  // ============================================================
-
-  let directFileResult: Awaited<ReturnType<typeof runChokidarTest>> | undefined
-
-  if (files.length > 0) {
-    const file = path.join(root, files[0].name)
-
-    directFileResult = await runChokidarTest('C_DIRECT_FILE', file, {
-      persistent: true,
-      ignoreInitial: false,
-      usePolling: true,
-      interval: POLLING_INTERVAL,
-      binaryInterval: POLLING_INTERVAL,
-    })
-  } else {
-    debug('[C_DIRECT_FILE] SKIPPED: no regular files')
-  }
-
-  // ============================================================
-  // 14. Test D
+  // 限制深度为 1。
   //
-  // 把 fs.readdirSync 得到的文件直接交给 Chokidar。
+  // root 本身就是目标目录，所以这里可以验证：
+  // readdirp 是否能读取 root 的直接子文件。
+  // ============================================================
+
+  const depthOneResult = await runReaddirpTest('C_DEPTH_ONE', {
+    type: 'files',
+    depth: 1,
+  })
+
+  // ============================================================
+  // 12. readdirp test D
   //
-  // 文件很多时也没有问题，因为这里不输出文件列表。
+  // 显式使用 root 下的文件扩展名过滤。
+  //
+  // 音乐目录场景下用于确认过滤器是否影响结果。
   // ============================================================
 
-  let directFilesResult: Awaited<ReturnType<typeof runChokidarTest>> | undefined
-
-  const directFilePaths = files.map((entry) => path.join(root, entry.name))
-
-  if (directFilePaths.length > 0) {
-    directFilesResult = await runChokidarTest('D_DIRECT_FILES', directFilePaths, {
-      persistent: true,
-      ignoreInitial: false,
-      usePolling: true,
-      interval: POLLING_INTERVAL,
-      binaryInterval: POLLING_INTERVAL,
-    })
-  } else {
-    debug('[D_DIRECT_FILES] SKIPPED: no regular files')
-  }
+  const extensionResult = await runReaddirpTest('D_EXTENSION_FILTER', {
+    type: 'files',
+    directoryFilter: ['!@eaDir'],
+    fileFilter: ['*.mp3', '*.flac', '*.m4a', '*.aac', '*.ogg', '*.wav', '*.opus'],
+  })
 
   // ============================================================
-  // 15. Comparison
+  // 13. Comparison
   // ============================================================
 
   debug('========== COMPARISON ==========')
 
-  const expectedNames = new Set(files.map((file) => file.name))
-
-  const getWatchedFileNames = (watched: Record<string, string[]>) => {
-    const result = new Set<string>()
-
-    for (const names of Object.values(watched)) {
-      for (const name of names) {
-        result.add(name)
-      }
-    }
-
-    return result
-  }
-
-  const normalWatchedNames = getWatchedFileNames(normalResult.watched)
-
-  const pollingWatchedNames = getWatchedFileNames(pollingResult.watched)
-
-  const missingNormal = [...expectedNames].filter((name) => !normalWatchedNames.has(name))
-
-  const missingPolling = [...expectedNames].filter((name) => !pollingWatchedNames.has(name))
-
   debug(
     '[Comparison]',
     JSON.stringify({
-      fsFileCount: expectedNames.size,
+      nodeReaddirFiles: directFileCount,
 
-      normalWatchedFileCount: normalWatchedNames.size,
+      readdirpRecursiveFiles: recursiveResult.fileCount,
 
-      pollingWatchedFileCount: pollingWatchedNames.size,
+      readdirpFilesOnly: filesOnlyResult.fileCount,
 
-      normalMissingCount: missingNormal.length,
+      readdirpDepthOne: depthOneResult.fileCount,
 
-      pollingMissingCount: missingPolling.length,
+      readdirpExtensionFilter: extensionResult.fileCount,
 
-      normalMissingSamples: missingNormal.slice(0, MISSING_SAMPLE_COUNT),
+      recursiveDifference: directFileCount - recursiveResult.fileCount,
 
-      pollingMissingSamples: missingPolling.slice(0, MISSING_SAMPLE_COUNT),
+      filesOnlyDifference: directFileCount - filesOnlyResult.fileCount,
+
+      depthOneDifference: directFileCount - depthOneResult.fileCount,
     })
   )
 
   // ============================================================
-  // 16. Diagnosis
+  // 14. Diagnosis
   // ============================================================
 
   debug('========== DIAGNOSIS ==========')
 
-  const normalHasAdd = normalResult.eventStats.add > 0
+  // ------------------------------------------------------------
+  // 情况 1：
+  //
+  // Node readdir 能看到文件
+  // readdirp recursive 也能看到文件
+  //
+  // 那么 readdirp 本身基本正常。
+  // ------------------------------------------------------------
 
-  const pollingHasAdd = pollingResult.eventStats.add > 0
+  if (directFileCount > 0 && recursiveResult.success && recursiveResult.fileCount > 0) {
+    debug('[Diagnosis]', 'READDIRP_RECURSIVE_SCAN_OK')
+  }
 
-  const directFileHasAdd = directFileResult?.eventStats.add === 1
+  // ------------------------------------------------------------
+  // 情况 2：
+  //
+  // Node readdir 能看到文件
+  // readdirp recursive 看不到文件
+  // ------------------------------------------------------------
+  else if (directFileCount > 0 && recursiveResult.success && recursiveResult.fileCount === 0) {
+    debug('[Diagnosis]', 'NODE_READDIR_OK_BUT_READDIRP_RECURSIVE_SCAN_FAILED')
+  }
 
-  const directFilesAddCount = directFilesResult?.eventStats.add ?? 0
+  // ------------------------------------------------------------
+  // 情况 3：
+  //
+  // readdirp recursive 失败，但是 files-only 正常。
+  //
+  // 说明可能和目录 traversal 有关。
+  // ------------------------------------------------------------
+  else if (!recursiveResult.success && filesOnlyResult.success && filesOnlyResult.fileCount > 0) {
+    debug('[Diagnosis]', 'READDIRP_RECURSIVE_ERROR_BUT_FILES_ONLY_WORKS')
+  }
 
-  if (files.length === 0) {
-    debug('[Diagnosis]', 'ROOT_EMPTY_OR_NO_REGULAR_FILES')
-  } else if (normalHasAdd && pollingHasAdd) {
-    debug('[Diagnosis]', 'CHOKIDAR_INITIAL_SCAN_OK')
-  } else if (!normalHasAdd && !pollingHasAdd && directFileHasAdd) {
-    debug('[Diagnosis]', 'DIRECT_FILE_WATCH_OK_BUT_DIRECTORY_SCAN_FAILED')
-  } else if (!normalHasAdd && !pollingHasAdd && directFilesAddCount > 0) {
-    debug('[Diagnosis]', 'EXPLICIT_FILE_LIST_WATCH_OK_BUT_RECURSIVE_SCAN_FAILED')
-  } else if (!normalHasAdd && !pollingHasAdd && !directFileHasAdd) {
-    debug('[Diagnosis]', 'CHOKIDAR_CANNOT_WATCH_DIRECT_FILE')
-  } else if (!normalHasAdd && pollingHasAdd) {
-    debug('[Diagnosis]', 'POLLING_WORKS_BUT_NATIVE_WATCH_FAILED')
-  } else {
-    debug('[Diagnosis]', 'UNDETERMINED_CHECK_FILESYSTEM_MOUNT_AND_VERSIONS')
+  // ------------------------------------------------------------
+  // 情况 4：
+  //
+  // depth=1 正常，但是 recursive 失败。
+  //
+  // 进一步指向 recursive traversal。
+  // ------------------------------------------------------------
+  else if (depthOneResult.fileCount > 0 && recursiveResult.fileCount === 0) {
+    debug('[Diagnosis]', 'READDIRP_DEPTH_ONE_OK_BUT_RECURSIVE_SCAN_FAILED')
+  }
+
+  // ------------------------------------------------------------
+  // 情况 5：
+  //
+  // readdirp 全部无法发现文件。
+  // ------------------------------------------------------------
+  else if (
+    directFileCount > 0 &&
+    recursiveResult.fileCount === 0 &&
+    filesOnlyResult.fileCount === 0 &&
+    depthOneResult.fileCount === 0
+  ) {
+    debug('[Diagnosis]', 'NODE_READDIR_OK_BUT_READDIRP_CANNOT_DISCOVER_FILES')
+  }
+
+  // ------------------------------------------------------------
+  // 其他
+  // ------------------------------------------------------------
+  else {
+    debug('[Diagnosis]', 'UNDETERMINED_CHECK_READDIRP_ERRORS_AND_FILESYSTEM')
   }
 
   // ============================================================
-  // 17. Summary
-  //
-  // 最后再输出一条高度压缩的总结，方便搜索日志。
+  // 15. Summary
   // ============================================================
 
   debug(
@@ -679,30 +554,30 @@ export const watcherDebug = async (logger: AnyListen.Logger, root: string) => {
     JSON.stringify({
       root,
 
-      fsFiles: files.length,
+      nodeReaddirFiles: directFileCount,
 
-      normal: {
-        ready: normalResult.ready,
-        add: normalResult.eventStats.add,
-        addDir: normalResult.eventStats.addDir,
-        watchedFiles: normalWatchedNames.size,
-      },
+      readdirp: {
+        version: 'see PACKAGE VERSIONS',
 
-      polling: {
-        ready: pollingResult.ready,
-        add: pollingResult.eventStats.add,
-        addDir: pollingResult.eventStats.addDir,
-        watchedFiles: pollingWatchedNames.size,
-      },
+        recursive: {
+          success: recursiveResult.success,
+          files: recursiveResult.fileCount,
+        },
 
-      directFile: {
-        tested: Boolean(directFileResult),
-        add: directFileResult?.eventStats.add ?? 0,
-      },
+        filesOnly: {
+          success: filesOnlyResult.success,
+          files: filesOnlyResult.fileCount,
+        },
 
-      directFiles: {
-        tested: Boolean(directFilesResult),
-        add: directFilesResult?.eventStats.add ?? 0,
+        depthOne: {
+          success: depthOneResult.success,
+          files: depthOneResult.fileCount,
+        },
+
+        extensionFilter: {
+          success: extensionResult.success,
+          files: extensionResult.fileCount,
+        },
       },
     })
   )

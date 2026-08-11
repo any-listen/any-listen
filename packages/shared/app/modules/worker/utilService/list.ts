@@ -28,7 +28,7 @@ export const createMusicDirWatcher = (
   void getSettings('common.enableDebug').then((enableDebug) => {
     if (!enableDebug) return
     void import('@any-listen/nodejs/watcher-debug').then(({ watcherDebug }) => {
-      watcherDebug(logger, dir)
+      void watcherDebug(logger, dir)
     })
   })
   return id
