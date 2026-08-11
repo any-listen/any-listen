@@ -6,11 +6,11 @@ packages:
 
 allowBuilds:
   better-sqlite3: true
-  svelte-preprocess: false
+  core-js: false
   electron: false
   electron-winstaller: false
   esbuild: false
-  core-js: false
+  svelte-preprocess: false
 
 minimumReleaseAge: 480
 minimumReleaseAgeExclude:
@@ -36,15 +36,15 @@ minimumReleaseAgeExclude:
   - oxfmt
 
 overrides:
+  '@types/node': '24'
   '@types/ws': 8.5.4
   braces@<3.0.3: '>=3.0.3'
   depd@<2.0.0: '>=2.0.0'
   micromatch@<4.0.8: '>=4.0.8'
   postcss@<7.0.36: '>=7.0.36'
-  yauzl@<3: '3'
-  '@types/node': '24'
   ws>bufferutil: '-'
   ws>utf-8-validate: '-'
+  yauzl@<3: '3'
 
 peerDependencyRules:
   allowedVersions:
