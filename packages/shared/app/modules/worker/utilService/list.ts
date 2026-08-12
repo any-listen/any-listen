@@ -2,7 +2,6 @@ import { generateId } from '@any-listen/common/utils'
 import { type FileAction, watchMusicDir } from '@any-listen/nodejs/watcher'
 
 import { logger } from './shared/logger'
-import { getSettings } from './shared/settings'
 
 const watchers = new Map<string, () => Promise<void>>()
 export const createMusicDirWatcher = (
@@ -25,12 +24,6 @@ export const createMusicDirWatcher = (
         : undefined,
     })
   )
-  void getSettings('common.enableDebug').then((enableDebug) => {
-    if (!enableDebug) return
-    void import('@any-listen/nodejs/watcher-debug').then(({ watcherDebug }) => {
-      void watcherDebug(logger, dir)
-    })
-  })
   return id
 }
 export const removeMusicDirWatcher = async (id: string) => {

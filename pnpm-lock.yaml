@@ -248,9 +248,6 @@ importers:
       music-metadata:
         specifier: ^11.14.0
         version: 11.14.0
-      readdirp:
-        specifier: ^5.1.1
-        version: 5.1.1
       tar:
         specifier: ^7.5.22
         version: 7.5.22
