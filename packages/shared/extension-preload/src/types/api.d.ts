@@ -195,6 +195,7 @@ declare namespace AnyListen {
       enabledRemove?: boolean
       syncTime: number
       usePolling?: boolean
+      ignorePermissionErrors?: boolean
     }
     type SourceType = 'songlist' | 'topSongs' | 'search' | 'album'
     interface UserListInfoByOnlineMeta extends UserListInfoBaseMeta {

@@ -66,6 +66,8 @@
   "duplicate_music": "Duplicate song",
   "edit_list_modal.lazzy_parse_meta": "Delayed parsing of song tag information",
   "edit_list_modal.lazzy_parse_meta_tip": "When enabled, songs will be quickly added to the list, but the song name will be temporarily displayed using the file name, and the song tag information will be parsed when needed.",
+  "edit_list_modal.local_list_form.ignore_permission_errors": "Ignore permission errors",
+  "edit_list_modal.local_list_form.ignore_permission_errors_tip": "If the file cannot be scanned out, but the file in the directory can be added to the list and played normally in the normal list, it may be due to abnormal file permissions. You can try to enable this option.",
   "edit_list_modal.local_list_form.path_device_diff": "The list is not created natively, so the list data is not synchronized natively",
   "edit_list_modal.local_list_form.path_edit": "Select a folder",
   "edit_list_modal.local_list_form.path_empty": "Please select the song folder",

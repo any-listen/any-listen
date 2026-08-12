@@ -66,6 +66,8 @@
   "duplicate_music": "重复歌曲",
   "edit_list_modal.lazzy_parse_meta": "延迟解析歌曲标签信息",
   "edit_list_modal.lazzy_parse_meta_tip": "启用时，歌曲将被快速添加到列表，但歌曲名字将暂时使用文件名显示，歌曲标签信息将会在需要时才解析",
+  "edit_list_modal.local_list_form.ignore_permission_errors": "忽略权限错误",
+  "edit_list_modal.local_list_form.ignore_permission_errors_tip": "若无法扫描出文件，但是在普通列表可以将该目录的文件添加到列表并正常播放，那么可能是由于你的文件权限异常导致的，可以尝试启用该选项",
   "edit_list_modal.local_list_form.path_device_diff": "该列表非本机创建的，因此不会在本机上同步列表数据",
   "edit_list_modal.local_list_form.path_edit": "选择文件夹",
   "edit_list_modal.local_list_form.path_empty": "请选择歌曲文件夹",

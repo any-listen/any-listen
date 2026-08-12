@@ -1,20 +1,18 @@
 import { generateId } from '@any-listen/common/utils'
 import { type FileAction, watchMusicDir } from '@any-listen/nodejs/watcher'
 
-import { logger } from './shared/logger'
-
 const watchers = new Map<string, () => Promise<void>>()
 export const createMusicDirWatcher = (
   dir: string,
   onFile: (action: FileAction, path: string) => void,
   onReady: () => void,
   onError: (message: string) => void,
-  options: { recursive?: boolean; persistent?: boolean; usePolling?: boolean } = {}
+  options: { recursive?: boolean; persistent?: boolean; usePolling?: boolean; ignorePermissionErrors?: boolean } = {}
 ) => {
   const id = generateId()
   watchers.set(
     id,
-    watchMusicDir(dir, logger, onFile, onReady, onError, {
+    watchMusicDir(dir, onFile, onReady, onError, {
       ...options,
       usePolling: options.usePolling
         ? {
@@ -22,6 +20,7 @@ export const createMusicDirWatcher = (
             binaryInterval: 2000,
           }
         : undefined,
+      ignorePermissionErrors: options.ignorePermissionErrors,
     })
   )
   return id

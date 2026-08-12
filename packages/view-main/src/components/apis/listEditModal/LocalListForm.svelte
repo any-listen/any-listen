@@ -32,6 +32,7 @@
       posTime: 0,
       pic: '',
       songCount: 0,
+      syncTime: 0,
     },
   }
   let listInfo = $state<AnyListen.List.LocalListInfo>(initData)
@@ -154,6 +155,17 @@
       label={$t('edit_list_modal.local_list_form.use_polling')}
     />
     <p class="tip">{$t('edit_list_modal.local_list_form.use_polling_tip')}</p>
+  </FormItem>
+  <FormItem>
+    <Checkbox
+      id="ignore_permission_errors"
+      checked={listInfo.meta.ignorePermissionErrors || false}
+      onchange={(checked) => {
+        listInfo.meta.ignorePermissionErrors = checked
+      }}
+      label={$t('edit_list_modal.local_list_form.ignore_permission_errors')}
+    />
+    <p class="tip">{$t('edit_list_modal.local_list_form.ignore_permission_errors_tip')}</p>
   </FormItem>
 </main>
 
