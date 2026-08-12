@@ -90,7 +90,11 @@ const setCachedListInfo = (
         listInfo.page = page
         listInfo.limit = limit
         listInfo.total = result.total
-        listInfo.cacheTime = performance.now()
+        if (result.list.length > 0) {
+          listInfo.cacheTime = performance.now()
+        } else {
+          listInfo.requestPromise = undefined
+        }
       }
       return result
     })
