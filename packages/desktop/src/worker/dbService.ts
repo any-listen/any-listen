@@ -9,12 +9,10 @@ import { appState } from '@/app'
 import { i18n } from '@/i18n'
 import { openDirInExplorer } from '@/shared/electron'
 
-// let nativeBindingPath = '../../node_modules/better-sqlite3/build/Release/better_sqlite3.node'
-let nativeBindingPath = './native/better_sqlite3.node'
-
-if (import.meta.env.DEV) nativeBindingPath = '../../build-config/tempLib/better_sqlite3.node'
-
 const initServices = async (dataPath: string) => {
+  let nativeBindingPath = './native/better_sqlite3.node'
+  if (import.meta.env.DEV) nativeBindingPath = '../../node_modules/better-sqlite3/build/Release/better_sqlite3.node'
+
   let dbFileExists = await workers.dbService.init(
     dataPath,
     nativeBindingPath,

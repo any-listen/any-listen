@@ -14,11 +14,11 @@ if (process.env.SKIP_LIB_COPY) {
 
 try {
   if (process.env.DESKTOP_ONLY) {
-    execSync('pnpm -F desktop rebuild:deps', { stdio: 'inherit' })
+    execSync('pnpm -F desktop install:deps', { stdio: 'inherit' })
   } else if (process.env.WEB_SERVER_ONLY) {
     execSync('pnpm -F web-server rebuild', { stdio: 'inherit' })
   } else {
-    execSync('pnpm -F desktop rebuild:deps', { stdio: 'inherit' })
+    execSync('pnpm -F desktop install:deps', { stdio: 'inherit' })
     execSync('pnpm -F web-server rebuild', { stdio: 'inherit' })
   }
 } catch (error) {

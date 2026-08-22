@@ -1,7 +1,7 @@
-const minor = ['@types/node', '@eslint/js', 'eslint', 'undici', 'typescript', 'better-sqlite3', '@types/better-sqlite3']
+const minor = ['@types/node', '@eslint/js', 'eslint', 'undici', 'typescript', 'electron']
 const newest = ['oxfmt']
 const patch = []
-const ignore = ['@types/ws', 'electron']
+const ignore = ['@types/ws']
 
 const cooldown = '8h'
 

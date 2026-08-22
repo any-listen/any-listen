@@ -3,7 +3,6 @@ const beforePack = require('./build-before-pack.cjs')
 const afterPack = require('./build-after-pack.cjs')
 // const fs = require('node:fs')
 const path = require('node:path')
-const { rmSourceModule } = require('./native-module.cjs')
 
 const rootPath = path.join(__dirname, '../../..')
 
@@ -342,5 +341,4 @@ if (params.target != 'dir' && params.type == null) throw new Error('Missing type
 
 console.log(params.target, params.arch, params.type, params.publish ?? '')
 
-rmSourceModule()
 build(params.target, params.arch?.split(','), params.type?.split(','), params.publish)

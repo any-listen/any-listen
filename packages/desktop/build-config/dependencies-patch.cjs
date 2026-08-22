@@ -16,12 +16,12 @@ const patchs = [
   //   '\n  "browser": "src/renderer/index.js",',
   //   '',
   // ],
-  [
-    path.join(rootPath, './node_modules/music-metadata/package.json'),
-    '"default": "./lib/core.js"',
-    '"default": "./lib/index.js"',
-  ],
-  [path.join(rootPath, './node_modules/strtok3/package.json'), '"default": "./lib/core.js"', '"default": "./lib/index.js"'],
+  // [
+  //   path.join(rootPath, './node_modules/music-metadata/package.json'),
+  //   '"default": "./lib/core.js"',
+  //   '"default": "./lib/index.js"',
+  // ],
+  // [path.join(rootPath, './node_modules/strtok3/package.json'), '"default": "./lib/core.js"', '"default": "./lib/index.js"'],
   // [
   //   path.join(rootPath, './node_modules/@sveltejs/vite-plugin-svelte/package.json'),
   //   '"import": "./src/index.js"',
@@ -38,6 +38,14 @@ const patchs = [
   // },
   // "types": "Router.d.ts",`,
   // ],
+  [
+    path.join(rootPath, './node_modules/better-sqlite3/package.json'),
+    `{
+    "build-release": "node-gyp clean && node-gyp rebuild --release --force_build=1",`,
+    `{
+    "install": "node -e \\"process.exit(require('fs').existsSync('build/Release/better_sqlite3.node') ? 0 : 1)\\" || node-gyp rebuild --release --force_build=1",
+    "build-release": "node-gyp clean && node-gyp rebuild --release --force_build=1",`,
+  ],
 ]
 
 ;(async () => {

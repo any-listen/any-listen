@@ -31,8 +31,8 @@
     "publish:linux": "node build-config/build-pack.cjs target=linux arch=x64,arm64,armv7l type=deb,appImage,rpm,pacman publish=always",
     "publish": "node publish",
     "build": "vite build",
-    "install:deps": "node ./node_modules/electron/install.js",
-    "rebuild:deps": "node ./node_modules/electron/install.js && node ./build-config/before-install.cjs && electron-builder install-app-deps && node ./build-config/post-install.cjs"
+    "postinstall": "node ./build-config/dependencies-patch.cjs",
+    "install:deps": "node ./node_modules/electron/install.js"
   },
   "dependencies": {
     "@any-listen/app": "workspace:@shared/app@*",
@@ -40,7 +40,7 @@
     "@any-listen/i18n": "workspace:@shared/i18n@*",
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
     "@any-listen/theme": "workspace:@shared/theme@*",
-    "better-sqlite3": "^12.11.1",
+    "better-sqlite3": "^13.0.3",
     "electron-log": "5.4.4",
     "electron-updater": "^6.8.9",
     "font-list": "^2.1.0",
@@ -49,12 +49,11 @@
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "electron": "41.2.0",
+    "electron": "42.9.3",
     "electron-builder": "26.15.3",
     "electron-debug": "^4.1.0",
-    "electron-to-chromium": "^1.5.406",
-    "node-abi": "^4.33.0",
+    "electron-to-chromium": "^1.5.412",
     "tar": "^7.5.22",
-    "vite": "^8.2.1"
+    "vite": "^8.2.2"
   }
 }

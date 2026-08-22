@@ -1,3 +1,5 @@
+const { afterPack } = require('./deps.cjs')
+
 const fs = require('fs').promises
 
 // 包含 macOS 常见语言代码的列表
@@ -86,6 +88,7 @@ const macLanguagesInfoPlistStrings = locales.reduce((acc, locale) => {
 // https://github.com/electron-userland/electron-builder/issues/4630#issuecomment-782020139
 
 module.exports = async (context) => {
+  await afterPack()
   const { electronPlatformName, appOutDir, packager } = context
   if (electronPlatformName !== 'darwin') return
 
