@@ -3,7 +3,7 @@ const path = require('path')
 const bindingFilePath = path.join(__dirname, '../node_modules/better-sqlite3/binding.gyp')
 // const bindingBakFilePath = path.join(__dirname, '../node_modules/better-sqlite3/binding.gyp.bak')
 exports.beforePack = async () => {
-  // if (!fs.existsSync(bindingFilePath)) return
+  if (!fs.existsSync(bindingFilePath)) return
   // fs.renameSync(bindingFilePath, bindingBakFilePath)
   try {
     fs.writeFileSync(
@@ -15,7 +15,7 @@ exports.beforePack = async () => {
   }
 }
 exports.afterPack = async () => {
-  // if (fs.existsSync(bindingFilePath)) return
+  if (!fs.existsSync(bindingFilePath)) return
   // fs.renameSync(bindingBakFilePath, bindingFilePath)
   try {
     fs.writeFileSync(
