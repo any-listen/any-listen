@@ -105,7 +105,7 @@ export default class LinePlayer {
             }
             const timeArr = timeStr.split(':')
             if (timeArr.length > 3) continue
-            else if (timeArr.length < 3) for (let i = 3 - timeArr.length; i--; ) timeArr.unshift('0')
+            else if (timeArr.length < 3) for (let i = 3 - timeArr.length; i--;) timeArr.unshift('0')
             if (timeArr[2].indexOf('.') > -1) timeArr.splice(2, 1, ...timeArr[2].split('.'))
             const msTime = timeArr[3] || '0'
 
@@ -265,8 +265,8 @@ export default class LinePlayer {
   setLyric(lyric, extendedLyrics) {
     // console.log(extendedLyrics)
     if (this.isPlay) this.pause()
-    this.lyric = lyric
-    this.extendedLyrics = extendedLyrics
+    this.lyric = lyric.replace(/\xA0/g, ' ')
+    this.extendedLyrics = extendedLyrics.map((l) => l.replace(/\xA0/g, ' '))
     this._init()
   }
 
