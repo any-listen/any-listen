@@ -2,7 +2,7 @@
 
 ### Fixed
 
-- Fixed an issue where some lyrics did not wrap properly.
+- Fix build.
 
 ---
 
@@ -10,4 +10,4 @@
 
 ### 修复
 
-- 修复某些歌词不换行的问题。
+- 修复构建。
