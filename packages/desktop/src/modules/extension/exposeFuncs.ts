@@ -1,3 +1,4 @@
+import { logs } from '@any-listen/app/modules/logs'
 import { getAllUserLists, getListMusics, sendMusicListAction } from '@any-listen/app/modules/musicList'
 import { checkProxyCache, createProxy, writeProxyCache } from '@any-listen/app/modules/proxyServer'
 import type { Options } from '@any-listen/nodejs/request'
@@ -87,6 +88,8 @@ export const exposedFuncs: AnyListen.IPCExtension.MainIPCActions = {
   async closeMessageBox(key) {
     boxTools.closeBox(key)
   },
+
+  logger: logs.ExtensionService.logcat,
 } as const
 
 export type ExposedFuncs = typeof exposedFuncs

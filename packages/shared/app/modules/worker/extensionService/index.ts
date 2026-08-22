@@ -64,6 +64,7 @@ const extension = {
     preloadScript: string
     onlineExtensionHost: string
     gHMirrorHosts: string
+    enableDebug: boolean
   }) {
     extensionState.locale = state.locale
     extensionState.proxy.host = state['proxy.host']
@@ -75,6 +76,7 @@ const extension = {
     extensionState.tempDir = state.tempDir
     extensionState.preloadScript = state.preloadScript
     extensionState.onlineExtensionHost = state.onlineExtensionHost
+    extensionState.enableDebug = state.enableDebug
 
     setProxyByHost(state['proxy.host'], state['proxy.port'])
     setGHMirrorHosts(state.gHMirrorHosts)
@@ -99,6 +101,9 @@ const extension = {
   },
   updateGHMirrorHosts(host: string) {
     setGHMirrorHosts(host)
+  },
+  updateEnableDebug(enable: boolean) {
+    extensionState.enableDebug = enable
   },
   async getOnlineExtensionList(filter: AnyListen.IPCExtension.OnlineListFilterOptions) {
     return getOnlineExtensionList(filter)

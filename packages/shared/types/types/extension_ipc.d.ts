@@ -326,6 +326,7 @@ declare namespace AnyListen {
       showOpenBox: (key: string, extensionId: string, options: IPCCommon.OpenDialogOptions) => Promise<string[]>
       showSaveBox: (key: string, extensionId: string, options: IPCCommon.SaveDialogOptions) => Promise<string>
       closeMessageBox: (key: string) => Promise<void>
+      logger: Logger
     }
 
     interface RequestOptions {

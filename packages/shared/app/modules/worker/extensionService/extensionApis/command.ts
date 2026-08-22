@@ -12,7 +12,12 @@ export const executeCommand = async (fullCommand: string, args: any[]) => {
 
 export const createCommand = (extension: AnyListen.Extension.Extension) => {
   return {
-    executeCommand,
+    executeCommand: async (command: string, args: any[]) => {
+      if (extensionState.enableDebug) {
+        extensionState.remoteFuncs.logger.debug(`[Command] ${extension.id} - ${command}`, args)
+      }
+      return executeCommand(command, args)
+    },
     async getCommands(filterInternal = false) {
       return extensionState.resourceList.commands.map((c) => c.fullCommand)
     },
