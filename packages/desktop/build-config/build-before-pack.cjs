@@ -60,7 +60,7 @@ module.exports = async (context) => {
   const bindingBakFilePath = path.join(__dirname, '../node_modules/better-sqlite3/binding.gyp.bak')
   switch (arch) {
     case Arch.x64:
-    case Arch.ai32:
+    case Arch.ia32:
     case Arch.arm64:
     case Arch.armv7l:
       if (fs.existsSync(bindingFilePath)) {
