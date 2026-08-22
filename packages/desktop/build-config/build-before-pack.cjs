@@ -50,8 +50,8 @@ module.exports = async (context) => {
     context.packager?.info?._framework?.version ??
     require('../package.json').devDependencies.electron.replace(/^[^\d]*?(\d+)/, '$1')
   if (
-    electronPlatformName !== 'linux' ||
-    (electronPlatformName !== 'win32' && parseInt(electronVersion) > 22) ||
+    (electronPlatformName !== 'linux' && electronPlatformName !== 'win32') ||
+    (electronPlatformName === 'win32' && parseInt(electronVersion) > 22) ||
     process.env.FORCE
   ) {
     return
