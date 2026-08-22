@@ -47,6 +47,12 @@ const patchs = [
     "build-release": "node-gyp clean && node-gyp rebuild --release --force_build=1",`,
   ],
 ]
+if (process.env.IS_CI && process.env.BUILD_WIN_LEGACY) {
+  patchs.splice(
+    patchs.findIndex((p) => p[0].includes('better-sqlite3')),
+    1
+  )
+}
 
 ;(async () => {
   for (const [filePath, fromStr, toStr] of patchs) {
