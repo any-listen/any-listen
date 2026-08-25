@@ -43,6 +43,12 @@ export type Locale =
 
 const langs = [
   {
+    name: 'English',
+    locale: 'en-us',
+    country: 'us',
+    message: en_us,
+  },
+  {
     name: '简体中文',
     locale: 'zh-cn',
     // alternate: 'zh-hans',
@@ -56,12 +62,6 @@ const langs = [
     // alternate: 'zh-hk',
     country: 'cn',
     message: zh_tw,
-  },
-  {
-    name: 'English',
-    locale: 'en-us',
-    country: 'us',
-    message: en_us,
   },
 ] as const
 
