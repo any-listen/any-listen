@@ -12,6 +12,8 @@ body:
           required: true
         - label: 我已搜索 [讨论区](https://github.com/any-listen/any-listen/discussions)，并没有发现类似的话题。
           required: true
+        - label: 我同意遵守项目的[行为准则](https://github.com/any-listen/any-listen/blob/main/docs/CODE_OF_CONDUCT_zh.md)。
+          required: true
 
   - type: dropdown
     id: check-app-type

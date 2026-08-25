@@ -12,6 +12,8 @@ body:
           required: true
         - label: I have searched the [Discussions](https://github.com/any-listen/any-listen/discussions) and found no similar topic.
           required: true
+        - label: I agree to follow the [Code of Conduct](https://github.com/any-listen/any-listen/blob/main/CODE_OF_CONDUCT.md).
+          required: true
 
   - type: dropdown
     id: check-app-type
