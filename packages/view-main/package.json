@@ -15,7 +15,7 @@
     "@any-listen/web": "workspace:@shared/web@*",
     "dompurify": "^3.4.14",
     "hast-util-to-html": "^9.0.5",
-    "marked": "^18.0.10",
+    "marked": "^18.0.11",
     "message2call": "^2.0.3",
     "refractor": "^5.0.0",
     "regexparam": "^3.0.0",
