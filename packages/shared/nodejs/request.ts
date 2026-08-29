@@ -72,7 +72,7 @@ const CONTENT_TYPE = {
   formdata: 'multipart/form-data',
   xml: 'application/xml',
   binary: 'application/octet-stream',
-}
+} as const
 type ParamsData = Record<string, string | number | null | undefined | boolean>
 export interface Options {
   method?:

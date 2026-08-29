@@ -86,6 +86,8 @@ const fixPath = (path?: string): string => {
   return path
 }
 
+type RequestOptions = Omit<Options, 'method'> & { path?: string; needHeader?: boolean }
+
 export class WebDAVClient {
   private readonly options: WebDAVClientOptions
   private readonly baseUrl: string
@@ -138,10 +140,7 @@ export class WebDAVClient {
     return path ? `${this.baseUrl}${path}` : this.baseUrl
   }
 
-  private async request<T = unknown>(
-    method: Options['method'],
-    { path, needHeader, ...options }: Omit<Options, 'method'> & { path?: string; needHeader?: boolean } = {}
-  ) {
+  private async request<T = unknown>(method: Options['method'], { path, needHeader, ...options }: RequestOptions = {}) {
     const headers = options.headers || {}
     if (this.authHeader) headers.Authorization = this.authHeader
     const url = this.getFullUrl(fixPath(path))
@@ -253,10 +252,13 @@ export class WebDAVClient {
 
   async putData(path: string, data: Buffer | string) {
     this.options.onDebugLog?.(`putData: [${path}]`)
-    return this.request('PUT', {
-      path,
-      binary: data instanceof Buffer ? data : Buffer.from(data),
-    })
+    const opts: RequestOptions = { path }
+    if (typeof data === 'string') {
+      opts.text = data
+    } else {
+      opts.binary = data
+    }
+    return this.request('PUT', opts)
   }
 
   async getStream(path: string, rangeStart?: string, rangeEnd?: string) {

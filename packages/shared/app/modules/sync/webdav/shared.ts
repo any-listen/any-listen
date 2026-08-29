@@ -8,7 +8,7 @@ export const CONSTANTS = {
   snapshotListFileName: 'snapshot-list',
   snapshotInfoFileName: 'snapshot-info',
   lockFilePrefix: 'lock-',
-}
+} as const
 
 export const sendSyncWebDAVStatus = () => {
   syncWebDAVEvent.statusChanged({ status: state.status, error: state.error?.message, nextSyncTime: state.nextSyncTime })
