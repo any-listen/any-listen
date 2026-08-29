@@ -614,6 +614,7 @@
   "settings.player.music_quality_flac24bit": "FLAC 24bit",
   "settings.player.music_quality_master": "Master",
   "settings.player.play_awlrc": "Play karaoke lyrics (if available)",
+  "settings.player.show_task_progress": "Display the current song playback progress on the taskbar",
   "settings.player.status_bar_lyric": "Display status bar lyrics (need to enable system tray)",
   "settings.player.title_lyric": "Show title bar lyrics",
   "settings.tray.theme_id": "Pallet icon style",

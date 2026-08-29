@@ -220,6 +220,11 @@ export const settings: SettingListSection[] = [
         name: 'settings.player.media_device_changed_pause_play',
         type: 'boolean',
       },
+      {
+        field: 'player.isShowTaskProgess',
+        name: 'settings.player.show_task_progress',
+        type: 'boolean',
+      },
       import.meta.env.VITE_IS_MAC
         ? {
             field: 'player.isShowStatusBarLyric',
@@ -227,7 +232,7 @@ export const settings: SettingListSection[] = [
             type: 'boolean',
           }
         : null,
-      // t('settings.player.music_quality_128k')
+      // t('settings.player.show_task_progress')
       {
         field: 'player.playQuality',
         name: 'settings.player.music_quality',
