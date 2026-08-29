@@ -1,8 +1,7 @@
-const fs = require('fs')
 const fsPromises = require('fs').promises
 const path = require('path')
 const { Arch } = require('electron-builder')
-const { beforePack } = require('./deps.cjs')
+const { beforePack, backupBindingGyp, restoreBindingGyp } = require('./deps.cjs')
 
 // const better_sqlite3_fileNameMap = {
 //   [Arch.x64]: 'linux-x64',
@@ -56,24 +55,17 @@ module.exports = async (context) => {
   ) {
     return
   }
-  const bindingFilePath = path.join(__dirname, '../node_modules/better-sqlite3/binding.gyp')
-  const bindingBakFilePath = path.join(__dirname, '../node_modules/better-sqlite3/binding.gyp.bak')
   switch (arch) {
     case Arch.x64:
     case Arch.ia32:
     case Arch.arm64:
     case Arch.armv7l:
-      if (fs.existsSync(bindingFilePath)) {
-        // console.log('rename binding file...')
-        await fsPromises.rename(bindingFilePath, bindingBakFilePath)
-      }
+      await backupBindingGyp()
       await replaceSqliteLib(electronPlatformName, arch)
       break
 
     default:
-      if (fs.existsSync(bindingFilePath)) return
-      // console.log('restore binding file...')
-      await fsPromises.rename(bindingBakFilePath, bindingFilePath)
+      await restoreBindingGyp()
       break
   }
 }

@@ -1,4 +1,4 @@
-const { afterPack } = require('./deps.cjs')
+const { afterPack, restoreBindingGyp } = require('./deps.cjs')
 
 const fs = require('fs').promises
 
@@ -89,6 +89,7 @@ const macLanguagesInfoPlistStrings = locales.reduce((acc, locale) => {
 
 module.exports = async (context) => {
   await afterPack()
+  await restoreBindingGyp()
   const { electronPlatformName, appOutDir, packager } = context
   if (electronPlatformName !== 'darwin') return
 
