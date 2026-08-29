@@ -23,7 +23,7 @@ export const watchMusicDir = (
   } = {}
 ) => {
   // console.log(`Start watching music dir: ${dir}, recursive: ${options.recursive ? 'yes' : 'no'}`)
-  console.log('ignorePermissionErrors', options.ignorePermissionErrors)
+  // console.log('ignorePermissionErrors', options.ignorePermissionErrors)
   const watcher = chokidar.watch(dir, {
     ignored: (filePath, stats) => {
       if (stats && !stats.isDirectory() && !isMusicFile(filePath, true)) {
