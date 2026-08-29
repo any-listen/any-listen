@@ -85,8 +85,11 @@ export const restartUpdate: AnyListen.IPC.ServerIPC['restartUpdate'] = async () 
   return ipc.restartUpdate()
 }
 
+const INTERNAL_FONT = '"Inter Variable"'
 export const getSystemFonts: AnyListen.IPC.ServerIPC['getSystemFonts'] = async () => {
-  return ipc.getSystemFonts()
+  return ipc.getSystemFonts().then((fonts) => {
+    return fonts.includes(INTERNAL_FONT) ? fonts : [INTERNAL_FONT, ...fonts]
+  })
 }
 
 export const getCacheSize: AnyListen.IPC.ServerIPC['getCacheSize'] = async () => {

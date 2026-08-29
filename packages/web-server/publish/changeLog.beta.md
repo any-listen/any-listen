@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Fix build.
+- Added the built-in **Inter Variable** font as the preferred default font ([#278](https://github.com/any-listen/any-listen/issues/278)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复构建。
+- 新增内置 **「Inter Variable」** 字体作为首选默认字体（[#278](https://github.com/any-listen/any-listen/issues/278)）。
