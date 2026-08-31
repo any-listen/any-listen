@@ -164,8 +164,9 @@ const handleReadyWatcher = async (listId: string, files: string[], parseMetadata
   const newMusicIds = new Set<string>()
   const removedMusicIds = new Set<string>()
   const localIds = new Set<string>()
+  const deviceId = getDeviceId()
   for (const music of musics) {
-    if (!remoteIds.has(music.id)) {
+    if (!remoteIds.has(music.id) || music.meta.deviceId !== deviceId) {
       removedMusicIds.add(music.id)
       continue
     }

@@ -20,12 +20,12 @@ const mergeMusicList = (
         const item = targetList[i]
         const targetItem = map.get(item.id)
         if (targetItem) {
-          if (item.isLocal) {
-            if (targetItem.meta.deviceId != deviceId) {
+          if (item.meta.updateTime >= targetItem.meta.updateTime) {
+            map.set(item.id, item)
+          } else if (item.isLocal) {
+            if (targetItem.meta.deviceId != item.meta.deviceId && targetItem.meta.deviceId != deviceId) {
               map.set(item.id, item)
             }
-          } else if (item.meta.updateTime > targetItem.meta.updateTime) {
-            map.set(item.id, item)
           }
         } else {
           ids.unshift(item.id)
@@ -37,12 +37,12 @@ const mergeMusicList = (
       for (const item of targetList) {
         const targetItem = map.get(item.id)
         if (targetItem) {
-          if (item.isLocal) {
-            if (targetItem.meta.deviceId != deviceId) {
+          if (item.meta.updateTime >= targetItem.meta.updateTime) {
+            map.set(item.id, item)
+          } else if (item.isLocal) {
+            if (targetItem.meta.deviceId != item.meta.deviceId && targetItem.meta.deviceId != deviceId) {
               map.set(item.id, item)
             }
-          } else if (item.meta.updateTime > targetItem.meta.updateTime) {
-            map.set(item.id, item)
           }
         } else {
           ids.push(item.id)
