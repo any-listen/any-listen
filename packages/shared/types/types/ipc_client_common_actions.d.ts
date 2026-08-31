@@ -116,6 +116,8 @@ declare global {
          * (for example, macOS).
          */
         title: string
+        /** Allow to select folder, defaults to `false`. */
+        canSelectFolder?: boolean
       }
 
       // 更新信息

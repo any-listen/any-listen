@@ -27,7 +27,8 @@
   let currentDir = $state('')
   let list = $state.raw<File[]>([])
   let errorMessage = $state('')
-  let verifyStatus = $derived(!errorMessage && currentDir && fileName && filterFileName(fileName))
+  let selectFolder = $state(false)
+  let verifyStatus = $derived(!errorMessage && currentDir && fileName && (!selectFolder || filterFileName(fileName)))
   let createDir: (path: string, name: string) => Promise<string> = async () => ''
 
   const handleCreateFolder = async () => {
@@ -54,31 +55,37 @@
   }
 
   const handleComfirm = async () => {
-    let name = fileName
-    if (!fileName.endsWith(extension)) {
-      if (name.endsWith('.')) name = name.slice(0, -1)
-      name = `${name}${extension}`
+    if (selectFolder) {
+      onsubmit({ canceled: false, filePath: fileName })
+    } else {
+      let name = fileName
+      if (!fileName.endsWith(extension)) {
+        if (name.endsWith('.')) name = name.slice(0, -1)
+        name = `${name}${extension}`
+      }
+      if (list.some((f) => f.isFile && f.name === name)) {
+        const confirm = await showSimpleConfirmModal(i18n.t('file_explorer.overwrite_confirm', { name }), {
+          cancelBtn: i18n.t('cancel_button_text'),
+          confirmBtn: i18n.t('confirm_button_text'),
+        })
+        if (!confirm) return
+      }
+      onsubmit({ canceled: false, filePath: buildFilesPath(currentDir, [{ name }])[0] })
     }
-    if (list.some((f) => f.isFile && f.name === name)) {
-      const confirm = await showSimpleConfirmModal(i18n.t('file_explorer.overwrite_confirm', { name }), {
-        cancelBtn: i18n.t('cancel_button_text'),
-        confirmBtn: i18n.t('confirm_button_text'),
-      })
-      if (!confirm) return
-    }
-    onsubmit({ canceled: false, filePath: buildFilesPath(currentDir, [{ name }])[0] })
     closeModal()
   }
 
   const handleClick = createClickHandle<[File, number]>(
-    (file, index) => {},
+    (file, index) => {
+      if (selectFolder) fileName = buildFilesPath(currentDir, [{ name: file.name }])[0]
+    },
     (file, index) => {
       void fileListModal?.gotoDir(buildFilesPath(currentDir, [file])[0])
     }
   )
 
   export const show = async (opts: FileSaveOptions) => {
-    if (opts.defaultFileName) {
+    if (!opts.selectFolder && opts.defaultFileName) {
       fileName = opts.defaultFileName
 
       const lastDotIndex = opts.defaultFileName.lastIndexOf('.')
@@ -94,6 +101,7 @@
     }
     confirmText = opts.confirmText
     createDir = opts.onCreateDir
+    selectFolder = opts.selectFolder || false
     fileListModal?.show({
       modalTitle: opts.modalTitle,
       title: opts.title,
@@ -120,9 +128,7 @@
       picstyle={picStyle}
       onclick={() => {
         if (file.isFile) {
-          if (file.name.endsWith(extension)) {
-            fileName = file.name
-          }
+          fileName = file.name
         } else {
           handleClick(file, index)
         }
@@ -134,9 +140,20 @@
     />
   {/snippet}
   {#snippet footerleft()}
-    <p class="label">{$t('file_explorer.file_name')}</p>
-    <Input bind:value={fileName} placeholder={$t('placeholder_file_name')} autoflex />
-    <Btn onclick={handleCreateFolder}>{$t('btn_create_folder')}</Btn>
+    {#if selectFolder}
+      <div class="btns">
+        <Btn disabled={!currentDir} onclick={handleCreateFolder}>{$t('btn_create_folder')}</Btn>
+      </div>
+      {#if fileName}
+        <span class="tip" title={fileName}>{$t('btn_selected_single_tip', { path: fileName })}</span>
+      {/if}
+    {:else}
+      <p class="label">{$t('file_explorer.file_name')}</p>
+      <Input bind:value={fileName} placeholder={$t('placeholder_file_name')} autoflex />
+      <div class="btns">
+        <Btn disabled={!currentDir} onclick={handleCreateFolder}>{$t('btn_create_folder')}</Btn>
+      </div>
+    {/if}
   {/snippet}
   {#snippet footerright()}
     <Btn
@@ -150,7 +167,15 @@
 </FileListModal>
 
 <style lang="less">
+  .btns {
+    flex: none;
+  }
   .label {
     font-size: 14px;
+  }
+  .tip {
+    font-size: 12px;
+    color: var(--color-font-label);
+    .mixin-ellipsis-2;
   }
 </style>

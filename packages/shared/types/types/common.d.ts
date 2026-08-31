@@ -63,6 +63,7 @@ declare global {
       properties?: Array<
         'showHiddenFiles' | 'createDirectory' | 'treatPackageAsDirectory' | 'showOverwriteConfirmation' | 'dontAddToRecent'
       >
+      selectFolder?: boolean
     }
     interface SaveDialogResult {
       canceled: boolean

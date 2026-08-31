@@ -21,6 +21,7 @@ export interface FileSaveOptions {
   defaultFileName?: string
   filters?: string[]
   confirmText?: string
+  selectFolder?: boolean
   onReadRootDir: (refresh?: boolean) => Promise<AnyListen.FileSystem.File[]>
   onReadDir: (path: string, refresh?: boolean) => Promise<AnyListen.FileSystem.File[]>
   onCreateDir: (path: string, name: string) => Promise<string>

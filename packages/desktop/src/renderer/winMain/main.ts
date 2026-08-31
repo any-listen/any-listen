@@ -351,13 +351,28 @@ export const showOpenDialog = async (options: {
 }
 
 /** 显示保存弹窗 */
-export const showSaveDialog = async (options: {
+export const showSaveDialog = async ({
+  selectFolder,
+  ...options
+}: {
   title: Electron.SaveDialogOptions['title']
   defaultPath?: Electron.SaveDialogOptions['defaultPath']
   buttonLabel?: Electron.SaveDialogOptions['buttonLabel']
   filters?: Electron.SaveDialogOptions['filters']
   properties?: Electron.SaveDialogOptions['properties']
-}) => {
+  selectFolder?: boolean
+}): Promise<Electron.SaveDialogReturnValue> => {
   if (!browserWindow) throw new Error('main window is undefined')
+  if (selectFolder) {
+    const openDialogResult = await dialog.showOpenDialog(browserWindow, {
+      title: options.title,
+      defaultPath: options.defaultPath,
+      buttonLabel: options.buttonLabel,
+      filters: options.filters,
+      properties: ['openDirectory', 'createDirectory'],
+    })
+    if (openDialogResult.canceled) return { canceled: true, filePath: '' }
+    return { canceled: false, filePath: openDialogResult.filePaths[0] }
+  }
   return dialog.showSaveDialog(browserWindow, options)
 }

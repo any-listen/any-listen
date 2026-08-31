@@ -32,11 +32,12 @@ export const showFileSaveModal: AnyListen.IPC.ServerIPC['showSaveDialog'] = asyn
     defaultFileName: options.defaultFileName,
     filters,
     confirmText: options.buttonLabel,
+    selectFolder: options.selectFolder,
     onReadRootDir: async (refresh) => {
       return readRootDir(refresh)
     },
     onReadDir: async (path, refresh) => {
-      return readDir(path, filters, false)
+      return readDir(path, filters, !!options.selectFolder)
     },
     onCreateDir: async (path, name) => {
       return createDir(path, name)

@@ -85,12 +85,21 @@ export default {
     let ext = extensionState.extensionList.find((ext) => ext.id === extId)
     const extName = ext ? extI18n.t(extId, ext.name) : ''
     let result: AnyListen.SaveDialogResult = { canceled: true, filePath: '' }
+    const filters: AnyListen.OpenDialogOptions['filters'] = options.filters
+      ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        Object.entries(options.filters || {}).map(([name, extensions]) => ({
+          name,
+          extensions,
+        }))
+      : undefined
     if (import.meta.env.VITE_IS_WEB) {
       result = await showFileSaveModal({
         modalTitle: extName,
         title: options.title,
         buttonLabel: options.saveLabel,
         defaultFileName: options.defaultFileName,
+        selectFolder: options.canSelectFolder,
+        filters,
       })
     }
     if (import.meta.env.VITE_IS_DESKTOP) {
@@ -98,6 +107,8 @@ export default {
         title: `${options.title} (${extName})`,
         defaultFileName: options.defaultFileName,
         buttonLabel: options.saveLabel,
+        selectFolder: options.canSelectFolder,
+        filters,
       })
     }
     return result.canceled || !result.filePath ? '' : result.filePath
