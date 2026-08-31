@@ -191,13 +191,18 @@ const buildPlayerMusicInfo = (musicInfo: AnyListen.Music.MusicInfo | null): Part
   }
 }
 export const loadImageUrl = async (info: AnyListen.Player.PlayMusicInfo, refresh?: boolean) => {
-  return getMusicPic({ musicInfo: info.musicInfo, listId: info.listId, source: info.source, isRefresh: refresh })
+  await getMusicPic({ musicInfo: info.musicInfo, listId: info.listId, source: info.source, isRefresh: refresh })
     .then(({ url }) => {
       if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
       if (playerState.musicInfo.pic == url) return
       commit.setMusicInfo({ pic: url })
       playerEvent.picUpdated(url)
-      return url
+
+      if (!url) return
+      void checkPicUrl(url, settingState.setting['network.proxyAllResources'], appState.machineId).catch(() => {
+        if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+        void loadImageUrl(info, true)
+      })
     })
     .catch(() => {
       if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
@@ -207,17 +212,23 @@ export const loadImageUrl = async (info: AnyListen.Player.PlayMusicInfo, refresh
     })
 }
 export const loadMusicLyric = async (info: AnyListen.Player.PlayMusicInfo) => {
-  void getMusicLyric({ musicInfo: info.musicInfo }).then((lyricInfo) => {
-    if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-    commit.setMusicInfo({
-      lrc: lyricInfo.info.lyric,
-      tlrc: lyricInfo.info.tlyric,
-      awlrc: lyricInfo.info.awlyric,
-      rlrc: lyricInfo.info.rlyric,
-      rawlrc: lyricInfo.info.rawlrcInfo?.lyric ?? lyricInfo.info.lyric,
+  await getMusicLyric({ musicInfo: info.musicInfo })
+    .then((lyricInfo) => {
+      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+      commit.setMusicInfo({
+        lrc: lyricInfo.info.lyric,
+        tlrc: lyricInfo.info.tlyric,
+        awlrc: lyricInfo.info.awlyric,
+        rlrc: lyricInfo.info.rlyric,
+        rawlrc: lyricInfo.info.rawlrcInfo?.lyric ?? lyricInfo.info.lyric,
+      })
+      playerEvent.lyricUpdated(lyricInfo.info)
     })
-    playerEvent.lyricUpdated(lyricInfo.info)
-  })
+    .catch((err) => {
+      console.log(err)
+      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+      commit.setStatusText(i18n.t('lyric__load_error'))
+    })
 }
 const setMetadata = async (info: AnyListen.Player.PlayMusicInfo) => {
   if (info.musicInfo.meta.unparsed) {
@@ -229,19 +240,8 @@ const setMetadata = async (info: AnyListen.Player.PlayMusicInfo) => {
       void updateListMusic(info.listId, newInfo)
     }
   }
-  void loadImageUrl(info).then((url) => {
-    if (!url) return
-    void checkPicUrl(url, settingState.setting['network.proxyAllResources'], appState.machineId).catch(() => {
-      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-      void loadImageUrl(info, true)
-    })
-  })
-
-  void loadMusicLyric(info).catch((err) => {
-    console.log(err)
-    if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-    commit.setStatusText(i18n.t('lyric__load_error'))
-  })
+  void loadImageUrl(info)
+  void loadMusicLyric(info)
 }
 export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null, index?: number | null, historyListIndex = -1) => {
   const oldInfo = playerState.playMusicInfo

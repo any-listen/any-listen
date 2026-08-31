@@ -112,11 +112,7 @@ export const initLyric = () => {
           }
         })
       )
-      subscriptions.add(
-        playerEvent.on('musicChanged', () => {
-          stop()
-        })
-      )
+      subscriptions.add(playerEvent.on('musicChanged', stop))
       subscriptions.add(playerEvent.on('play', play))
       subscriptions.add(playerEvent.on('pause', pause))
       subscriptions.add(playerEvent.on('stop', stop))

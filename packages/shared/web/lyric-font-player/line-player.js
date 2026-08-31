@@ -262,7 +262,7 @@ export default class LinePlayer {
     this.replay()
   }
 
-  setLyric(lyric, extendedLyrics) {
+  setLyric(lyric, extendedLyrics = []) {
     // console.log(extendedLyrics)
     if (this.isPlay) this.pause()
     this.lyric = lyric.replace(/\xA0/g, ' ')
