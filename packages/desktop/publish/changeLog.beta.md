@@ -1,15 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Fixed an issue where the file save dialog API could not select folders ([#285](https://github.com/any-listen/any-listen/issues/285)).
-- Fixed lyrics display issue when switching songs ([#284](https://github.com/any-listen/any-listen/issues/284)).
+- Added a **Classic Lyrics Window Width Scale** setting to adjust the lyrics window width, located under _Settings > Desktop Lyrics Mode Settings_.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复文件保存弹窗 API 无法选择文件夹的问题（[#285](https://github.com/any-listen/any-listen/issues/285)）。
-- 修复切换歌曲时的歌词显示问题（[#284](https://github.com/any-listen/any-listen/issues/284)）。
+- 新增 **「经典歌词窗口宽度系数」** 设置，用于调整歌词窗口宽度，位于 _设置 > 桌面歌词模式设置_。

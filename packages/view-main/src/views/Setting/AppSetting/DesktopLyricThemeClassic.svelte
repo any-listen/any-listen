@@ -69,6 +69,7 @@
     void updateSetting({
       'desktopLyric.classic.x': null,
       'desktopLyric.classic.y': null,
+      'desktopLyric.classic.widthByFontNum': 26,
       // 'desktopLyric.classic.style.fontSize': 25,
     })
   }

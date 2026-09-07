@@ -610,6 +610,13 @@ if (import.meta.env.VITE_IS_DESKTOP) {
         type: 'component',
         component: async () => import('./DesktopLyricFontClassic.svelte'),
       },
+      import.meta.env.VITE_IS_DESKTOP
+        ? {
+            id: 'desktopLyric.classic.width',
+            type: 'component',
+            component: async () => import('./DesktopLyricWidthClassic.svelte'),
+          }
+        : null,
       {
         name: 'settings.desktop_lyric.color',
         id: 'desktopLyric.classic.style.lyricPlayedColor',

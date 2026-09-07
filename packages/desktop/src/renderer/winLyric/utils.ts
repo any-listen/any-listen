@@ -92,7 +92,7 @@ export const getClassicWindowSize = () => {
   let fontSize = appState.appSetting['desktopLyric.classic.style.fontSize']
   const lines = appState.appSetting['desktopLyric.classic.showExtendedLyrics'] ? 6 : 4
   let height = Math.ceil(fontSize * lines * 1.2 + fontSize / 2 + fontSize * 0.16 * 4)
-  let width = fontSize * 26 * getFontSizeLevel(fontSize)
+  let width = fontSize * appState.appSetting['desktopLyric.classic.widthByFontNum'] * getFontSizeLevel(fontSize)
   let x = appState.appSetting['desktopLyric.classic.x']
   let y = appState.appSetting['desktopLyric.classic.y']
 

@@ -485,6 +485,8 @@
   "settings.dataSync.webdav_syncEnable_list": "Sync song list",
   "settings.dataSync.webdav_url_placeholder": "WebDAV service address",
   "settings.dataSync.webdav_username_placeholder": "username",
+  "settings.desktopLyric.classic.width": "Window width factor",
+  "settings.desktopLyric.classic.width_desc": "The window width is determined by the font size multiplied by the width factor",
   "settings.desktopLyric.color_reset": "Reset color",
   "settings.desktopLyric.line_gap": "Lyric spacing ({num})",
   "settings.desktopLyric.line_gap_decrease": "Reduce spacing",

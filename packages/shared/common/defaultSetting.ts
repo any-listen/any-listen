@@ -83,6 +83,7 @@ const defaultSetting: AnyListen.AppSetting = {
 
   'desktopLyric.classic.x': null,
   'desktopLyric.classic.y': null,
+  'desktopLyric.classic.widthByFontNum': 21,
   'desktopLyric.classic.showExtendedLyrics': true,
   'desktopLyric.classic.style.font': '',
   'desktopLyric.classic.style.fontSize': 26,

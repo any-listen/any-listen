@@ -12,6 +12,11 @@ allowBuilds:
   esbuild: false
   svelte-preprocess: false
 
+auditConfig:
+  ignoreCves:
+    - CVE-2025-71330
+    - CVE-2025-71329
+
 minimumReleaseAge: 480
 minimumReleaseAgeExclude:
   - typescript

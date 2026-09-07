@@ -394,6 +394,11 @@ declare global {
       'desktopLyric.classic.y': number | null
 
       /**
+       * 桌面歌词窗口宽度（以字体数量为单位）
+       */
+      'desktopLyric.classic.widthByFontNum': number
+
+      /**
        * 是否显示扩展歌词
        */
       'desktopLyric.classic.showExtendedLyrics': boolean

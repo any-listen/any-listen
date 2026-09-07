@@ -484,6 +484,8 @@
   "settings.dataSync.webdav_syncEnable_list": "同步歌曲列表",
   "settings.dataSync.webdav_url_placeholder": "WebDAV 服务地址",
   "settings.dataSync.webdav_username_placeholder": "用户名",
+  "settings.desktopLyric.classic.width": "窗口宽度系数",
+  "settings.desktopLyric.classic.width_desc": "窗口宽度取决于字体大小乘以宽度系数",
   "settings.desktopLyric.color_reset": "重置颜色",
   "settings.desktopLyric.line_gap": "歌词间距（{num}）",
   "settings.desktopLyric.line_gap_decrease": "减小间距",

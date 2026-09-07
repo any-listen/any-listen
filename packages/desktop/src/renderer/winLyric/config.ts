@@ -103,7 +103,9 @@ export const handleConfigUpdated = (keys: Array<keyof AnyListen.AppSetting>, set
       setBounds(initWindowSize())
     }
     if (
-      (keys.includes('desktopLyric.classic.style.fontSize') || keys.includes('desktopLyric.classic.showExtendedLyrics')) &&
+      (keys.includes('desktopLyric.classic.style.fontSize') ||
+        keys.includes('desktopLyric.classic.showExtendedLyrics') ||
+        keys.includes('desktopLyric.classic.widthByFontNum')) &&
       appState.appSetting['desktopLyric.mode'] === 'classic'
     ) {
       setBounds(getClassicWindowSize())
