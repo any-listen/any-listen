@@ -23,7 +23,7 @@ Grab the latest release and install it from: [https://github.com/any-listen/any-
 
 ## Web Version
 
-You can deploy it directly to your server, or use Docker for deployment. See the [guide](docker-server.md) for deployment steps, environment variables, and build from source code.
+You can deploy it directly to your server, or use Docker for deployment. See the [guide](./docs/docker-server.md) for deployment steps, environment variables, and build from source code.
 
 ## Contributing
 
