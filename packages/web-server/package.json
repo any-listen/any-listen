@@ -31,7 +31,6 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/koa": "^3.0.3",
     "@types/koa__cors": "^5.0.1",
-    "@types/koa__router": "^12.0.5",
     "@types/ws": "8.5.4",
     "vite": "^8.2.2"
   }
