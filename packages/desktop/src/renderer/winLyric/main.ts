@@ -1,7 +1,7 @@
 import path from 'node:path'
 
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
-import { getPlatform, isLinux, isWin } from '@any-listen/nodejs/index'
+import { getPlatform, isLinux } from '@any-listen/nodejs/index'
 import { BrowserWindow, session } from 'electron'
 
 import { appState, updateSetting } from '@/app'
@@ -54,7 +54,7 @@ const winEvent = () => {
     if (isWinBoundsUpdateing) {
       const bounds = browserWindow!.getBounds()
       saveBoundsConfig(buildConfig(bounds))
-    } else if (isWin) {
+    } else if (import.meta.env.VITE_IS_WINDOWS) {
       // Linux 不允许将窗口设置出屏幕之外，MacOS未知，故只在Windows下执行强制设置
       // 非主动调整窗口触发的窗口位置变化将重置回设置值
       browserWindow!.setBounds(
@@ -139,7 +139,6 @@ export const createWindow = () => {
     frame: false,
     transparent: true,
     hasShadow: false,
-    resizable: isWin && appState.appSetting['desktopLyric.mode'] === 'multiLine',
     minimizable: false,
     maximizable: false,
     fullscreenable: false,
@@ -159,6 +158,9 @@ export const createWindow = () => {
       spellcheck: false, // 禁用拼写检查器
       backgroundThrottling: false,
     },
+  }
+  if (import.meta.env.VITE_IS_WINDOWS) {
+    options.resizable = appState.appSetting['desktopLyric.mode'] === 'multiLine'
   }
 
   /**

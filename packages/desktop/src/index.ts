@@ -1,4 +1,3 @@
-import { isLinux } from '@any-listen/nodejs/index'
 import { app } from 'electron'
 
 import { appState, initAppEnv, sendInitedEvent } from '@/app'
@@ -33,7 +32,7 @@ const init = async () => {
 
 void app.whenReady().then(() => {
   // https://github.com/electron/electron/issues/16809
-  if (isLinux) {
+  if (import.meta.env.VITE_IS_LINUX) {
     setTimeout(() => {
       handleInited()
     }, 300)

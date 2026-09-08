@@ -1,7 +1,6 @@
 import { screen } from 'electron'
 
 import { appState } from '@/app'
-import { isLinux } from '@/shared/utils'
 
 import { getBounds } from './main'
 
@@ -47,8 +46,8 @@ export const mouseCheckTools = {
     this.isMouseInWindow = isInWindow
   },
   runCheck(sendMouseLeave: () => void) {
+    if (import.meta.env.VITE_IS_LINUX) return
     if (
-      isLinux ||
       !appState.appSetting['desktopLyric.isLock'] ||
       !appState.appSetting['desktopLyric.isHoverHide'] ||
       !this.isMouseInWindow

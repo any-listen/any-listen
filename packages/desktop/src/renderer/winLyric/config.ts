@@ -35,7 +35,7 @@ export const handleConfigUpdated = (keys: Array<keyof AnyListen.AppSetting>, set
     }
     if (keys.includes('desktopLyric.isHoverHide') && winLyricState.isHoverHide != setting['desktopLyric.isHoverHide']!) {
       winLyricState.isHoverHide = setting['desktopLyric.isHoverHide']!
-      if (!isLinux) {
+      if (!import.meta.env.VITE_IS_LINUX) {
         setIgnoreMouseEvents(winLyricState.isLock, { forward: winLyricState.isHoverHide })
         if (winLyricState.isHoverHide) {
           mouseCheckTools.runCheck(() => {

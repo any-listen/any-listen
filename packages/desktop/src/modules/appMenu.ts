@@ -2,10 +2,9 @@ import { app, Menu } from 'electron'
 
 import { actions } from '@/actions'
 import { i18n, languageChangeEvent } from '@/i18n'
-import { isMac } from '@/shared/utils'
 
 export const initAppMenu = async () => {
-  if (isMac) {
+  if (import.meta.env.VITE_IS_MAC) {
     const setMenu = () => {
       Menu.setApplicationMenu(
         Menu.buildFromTemplate([

@@ -7,7 +7,7 @@ import { initDeviceId } from '@any-listen/app/common/deviceId'
 import { DEFAULT_LANG, URL_SCHEME_RXP } from '@any-listen/common/constants'
 import { isUrl } from '@any-listen/common/utils'
 import { parseEnvParams } from '@any-listen/nodejs/env'
-import { checkAndCreateDir, isMac } from '@any-listen/nodejs/index'
+import { checkAndCreateDir } from '@any-listen/nodejs/index'
 import { app, nativeTheme, screen, shell, webContents } from 'electron'
 
 import { i18n } from '@/i18n'
@@ -179,11 +179,11 @@ export const listenerElectronEvent = () => {
     setSkipTrayQuit(true)
   })
 
-  app.on('window-all-closed', () => {
-    if (isMac) return
-
-    app.quit()
-  })
+  if (!import.meta.env.VITE_IS_MAC) {
+    app.on('window-all-closed', () => {
+      app.quit()
+    })
+  }
 
   const initScreenParams = () => {
     appState.envParams.workAreaSize = screen.getPrimaryDisplay().workAreaSize

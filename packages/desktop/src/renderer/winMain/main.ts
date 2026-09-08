@@ -1,7 +1,7 @@
 import path from 'node:path'
 
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
-import { getPlatform, isLinux, isWin } from '@any-listen/nodejs/index'
+import { getPlatform } from '@any-listen/nodejs/index'
 import { BrowserWindow, Notification, dialog, session } from 'electron'
 
 import { appState } from '@/app'
@@ -129,7 +129,7 @@ export const createWindow = () => {
   if (appState.appSetting['common.startInFullscreen']) {
     options.fullscreen = true
     winMainState.isFullScreen = true
-    if (isLinux) options.resizable = true
+    if (import.meta.env.VITE_IS_LINUX) options.resizable = true
   }
   browserWindow = new BrowserWindow(options)
 
@@ -154,7 +154,7 @@ export const createWindow = () => {
 export const isExistWindow = (): boolean => !!browserWindow
 export const isShowWindow = (): boolean => {
   if (!browserWindow) return false
-  return browserWindow.isVisible() && (isWin ? true : browserWindow.isFocused())
+  return import.meta.env.VITE_IS_WINDOWS ? browserWindow.isVisible() : browserWindow.isVisible() && browserWindow.isFocused()
 }
 
 export const closeWindow = () => {
@@ -247,7 +247,7 @@ export const setFullScreen = (isFullscreen: boolean): boolean => {
   // https://github.com/any-listen/any-listen/issues/190
   // in electron ^41.2.0, windows -dt mode need to set resizable to true before setting full screen
   // if (appState.envParams.cmdParams.dt || isLinux) {
-  if (isLinux) {
+  if (import.meta.env.VITE_IS_LINUX) {
     // linux 需要先设置为可调整窗口大小才能全屏
     if (isFullscreen) {
       browserWindow.setResizable(isFullscreen)
@@ -271,7 +271,8 @@ const taskBarButtonFlags: AnyListen.TaskBarButtonFlags = {
 }
 export const setThumbarButtons = throttle(
   ({ empty, collect, play, next, prev }: AnyListen.TaskBarButtonFlags = taskBarButtonFlags) => {
-    if (!isWin || !browserWindow) return
+    if (!import.meta.env.VITE_IS_WINDOWS) return
+    if (!browserWindow) return
     taskBarButtonFlags.empty = empty
     taskBarButtonFlags.collect = collect
     taskBarButtonFlags.play = play

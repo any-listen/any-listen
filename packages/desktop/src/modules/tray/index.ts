@@ -1,6 +1,5 @@
 import path from 'node:path'
 
-import { isMac, isWin } from '@any-listen/nodejs/index'
 import { Menu, nativeImage, Tray } from 'electron'
 
 import { actions } from '@/actions'
@@ -54,7 +53,11 @@ const themeList = [
 
 const getTrayImage = (themeId: number) => {
   let theme = themeList.find((item) => item.id === themeId) ?? themeList[0]
-  const iconPath = path.join(appState.staticPath, 'images/tray', theme.fileName + (isWin ? '.ico' : '.png'))
+  const iconPath = path.join(
+    appState.staticPath,
+    'images/tray',
+    theme.fileName + (import.meta.env.VITE_IS_WINDOWS ? '.ico' : '.png')
+  )
   return nativeImage.createFromPath(iconPath)
 }
 
@@ -69,7 +72,7 @@ export const createTray = () => {
   // tray.setToolTip(i18n.t('app_name'))
   // createMenu()
   tray.setIgnoreDoubleClickEvents(true)
-  if (isWin) {
+  if (import.meta.env.VITE_IS_WINDOWS) {
     tray.on('click', () => {
       actions.exec('winMain.showWindow')
     })
@@ -182,7 +185,7 @@ export const createMenu = () => {
           },
         }
   )
-  if (isMac) {
+  if (import.meta.env.VITE_IS_MAC) {
     menu.push({ type: 'separator' })
     menu.push(
       isShowStatusBarLyric
@@ -353,7 +356,7 @@ export const initMainWindowHandler = (
   winMainEvent.on('show', () => {
     createMenu()
   })
-  if (!isWin) {
+  if (!import.meta.env.VITE_IS_WINDOWS) {
     winMainEvent.on('focus', () => {
       createMenu()
     })

@@ -1,7 +1,6 @@
 import { winMainReadyEvent } from '@any-listen/app/common/event'
 import { appLogEvent } from '@any-listen/app/modules/logs'
 import { APP_EVENT_NAMES } from '@any-listen/common/constants'
-import { isMac } from '@any-listen/nodejs/index'
 
 // import { initMainWindowHandler as initMainWindowHandlerUserApi } from '@/modules/userApi'
 // import { initMainWindowHandler as initMainWindowHandlerSync } from '@/modules/sync'
@@ -57,7 +56,7 @@ export const initWinMain = () => {
     if (isExistWindow()) {
       if (deeplink) void rendererIPC.deeplink(deeplink)
       else showWindow()
-    } else if (isMac) createWindow()
+    } else if (import.meta.env.VITE_IS_MAC) createWindow()
     else actions.exec('app.quit')
   })
   appEvent.on('activate', () => {

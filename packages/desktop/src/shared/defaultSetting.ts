@@ -1,14 +1,13 @@
 import defaultSetting from '@any-listen/common/defaultSetting'
-import { isMac, isWin } from '@any-listen/nodejs/index'
 // import os from 'node:os'
 // import path from 'node:path'
 
-if (isWin) {
+if (import.meta.env.VITE_IS_WINDOWS) {
   defaultSetting['playDetail.coverStyle'] = 'square'
   // defaultSetting['desktopLyric.isLockScreen'] = true
 } else {
   defaultSetting['player.isPlayAwlrc'] = false
-  if (isMac) {
+  if (import.meta.env.VITE_IS_MAC) {
     defaultSetting['tray.themeId'] = 0
     defaultSetting['common.transparentWindow'] = false
   }
