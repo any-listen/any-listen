@@ -10,6 +10,7 @@ import {
   setBounds,
   setIgnoreMouseEvents,
   setSkipTaskbar,
+  setResizeable,
 } from './main'
 import { mouseCheckTools } from './mouseCheckTools'
 import { rendererIPC } from './rendererEvent'
@@ -66,6 +67,11 @@ export const handleConfigUpdated = (keys: Array<keyof AnyListen.AppSetting>, set
         alwaysOnTopTools.startLoop()
       } else {
         alwaysOnTopTools.clearLoop()
+      }
+    }
+    if (import.meta.env.VITE_IS_WINDOWS) {
+      if (keys.includes('desktopLyric.mode')) {
+        setResizeable(appState.appSetting['desktopLyric.mode'] === 'multiLine')
       }
     }
     if (keys.includes('desktopLyric.isLockScreen') && winLyricState.isLockScreen != setting['desktopLyric.isLockScreen']!) {

@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Added
+### Fixed
 
-- Added a **Classic Lyrics Window Width Scale** setting to adjust the lyrics window width, located under _Settings > Desktop Lyrics Mode Settings_.
+- Fixed an issue where the multi-line lyrics window could not be freely resized when desktop lyrics dynamically switched from **Classic Lyrics Mode** to **Multi-line Lyrics Mode**.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 新增
+### 修复
 
-- 新增 **「经典歌词窗口宽度系数」** 设置，用于调整歌词窗口宽度，位于 _设置 > 桌面歌词模式设置_。
+- 修复桌面歌词从 **「经典歌词模式」** 动态切换到 **「多行歌词模式」** 时，多行歌词窗口无法自由调节大小的问题。
