@@ -90,7 +90,6 @@ export const init = () => {
     socket.remoteQueueTheme = msg2call.createRemoteGroup('theme', { queue: true, timeout: 0 })
     socket.remoteQueuePlayer = msg2call.createRemoteGroup('player', { queue: true, timeout: 0 })
     socket.remoteQueueList = msg2call.createRemoteGroup('list', { queue: true, timeout: 0 })
-    socket.remoteQueueList = msg2call.createRemoteGroup('list', { queue: true, timeout: 0 })
     socket.remoteQueueDislike = msg2call.createRemoteGroup('dislike', { queue: true, timeout: 0 })
     socket.remoteQueueSync = msg2call.createRemoteGroup('sync', { queue: true, timeout: 0 })
     socket.remoteQueueExtension = msg2call.createRemoteGroup('extension_q', { queue: true, timeout: 0 })
