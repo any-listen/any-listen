@@ -101,6 +101,11 @@ const winEvent = () => {
       alwaysOnTopTools.startLoop()
     }
     browserWindow?.blur()
+    if (import.meta.env.VITE_IS_WINDOWS) {
+      if (appState.appSetting['desktopLyric.mode'] === 'classic') {
+        browserWindow!.setResizable(false)
+      }
+    }
   })
 }
 
@@ -160,7 +165,7 @@ export const createWindow = () => {
     },
   }
   if (import.meta.env.VITE_IS_WINDOWS) {
-    options.resizable = appState.appSetting['desktopLyric.mode'] === 'multiLine'
+    options.resizable = true
   }
 
   /**
