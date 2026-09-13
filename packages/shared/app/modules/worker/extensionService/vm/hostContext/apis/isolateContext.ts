@@ -185,6 +185,7 @@ const handleCreateIsolateFuncs = (extension: AnyListen.Extension.Extension) => {
             const id = Math.random().toString(36).slice(2)
             timeouts.set(id, func)
             hostObj.runTimeout(id, 'timeout', delay)
+            return id
           }
           globalThis.setInterval = (func, delay = 0) => {
             if (typeof func !== 'function') {
@@ -196,12 +197,10 @@ const handleCreateIsolateFuncs = (extension: AnyListen.Extension.Extension) => {
             const id = Math.random().toString(36).slice(2)
             timeouts.set(id, func)
             hostObj.runTimeout(id, 'interval', delay)
+            return id
           }
           globalThis.clearTimeout = (id) => {
-            if (typeof id !== 'string') {
-              throw new TypeError('clearTimeout id must be a string')
-            }
-            if (!timeouts.has(id)) return
+            if (typeof id !== 'string' || !timeouts.has(id)) return
             timeouts.delete(id)
             hostObj.clearTimeout(id)
           }
