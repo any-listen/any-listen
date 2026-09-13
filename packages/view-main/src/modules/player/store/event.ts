@@ -101,13 +101,13 @@ class Event extends _Event {
     this.emitEvent('progressChanged', progress, old)
   }
 
-  playListMusicChanged(playedList: InitState['playList']) {
-    this.emitEvent('playListMusicChanged', playedList)
+  playListMusicChanged(playList: InitState['playList']) {
+    this.emitEvent('playListMusicChanged', playList)
   }
 
-  playListMusicUpdated(playedList: InitState['playList']) {
-    if (!playedList.length) return
-    this.emitEvent('playListMusicUpdated', playedList)
+  playListMusicUpdated(playList: InitState['playList']) {
+    if (!playList.length) return
+    this.emitEvent('playListMusicUpdated', playList)
   }
 
   playListMusicOverwrited(list: AnyListen.Player.PlayMusicInfo[]) {

@@ -79,7 +79,8 @@ export {
 export const addPlayLaterMusic = async (
   musicInfos: AnyListen.Music.MusicInfo[],
   listId: string,
-  source: AnyListen.Player.SourceType = 'local'
+  source: AnyListen.Player.SourceType = 'local',
+  isTop = false
 ) => {
   const list = createPlayMusicInfoList({
     musicInfos,
@@ -87,7 +88,15 @@ export const addPlayLaterMusic = async (
     source,
     playLater: true,
   })
-  await addPlayListMusic({ musics: list, pos: playerState.playList.findIndex((m) => m.playLater) + 1 })
+  return new Promise<void>((resolve) => {
+    const unsub = playerEvent.on('playListMusicAdded', (pos, _list) => {
+      if (_list.every((m, i) => list[i].itemId === m.itemId)) {
+        resolve()
+        unsub()
+      }
+    })
+    void addPlayListMusic({ musics: list, pos: isTop ? 0 : playerState.playList.findIndex((m) => m.playLater) + 1 })
+  })
 }
 
 export const sendCreatedEvent = () => {

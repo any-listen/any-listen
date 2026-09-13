@@ -8,13 +8,17 @@
   import { showMusicAddModal } from '@/components/apis/musicAddModal'
   import { showMusicCommentModal } from '@/components/apis/musicCommentModal'
   import { appState } from '@/modules/app/store/state'
+  import { showMusicToggleModal } from './components/MusicToggleModal'
+  type ListType = 'default' | AnyListen.List.UserListType
   let {
     source,
+    type,
     deviceid,
     onplay,
     onhide,
   }: {
     source: AnyListen.Player.SourceType
+    type: ListType
     deviceid: string | null
     onplay: (musicInfo: AnyListen.Music.MusicInfo) => Promise<void>
     onhide?: () => void
@@ -60,6 +64,12 @@
       { action: 'comment', label: $t('user_list_music_menu__comment') },
       { action: 'copyName', label: $t('user_list_music_menu__copy_name') },
       // { action: 'detail', label: $t('user_list_music_menu__detail') },
+      null,
+      {
+        action: 'toggleSource',
+        disabled: (['local', 'remote'] as ListType[]).includes(type),
+        label: $t('user_list_music_menu__toggle_source'),
+      },
       null,
       { action: 'dislike', disabled: dislike, label: $t('user_list_music_menu__dislike') },
       local && { action: 'remove', disabled: notLocalList, label: $t('user_list_music_menu__remove') },
@@ -116,6 +126,9 @@
         break
       case 'locate':
         locateMusic(selectInfo.musicInfo as AnyListen.Music.MusicInfoLocal)
+        break
+      case 'toggleSource':
+        void showMusicToggleModal(selectInfo.musicInfo, selectInfo.listId)
         break
       case 'dislike':
         void dislikeMusic(selectInfo.musicInfo)

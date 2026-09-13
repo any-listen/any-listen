@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Fixed an issue where the multi-line lyrics window could not be freely resized when desktop lyrics dynamically switched from **Classic Lyrics Mode** to **Multi-line Lyrics Mode**.
+- Added a **Song Source Switching** feature, available from the right-click menu for songs in the song list.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复桌面歌词从 **「经典歌词模式」** 动态切换到 **「多行歌词模式」** 时，多行歌词窗口无法自由调节大小的问题。
+- 新增 **「歌曲换源」** 功能，可在歌曲列表中通过歌曲右键菜单使用。

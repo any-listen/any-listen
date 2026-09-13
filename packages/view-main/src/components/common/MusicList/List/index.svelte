@@ -197,6 +197,7 @@
     <Menu
       bind:this={menu}
       {source}
+      type={listinfo.type}
       deviceid={listinfo.type == 'local' ? listinfo.listMeta.deviceId : null}
       onplay={async (musicInfo) => {
         void playMusic(listinfo.id, list, musicInfo, source, getListMetaInfo(listinfo))
