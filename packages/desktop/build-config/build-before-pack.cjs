@@ -48,7 +48,7 @@ module.exports = async (context) => {
   // const electronVersion =
   //   context.packager?.info?._framework?.version ??
   //   require('../package.json').devDependencies.electron.replace(/^[^\d]*?(\d+)/, '$1')
-  if (electronPlatformName !== 'linux' || !process.env.BUILD_WIN_LEGACY || process.env.FORCE) return
+  if ((electronPlatformName !== 'linux' && !process.env.BUILD_WIN_LEGACY) || process.env.FORCE) return
   switch (arch) {
     case Arch.x64:
     case Arch.ia32:
