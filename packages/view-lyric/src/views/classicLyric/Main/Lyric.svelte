@@ -13,6 +13,7 @@
   let isFontWeightFont = $state(settingState.setting['desktopLyric.classic.style.isFontWeightFont'])
   let isFontWeightLine = $state(settingState.setting['desktopLyric.classic.style.isFontWeightLine'])
   let isFontWeightExtended = $state(settingState.setting['desktopLyric.classic.style.isFontWeightExtended'])
+  let alignX = $state(settingState.setting['desktopLyric.classic.style.alignX'])
 
   let colorUnplay = $state(settingState.setting['desktopLyric.classic.style.lyricUnplayColor'])
   let colorPlayed = $state(settingState.setting['desktopLyric.classic.style.lyricPlayedColor'])
@@ -43,6 +44,8 @@
         } else if (key === 'desktopLyric.classic.style.lyricShadowColor') {
           colorShadow = setting['desktopLyric.classic.style.lyricShadowColor']!
           colorShadowFont = RGB_Alpha_Shade(0.49, colorShadow)
+        } else if (key === 'desktopLyric.classic.style.alignX') {
+          alignX = setting['desktopLyric.classic.style.alignX']!
         }
       }
     })
@@ -50,7 +53,7 @@
 </script>
 
 <div
-  class="lyric"
+  class="lyric x-{alignX}"
   class:font-weight-font={isFontWeightFont}
   class:font-weight-line={isFontWeightLine}
   class:font-weight-extended={isFontWeightExtended}
@@ -81,6 +84,44 @@
     // text-align: center;
     // font-weight: bold;
 
+    &.x-default {
+      :global {
+        > div {
+          &.top {
+            justify-content: flex-start;
+          }
+          &.bottom {
+            justify-content: flex-end;
+            text-align: right;
+          }
+        }
+      }
+    }
+    &.x-left {
+      :global {
+        > div {
+          &.top {
+            justify-content: flex-start;
+          }
+          &.bottom {
+            justify-content: flex-start;
+          }
+        }
+      }
+    }
+    &.x-right {
+      :global {
+        > div {
+          text-align: right;
+          &.top {
+            justify-content: flex-end;
+          }
+          &.bottom {
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
     :global {
       > div {
         display: flex;
@@ -89,13 +130,6 @@
         max-width: 100%;
         padding: 0;
         margin: 0;
-
-        &.top {
-          justify-content: flex-start;
-        }
-        &.bottom {
-          justify-content: flex-end;
-        }
       }
 
       .font-lrc,

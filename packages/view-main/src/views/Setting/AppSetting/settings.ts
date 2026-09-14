@@ -604,6 +604,18 @@ if (import.meta.env.VITE_IS_DESKTOP) {
           { value: 'bottom', name: 'settings.desktop_lyric.style_align_bottom' },
         ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.classic.style.align']; name: keyof Message }>,
       },
+      // t('settings.desktop_lyric.style_align_x_right')
+      {
+        field: 'desktopLyric.classic.style.alignX',
+        id: 'desktopLyric.classic.style.alignX',
+        name: 'settings.desktop_lyric.style_align_x',
+        type: 'radio',
+        enum: [
+          { value: 'default', name: 'settings.desktop_lyric.style_align_x_default' },
+          { value: 'left', name: 'settings.desktop_lyric.style_align_x_left' },
+          { value: 'right', name: 'settings.desktop_lyric.style_align_x_right' },
+        ] satisfies Array<{ value: AnyListen.AppSetting['desktopLyric.classic.style.alignX']; name: keyof Message }>,
+      },
       {
         name: 'settings.desktop_lyric.font',
         id: 'desktopLyric.classic.style.font',

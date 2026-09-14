@@ -6,6 +6,7 @@
 - Added a **Classic Lyrics Window Width Scale** setting to adjust the lyrics window width, located under _Settings > Desktop Lyrics Mode Settings_.
 - Added a **Song Source Switching** feature, available from the right-click menu for songs in the song list.
 - Added the built-in **Inter Variable** font as the preferred default font ([#278](https://github.com/any-listen/any-listen/issues/278)).
+- Added a **Horizontal Alignment** option for **Classic Desktop Lyrics** under _Settings > Desktop Lyrics Settings > Classic Lyrics_ ([#299](https://github.com/any-listen/any-listen/issues/299)).
 
 ### Improved
 
@@ -30,6 +31,7 @@
 - 新增 **「经典歌词窗口宽度系数」** 设置，用于调整歌词窗口宽度，位于 _设置 > 桌面歌词模式设置_。
 - 新增 **「歌曲换源」** 功能，可在歌曲列表中通过歌曲右键菜单使用。
 - 新增内置 **「Inter Variable」** 字体作为首选默认字体（[#278](https://github.com/any-listen/any-listen/issues/278)）。
+- 经典桌面歌词新增 **「水平对齐方式」** 选项，可在 _设置 > 桌面歌词设置 > 经典歌词_ 中调整（[#299](https://github.com/any-listen/any-listen/issues/299)）。
 
 ### 优化
 

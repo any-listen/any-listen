@@ -423,6 +423,11 @@ declare global {
       'desktopLyric.classic.style.align': 'top' | 'bottom'
 
       /**
+       * 歌词水平对齐方式
+       */
+      'desktopLyric.classic.style.alignX': 'default' | 'left' | 'right'
+
+      /**
        * 桌面歌词未播放字体颜色
        */
       'desktopLyric.classic.style.lyricUnplayColor': string

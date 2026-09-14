@@ -1,5 +1,9 @@
 <!--- @lang: en-us -->
 
+### Added
+
+- Added a **Horizontal Alignment** option for **Classic Desktop Lyrics** under _Settings > Desktop Lyrics Settings > Classic Lyrics_ ([#299](https://github.com/any-listen/any-listen/issues/299)).
+
 ### Improved
 
 - Improved window border rendering when using native system windows on Windows ([#230](https://github.com/any-listen/any-listen/issues/230)).
@@ -11,6 +15,10 @@
 ---
 
 <!--- @lang: zh-cn -->
+
+### 新增
+
+- 经典桌面歌词新增 **「水平对齐方式」** 选项，可在 _设置 > 桌面歌词设置 > 经典歌词_ 中调整（[#299](https://github.com/any-listen/any-listen/issues/299)）。
 
 ### 优化
 
