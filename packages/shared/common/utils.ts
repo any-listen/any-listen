@@ -428,5 +428,7 @@ export const isLikelyGarbage = (str: string, options: GarbageOptions = {}): bool
 }
 
 export const cloneData = <T>(data: T) => {
-  return data === undefined ? data : (structuredClone(data) as T)
+  return data === undefined
+    ? data
+    : ((import.meta.env.VITE_IS_WINDOWS_LEGACY ? JSON.parse(JSON.stringify(data)) : structuredClone(data)) as T)
 }

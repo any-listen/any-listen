@@ -15,6 +15,7 @@ switch (process.platform) {
   case 'win32':
   default:
     process.env.VITE_IS_WINDOWS = 'true'
+    if (process.env.BUILD_WIN_LEGACY) process.env.VITE_IS_WINDOWS_LEGACY = 'true'
     break
 }
 
