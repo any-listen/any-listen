@@ -72,7 +72,9 @@ export const authCode = async (ctx: AnyListen.RequestContext, pwd: string) => {
       }
     }
 
-    if (code != 200) {
+    if (code == 200) {
+      if (store.has(ip)) store.delete(ip)
+    } else {
       const num = store.get<number>(ip) ?? 0
       // if (num > 20) return
       store.set(ip, num + 1)
