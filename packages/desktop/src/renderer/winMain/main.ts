@@ -54,8 +54,11 @@ const winEvent = () => {
     winMainState.isFullScreen = false
     winMainEvent.fullscreen(false)
 
-    if (browserWindow?.resizable) {
-      browserWindow.setResizable(false)
+    // macOS needs here to set resizable to false after exiting full screen
+    if (import.meta.env.VITE_IS_MAC) {
+      if (browserWindow?.resizable) {
+        browserWindow.setResizable(false)
+      }
     }
   })
 
@@ -248,15 +251,15 @@ export const setFullScreen = (isFullscreen: boolean): boolean => {
   if (!browserWindow) return false
   // https://github.com/any-listen/any-listen/issues/190
   // in electron ^41.2.0, windows -dt mode need to set resizable to true before setting full screen
-  // if (appState.envParams.cmdParams.dt || isLinux) {
-  if (import.meta.env.VITE_IS_LINUX) {
+  if (appState.envParams.cmdParams.dt || import.meta.env.VITE_IS_LINUX) {
     // linux 需要先设置为可调整窗口大小才能全屏
     if (isFullscreen) {
       browserWindow.setResizable(isFullscreen)
       browserWindow.setFullScreen(isFullscreen)
     } else {
       browserWindow.setFullScreen(isFullscreen)
-      browserWindow.setResizable(isFullscreen)
+      // windows/linux need to set resizable to true after exiting full screen
+      if (!import.meta.env.VITE_IS_MAC) browserWindow.setResizable(isFullscreen)
     }
   } else {
     browserWindow.setFullScreen(isFullscreen)

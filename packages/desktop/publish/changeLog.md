@@ -18,6 +18,7 @@
 - Fixed an issue where some lyrics did not wrap properly.
 - Fixed an issue where the multi-line lyrics window could not be freely resized when desktop lyrics dynamically switched from **Classic Lyrics Mode** to **Multi-line Lyrics Mode**.
 - Fixed an issue with `setTimeout`-related APIs in the extension-isolated API environment ([#301](https://github.com/any-listen/any-listen/issues/301)).
+- Fixed an issue where fullscreen mode was unavailable on Windows ([#291](https://github.com/any-listen/any-listen/issues/291)).
 
 ---
 
@@ -41,3 +42,4 @@
 - 修复某些歌词不换行的问题。
 - 修复桌面歌词从 **「经典歌词模式」** 动态切换到 **「多行歌词模式」** 时，多行歌词窗口无法自由调节大小的问题。
 - 修复扩展隔离 API 环境的 `setTimeout` 相关 API 异常问题（[#301](https://github.com/any-listen/any-listen/issues/301)）。
+- 修复 Windows 下无法全屏的问题（[#291](https://github.com/any-listen/any-listen/issues/291)）。
