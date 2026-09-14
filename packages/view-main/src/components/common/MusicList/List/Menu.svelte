@@ -64,12 +64,9 @@
       { action: 'comment', label: $t('user_list_music_menu__comment') },
       { action: 'copyName', label: $t('user_list_music_menu__copy_name') },
       // { action: 'detail', label: $t('user_list_music_menu__detail') },
-      null,
-      {
-        action: 'toggleSource',
-        disabled: (['local', 'remote'] as ListType[]).includes(type),
-        label: $t('user_list_music_menu__toggle_source'),
-      },
+      ...(local && !(['local', 'remote'] as ListType[]).includes(type)
+        ? ([null, { action: 'toggleSource', label: $t('user_list_music_menu__toggle_source') }] satisfies MenuList<MenuType>)
+        : []),
       null,
       { action: 'dislike', disabled: dislike, label: $t('user_list_music_menu__dislike') },
       local && { action: 'remove', disabled: notLocalList, label: $t('user_list_music_menu__remove') },
