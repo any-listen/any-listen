@@ -58,6 +58,7 @@ export const authCode = async (ctx: AnyListen.RequestContext, pwd: string) => {
         success = (await verifyByKey(key, ip, ctx.headers['user-agent'] ?? '')) != null
       }
       if (success) {
+        store.delete(ip)
         msg = `${IPC_CODE.helloMsg}\n${encodeURIComponent(getServerName())}`
         code = 200
         if (import.meta.env.PROD) {
