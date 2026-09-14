@@ -45,16 +45,10 @@ module.exports = async (context) => {
   const { electronPlatformName, arch } = context
   // await replaceQrcDecodeLib(electronNodeAbi, electronPlatformName, arch)
   // if (electronPlatformName !== 'linux' || process.env.FORCE) return
-  const electronVersion =
-    context.packager?.info?._framework?.version ??
-    require('../package.json').devDependencies.electron.replace(/^[^\d]*?(\d+)/, '$1')
-  if (
-    (electronPlatformName !== 'linux' && electronPlatformName !== 'win32') ||
-    (electronPlatformName === 'win32' && parseInt(electronVersion) > 22) ||
-    process.env.FORCE
-  ) {
-    return
-  }
+  // const electronVersion =
+  //   context.packager?.info?._framework?.version ??
+  //   require('../package.json').devDependencies.electron.replace(/^[^\d]*?(\d+)/, '$1')
+  if (electronPlatformName !== 'linux' || !process.env.BUILD_WIN_LEGACY || process.env.FORCE) return
   switch (arch) {
     case Arch.x64:
     case Arch.ia32:

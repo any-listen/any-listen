@@ -11,6 +11,7 @@
 ### Fixed
 
 - Fixed an issue where fullscreen mode was unavailable on Windows ([#291](https://github.com/any-listen/any-listen/issues/291)).
+- Fixed an issue where the Windows legacy version failed to launch ([#307](https://github.com/any-listen/any-listen/issues/307)).
 
 ---
 
@@ -27,3 +28,4 @@
 ### 修复
 
 - 修复 Windows 下无法全屏的问题（[#291](https://github.com/any-listen/any-listen/issues/291)）。
+- 修复 Windows legacy 版本无法启动的问题（[#307](https://github.com/any-listen/any-listen/issues/307)）。
