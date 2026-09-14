@@ -7,6 +7,10 @@
 - Added a **Song Source Switching** feature, available from the right-click menu for songs in the song list.
 - Added the built-in **Inter Variable** font as the preferred default font ([#278](https://github.com/any-listen/any-listen/issues/278)).
 
+### Improved
+
+- Improved window border rendering when using native system windows on Windows ([#230](https://github.com/any-listen/any-listen/issues/230)).
+
 ### Fixed
 
 - Fixed an issue where the file save dialog API could not select folders ([#285](https://github.com/any-listen/any-listen/issues/285)).
@@ -25,6 +29,10 @@
 - 新增 **「经典歌词窗口宽度系数」** 设置，用于调整歌词窗口宽度，位于 _设置 > 桌面歌词模式设置_。
 - 新增 **「歌曲换源」** 功能，可在歌曲列表中通过歌曲右键菜单使用。
 - 新增内置 **「Inter Variable」** 字体作为首选默认字体（[#278](https://github.com/any-listen/any-listen/issues/278)）。
+
+### 优化
+
+- 优化 Windows 下使用原生系统窗口时的窗口边框显示效果（[#230](https://github.com/any-listen/any-listen/issues/230)）。
 
 ### 修复
 

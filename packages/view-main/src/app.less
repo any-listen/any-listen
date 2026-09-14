@@ -16,8 +16,11 @@ html {
       }
     }
     &.disable-transparent {
-      &:not(.mac) #body {
+      &.linux #body {
         border: 1px solid var(--color-primary-light-500);
+      }
+      &.windows:not(.windows-11, .fullscreen) #body {
+        border-top: 1px solid #aaa;
       }
     }
     &.fullscreen {

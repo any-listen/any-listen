@@ -1,7 +1,7 @@
 import path from 'node:path'
 
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
-import { getPlatform } from '@any-listen/nodejs/index'
+import { getPlatform, getOSVersion } from '@any-listen/nodejs/index'
 import { BrowserWindow, Notification, dialog, session } from 'electron'
 
 import { appState } from '@/app'
@@ -137,10 +137,12 @@ export const createWindow = () => {
     ? `http://localhost:${DEV_SERVER_PORTS['view-main']}`
     : `file://${path.join(encodePath(__dirname), '../view-main/index.html')}`
   if (import.meta.env.DEV) {
-    void browserWindow.loadURL(`${winURL}?os=${getPlatform()}&dt=${appState.envParams.cmdParams.dt}`)
+    void browserWindow.loadURL(
+      `${winURL}?os=${getPlatform()}&osver=${encodeURIComponent(getOSVersion())}&dt=${appState.envParams.cmdParams.dt}`
+    )
   } else {
     void browserWindow.loadURL(
-      `${winURL}?os=${getPlatform()}&dt=${appState.envParams.cmdParams.dt}&t=${encodeURIComponent(JSON.stringify(theme.colors))}`
+      `${winURL}?os=${getPlatform()}&osver=${encodeURIComponent(getOSVersion())}&dt=${appState.envParams.cmdParams.dt}&t=${encodeURIComponent(JSON.stringify(theme.colors))}`
     )
   }
 

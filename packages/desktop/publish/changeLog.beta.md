@@ -1,21 +1,13 @@
 <!--- @lang: en-us -->
 
-### Added
+### Improved
 
-- Added a **Song Source Switching** feature, available from the song right-click menu in the song list.
-
-### Fixed
-
-- Fixed an issue with `setTimeout`-related APIs in the extension-isolated API environment ([#301](https://github.com/any-listen/any-listen/issues/301)).
+- Improved window border rendering when using native system windows on Windows ([#230](https://github.com/any-listen/any-listen/issues/230)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 新增
+### 优化
 
-- 新增 **「歌曲换源」** 功能，可在歌曲列表中通过歌曲右键菜单使用。
-
-### 修复
-
-- 修复扩展隔离 API 环境的 `setTimeout` 相关 API 异常问题（[#301](https://github.com/any-listen/any-listen/issues/301)）。
+- 优化 Windows 下使用原生系统窗口时的窗口边框显示效果（[#230](https://github.com/any-listen/any-listen/issues/230)）。

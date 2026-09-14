@@ -242,6 +242,12 @@ export const getPlatform = (platform: NodeJS.Platform = process.platform) => {
   }
 }
 
+export const getOSVersion = (): string => {
+  const release = os.release()
+  const versionMatch = /^(\d+)/.exec(release)
+  return versionMatch?.[1] || release
+}
+
 export const getNativeName = () => {
   return `${process.platform}_${process.arch}_v${NATIVE_VERSION}`
 }
