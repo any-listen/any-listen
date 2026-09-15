@@ -15,7 +15,7 @@
     "@any-listen/web": "workspace:@shared/web@*",
     "dompurify": "^3.4.15",
     "hast-util-to-html": "^9.0.5",
-    "marked": "^18.0.11",
+    "marked": "^18.0.13",
     "message2call": "^2.0.3",
     "refractor": "^5.0.0",
     "regexparam": "^3.0.0",
@@ -40,7 +40,7 @@
     "svelte-check": "^4.7.6",
     "svelte-eslint-parser": "^1.8.1",
     "svelte-preprocess": "6.0.5",
-    "vite": "^8.2.2",
+    "vite": "^8.3.0",
     "vite-plugin-svg-icons": "^2.0.1"
   }
 }
