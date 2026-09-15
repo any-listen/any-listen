@@ -68,7 +68,10 @@ export const applyElectronEnvParams = () => {
   if (appState.envParams.cmdParams.dhmkh) app.commandLine.appendSwitch('disable-features', 'HardwareMediaKeyHandling')
 
   // fix linux transparent fail. https://github.com/electron/electron/issues/25153#issuecomment-843688494
-  if (process.platform == 'linux') app.commandLine.appendSwitch('use-gl', 'desktop')
+  if (import.meta.env.VITE_IS_LINUX) {
+    app.commandLine.appendSwitch('use-gl', 'desktop')
+    app.commandLine.appendSwitch('ozone-platform', 'x11')
+  }
 
   // https://github.com/electron/electron/issues/22691
   app.commandLine.appendSwitch('wm-window-animations-disabled')
