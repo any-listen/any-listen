@@ -3,6 +3,7 @@ import { buildMusicName } from '@any-listen/common/tools'
 import { showSimpleConfirmModal } from '@/components/apis/dialog'
 import { addInfo } from '@/modules/dislikeList/actions'
 import { getListMusics, removeListMusics } from '@/modules/musicLibrary/actions'
+import { updateListMusicsPosition } from '@/modules/musicLibrary/store/actions'
 import { addPlayLaterMusic, playList, playOnlineList } from '@/modules/player/store/actions'
 import type { OnlineListMetaInfo } from '@/modules/player/store/playerActions'
 import { settingState } from '@/modules/setting/store/state'
@@ -78,6 +79,16 @@ export const playMusicLater = async (
   } else {
     await addPlayLaterMusic([musicInfo], listId, source)
   }
+}
+
+export const updateMusicPosition = async (listId: string, position: number, ids: string[]) => {
+  const list = await getListMusics(listId)
+  position = Math.min(position, list.length)
+  await updateListMusicsPosition({
+    listId,
+    position: position - 1,
+    ids,
+  })
 }
 
 export const copyName = (musicInfo: AnyListen.Music.MusicInfo) => {

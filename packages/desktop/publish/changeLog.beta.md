@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Fixed an issue where the Windows legacy version failed to launch ([#307](https://github.com/any-listen/any-listen/issues/307)).
+- Added **Song Position Adjustment**, available from the song list context menu ([#302](https://github.com/any-listen/any-listen/issues/302)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复 Windows legacy 版本无法启动的问题（[#307](https://github.com/any-listen/any-listen/issues/307)）。
+- 新增 **「歌曲位置调整」** 功能，可在歌曲列表右键菜单中使用（[#302](https://github.com/any-listen/any-listen/issues/302)）。

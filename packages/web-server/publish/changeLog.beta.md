@@ -2,11 +2,7 @@
 
 ### Added
 
-- Added a **Song Source Switching** feature, available from the song right-click menu in the song list.
-
-### Fixed
-
-- Fixed an issue with `setTimeout`-related APIs in the extension-isolated API environment ([#301](https://github.com/any-listen/any-listen/issues/301)).
+- Added **Song Position Adjustment**, available from the song list context menu ([#302](https://github.com/any-listen/any-listen/issues/302)).
 
 ---
 
@@ -14,8 +10,4 @@
 
 ### 新增
 
-- 新增 **「歌曲换源」** 功能，可在歌曲列表中通过歌曲右键菜单使用。
-
-### 修复
-
-- 修复扩展隔离 API 环境的 `setTimeout` 相关 API 异常问题（[#301](https://github.com/any-listen/any-listen/issues/301)）。
+- 新增 **「歌曲位置调整」** 功能，可在歌曲列表右键菜单中使用（[#302](https://github.com/any-listen/any-listen/issues/302)）。

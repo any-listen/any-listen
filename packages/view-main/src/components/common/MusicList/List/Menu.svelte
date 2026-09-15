@@ -2,13 +2,15 @@
   import { tick } from 'svelte'
   import { t } from '@/plugins/i18n'
   import Menu, { type MenuList } from '@/components/base/Menu.svelte'
-  import { copyName, dislikeMusic, locateMusic, playMusicLater, removeMusic } from './action'
+  import { copyName, dislikeMusic, locateMusic, playMusicLater, removeMusic, updateMusicPosition } from './action'
   import { hasDislike } from '@/modules/dislikeList/store/actions'
   import type { MenuSelectInfo } from '../type'
   import { showMusicAddModal } from '@/components/apis/musicAddModal'
   import { showMusicCommentModal } from '@/components/apis/musicCommentModal'
   import { appState } from '@/modules/app/store/state'
   import { showMusicToggleModal } from './components/MusicToggleModal'
+  import { showMusicSortModal } from './components/MusicSortModal'
+
   type ListType = 'default' | AnyListen.List.UserListType
   let {
     source,
@@ -16,12 +18,14 @@
     deviceid,
     onplay,
     onhide,
+    oncancelmulti,
   }: {
     source: AnyListen.Player.SourceType
     type: ListType
     deviceid: string | null
     onplay: (musicInfo: AnyListen.Music.MusicInfo) => Promise<void>
     onhide?: () => void
+    oncancelmulti: () => void
   } = $props()
 
   type MenuType =
@@ -59,7 +63,7 @@
       // { action: 'download', label: $t('user_list_music_menu__download') },
       { action: 'addTo', label: $t('user_list_music_menu__add_to') },
       local && !localList && { action: 'moveTo', label: $t('user_list_music_menu__move_to') },
-      // { action: 'sort', label: $t('user_list_music_menu__sort') },
+      local && { action: 'sort', label: $t('user_list_music_menu__sort') },
       null,
       { action: 'comment', label: $t('user_list_music_menu__comment') },
       { action: 'copyName', label: $t('user_list_music_menu__copy_name') },
@@ -115,6 +119,23 @@
           selectInfo.selectedList.length ? selectInfo.selectedList : [selectInfo.musicInfo]
         )
         break
+      case 'sort': {
+        const mInfo = selectInfo.musicInfo
+        const selectedLength = selectInfo.selectedList.length
+        void showMusicSortModal(mInfo, selectedLength).then((num) => {
+          if (num == null) return
+          if (selectInfo.musicInfo !== mInfo || selectInfo.selectedList.length !== selectedLength) return
+          const musics = selectInfo.selectedList.length ? selectInfo.selectedList : [selectInfo.musicInfo]
+          updateMusicPosition(
+            selectInfo.listId,
+            num,
+            musics.map((m) => m.id)
+          ).then(() => {
+            oncancelmulti()
+          })
+        })
+        break
+      }
       case 'comment':
         void showMusicCommentModal(selectInfo.musicInfo)
         break

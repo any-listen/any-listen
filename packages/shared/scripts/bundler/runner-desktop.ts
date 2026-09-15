@@ -1,7 +1,7 @@
 import type { ChildProcessWithoutNullStreams } from 'node:child_process'
 
 // import del from 'del'
-import { debounce } from '@any-listen/common/utils'
+import { debounce } from '@any-listen/common/common'
 import { Arch, buildConfig, replaceLib, runDesktop } from '@any-listen/desktop'
 import colors from 'picocolors'
 import type { Logger } from 'vite'

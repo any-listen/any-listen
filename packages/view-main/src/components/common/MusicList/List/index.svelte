@@ -205,6 +205,9 @@
       onhide={() => {
         activeIndex = -1
       }}
+      oncancelmulti={() => {
+        multimode = false
+      }}
     />
   </div>
 {:else if loaded}
