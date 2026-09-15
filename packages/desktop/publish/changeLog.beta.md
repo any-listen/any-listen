@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Added
+### Fixed
 
-- Added **Song Position Adjustment**, available from the song list context menu ([#302](https://github.com/any-listen/any-listen/issues/302)).
+- Fixed build issues.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 新增
+### 修复
 
-- 新增 **「歌曲位置调整」** 功能，可在歌曲列表右键菜单中使用（[#302](https://github.com/any-listen/any-listen/issues/302)）。
+- 修复构建问题。

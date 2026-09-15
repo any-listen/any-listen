@@ -262,7 +262,7 @@ importers:
         specifier: workspace:@shared/types@*
         version: link:../types
       '@types/node':
-        specifier: ^24.13.4
+        specifier: '24'
         version: 24.13.4
       '@types/tunnel':
         specifier: ^0.0.7
