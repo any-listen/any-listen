@@ -55,12 +55,13 @@ export default (onMsDown: (isDown: boolean) => void) => {
         let offsetTop = domP.offsetTop
         let lineHeight = height
         let padding: number
-        if (lyricState.line < 0) {
+        if (!settingState.setting['desktopLyric.multiLine.style.isZoomActiveLrc']) {
+          padding = 0
+        } else if (lyricState.line < 0) {
           padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 2
-        } else if (
-          !settingState.setting['desktopLyric.multiLine.isDelayScroll'] &&
-          settingState.setting['desktopLyric.multiLine.style.isZoomActiveLrc']
-        ) {
+        } else if (settingState.setting['desktopLyric.multiLine.isDelayScroll']) {
+          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 2
+        } else {
           padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 1.1 * 2
           lineHeight += padding
           lineHeight *= 1.14
@@ -69,8 +70,6 @@ export default (onMsDown: (isDown: boolean) => void) => {
             const preHeight = lineHeights[prevActiveLine] ?? 0
             if (preDomP && preDomP !== domP) offsetTop -= preDomP.clientHeight - preHeight
           }
-        } else {
-          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 2
         }
         cancelScrollFn = handleScroll(
           domLyric,

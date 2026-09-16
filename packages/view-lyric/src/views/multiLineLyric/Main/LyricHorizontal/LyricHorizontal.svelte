@@ -127,11 +127,6 @@
         .font-lrc {
           cursor: grab;
         }
-        &.active {
-          // padding: var(--play-detail-lrc-font-size, 16px) 1px;
-          padding-top: calc(var(--lrc-font-size, 16px) * 1.1);
-          padding-bottom: calc(var(--lrc-font-size, 16px) * 1.1);
-        }
 
         .extended {
           margin-top: var(--line-extended-gap);
@@ -294,6 +289,8 @@
     :global {
       .line-content {
         &.active {
+          padding-top: calc(var(--lrc-font-size, 16px) * 1.1);
+          padding-bottom: calc(var(--lrc-font-size, 16px) * 1.1);
           transform: scale(1.14);
           // .extended {
           //   // font-size: 1em;

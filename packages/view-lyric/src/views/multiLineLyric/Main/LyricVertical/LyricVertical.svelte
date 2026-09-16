@@ -132,11 +132,6 @@
           cursor: grab;
         }
 
-        &.active {
-          padding-right: calc(var(--lrc-font-size, 16px) * 1.1);
-          padding-left: calc(var(--lrc-font-size, 16px) * 1.1);
-        }
-
         .extended {
           margin-left: var(--line-extended-gap);
           font-size: 0.8em;
@@ -219,6 +214,8 @@
     :global {
       .line-content {
         &.active {
+          padding-right: calc(var(--lrc-font-size, 16px) * 1.1);
+          padding-left: calc(var(--lrc-font-size, 16px) * 1.1);
           transform: scale(1.14);
         }
       }
