@@ -62,11 +62,23 @@ const winEvent = () => {
     }
   })
 
-  browserWindow.once('ready-to-show', () => {
+  const handlerReadyToShow = () => {
     showWindow()
     setThumbarButtons()
     winMainEvent.ready_to_show()
-  })
+  }
+
+  // The `ready-to-show` event doesn't always fire on wayland.
+  // Use the `did-finish-load` event on the web contents instead as that is similar enough
+  // https://github.com/electron/electron/issues/48859
+  // https://github.com/FreeTubeApp/FreeTube/pull/8294
+  if (import.meta.env.VITE_IS_LINUX) {
+    if (appState['electronParams.ozonePlatform'] == 'wayland') {
+      browserWindow.webContents.once('did-finish-load', handlerReadyToShow)
+    } else browserWindow.once('ready-to-show', handlerReadyToShow)
+  } else {
+    browserWindow.once('ready-to-show', handlerReadyToShow)
+  }
 
   browserWindow.on('show', () => {
     winMainEvent.show()

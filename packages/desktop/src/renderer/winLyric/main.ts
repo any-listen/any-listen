@@ -88,7 +88,7 @@ const winEvent = () => {
   //   browserWindow.webContents.send('focus')
   // })
 
-  browserWindow.once('ready-to-show', () => {
+  const handlerReadyToShow = () => {
     showWindow()
     if (appState.appSetting['desktopLyric.isLock']) {
       browserWindow!.setIgnoreMouseEvents(true, { forward: !isLinux && appState.appSetting['desktopLyric.isHoverHide'] })
@@ -106,7 +106,15 @@ const winEvent = () => {
         browserWindow!.setResizable(false)
       }
     }
-  })
+  }
+
+  if (import.meta.env.VITE_IS_LINUX) {
+    if (appState['electronParams.ozonePlatform'] == 'wayland') {
+      browserWindow.webContents.once('did-finish-load', handlerReadyToShow)
+    } else browserWindow.once('ready-to-show', handlerReadyToShow)
+  } else {
+    browserWindow.once('ready-to-show', handlerReadyToShow)
+  }
 }
 
 export const createWindow = () => {

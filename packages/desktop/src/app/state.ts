@@ -15,6 +15,7 @@ export const appState: {
     host: string
     port: string
   }
+  'electronParams.ozonePlatform': string
 } = {
   machineId: '',
   envParams: {
@@ -47,4 +48,5 @@ export const appState: {
   appSetting: defaultSetting,
   isSkipTrayQuit: false,
   shouldUseDarkColors: false,
+  'electronParams.ozonePlatform': '',
 }
