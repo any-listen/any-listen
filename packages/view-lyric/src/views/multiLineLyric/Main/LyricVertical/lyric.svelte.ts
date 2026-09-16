@@ -191,14 +191,16 @@ export default (onMsDown: (isDown: boolean) => void) => {
         let offsetLeft = domP.offsetLeft
         let lineWidth = width
         let padding: number
-        if (!settingState.setting['desktopLyric.multiLine.style.isZoomActiveLrc']) {
-          padding = 0
-        } else if (lyricState.line < 0) {
-          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 2
+        if (settingState.setting['desktopLyric.multiLine.style.isZoomActiveLrc']) {
+          if (lyricState.line < 0) {
+            padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 2
+          } else {
+            padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 1.1 * 2
+            lineWidth += padding
+            lineWidth *= 1.14
+          }
         } else {
-          padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 1.1 * 2
-          lineWidth += padding
-          lineWidth *= 1.14
+          padding = 0
         }
         const offset = getOffsetLeft(domLyric.clientWidth, lineWidth, padding)
         const scrollTarget = domP ? offsetLeft - offset : 0

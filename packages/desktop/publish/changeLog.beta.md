@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Improved
 
-- Fixed build issues.
+- Improved multiline desktop lyrics mode so that the active line's line spacing is no longer scaled when scaling is disabled.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 优化
 
-- 修复构建问题。
+- 优化桌面歌词多行模式，未启用缩放时不再缩放激活行的行距。
