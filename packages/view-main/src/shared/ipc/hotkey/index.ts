@@ -1,7 +1,9 @@
+import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+
 import { ipc } from '../ipc'
 
-export const getHotKey: AnyListen.IPC.ServerIPC['getHotKey'] = async () => {
-  return ipc.getHotKey()
+export const getHotKey = async (): Promise<AnyListen.HotKey.HotKeyConfigAll<HOTKEY_Type>> => {
+  return (await ipc.getHotKey()) as AnyListen.HotKey.HotKeyConfigAll<HOTKEY_Type>
 }
 
 export const getHotkeyStatus: AnyListen.IPC.ServerIPC['getHotkeyStatus'] = async () => {

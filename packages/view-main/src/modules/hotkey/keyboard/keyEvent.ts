@@ -22,6 +22,8 @@ export const registerKeyEvent = () => {
         if (stopped) return
         if (
           event &&
+          !inputing &&
+          !event.repeat &&
           hotkeyState.config.local.enable &&
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           hotkeyState.config.local.keys[key] &&

@@ -1,6 +1,5 @@
 import { winMainReadyEvent } from '@any-listen/app/common/event'
 import { appLogEvent } from '@any-listen/app/modules/logs'
-import { APP_EVENT_NAMES } from '@any-listen/common/constants'
 
 // import { initMainWindowHandler as initMainWindowHandlerUserApi } from '@/modules/userApi'
 // import { initMainWindowHandler as initMainWindowHandlerSync } from '@/modules/sync'
@@ -88,7 +87,7 @@ export const initWinMain = () => {
   hotKeyEvent.on('hot_key_down', ({ type, key }) => {
     let action = hotKeyState.config.global.keys[key]
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!action || action.startsWith(APP_EVENT_NAMES.viewMainName) || action.startsWith(APP_EVENT_NAMES.playerName)) return
+    if (!action) return
     switch (action) {
       case 'view_main_toggle_close':
         actions.exec('app.quit')

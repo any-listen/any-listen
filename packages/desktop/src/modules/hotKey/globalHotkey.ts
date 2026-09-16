@@ -32,10 +32,11 @@ export const registerHotkey = ({ key, info }: AnyListen.HotKey.RegisterKeyInfo<H
   }
   targetKey.status = globalShortcut.isRegistered(transKey)
   const status = targetKey.status
-    ? false
+    ? true
     : globalShortcut.register(transKey, () => {
         handleKeyDown(key)
       })
+  targetKey.status = status
   return status
 }
 

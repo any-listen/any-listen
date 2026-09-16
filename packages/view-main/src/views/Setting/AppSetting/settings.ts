@@ -725,3 +725,11 @@ if (import.meta.env.VITE_IS_WEB) {
     ],
   })
 }
+
+if (!import.meta.env.VITE_IS_WEB) {
+  settings.splice(settings.findIndex((item) => item.id === 'network'), 0, {
+    id: 'hotkeys',
+    name: 'settings.hotkeys',
+    list: [{ type: 'component', component: async () => import('./Hotkeys.svelte') }],
+  })
+}

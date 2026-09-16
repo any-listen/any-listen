@@ -13,7 +13,7 @@ const initHotKeyState = async () => {
 
 export const initHotKey = async () => {
   await initHotKeyState()
-  app.on('ready', () => {
+  void app.whenReady().then(() => {
     init()
   })
   app.on('will-quit', unRegisterHotkeyAll)
@@ -24,6 +24,7 @@ export const handleHotkeyConfigAction = async (action: AnyListen.HotKey.HotKeyAc
     case 'config':
       saveHotKeyConfig(action.data)
       hotKeyState.config = action.data
+      if (!hotKeyState.tempDisable) init()
       hotKeyEvent.hot_key_config_update(action.data)
       return true
     case 'enable':
