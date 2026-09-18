@@ -151,7 +151,6 @@ export const buildConfig = (mode: string): UserConfig => {
       __USER_API_PATH__: `"${path.join(projectPath, 'src/modules/userApi').replace(/\\/g, '\\\\')}"`,
       __GIT_COMMIT__: `"${gitInfo.commit_id}"`,
       __GIT_COMMIT_DATE__: `"${gitInfo.commit_date}"`,
-      __BUILD_WIN_LEGACY__: `${!!process.env.BUILD_WIN_LEGACY}`,
       // __QRC_DECODE_NODE_PATH__: `"${(isProd ? '../../build/Release' : path.join(rootPath, 'build/Release')).replace(/\\/g, '\\\\')}"`,
     },
     // cacheDir: path.join(rootPath, 'node_modules/.vite/main'),

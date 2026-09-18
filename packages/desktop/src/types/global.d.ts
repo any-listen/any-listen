@@ -66,4 +66,3 @@ declare const __STATIC_PATH__: string
 declare const __USER_API_PATH__: string
 declare const __GIT_COMMIT__: string
 declare const __GIT_COMMIT_DATE__: string
-declare const __BUILD_WIN_LEGACY__: boolean
