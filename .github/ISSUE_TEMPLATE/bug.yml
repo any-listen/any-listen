@@ -2,6 +2,11 @@ name: 🐞 Bug report
 description: Report a bug. Please search existing issues and discussions first.
 title: '[Bug] '
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this issue. Please write a concise and appropriate title for this issue in the title field, and then fill out the form below step by step.
+
   - type: checkboxes
     id: check-answer
     attributes:

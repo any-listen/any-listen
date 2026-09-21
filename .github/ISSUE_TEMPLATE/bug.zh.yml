@@ -2,6 +2,11 @@ name: 🐞 报告错误
 description: 报告一个错误 (Bug)。请先搜索 Issue 列表、讨论区中有无你要提的问题。
 title: '[Bug] '
 body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你抽时间填写这份 issue。请先为这个 issue 拟一个简练、得体的标题，填入标题框，然后依次填写下面的表单。
+
   - type: checkboxes
     id: check-answer
     attributes:
