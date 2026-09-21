@@ -23,6 +23,7 @@
 - Fixed an issue with `setTimeout`-related APIs in the extension-isolated API environment ([#301](https://github.com/any-listen/any-listen/issues/301)).
 - Fixed an issue where fullscreen mode was unavailable on Windows ([#291](https://github.com/any-listen/any-listen/issues/291)).
 - Fixed an issue where the window was not displayed on Linux when using Wayland.
+- Fixed an issue where the **Auto-play Music on Startup** option did not work ([#339](https://github.com/any-listen/any-listen/issues/339)).
 
 ---
 
@@ -51,3 +52,4 @@
 - 修复扩展隔离 API 环境的 `setTimeout` 相关 API 异常问题（[#301](https://github.com/any-listen/any-listen/issues/301)）。
 - 修复 Windows 下无法全屏的问题（[#291](https://github.com/any-listen/any-listen/issues/291)）。
 - 修复 Linux 下使用 Wayland 时窗口不显示的问题。
+- 修复 **「启动后自动播放音乐」** 选项不生效的问题（[#339](https://github.com/any-listen/any-listen/issues/339)）。

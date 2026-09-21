@@ -10,6 +10,7 @@ import {
   initPlayHistoryList,
   initPlayInfo,
   initPlayList,
+  play,
   registerLocalPlayerAction,
   registerRemoteHistoryListAction,
   registerRemoteListAction,
@@ -54,6 +55,7 @@ const init = async (isInited: boolean) => {
     if (settingState.setting['player.isSavePlayTime']) {
       playerEvent.setProgress(info.time, info.maxTime)
     }
+    if (settingState.setting['player.startupAutoPlay']) play()
   }
   setInited(true)
 }
