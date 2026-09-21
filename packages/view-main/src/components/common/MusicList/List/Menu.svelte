@@ -60,24 +60,32 @@
     const newMenu: Array<MenuList<MenuType>[number] | false> = [
       { action: 'play', label: $t('user_list_music_menu__play') },
       { action: 'playLater', label: $t('user_list_music_menu__play_later') },
+      null,
       // { action: 'download', label: $t('user_list_music_menu__download') },
       { action: 'addTo', label: $t('user_list_music_menu__add_to') },
       local && !localList && { action: 'moveTo', label: $t('user_list_music_menu__move_to') },
       local && { action: 'sort', label: $t('user_list_music_menu__sort') },
+      local &&
+        !(['local', 'remote'] as ListType[]).includes(type) && {
+          action: 'toggleSource',
+          label: $t('user_list_music_menu__toggle_source'),
+        },
       null,
       { action: 'comment', label: $t('user_list_music_menu__comment') },
       { action: 'copyName', label: $t('user_list_music_menu__copy_name') },
       // { action: 'detail', label: $t('user_list_music_menu__detail') },
-      ...(local && !(['local', 'remote'] as ListType[]).includes(type)
-        ? ([null, { action: 'toggleSource', label: $t('user_list_music_menu__toggle_source') }] satisfies MenuList<MenuType>)
-        : []),
       null,
       { action: 'dislike', disabled: dislike, label: $t('user_list_music_menu__dislike') },
       local && { action: 'remove', disabled: notLocalList, label: $t('user_list_music_menu__remove') },
     ]
     if (import.meta.env.VITE_IS_DESKTOP) {
       if (selectInfo.musicInfo.isLocal) {
-        newMenu.splice(6, 0, { action: 'locate', disabled: notLocalMusic, label: $t('user_list_music_menu__locate') })
+        // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+        newMenu.splice(newMenu.findIndex((m) => m && m.action === 'comment') + 1, 0, {
+          action: 'locate',
+          disabled: notLocalMusic,
+          label: $t('user_list_music_menu__locate'),
+        })
       }
     }
     menus = newMenu.filter((m) => m !== false) as MenuList<MenuType>
@@ -126,7 +134,7 @@
           if (num == null) return
           if (selectInfo.musicInfo !== mInfo || selectInfo.selectedList.length !== selectedLength) return
           const musics = selectInfo.selectedList.length ? selectInfo.selectedList : [selectInfo.musicInfo]
-          updateMusicPosition(
+          void updateMusicPosition(
             selectInfo.listId,
             num,
             musics.map((m) => m.id)
