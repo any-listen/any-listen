@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Changed
 
-- Fixed an issue where the **Auto-play Music on Startup** option did not work ([#339](https://github.com/any-listen/any-listen/issues/339)).
+- Prioritized binding the local resource server to IPv4 addresses ([#290](https://github.com/any-listen/any-listen/issues/290)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 变更
 
-- 修复 **「启动后自动播放音乐」** 选项不生效的问题（[#339](https://github.com/any-listen/any-listen/issues/339)）。
+- 本地资源服务器优先绑定到 IPv4 地址（[#290](https://github.com/any-listen/any-listen/issues/290)）。

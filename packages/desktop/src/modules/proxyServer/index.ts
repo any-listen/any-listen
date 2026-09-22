@@ -1,3 +1,4 @@
+import dns from 'node:dns'
 import http from 'node:http'
 
 import { logs } from '@any-listen/app/modules/logs'
@@ -60,7 +61,6 @@ const createProxyServer = async () => {
       res.end('Internal Server Error\n')
     }
   })
-  server.listen(DEFAULT_PORT, 'localhost')
   return new Promise<string>((resolve, reject) => {
     server.on('listening', () => {
       const address = server.address()
@@ -74,20 +74,31 @@ const createProxyServer = async () => {
     server.on('error', (err) => {
       reject(err)
     })
+    server.listen(DEFAULT_PORT, 'localhost')
   })
 }
 
 export const initProxyServer = async () => {
-  const proxyHost = await createProxyServer().catch(async (err) => {
-    console.error(`Failed to start proxy server on ${DEFAULT_PORT} port`, err)
-    DEFAULT_PORT++
-    retryCount++
-    if (retryCount > 10) {
-      logs.ProxyService.logcat.error(`Failed to start proxy server after 10 retries`, err)
-      throw new Error('Failed to start proxy server after 10 retries')
-    }
-    return createProxyServer()
-  })
+  // Set the default DNS result order to prioritize IPv4 addresses before starting the proxy server
+  // https://nodejs.org/docs/latest/api/dns.html#dnssetdefaultresultorderorder
+  // https://github.com/any-listen/any-listen/issues/290
+  const defaultResultOrder = dns.getDefaultResultOrder()
+  dns.setDefaultResultOrder('ipv4first')
+  const proxyHost = await createProxyServer()
+    .catch(async (err) => {
+      console.error(`Failed to start proxy server on ${DEFAULT_PORT} port`, err)
+      DEFAULT_PORT++
+      retryCount++
+      if (retryCount > 10) {
+        logs.ProxyService.logcat.error(`Failed to start proxy server after 10 retries`, err)
+        throw new Error('Failed to start proxy server after 10 retries')
+      }
+      return createProxyServer()
+    })
+    .finally(() => {
+      // Restore the default DNS result order after attempting to start the proxy server
+      dns.setDefaultResultOrder(defaultResultOrder)
+    })
   console.log('Proxy server running at', proxyHost)
   void initProxyServerState(proxyHost, PROXY_SERVER_PATH, appState.cacheDataPath)
 }

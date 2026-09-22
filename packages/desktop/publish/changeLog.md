@@ -25,6 +25,10 @@
 - Fixed an issue where the window was not displayed on Linux when using Wayland.
 - Fixed an issue where the **Auto-play Music on Startup** option did not work ([#339](https://github.com/any-listen/any-listen/issues/339)).
 
+### Changed
+
+- Prioritized binding the local resource server to IPv4 addresses ([#290](https://github.com/any-listen/any-listen/issues/290)).
+
 ---
 
 <!--- @lang: zh-cn -->
@@ -53,3 +57,7 @@
 - 修复 Windows 下无法全屏的问题（[#291](https://github.com/any-listen/any-listen/issues/291)）。
 - 修复 Linux 下使用 Wayland 时窗口不显示的问题。
 - 修复 **「启动后自动播放音乐」** 选项不生效的问题（[#339](https://github.com/any-listen/any-listen/issues/339)）。
+
+### 变更
+
+- 本地资源服务器优先绑定到 IPv4 地址（[#290](https://github.com/any-listen/any-listen/issues/290)）。
