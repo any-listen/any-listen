@@ -6,7 +6,7 @@ import { appState } from '@/app'
 import { encodePath } from '@/shared/utils'
 import { workers } from '@/worker'
 
-import { buildLyricInfo, getCachedLyricInfo } from './shared'
+import { getCachedLyricInfo } from './shared'
 
 export const getMusicUrl = async ({
   musicInfo,
@@ -97,25 +97,25 @@ export const getLyricInfo = async ({
     if (lyricInfo?.lyric && lyricInfo.rawlrcInfo) {
       // 存在已编辑歌词
       return {
-        info: await buildLyricInfo({ ...lyricInfo, rawlrcInfo: fileLyricInfo ?? lyricInfo.rawlrcInfo }),
+        info: { ...lyricInfo, rawlrcInfo: fileLyricInfo ?? lyricInfo.rawlrcInfo },
         isFromCache: true,
       }
     }
 
     if (fileLyricInfo) {
       return {
-        info: await buildLyricInfo({
+        info: {
           ...fileLyricInfo,
           name: musicInfo.name,
           singer: musicInfo.singer,
           interval: musicInfo.interval,
-        }),
+        },
         isFromCache: true,
       }
     }
     if (lyricInfo?.lyric) {
       return {
-        info: await buildLyricInfo(lyricInfo),
+        info: lyricInfo,
         isFromCache: true,
       }
     }

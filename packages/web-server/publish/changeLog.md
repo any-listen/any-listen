@@ -6,6 +6,7 @@
 - Added a **Song Source Switching** feature, available from the right-click menu for songs in the song list.
 - Added the built-in **Inter Variable** font as the preferred default font ([#278](https://github.com/any-listen/any-listen/issues/278)).
 - Added **Song Position Adjustment**, available from the song list context menu ([#302](https://github.com/any-listen/any-listen/issues/302)).
+- Added a **Convert Chinese Lyrics to Traditional Chinese** option for playback and downloaded Chinese lyrics, located under _Settings > Playback Settings_ ([#333](https://github.com/any-listen/any-listen/issues/333)).
 
 ### Fixed
 
@@ -24,6 +25,7 @@
 - 新增 **「歌曲换源」** 功能，可在歌曲列表中通过歌曲右键菜单使用。
 - 新增内置 **「Inter Variable」** 字体作为首选默认字体（[#278](https://github.com/any-listen/any-listen/issues/278)）。
 - 新增 **「歌曲位置调整」** 功能，可在歌曲列表右键菜单中使用（[#302](https://github.com/any-listen/any-listen/issues/302)）。
+- 新增 **「将播放与下载的中文歌词转换为繁体」** 选项，位于 _设置 > 播放设置_（[#333](https://github.com/any-listen/any-listen/issues/333)）。
 
 ### 修复
 

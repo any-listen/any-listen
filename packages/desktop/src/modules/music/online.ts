@@ -11,7 +11,7 @@ import { buildMusicCacheId, getFileType } from '@any-listen/common/tools'
 import { appState } from '@/app'
 import { workers } from '@/worker'
 
-import { buildLyricInfo, getCachedLyricInfo, saveLyricInfo } from './shared'
+import { getCachedLyricInfo, saveLyricInfo } from './shared'
 
 export const getMusicUrlByExtSource = async ({
   musicInfo,
@@ -132,7 +132,7 @@ export const getLyricInfoByExtSource = async ({
 }): Promise<AnyListen.IPCMusic.MusicLyricInfo> => {
   if (!isRefresh) {
     const lyricInfo = await getCachedLyricInfo(musicInfo)
-    if (lyricInfo) return { info: await buildLyricInfo(lyricInfo), isFromCache: false }
+    if (lyricInfo) return { info: lyricInfo, isFromCache: false }
   }
   const info = await getMusicLyricByExtensionSource({
     musicInfo,
@@ -161,7 +161,7 @@ export const getLyricInfo = async ({
     let isSave = true
     if (local) {
       if (remote.lyric === local.rawlrcInfo?.lyric) {
-        if (!isRefresh) return { info: await buildLyricInfo(local), isFromCache: true }
+        if (!isRefresh) return { info: local, isFromCache: true }
         isSave = false
       } else if (remote.lyric == local.lyric) {
         isSave = false
@@ -174,7 +174,7 @@ export const getLyricInfo = async ({
     }
   }
   if (!isRefresh && local) {
-    return { info: await buildLyricInfo(local), isFromCache: true }
+    return { info: local, isFromCache: true }
   }
   throw new Error('get lyric info failed')
 }

@@ -210,6 +210,12 @@ export const settings: SettingListSection[] = [
         name: 'settings.player.media_session_lyric',
         type: 'boolean',
       },
+      // t('settings.player.s2t')
+      {
+        field: 'player.isS2t',
+        name: 'settings.player.s2t',
+        type: 'boolean',
+      },
       {
         field: 'player.ignoreLocalLyrics',
         name: 'settings.player.ignore_local_lyrics',

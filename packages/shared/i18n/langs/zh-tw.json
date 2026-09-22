@@ -624,6 +624,7 @@
   "settings.player.music_quality_flac24bit": "FLAC 24bit",
   "settings.player.music_quality_master": "母帶",
   "settings.player.play_awlrc": "播放卡拉OK歌詞（如果可用）",
+  "settings.player.s2t": "將播放與下載的中文歌詞轉換為繁體",
   "settings.player.show_task_progress": "在工作列上顯示目前歌曲播放進度",
   "settings.player.status_bar_lyric": "顯示狀態欄歌詞（需啟用系統托盤）",
   "settings.player.title_lyric": "顯示標題欄歌詞",

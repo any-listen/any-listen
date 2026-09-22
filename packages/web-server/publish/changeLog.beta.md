@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Added
 
-- Fixed build issues.
+- Added a **Convert Chinese Lyrics to Traditional Chinese** option for playback and downloaded Chinese lyrics, located under _Settings > Playback Settings_ ([#333](https://github.com/any-listen/any-listen/issues/333)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 新增
 
-- 修复构建问题。
+- 新增 **「将播放与下载的中文歌词转换为繁体」** 选项，位于 _设置 > 播放设置_（[#333](https://github.com/any-listen/any-listen/issues/333)）。

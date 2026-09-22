@@ -15,6 +15,7 @@
 
 import { getLyricInfo as getLocalLyric, getMusicUrl as getLocalMusicUrl, getMusicPicUrl as getLocalPicUrl } from './local'
 import { getLyricInfo as getOnlineLyric, getMusicUrl as getOnlineMusicUrl, getMusicPicUrl as getOnlinePicUrl } from './online'
+import { buildLyricInfo } from './shared'
 
 export const getMusicUrl = async ({
   musicInfo,
@@ -87,12 +88,13 @@ export const getLyricInfo = async ({
       musicInfo,
       isRefresh,
     })
-    if (info) return info
+    if (info) return { ...info, info: await buildLyricInfo(info.info) }
     // return getLocalLyricInfo({ musicInfo, isRefresh })
   } else {
     // return getOnlineLyricInfo({ musicInfo, isRefresh })
   }
-  return getOnlineLyric({ musicInfo, isRefresh })
+  const info = await getOnlineLyric({ musicInfo, isRefresh })
+  return { ...info, info: await buildLyricInfo(info.info) }
   // if ('progress' in musicInfo) {
   //   return getDownloadLyricInfo({ musicInfo, isRefresh })
   // } else if (musicInfo.source == 'local') {

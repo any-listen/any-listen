@@ -8,6 +8,7 @@
 - Added the built-in **Inter Variable** font as the preferred default font ([#278](https://github.com/any-listen/any-listen/issues/278)).
 - Added a **Horizontal Alignment** option for **Classic Desktop Lyrics** under _Settings > Desktop Lyrics Settings > Classic Lyrics_ ([#299](https://github.com/any-listen/any-listen/issues/299)).
 - Added **Song Position Adjustment**, available from the song list context menu ([#302](https://github.com/any-listen/any-listen/issues/302)).
+- Added a **Convert Chinese Lyrics to Traditional Chinese** option for playback and downloaded Chinese lyrics, located under _Settings > Playback Settings_ ([#333](https://github.com/any-listen/any-listen/issues/333)).
 
 ### Improved
 
@@ -41,6 +42,7 @@
 - 新增内置 **「Inter Variable」** 字体作为首选默认字体（[#278](https://github.com/any-listen/any-listen/issues/278)）。
 - 经典桌面歌词新增 **「水平对齐方式」** 选项，可在 _设置 > 桌面歌词设置 > 经典歌词_ 中调整（[#299](https://github.com/any-listen/any-listen/issues/299)）。
 - 新增 **「歌曲位置调整」** 功能，可在歌曲列表右键菜单中使用（[#302](https://github.com/any-listen/any-listen/issues/302)）。
+- 新增 **「将播放与下载的中文歌词转换为繁体」** 选项，位于 _设置 > 播放设置_（[#333](https://github.com/any-listen/any-listen/issues/333)）。
 
 ### 优化
 
