@@ -6,7 +6,7 @@
     "fast-xml-parser": "^5.11.1",
     "iconv-lite": "^0.7.3",
     "jschardet": "^3.1.4",
-    "music-metadata": "^11.15.0",
+    "music-metadata": "^11.16.0",
     "tar": "^7.5.22",
     "tunnel": "^0.0.6",
     "undici": "^7.29.1"

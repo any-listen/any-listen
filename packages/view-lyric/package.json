@@ -19,7 +19,7 @@
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
     "@swc/html": "^1.16.2",
     "@types/postcss-pxtorem": "^6.1.0",
     "@types/sortablejs": "^1.15.9",
