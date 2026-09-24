@@ -101,7 +101,7 @@ export const removeFileIgnoreError = async (path: string) => {
 //   })
 // })
 
-export const readFile = async (path: string, format?: BufferEncoding) => fs.promises.readFile(path, format)
+export const readFile = async (path: string) => fs.promises.readFile(path)
 
 export const writeFile = async (path: string, content: string | Buffer | Uint8Array) => fs.promises.writeFile(path, content)
 

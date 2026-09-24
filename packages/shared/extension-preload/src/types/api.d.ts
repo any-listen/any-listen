@@ -792,6 +792,7 @@ declare global {
     type TopSongsDetailInfo = AnyListen.Resource.TopSongsDetailInfo
     type MusicCommentItem = AnyListen.Resource.MusicCommentItem
     type PlayInfo = AnyListen.IPCPlayer.PlayInfo
+    type ListDataFull = AnyListen.List.ListDataFull
 
     type ParamsData = Record<string, string | number | null | undefined | boolean>
     interface RequestOptions {
@@ -1148,6 +1149,16 @@ declare global {
         options?: { finishFlush?: 'Z_FINISH' | 'Z_SYNC_FLUSH' }
       ) => Promise<T extends 'base64' ? string : Uint8Array>
       inflate: <T extends 'utf-8' | 'binary' = 'binary'>(
+        data: Uint8Array | string,
+        encoding?: T,
+        options?: { finishFlush?: 'Z_FINISH' | 'Z_SYNC_FLUSH' }
+      ) => Promise<T extends 'utf-8' ? string : Uint8Array>
+      gzip: <T extends 'base64' | 'binary' = 'binary'>(
+        data: Uint8Array | string,
+        encoding?: T,
+        options?: { finishFlush?: 'Z_FINISH' | 'Z_SYNC_FLUSH' }
+      ) => Promise<T extends 'base64' ? string : Uint8Array>
+      gunzip: <T extends 'utf-8' | 'binary' = 'binary'>(
         data: Uint8Array | string,
         encoding?: T,
         options?: { finishFlush?: 'Z_FINISH' | 'Z_SYNC_FLUSH' }

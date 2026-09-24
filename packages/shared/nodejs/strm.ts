@@ -131,7 +131,7 @@ export const parseMusicMetadata = async (url: string): Promise<MetaData | null> 
 // }
 
 const getFileUrl = async (path: string) => {
-  const content = (await readFile(path, 'utf8').catch(() => '')) as string
+  const content = (await readFile(path).catch(() => '')).toString()
   const url = content
     .split(/\r?\n/)
     .find((line) => line.trim() !== '')

@@ -56,16 +56,22 @@ export const createCommon = (extension: AnyListen.Extension.Extension) => {
         default:
           throw new Error('Invalid format')
       }
-      return readFile(rawPath, format) as Promise<T extends 'utf-8' ? string : Uint8Array>
+      const data = await readFile(rawPath)
+      return (format === 'utf-8' ? data.toString() : data) as T extends 'utf-8' ? string : Uint8Array
     },
     async writeSaveBoxFile(dir: string, name: string, content: string | Uint8Array) {
       let rawPath = saveDirs?.get(dir)
       if (!rawPath) throw new Error('Not Allowed to access this file')
-      if (!rawPath.endsWith(sep)) rawPath += sep
-      const path = normalizePath(`${rawPath}${name}`)
-      let dirPath = dirname(path)
-      if (!dirPath.endsWith(sep)) dirPath += sep
-      if (rawPath !== dirPath) throw new Error('Not Allowed to access this file')
+      let path: string
+      if (name) {
+        if (!rawPath.endsWith(sep)) rawPath += sep
+        path = normalizePath(`${rawPath}${name}`)
+        let dirPath = dirname(path)
+        if (!dirPath.endsWith(sep)) dirPath += sep
+        if (rawPath !== dirPath) throw new Error('Not Allowed to access this file')
+      } else {
+        path = rawPath
+      }
       await writeFile(path, content)
       return path
     },

@@ -603,7 +603,8 @@ export const onResourceAction = async <T extends keyof RA>(
   action: T,
   params: Parameters<RA[T]>[0]
 ): Promise<Awaited<ReturnType<RA[T]>>> => {
-  if (!actions) throw new Error(withErrorReason('resource action not registered', actions))
+  if (!actions) throw new Error(withErrorReason('resource action not registered', actions, `action: ${action}`))
+
   if (!actions[action]) throw new Error(withErrorReason(`resource action ${String(action)} not registered`, actions[action]))
   // @ts-expect-error
   return actionHandles[action](params) as Awaited<ReturnType<RA[T]>>

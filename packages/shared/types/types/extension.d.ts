@@ -121,6 +121,7 @@ declare global {
         main: string
         publicKey: string
         grant?: Grant[]
+        readme?: string
         contributes?: {
           resource?: Array<{
             id: string
@@ -178,6 +179,7 @@ declare global {
         version: Manifest['version']
         target_engine: Manifest['target_engine']
         author: Manifest['author']
+        readme: Manifest['readme']
         homepage: Manifest['homepage']
         license: Manifest['license']
         categories: NonNullable<Manifest['categories']>

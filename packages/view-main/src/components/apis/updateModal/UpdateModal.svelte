@@ -490,15 +490,6 @@
         border: 1px solid var(--color-primary-background-hover);
         border-radius: 3px;
       }
-      .mac code {
-        font-family: 'SF Mono', monaco, menlo, courier, monospace;
-      }
-      .windows code {
-        font-family: consolas, 'Courier New', monospace;
-      }
-      .linux code {
-        font-family: 'Ubuntu Mono', 'Liberation Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
-      }
 
       ul {
         padding-left: 2em;

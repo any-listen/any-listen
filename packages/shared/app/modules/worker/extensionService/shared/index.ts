@@ -53,6 +53,7 @@ export const parseExtension = async (extensionPath: string): Promise<AnyListen.E
     id: manifest.id,
     name: manifest.name,
     description: manifest.description,
+    readme: manifest.readme,
     icon: manifest.icon,
     version: manifest.version,
     target_engine: manifest.target_engine,

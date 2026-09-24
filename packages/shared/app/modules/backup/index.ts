@@ -62,9 +62,10 @@ export const importData = async (
   for (const type of dataTypes) {
     switch (type) {
       case 'songlist': {
+        const localListData = await workers.dbService.getAllListData()
         const [listData, requiredUpdateLocalListData] = await mergeFullData(
-          await workers.dbService.getAllListData(),
-          data.songlist!.data,
+          localListData,
+          { ...localListData, ...data.songlist!.data },
           getSettings()['list.addMusicLocationType'],
           getListMergeMode,
           async () => {

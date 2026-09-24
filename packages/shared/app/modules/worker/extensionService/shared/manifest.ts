@@ -25,6 +25,167 @@ const RESOURCE: AnyListen.Extension.ResourceAction[] = [
   'lyricDetail',
 ]
 const availableIcons = ['.png', '.jpg', '.jpeg', '.webp', '.svg']
+
+const MANIFEST_STRING_LIMIT = {
+  id: 64,
+  name: 128,
+  description: 1024,
+  readme: 10240,
+  icon: 260,
+  main: 260,
+  version: 32,
+  target_engine: 64,
+  author: 128,
+  homepage: 512,
+  license: 64,
+  publicKey: 8192,
+  categoriesItem: 64,
+  tagsItem: 64,
+  resourceId: 64,
+  resourceName: 128,
+  command: 128,
+  commandName: 128,
+  commandDescription: 512,
+  listProviderId: 64,
+  listProviderName: 128,
+  listProviderDescription: 1024,
+  formField: 64,
+  formName: 128,
+  formDescription: 1024,
+  formDefault: 1024,
+  formEnumItem: 128,
+  formEnumNameItem: 128,
+  formEnumConfigFiled: 64,
+  formEnumFiled: 64,
+  formEnumNameFiled: 64,
+  formEnumDescriptionFiled: 256,
+  formActionCommand: 128,
+  formActionCommandName: 128,
+} as const
+
+const trimStringLength = (value: string, maxLength: number) => {
+  if (value.length > maxLength) throw new Error(`String exceeds max length of ${maxLength}: ${value}`)
+  return value.length > maxLength ? value.slice(0, maxLength) : value
+}
+
+const trimOptionalString = (value: string | undefined, maxLength: number) => {
+  if (value == null) return value
+  return trimStringLength(value, maxLength)
+}
+
+const trimFormStringFields = (form: AnyListen.Extension.FormItems | AnyListen.Extension.ListProviderFormItems) => {
+  switch (form.type) {
+    case 'input':
+      form.field = trimStringLength(form.field, MANIFEST_STRING_LIMIT.formField)
+      form.name = trimStringLength(form.name, MANIFEST_STRING_LIMIT.formName)
+      form.description = trimStringLength(form.description, MANIFEST_STRING_LIMIT.formDescription)
+      form.default = trimOptionalString(form.default, MANIFEST_STRING_LIMIT.formDefault)
+      break
+    case 'boolean':
+      form.field = trimStringLength(form.field, MANIFEST_STRING_LIMIT.formField)
+      form.name = trimStringLength(form.name, MANIFEST_STRING_LIMIT.formName)
+      form.description = trimStringLength(form.description, MANIFEST_STRING_LIMIT.formDescription)
+      break
+    case 'selection':
+      form.field = trimStringLength(form.field, MANIFEST_STRING_LIMIT.formField)
+      form.name = trimStringLength(form.name, MANIFEST_STRING_LIMIT.formName)
+      form.description = trimStringLength(form.description, MANIFEST_STRING_LIMIT.formDescription)
+      form.default = trimOptionalString(form.default, MANIFEST_STRING_LIMIT.formDefault)
+      form.enum = form.enum.map((item) => trimStringLength(item, MANIFEST_STRING_LIMIT.formEnumItem))
+      form.enumName = form.enumName.map((item) => trimStringLength(item, MANIFEST_STRING_LIMIT.formEnumNameItem))
+      break
+    case 'configCheckbox':
+      form.field = trimStringLength(form.field, MANIFEST_STRING_LIMIT.formField)
+      form.name = trimStringLength(form.name, MANIFEST_STRING_LIMIT.formName)
+      form.description = trimStringLength(form.description, MANIFEST_STRING_LIMIT.formDescription)
+      form.default = trimOptionalString(form.default, MANIFEST_STRING_LIMIT.formDefault)
+      form.enumConfigFiled = trimStringLength(form.enumConfigFiled, MANIFEST_STRING_LIMIT.formEnumConfigFiled)
+      form.enumFiled = trimStringLength(form.enumFiled, MANIFEST_STRING_LIMIT.formEnumFiled)
+      form.enumNameFiled = trimStringLength(form.enumNameFiled, MANIFEST_STRING_LIMIT.formEnumNameFiled)
+      form.enumDescriptionFiled = trimOptionalString(form.enumDescriptionFiled, MANIFEST_STRING_LIMIT.formEnumDescriptionFiled)
+      if (Array.isArray(form.actionCommands)) {
+        form.actionCommands = form.actionCommands.map((item) => trimStringLength(item, MANIFEST_STRING_LIMIT.formActionCommand))
+      }
+      if (Array.isArray(form.actionCommandNames)) {
+        form.actionCommandNames = form.actionCommandNames.map((item) =>
+          trimStringLength(item, MANIFEST_STRING_LIMIT.formActionCommandName)
+        )
+      }
+      break
+    case 'configCheckboxMultiple':
+      form.field = trimStringLength(form.field, MANIFEST_STRING_LIMIT.formField)
+      form.name = trimStringLength(form.name, MANIFEST_STRING_LIMIT.formName)
+      form.description = trimStringLength(form.description, MANIFEST_STRING_LIMIT.formDescription)
+      form.default = form.default?.map((item) => trimStringLength(item, MANIFEST_STRING_LIMIT.formDefault))
+      form.enumConfigFiled = trimStringLength(form.enumConfigFiled, MANIFEST_STRING_LIMIT.formEnumConfigFiled)
+      form.enumFiled = trimStringLength(form.enumFiled, MANIFEST_STRING_LIMIT.formEnumFiled)
+      form.enumNameFiled = trimStringLength(form.enumNameFiled, MANIFEST_STRING_LIMIT.formEnumNameFiled)
+      form.enumDescriptionFiled = trimOptionalString(form.enumDescriptionFiled, MANIFEST_STRING_LIMIT.formEnumDescriptionFiled)
+      if (Array.isArray(form.actionCommands)) {
+        form.actionCommands = form.actionCommands.map((item) => trimStringLength(item, MANIFEST_STRING_LIMIT.formActionCommand))
+      }
+      if (Array.isArray(form.actionCommandNames)) {
+        form.actionCommandNames = form.actionCommandNames.map((item) =>
+          trimStringLength(item, MANIFEST_STRING_LIMIT.formActionCommandName)
+        )
+      }
+      break
+    case 'lazzyParseMeta':
+      break
+  }
+}
+
+const trimManifestStringFields = (manifest: AnyListen.Extension.Manifest) => {
+  manifest.id = trimStringLength(manifest.id, MANIFEST_STRING_LIMIT.id)
+  manifest.name = trimStringLength(manifest.name, MANIFEST_STRING_LIMIT.name)
+  manifest.description = trimOptionalString(manifest.description, MANIFEST_STRING_LIMIT.description)
+  manifest.readme = trimOptionalString(manifest.readme, MANIFEST_STRING_LIMIT.readme)
+  manifest.icon = trimOptionalString(manifest.icon, MANIFEST_STRING_LIMIT.icon)
+  manifest.main = trimStringLength(manifest.main, MANIFEST_STRING_LIMIT.main)
+  manifest.version = trimStringLength(manifest.version, MANIFEST_STRING_LIMIT.version)
+  manifest.target_engine = trimOptionalString(manifest.target_engine, MANIFEST_STRING_LIMIT.target_engine)
+  manifest.author = trimOptionalString(manifest.author, MANIFEST_STRING_LIMIT.author)
+  manifest.homepage = trimOptionalString(manifest.homepage, MANIFEST_STRING_LIMIT.homepage)
+  manifest.license = trimOptionalString(manifest.license, MANIFEST_STRING_LIMIT.license)
+
+  manifest.categories = (manifest.categories ?? []).map((item) => trimStringLength(item, MANIFEST_STRING_LIMIT.categoriesItem))
+  manifest.tags = (manifest.tags ?? []).map((item) => trimStringLength(item, MANIFEST_STRING_LIMIT.tagsItem))
+
+  const contributes = manifest.contributes
+  if (!contributes) return
+
+  if (contributes.resource) {
+    contributes.resource.forEach((item) => {
+      item.id = trimStringLength(item.id, MANIFEST_STRING_LIMIT.resourceId)
+      item.name = trimStringLength(item.name, MANIFEST_STRING_LIMIT.resourceName)
+    })
+  }
+
+  if (contributes.commands) {
+    contributes.commands.forEach((item) => {
+      item.command = trimStringLength(item.command, MANIFEST_STRING_LIMIT.command)
+      item.name = trimStringLength(item.name, MANIFEST_STRING_LIMIT.commandName)
+      item.description = trimOptionalString(item.description, MANIFEST_STRING_LIMIT.commandDescription)
+    })
+  }
+
+  if (contributes.settings) {
+    contributes.settings.forEach((item) => {
+      trimFormStringFields(item)
+    })
+  }
+
+  if (contributes.listProviders) {
+    contributes.listProviders.forEach((item) => {
+      item.id = trimStringLength(item.id, MANIFEST_STRING_LIMIT.listProviderId)
+      item.name = trimStringLength(item.name, MANIFEST_STRING_LIMIT.listProviderName)
+      item.description = trimStringLength(item.description, MANIFEST_STRING_LIMIT.listProviderDescription)
+      item.form.forEach((form) => {
+        trimFormStringFields(form)
+      })
+    })
+  }
+}
 // t('extension.resource_musicComment')
 
 const buildPath = async (extensionPath: string, _path: string) => {
@@ -254,6 +415,7 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
   if (!manifest.name) throw new Error('Manifest name not defined')
 
   if (manifest.description != null) manifest.description = String(manifest.description)
+  if (manifest.readme != null) manifest.readme = String(manifest.readme)
   if (manifest.icon != null) manifest.icon = String(manifest.icon)
   if (manifest.main != null) manifest.main = String(manifest.main)
 
@@ -276,6 +438,7 @@ export const formatManifest = (manifest: AnyListen.Extension.Manifest) => {
 
 export const verifyManifest = async (extensionPath: string, manifest: AnyListen.Extension.Manifest) => {
   formatManifest(manifest)
+  trimManifestStringFields(manifest)
   manifest.icon = manifest.icon ? await buildPath(extensionPath, manifest.icon).catch(() => '') : ''
   if (manifest.icon) {
     if (availableIcons.includes(extname(manifest.icon))) {

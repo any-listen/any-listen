@@ -15,6 +15,12 @@
 - Fixed an issue where some lyrics did not wrap properly.
 - Fixed an issue with `setTimeout`-related APIs in the extension-isolated API environment ([#301](https://github.com/any-listen/any-listen/issues/301)).
 
+### Extension System
+
+- Updated the extension engine version to **1.4.0**.
+- Added a **readme** field for extension plugins; when provided, its content is rendered as Markdown and displayed on the extension details page.
+- Added **gzip** and **gunzip** APIs in the **zlib** module.
+
 ---
 
 <!--- @lang: zh-cn -->
@@ -33,3 +39,9 @@
 - 修复切换歌曲时的歌词显示问题（[#284](https://github.com/any-listen/any-listen/issues/284)）。
 - 修复某些歌词不换行的问题。
 - 修复扩展隔离 API 环境的 `setTimeout` 相关 API 异常问题（[#301](https://github.com/any-listen/any-listen/issues/301)）。
+
+### 扩展系统
+
+- 扩展引擎版本更新至 **「1.4.0」**。
+- 新增扩展插件 **「readme」** 字段；填写后，其内容将以 Markdown 语法渲染并显示在扩展详情页。
+- 在 **「zlib」** 模块中新增 **「gzip」** 与 **「gunzip」** API。

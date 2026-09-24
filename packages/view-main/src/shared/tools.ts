@@ -38,6 +38,8 @@ export const sanitizeHtml = (DOMPurify: DOMPurify, str?: string) => {
     ALLOWED_ATTR: ['style', 'href', 'title', 'alt', 'src', 'width', 'height'],
     // USE_PROFILES: { html: true },
     ALLOW_DATA_ATTR: false,
+    ALLOW_ARIA_ATTR: false,
+    ALLOWED_URI_REGEXP: /^https?:\/\/[^\s]+$/i,
   })
 }
 

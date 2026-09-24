@@ -124,7 +124,7 @@ declare global {
     type BackupType = 'songlist' | 'settings' | 'txt' | 'txt_all' | 'csv' | 'csv_all'
     interface SongListBackupData {
       version: number
-      data: List.ListDataFull
+      data: Partial<List.ListDataFull>
     }
     interface SettingsBackupData {
       version: number
