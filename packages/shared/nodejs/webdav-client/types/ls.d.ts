@@ -9,7 +9,7 @@ export interface Multistatus {
 
 export interface Response {
   href: string
-  propstat: Propstat
+  propstat: Propstat[]
 }
 
 export interface Propstat {
@@ -46,4 +46,9 @@ export interface PurplePrivilege {
 
 export interface Resourcetype {
   collection: string
+}
+
+export interface ParsedResponse {
+  href: string
+  prop: Prop
 }

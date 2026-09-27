@@ -4,7 +4,7 @@ import type { Readable } from 'node:stream'
 import type { XMLParser } from 'fast-xml-parser'
 
 import { request, type Options, type Response } from '../request'
-import type { Ls, Response as LsResp } from './types/ls'
+import type { Ls, ParsedResponse, Prop } from './types/ls'
 
 export interface WebDAVClientOptions {
   baseUrl: string
@@ -32,9 +32,9 @@ export interface WebDAVFileItem {
 }
 export type WebDAVItem = WebDAVDirItem | WebDAVFileItem
 
-const buildFileItems = (list: LsResp[], path: string): WebDAVItem[] => {
+const buildFileItems = (list: ParsedResponse[], path: string): WebDAVItem[] => {
   return list.map((item) => {
-    const isDir = item.propstat.prop.resourcetype?.collection === ''
+    const isDir = item.prop.resourcetype?.collection === ''
     let rawName = item.href.endsWith('/') ? item.href.slice(0, -1) : item.href
     rawName = rawName.substring(rawName.lastIndexOf('/') + 1)
     const name = decodeURIComponent(rawName)
@@ -55,20 +55,20 @@ const buildFileItems = (list: LsResp[], path: string): WebDAVItem[] => {
           path: `${path}/${rawName}`,
           isDir: true,
           name,
-          lastModified: new Date(item.propstat.prop.getlastmodified).getTime(),
+          lastModified: new Date(item.prop.getlastmodified).getTime(),
           creationDate: 0,
         } satisfies WebDAVDirItem)
       : ({
           path: `${path}/${rawName}`,
           name,
           isDir: false,
-          lastModified: new Date(item.propstat.prop.getlastmodified).getTime(),
+          lastModified: new Date(item.prop.getlastmodified).getTime(),
           creationDate: 0,
-          contentType: item.propstat.prop.getcontenttype,
-          size: parseInt(item.propstat.prop.getcontentlength),
+          contentType: item.prop.getcontenttype,
+          size: parseInt(item.prop.getcontentlength),
         } satisfies WebDAVFileItem)
 
-    file.creationDate = item.propstat.prop.creationdate ? new Date(item.propstat.prop.creationdate).getTime() : file.lastModified
+    file.creationDate = item.prop.creationdate ? new Date(item.prop.creationdate).getTime() : file.lastModified
 
     return file
   })
@@ -118,8 +118,13 @@ export class WebDAVClient {
         alwaysCreateTextNode: false,
         // attributeNamePrefix: '',
         isArray: (name, jpath, isLeafNode, isAttribute) => {
-          if (jpath === 'multistatus.response') return true
-          return false
+          switch (jpath) {
+            case 'multistatus.response':
+            case 'multistatus.response.propstat':
+              return true
+            default:
+              return false
+          }
         },
       })
     }
@@ -202,8 +207,23 @@ export class WebDAVClient {
     const currentFullPath = this.getFullUrl(path)
     // console.log('res.multistatus.response', res.multistatus.response)
     // filter out the current directory itself from the list
-    const responses = res.multistatus.response.filter((item) => {
-      const isDir = item.propstat.prop.resourcetype?.collection === ''
+    const parsedResponses: ParsedResponse[] = res.multistatus.response.map((item) => {
+      // const prop = item.propstat
+      let prop = {} as Prop
+      for (const propstat of item.propstat) {
+        if (propstat.status.includes('200')) {
+          // Use this propstat's prop as the main prop
+          Object.assign(prop, propstat.prop)
+          break
+        }
+      }
+      return {
+        href: item.href,
+        prop,
+      }
+    })
+    const responses = parsedResponses.filter((item) => {
+      const isDir = item.prop.resourcetype?.collection === ''
       if (!isDir) return true
       const href = item.href.endsWith('/') ? item.href.slice(0, -1) : item.href
       return !currentFullPath.endsWith(href)

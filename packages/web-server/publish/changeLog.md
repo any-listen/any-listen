@@ -14,6 +14,7 @@
 - Fixed lyrics display issue when switching songs ([#284](https://github.com/any-listen/any-listen/issues/284)).
 - Fixed an issue where some lyrics did not wrap properly.
 - Fixed an issue with `setTimeout`-related APIs in the extension-isolated API environment ([#301](https://github.com/any-listen/any-listen/issues/301)).
+- Fixed an issue where data could not be read from some WebDAV servers ([#359](https://github.com/any-listen/any-listen/issues/359)).
 
 ### Extension System
 
@@ -39,6 +40,7 @@
 - 修复切换歌曲时的歌词显示问题（[#284](https://github.com/any-listen/any-listen/issues/284)）。
 - 修复某些歌词不换行的问题。
 - 修复扩展隔离 API 环境的 `setTimeout` 相关 API 异常问题（[#301](https://github.com/any-listen/any-listen/issues/301)）。
+- 修复无法读取某些 WebDAV 服务端数据的问题（[#359](https://github.com/any-listen/any-listen/issues/359)）。
 
 ### 扩展系统
 
