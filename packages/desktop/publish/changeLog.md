@@ -26,6 +26,7 @@
 - Fixed an issue where the window was not displayed on Linux when using Wayland.
 - Fixed an issue where the **Auto-play Music on Startup** option did not work ([#339](https://github.com/any-listen/any-listen/issues/339)).
 - Fixed an issue where data could not be read from some WebDAV servers ([#359](https://github.com/any-listen/any-listen/issues/359)).
+- Fixed an issue where the font dropdown could not be opened in certain cases ([#361](https://github.com/any-listen/any-listen/issues/361)).
 
 ### Changed
 
@@ -67,6 +68,7 @@
 - 修复 Linux 下使用 Wayland 时窗口不显示的问题。
 - 修复 **「启动后自动播放音乐」** 选项不生效的问题（[#339](https://github.com/any-listen/any-listen/issues/339)）。
 - 修复无法读取某些 WebDAV 服务端数据的问题（[#359](https://github.com/any-listen/any-listen/issues/359)）。
+- 修复在某些情况下无法打开字体下拉列表的问题（[#361](https://github.com/any-listen/any-listen/issues/361)）。
 
 ### 变更
 

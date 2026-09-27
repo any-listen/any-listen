@@ -2,7 +2,7 @@
 
 ### Fixed
 
-- Fixed an issue where data could not be read from some WebDAV servers ([#359](https://github.com/any-listen/any-listen/issues/359)).
+- Fixed an issue where the font dropdown could not be opened in certain cases ([#361](https://github.com/any-listen/any-listen/issues/361)).
 
 ---
 
@@ -10,4 +10,4 @@
 
 ### 修复
 
-- 修复无法读取某些 WebDAV 服务端数据的问题（[#359](https://github.com/any-listen/any-listen/issues/359)）。
+- 修复在某些情况下无法打开字体下拉列表的问题（[#361](https://github.com/any-listen/any-listen/issues/361)）。
