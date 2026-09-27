@@ -5,16 +5,16 @@
     "chokidar": "^5.0.0",
     "fast-xml-parser": "^5.11.1",
     "iconv-lite": "^0.7.3",
-    "jschardet": "^3.1.4",
-    "music-metadata": "^11.16.0",
+    "jschardet": "^4.0.0",
+    "music-metadata": "^11.16.1",
     "tar": "^7.5.22",
     "tunnel": "^0.0.6",
-    "undici": "^7.29.1"
+    "undici": "^7.30.0"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "@types/node": "^24.13.6",
+    "@types/node": "^24.19.0",
     "@types/tunnel": "^0.0.7"
   }
 }
