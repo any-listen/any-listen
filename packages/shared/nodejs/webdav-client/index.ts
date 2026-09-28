@@ -180,7 +180,7 @@ export class WebDAVClient {
       return data
     }
     this.options.onDebugLog?.(
-      `request: [${method} ${url} ${res.statusCode} ${contentType}] [${JSON.stringify(res.headers)}] ${res.body}`
+      `request: [${method} ${url} ${res.statusCode} ${contentType}] [${JSON.stringify(res.headers)}] ${options.needRaw ? res.raw.byteLength : res.body}`
     )
     return (options.needRaw ? res.raw : res.body) as T
   }
@@ -292,7 +292,7 @@ export class WebDAVClient {
   }
 
   async getPartial(path: string, start: number | null, end?: number | null) {
-    this.options.onDebugLog?.(`getPartial: ${path}] [${start || ''}-${end || ''}`)
+    this.options.onDebugLog?.(`getPartial: [${path}] [${start || ''}-${end || ''}]`)
     const res = await this.request<Uint8Array>('GET', {
       needRaw: true,
       path,

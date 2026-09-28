@@ -7,7 +7,7 @@ import { type FileMetadata, parseBufferMetadata } from './music-metadata'
 import { request, type NeedBodyType } from './request'
 
 type MetaData = FileMetadata & Awaited<ReturnType<typeof parseBufferMetadata>>
-const cache = createCache<MetaData>({ max: 30, ttl: 60 * 1000 })
+const cache = createCache<MetaData>({ max: 80, ttl: 60 * 1000, updateAgeOnGet: true })
 const nextLenMap = {
   0: 8 * 1024,
   [8 * 1024]: 16 * 1024,
@@ -19,6 +19,7 @@ const nextLenMap = {
   [192 * 1024]: 256 * 1024,
 }
 const MAX_META_LENGTH = 128 * 1024
+const MAX_TAG_SIZE = nextLenMap[192 * 1024] * 3
 
 const getPartialData = async (url: string, start?: number, end?: number) => {
   console.log(url, start, end)
@@ -45,6 +46,8 @@ const requestParseMetadata = async ({
   needCache = false,
   data = Buffer.alloc(0),
   preLength = 0,
+  tagSize,
+  emptyMeta = false,
 }: {
   url: string
   mimeType?: string
@@ -52,31 +55,54 @@ const requestParseMetadata = async ({
   needCache?: boolean
   data?: Buffer
   preLength?: number
-}): Promise<MetaData | null> => {
+  tagSize?: number
+  emptyMeta?: boolean
+}) => {
   if (cache.has(url)) return cache.get(url)!
   let nextLength = nextLenMap[preLength]
-  if (!nextLength || (isMetaOnly && nextLength > MAX_META_LENGTH)) return null
+  if (tagSize) {
+    nextLength = tagSize
+  } else if (!nextLength || (isMetaOnly && emptyMeta && nextLength > MAX_META_LENGTH)) return null
   const resp = await getPartialData(url, preLength, nextLength - 1)
   data = Buffer.concat([data, resp.body]) // first 8k
   mimeType ||= resp.headers['content-type'] || getMimeType(basename(resp.url))
   const ext = extname(resp.url).replace(/^\./, '')
-  const metaHead = await parseBufferMetadata(data, mimeType, ext).catch(() => {
-    // logcat.error('parseBufferMetadata error', err)
+  const metaHead = await parseBufferMetadata(data, mimeType, ext).catch((err: Error) => {
+    if (err.message.includes('exceeds remaining file')) {
+      if (tagSize) {
+        tagSize = 0
+      } else {
+        const _tagSize = parseInt(/tag size (\d+)/.exec(err.message)?.[1] || '0', 10)
+        if (_tagSize > 0 && _tagSize < MAX_TAG_SIZE) {
+          tagSize = _tagSize + nextLength
+        }
+      }
+    }
     return null
   })
-  if (!metaHead) return null
-  if (metaHead.name || metaHead.singer || metaHead.albumName) {
-    const metadata: MetaData = {
-      ...metaHead,
-      unparsed: false,
-      ext,
-      sizeStr: sizeFormate(parseInt(resp.headers['content-length'] || '0', 10) || 0),
+  if (metaHead) {
+    if (metaHead.name || metaHead.singer || metaHead.albumName) {
+      const metadata: MetaData = {
+        ...metaHead,
+        unparsed: false,
+        ext,
+        sizeStr: sizeFormate(parseInt(resp.headers['content-length'] || '0', 10) || 0),
+      }
+      if (needCache) cache.set(url, metadata)
+      return metadata
     }
-    if (needCache) cache.set(url, metadata)
-    return metadata
+    emptyMeta = true
   }
-  // logcat.info('try next length', nextLenMap[nextLength])
-  return requestParseMetadata({ url, mimeType, isMetaOnly, needCache, data, preLength: nextLength })
+  return requestParseMetadata({
+    url,
+    mimeType,
+    isMetaOnly,
+    needCache,
+    data,
+    preLength: nextLength,
+    tagSize,
+    emptyMeta,
+  })
 }
 let requestParseMetadataPromises = new Map<string, ReturnType<typeof requestParseMetadata>>()
 const handleParseMetadata = async (opts: {
@@ -95,7 +121,7 @@ const handleParseMetadata = async (opts: {
 
 export const parseMusicMetadata = async (url: string): Promise<MetaData | null> => {
   // const mimeType = getMimeType(basename(url))
-  const metaHead = await handleParseMetadata({ url, isMetaOnly: true })
+  const metaHead = await handleParseMetadata({ url, isMetaOnly: true, needCache: true })
   // logcat.info('metaHead', metaHead)
   if (metaHead?.name || metaHead?.singer || metaHead?.albumName) return metaHead
   const headers = await getHead(url)

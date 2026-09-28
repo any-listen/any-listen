@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Improved
 
-- Fixed an issue where the font dropdown could not be opened in certain cases ([#361](https://github.com/any-listen/any-listen/issues/361)).
+- Improved remote song data parsing logic to increase song tag parsing speed and success rate.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 优化
 
-- 修复在某些情况下无法打开字体下拉列表的问题（[#361](https://github.com/any-listen/any-listen/issues/361)）。
+- 优化远程歌曲数据解析逻辑，提高歌曲标签解析速度与成功率。

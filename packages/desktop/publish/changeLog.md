@@ -14,6 +14,7 @@
 
 - Improved window border rendering when using native system windows on Windows ([#230](https://github.com/any-listen/any-listen/issues/230)).
 - Improved multiline desktop lyrics mode so that the active line's line spacing is no longer scaled when scaling is disabled.
+- Improved remote song data parsing logic to increase song tag parsing speed and success rate.
 
 ### Fixed
 
@@ -56,6 +57,7 @@
 
 - 优化 Windows 下使用原生系统窗口时的窗口边框显示效果（[#230](https://github.com/any-listen/any-listen/issues/230)）。
 - 优化桌面歌词多行模式，未启用缩放时不再缩放激活行的行距。
+- 优化远程歌曲数据解析逻辑，提高歌曲标签解析速度与成功率。
 
 ### 修复
 

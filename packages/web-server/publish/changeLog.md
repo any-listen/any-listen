@@ -8,6 +8,10 @@
 - Added **Song Position Adjustment**, available from the song list context menu ([#302](https://github.com/any-listen/any-listen/issues/302)).
 - Added a **Convert Chinese Lyrics to Traditional Chinese** option for playback and downloaded Chinese lyrics, located under _Settings > Playback Settings_ ([#333](https://github.com/any-listen/any-listen/issues/333)).
 
+### Improved
+
+- Improved remote song data parsing logic to increase song tag parsing speed and success rate.
+
 ### Fixed
 
 - Fixed an issue where the file save dialog API could not select folders ([#285](https://github.com/any-listen/any-listen/issues/285)).
@@ -33,6 +37,10 @@
 - 新增内置 **「Inter Variable」** 字体作为首选默认字体（[#278](https://github.com/any-listen/any-listen/issues/278)）。
 - 新增 **「歌曲位置调整」** 功能，可在歌曲列表右键菜单中使用（[#302](https://github.com/any-listen/any-listen/issues/302)）。
 - 新增 **「将播放与下载的中文歌词转换为繁体」** 选项，位于 _设置 > 播放设置_（[#333](https://github.com/any-listen/any-listen/issues/333)）。
+
+### 优化
+
+- 优化远程歌曲数据解析逻辑，提高歌曲标签解析速度与成功率。
 
 ### 修复
 

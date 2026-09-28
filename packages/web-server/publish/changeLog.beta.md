@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Improved
 
-- Fixed an issue where data could not be read from some WebDAV servers ([#359](https://github.com/any-listen/any-listen/issues/359)).
+- Improved remote song data parsing logic to increase song tag parsing speed and success rate.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 优化
 
-- 修复无法读取某些 WebDAV 服务端数据的问题（[#359](https://github.com/any-listen/any-listen/issues/359)）。
+- 优化远程歌曲数据解析逻辑，提高歌曲标签解析速度与成功率。
