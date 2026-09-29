@@ -1,3 +1,4 @@
+import { commandEvent } from '@any-listen/app/modules/command/event'
 import { extensionEvent, extensionState, initExtensionModule } from '@any-listen/app/modules/extension'
 import { musicListEvent } from '@any-listen/app/modules/musicList'
 import { workers } from '@any-listen/app/modules/worker'
@@ -118,6 +119,10 @@ export const initExtension = async () => {
       void workers.extensionService.musicListAction(action)
     } catch {}
   })
+
+  commandEvent.register('extensionCommand', async (command, ...args) => {
+    return workers.extensionService.executeCommand(command, args)
+  })
 }
 
 // TODO: create extension icon public path
@@ -188,10 +193,6 @@ export const restartExtensionHost = async () => {
 
 export const getExtensionErrorMessage = async () => {
   return extensionState.crashMessage
-}
-
-export const executeCommand = async (cmd: string, args: any[]): Promise<unknown> => {
-  return workers.extensionService.executeCommand(cmd, args)
 }
 
 export const getResourceList = async () => {

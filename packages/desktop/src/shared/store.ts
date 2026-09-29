@@ -17,7 +17,7 @@ const stores = new Map<string, Store>()
  * @param isShowErrorAlert=true 是否显示错误弹窗
  * @returns Store
  */
-export default (name: string, isIgnoredError = true, isShowErrorAlert = true): Store => {
+export const getStore = (name: string, isIgnoredError = true, isShowErrorAlert = true): Store => {
   if (stores.has(name)) return stores.get(name)!
   let store: Store
   const storePath = path.join(appState.dataPath, `${name}.json`)

@@ -28,7 +28,6 @@ export {
   getExtensionConfigValues,
   getExtensionErrorMessage,
   getExtensionList,
-  executeCommand,
   getResourceList,
   getNewVersionInfo,
   installExtension,

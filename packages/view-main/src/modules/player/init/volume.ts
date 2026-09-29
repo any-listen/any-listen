@@ -1,5 +1,5 @@
 import { onRelease } from '@/modules/app/shared'
-import { appEvent } from '@/modules/app/store/event'
+import { commandEvent } from '@/modules/command/event'
 import { onSettingChanged } from '@/modules/setting/shared'
 import { updateSetting } from '@/modules/setting/store/action'
 import { settingState } from '@/modules/setting/store/state'
@@ -35,6 +35,7 @@ const clearMuteCountDelay = debounce(() => {
 }, 2000)
 const handleToggleVolumeMute = (_isMute?: boolean) => {
   let muteStatus = _isMute ?? isMute
+  isMute = muteStatus
   setMute(muteStatus)
   setStateVolumeMute(muteStatus)
   void updateSetting({ 'player.isMute': muteStatus })
@@ -72,24 +73,24 @@ export const initVolume = () => {
       )
 
       unregistered.add(
-        appEvent.on('executeCommand', (cmd, ...args) => {
-          switch (cmd) {
-            case 'volumeUp':
-              handleSetVolume(volume + 0.04)
-              break
-            case 'volumeDown':
-              handleSetVolume(volume - 0.04)
-              break
-            case 'muteToggle':
-              handleToggleVolumeMute(args[0] as boolean | undefined)
-              break
-            default:
-              break
-          }
+        commandEvent.register('volumeUp', async (step = 0.04) => {
+          handleSetVolume(volume + step)
+        })
+      )
+      unregistered.add(
+        commandEvent.register('volumeDown', async (step = 0.04) => {
+          handleSetVolume(volume - step)
+        })
+      )
+      unregistered.add(
+        commandEvent.register('muteToggle', async (mute = !isMute) => {
+          handleToggleVolumeMute(mute)
         })
       )
     })
 
+    volume = settingState.setting['player.volume']
+    isMute = settingState.setting['player.isMute']
     setVolume(settingState.setting['player.volume'])
     setMute(settingState.setting['player.isMute'])
     setStateVolume(settingState.setting['player.volume'])

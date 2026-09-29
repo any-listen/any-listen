@@ -39,6 +39,9 @@ export const createExposeApp = (client: ClientCall) => {
     async appLog(event, type, log) {
       return client.appLog(type, log)
     },
+    async executeCommand(event, commandName, args) {
+      return client.executeCommand(commandName, args)
+    },
   } satisfies Partial<ExposeFunctions>
 }
 
@@ -131,6 +134,9 @@ export const createClientApp = (main: MainCall) => {
     },
     async clearAppLog(type) {
       return main.clearAppLog(type)
+    },
+    async executeCommand(commandName, args) {
+      return main.executeCommand(commandName, args)
     },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }

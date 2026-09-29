@@ -12,7 +12,6 @@ export {
   getAllExtensionSettings,
   getExtensionConfigValues,
   getExtensionErrorMessage,
-  executeCommand,
   getExtensionList,
   getOnlineExtensionList,
   getResourceList,

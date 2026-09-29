@@ -1,7 +1,7 @@
 import { DATA_KEYS, STORE_NAMES } from '@any-listen/common/constants'
 
 import { appState } from '@/app/app/state'
-import getStore from '@/app/shared/store'
+import { getStore } from '@/app/shared/store'
 
 import type { ExposeClientFunctions } from '.'
 import { updateIgnoreVersion } from '../autoUpdate'

@@ -286,7 +286,6 @@ declare namespace AnyListen {
         action: T,
         params: Parameters<ListProviderAction[T]>[0]
       ) => Promise<Awaited<ReturnType<ListProviderAction[T]>>>
-      executeCommand: (commandName: string, args: any[]) => Promise<unknown>
     }>
     type ServerIPCActions<Socket = undefined> = IPC.WarpIPCHandlerActions<Socket, ServerActions>
 

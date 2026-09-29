@@ -1,7 +1,7 @@
 import { STORE_NAMES } from '@any-listen/common/constants'
 
 import defaultSetting from '@/app/shared/defaultSetting'
-import getStore from '@/app/shared/store'
+import { getStore } from '@/app/shared/store'
 
 import { migrateSetting } from './config/migrateSetting'
 import { appState } from './state'

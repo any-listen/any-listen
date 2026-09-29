@@ -1,9 +1,10 @@
 import { hotKeyEvent, hotKeyState } from '@any-listen/app/modules/hotkey'
-import type { HOTKEY_Type } from '@any-listen/common/hotKey'
 import { app } from 'electron'
 
+import { appEvent } from '@/app'
+
 import { getHotKeyConfig, saveHotKeyConfig } from './data'
-import { init, registerHotkey, unRegisterHotkey, unRegisterHotkeyAll } from './globalHotkey'
+import { init, unRegisterHotkeyAll } from './globalHotkey'
 
 const initHotKeyState = async () => {
   const config = await getHotKeyConfig()
@@ -12,40 +13,31 @@ const initHotKeyState = async () => {
 }
 
 export const initHotKey = async () => {
-  await initHotKeyState()
-  app.on('ready', () => {
-    init()
+  appEvent.on('inited', () => {
+    void initHotKeyState().then(() => {
+      init()
+    })
   })
   app.on('will-quit', unRegisterHotkeyAll)
 }
 
-export const handleHotkeyConfigAction = async (action: AnyListen.HotKey.HotKeyActions<HOTKEY_Type>): Promise<boolean> => {
+export const handleHotkeyConfigAction = async (action: AnyListen.HotKey.HotKeyActions) => {
   switch (action.action) {
     case 'config':
-      saveHotKeyConfig(action.data)
-      hotKeyState.config = action.data
-      hotKeyEvent.hot_key_config_update(action.data)
-      return true
+      hotKeyState.config[action.data.type].keys = action.data.config
+      saveHotKeyConfig(hotKeyState.config)
+      hotKeyEvent.config_updated(action.data)
+      if (action.data.type === 'global' && hotKeyState.config.global.enable) init()
+      break
     case 'enable':
-      hotKeyState.tempDisable = false
-      action.data ? init() : unRegisterHotkeyAll()
-      return true
+      hotKeyState.config[action.data.type].enable = action.data.enable
+      saveHotKeyConfig(hotKeyState.config)
+      hotKeyEvent.enable_chenged(action.data)
+      if (action.data.type === 'global') action.data.enable ? init() : unRegisterHotkeyAll()
+      break
     case 'tempDisable':
-      if (hotKeyState.tempDisable != action.data) {
-        hotKeyState.tempDisable = action.data
-        action.data ? unRegisterHotkeyAll() : init()
-      }
-      return true
-    case 'register':
-      return registerHotkey(action.data)
-    case 'unregister':
-      unRegisterHotkey(action.data)
-      return true
-    // default:
-    //   console.warn('unknown action:', action)
-    //   // eslint-disable-next-line no-case-declarations, @typescript-eslint/no-unused-vars
-    //   let unknownAction: never = action
-    //   return false
+      action.data ? unRegisterHotkeyAll() : init()
+      break
   }
 }
 

@@ -5,6 +5,7 @@ import { proxyServerState } from '@any-listen/app/modules/proxyServer/state'
 
 import { appState, updateSetting } from '@/app'
 import { quit } from '@/app/actions'
+import { executeCommand } from '@/modules/command'
 import { clipboardReadText, clipboardWriteText, exitApp, openDirInExplorer, openUrl } from '@/shared/electron'
 import { getFonts } from '@/shared/fontManage'
 import { workers } from '@/worker'
@@ -116,6 +117,9 @@ export const createExposeApp = () => {
     },
     async clearAppLog(event, type) {
       await logs[type].clearLog()
+    },
+    async executeCommand(event, commandName, args) {
+      return executeCommand(commandName, ...args)
     },
   } satisfies Partial<ExposeFunctions>
 }

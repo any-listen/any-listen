@@ -3,8 +3,8 @@ import type { ClientCall, ExposeFunctions, MainCall } from '.'
 // 暴露给后端的方法
 export const createExposeHotkey = (client: ClientCall) => {
   return {
-    async hotKeyDown(event, info) {
-      return client.hotKeyDown(info)
+    async hotKeyEnabled(event, config) {
+      return client.hotKeyEnabled(config)
     },
     async hotKeyConfigUpdated(event, config) {
       return client.hotKeyConfigUpdated(config)

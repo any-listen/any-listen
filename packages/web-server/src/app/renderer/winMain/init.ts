@@ -27,8 +27,11 @@ export const initWinMain = () => {
   themeEvent.on('theme_list_change', (list) => {
     void rendererIPC.themeListChanged(list)
   })
-  hotKeyEvent.on('hot_key_config_update', (config) => {
+  hotKeyEvent.on('config_updated', (config) => {
     void rendererIPC.hotKeyConfigUpdated(config)
+  })
+  hotKeyEvent.on('enable_chenged', (config) => {
+    void rendererIPC.hotKeyEnabled(config)
   })
   extensionEvent.on('extensionEvent', (event) => {
     void rendererIPC.extensionEvent(event)

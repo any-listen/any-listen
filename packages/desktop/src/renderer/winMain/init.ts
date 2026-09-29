@@ -1,31 +1,35 @@
 import { winMainReadyEvent } from '@any-listen/app/common/event'
+import { commandEvent } from '@any-listen/app/modules/command/event'
 import { appLogEvent } from '@any-listen/app/modules/logs'
-import { APP_EVENT_NAMES } from '@any-listen/common/constants'
 
 // import { initMainWindowHandler as initMainWindowHandlerUserApi } from '@/modules/userApi'
 // import { initMainWindowHandler as initMainWindowHandlerSync } from '@/modules/sync'
 import { actions } from '@/actions'
 // import initUpdate from './autoUpdate'
 import { appEvent } from '@/app'
+import { quit } from '@/app/actions'
 import { extensionEvent } from '@/modules/extension'
-import { hotKeyEvent, hotKeyState } from '@/modules/hotKey'
+import { hotKeyEvent } from '@/modules/hotKey'
 import { playerEvent } from '@/modules/player'
 import { onWebDAVSyncStatusChanged } from '@/modules/sync'
 import { themeEvent } from '@/modules/theme'
 import { initMainWindowHandler as initMainWindowHandlerTray } from '@/modules/tray'
+import { exitApp } from '@/shared/electron'
 
 import { initUpdate } from './autoUpdate'
 import { winMainEvent } from './event'
 import {
+  closeWindow,
   createWindow,
   getWebContents,
+  hideWindow,
   isExistWindow,
   isShowWindow,
   minimize,
+  setFullScreen,
   setWindowBounds,
   showWindow,
   toggleHide,
-  toggleMinimize,
 } from './main'
 import { init as initRendererEvent, rendererIPC } from './rendererEvent'
 import { winMainState } from './state'
@@ -85,30 +89,40 @@ export const initWinMain = () => {
     void rendererIPC.themeListChanged(list)
   })
 
-  hotKeyEvent.on('hot_key_down', ({ type, key }) => {
-    let action = hotKeyState.config.global.keys[key]
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (!action || action.startsWith(APP_EVENT_NAMES.viewMainName) || action.startsWith(APP_EVENT_NAMES.playerName)) return
-    switch (action) {
-      case 'view_main_toggle_close':
-        actions.exec('app.quit')
-        break
-      case 'view_main_toggle_hide':
-        toggleHide()
-        break
-      case 'view_main_min':
-        minimize()
-        break
-      case 'view_main_toggle_min':
-        toggleMinimize()
-        break
-      default:
-        void rendererIPC.hotKeyDown({ type, key })
-        break
-    }
+  commandEvent.register('viewMainCommand', async (command, ...args) => {
+    return rendererIPC.executeCommand(command, args)
   })
-  hotKeyEvent.on('hot_key_config_update', (config) => {
+  commandEvent.register('minimize', async () => {
+    minimize()
+  })
+  commandEvent.register('fullscreenToggle', async (fullscreen?: boolean) => {
+    setFullScreen(fullscreen ?? !winMainState.isFullScreen)
+  })
+  commandEvent.register('close', async (isForce) => {
+    if (isForce) {
+      exitApp(0)
+      return
+    }
+    closeWindow()
+  })
+  commandEvent.register('exit', async () => {
+    quit()
+  })
+  commandEvent.register('hide', async () => {
+    hideWindow()
+  })
+  commandEvent.register('show', async () => {
+    showWindow()
+  })
+  commandEvent.register('hideToggle', async () => {
+    toggleHide()
+  })
+
+  hotKeyEvent.on('config_updated', (config) => {
     void rendererIPC.hotKeyConfigUpdated(config)
+  })
+  hotKeyEvent.on('enable_chenged', (config) => {
+    void rendererIPC.hotKeyEnabled(config)
   })
   extensionEvent.on('extensionEvent', (event) => {
     void rendererIPC.extensionEvent(event)

@@ -4,6 +4,7 @@ import { logs } from '@any-listen/app/modules/logs'
 import { proxyServerState } from '@any-listen/app/modules/proxyServer/state'
 
 import { appState, setSystemMode, updateSetting } from '@/app/app'
+import { executeCommand } from '@/app/modules/command'
 import { checkAllowPathError, fileSystemAction } from '@/app/modules/fileSystem'
 import { socketEvent } from '@/modules/ipc/event'
 import { broadcast } from '@/modules/ipc/websocket'
@@ -89,6 +90,9 @@ export const createExposeApp = () => {
     async clearAppLog(event, type) {
       return logs[type].clearLog()
     },
+    async executeCommand(event, commandName, args) {
+      return executeCommand(commandName, args)
+    },
   } satisfies Partial<ExposeClientFunctions>
 }
 
@@ -130,6 +134,12 @@ export const createServerApp = () => {
       broadcast((socket) => {
         if (socket.winType != 'main' || !socket.isInited) return
         void socket.remote.appLog(type, log)
+      })
+    },
+    async executeCommand(commandName, args) {
+      broadcast((socket) => {
+        if (socket.winType != 'main' || !socket.isInited) return
+        void socket.remote.executeCommand(commandName, args)
       })
     },
   } satisfies Partial<ExposeServerFunctions>

@@ -84,8 +84,5 @@ export const createClientExtension = (main: MainCall) => {
     ): Promise<Awaited<ReturnType<AnyListen.IPCExtension.ListProviderAction[T]>>> {
       return main.listProviderAction(action, params)
     },
-    async executeCommand(commandName: string, args: any[]) {
-      return main.executeCommand(commandName, args)
-    },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }

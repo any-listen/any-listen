@@ -19,7 +19,6 @@ import {
   startExtension,
   uninstallExtension,
   updateExtension,
-  executeCommand,
   updateExtensionSettings,
   getExtensionConfigValues,
   getNewVersionInfo,
@@ -98,9 +97,6 @@ export const createExposeExtension = () => {
     },
     async listProviderAction(event, action, params) {
       return listProviderAction(action, params)
-    },
-    async executeCommand(event, commandName, args) {
-      return executeCommand(commandName, args)
     },
   } satisfies Partial<ExposeFunctions>
 }

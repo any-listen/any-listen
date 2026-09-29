@@ -8,7 +8,7 @@ import {
 import { STORE_NAMES } from '@any-listen/common/constants'
 
 import { appEvent } from '@/app'
-import getStore from '@/shared/store'
+import { getStore } from '@/shared/store'
 import { workers } from '@/worker'
 
 import { getMusicPic } from '../music'

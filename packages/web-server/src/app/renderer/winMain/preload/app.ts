@@ -44,6 +44,9 @@ export const createExposeApp = (client: ClientCall) => {
     async appLog(event, type, log) {
       return client.appLog(type, log)
     },
+    async executeCommand(event, commandName, args) {
+      return client.executeCommand(commandName, args)
+    },
   } satisfies Partial<ExposeFunctions>
 }
 
@@ -141,6 +144,9 @@ export const createClientApp = (ipcSocket: IPCSocket) => {
     },
     async clearAppLog(type) {
       return ipcSocket.remote.clearAppLog(type)
+    },
+    async executeCommand(commandName, args) {
+      return ipcSocket.remote.executeCommand(commandName, args)
     },
   } satisfies Partial<AnyListen.IPC.ServerIPC>
 }

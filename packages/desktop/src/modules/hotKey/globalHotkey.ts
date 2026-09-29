@@ -1,69 +1,59 @@
 import { hotKeyEvent, hotKeyState } from '@any-listen/app/modules/hotkey'
-import type { HOTKEY_Type } from '@any-listen/common/hotKey'
 import { globalShortcut } from 'electron'
 
 import { log } from '@/shared/log'
 
-export const handleKeyDown = (key: string) => {
-  if (hotKeyState.tempDisable) return
-  hotKeyEvent.hot_key_down({ type: 'global', key })
+const handleKeyDown = (key: string) => {
+  hotKeyEvent.hot_key_down(key)
 }
 
 const transformedKeyRxp = /(^|\+)[a-z]/g
 
-export const transformedKey = (key: string): string => {
+const transformedKey = (key: string): string => {
   if (key.includes('arrow')) key = key.replace(/arrow/g, '')
   return key.replace('mod', 'CommandOrControl').replace(transformedKeyRxp, (l) => l.toUpperCase())
 }
 
-export const registerHotkey = ({ key, info }: AnyListen.HotKey.RegisterKeyInfo<HOTKEY_Type>): boolean => {
-  let targetKey = hotKeyState.state.get(key)
-  if (targetKey?.status) return true
+const registerHotkey = (key: string): boolean => {
+  let targetKeyStatus = hotKeyState.state.get(key)
+  if (targetKeyStatus) return true
   const transKey = transformedKey(key)
   // console.log('Register key:', transKey)
-  if (targetKey) {
-    targetKey.info = info
-  } else {
-    targetKey = {
-      status: false,
-      info,
-    }
-    hotKeyState.state.set(key, targetKey)
-  }
-  targetKey.status = globalShortcut.isRegistered(transKey)
-  const status = targetKey.status
+  const isRegistered = globalShortcut.isRegistered(transKey)
+  const status = isRegistered
     ? false
     : globalShortcut.register(transKey, () => {
         handleKeyDown(key)
       })
+  hotKeyState.state.set(key, status)
   return status
 }
 
-export const unRegisterHotkey = (key: string) => {
-  let transKey = transformedKey(key)
-  // console.log('Unregister key:', transKey)
-  globalShortcut.unregister(transKey)
-  hotKeyState.state.delete(key)
-}
+// const unRegisterHotkey = (key: string) => {
+//   let transKey = transformedKey(key)
+//   // console.log('Unregister key:', transKey)
+//   globalShortcut.unregister(transKey)
+//   hotKeyState.state.delete(key)
+// }
 
 export const unRegisterHotkeyAll = () => {
   hotKeyState.state.clear()
   globalShortcut.unregisterAll()
 }
 
-const handleRegisterHotkey = (data: AnyListen.HotKey.RegisterKeyInfo<HOTKEY_Type>) => {
-  let ret = registerHotkey(data)
-  if (!ret) log.info('Register hot key failed:', data.key)
+const handleRegisterHotkey = (key: string) => {
+  let ret = registerHotkey(key)
+  if (!ret) log.info('Register hot key failed:', key)
 }
 
-export const init = (isForce = false) => {
+export const init = () => {
   unRegisterHotkeyAll()
-  if (!isForce && !hotKeyState.config.global.enable) return
+  if (!hotKeyState.config.global.enable) return
   // state.state = {}
   // console.log(state.config.global.keys)
   for (const key of Object.keys(hotKeyState.config.global.keys)) {
     try {
-      handleRegisterHotkey({ key, info: hotKeyState.config.global.keys[key] })
+      handleRegisterHotkey(key)
     } catch (err) {
       log.info(err)
     }

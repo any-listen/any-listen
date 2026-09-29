@@ -2,8 +2,9 @@
 import { setTitle } from '@/shared'
 import { getSystemThemeIsDark, onSystemThemeModeChanged } from '@/shared/browser/tools'
 import { handleConfigChange, handleRelease, initWindowInfo, setMaximized } from '@/shared/browser/widnow.svelte'
-import { closeWindow, exitApp, minWindow, setSystemThemeMode } from '@/shared/ipc/app'
+import { closeWindow, setSystemThemeMode } from '@/shared/ipc/app'
 
+import { commandEvent } from '../command/event'
 import { keyboardEvent } from '../hotkey/keyboard'
 import { lyricEvent } from '../lyric/store/event'
 import { playerEvent } from '../player/store/event'
@@ -101,38 +102,14 @@ export const initApp = () => {
     if (evt.inputing) return
     evt.event?.preventDefault()
   })
-  appEvent.on('executeCommand', (cmd) => {
-    if (import.meta.env.VITE_IS_DESKTOP) {
-      switch (cmd) {
-        case 'minimize':
-          void minWindow()
-          break
-        case 'fullscreenToggle':
-          setFullScreen(!appState.isFullscreen)
-          break
-        case 'close':
-          void closeWindow()
-          break
-        case 'exit':
-          void exitApp()
-          break
-        default:
-          break
-      }
-    }
-    if (import.meta.env.VITE_IS_WEB) {
-      switch (cmd) {
-        case 'logout':
-          void closeWindow()
-          break
-        case 'maximizeToggle':
-          setMaximized(!appState.isFullscreen)
-          break
-        default:
-          break
-      }
-    }
-  })
+  if (import.meta.env.VITE_IS_WEB) {
+    commandEvent.register('logout', async () => {
+      await closeWindow()
+    })
+    commandEvent.register('maximizeToggle', async () => {
+      setMaximized(!appState.isFullscreen)
+    })
+  }
   if (import.meta.env.VITE_IS_DESKTOP) {
     keyboardEvent.on('f11_down', (evt) => {
       if (evt.inputing || evt.event?.repeat) return

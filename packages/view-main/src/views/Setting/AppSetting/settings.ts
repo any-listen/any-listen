@@ -328,6 +328,25 @@ export const settings: SettingListSection[] = [
     ],
   },
   {
+    id: 'hotkey',
+    name: 'settings.hotkey',
+    // t('settings.hotkey')
+    list: [
+      {
+        type: 'component',
+        name: 'settings.hotkey.local',
+        component: async () => import('./Hotkey/HotkeyLocal.svelte'),
+      },
+      import.meta.env.VITE_IS_DESKTOP
+        ? {
+            type: 'component',
+            name: 'settings.hotkey.global',
+            component: async () => import('./Hotkey/HotkeyGlobal.svelte'),
+          }
+        : null,
+    ],
+  },
+  {
     id: 'extension',
     // t('settings.extension')
     name: 'settings.extension',

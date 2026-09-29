@@ -6,6 +6,7 @@ import { appState } from '@/app'
 import { workers } from '@/worker'
 
 import { initAppMenu } from './appMenu'
+import { initCommand } from './command'
 import { initExtension } from './extension'
 // import { initDielikeList } from './dislikeList'
 import { initHotKey } from './hotKey'
@@ -31,6 +32,7 @@ export const initModules = async () => {
     initResources(),
     initProxyServer(),
     initSync(),
+    initCommand(),
     initAppLog(appState.dataPath),
   ])
   // initMusicList()

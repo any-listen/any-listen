@@ -1,11 +1,10 @@
 import { parseRequestKey } from '@/modules/resource/search/music/actions'
 import { buildQueryParams, getLocation, push } from '@/plugins/routes'
-import { executeCommand as executeCommandRemote } from '@/shared/ipc/extension'
 import { getItem, LOCAL_STORE_KEYS, setItem } from '@/shared/localStore'
 import { searchTypeMap } from '@/views/Online/Search/shared.svelte'
 import { getSourceId, urlParamKeyMap, type ViewType } from '@/views/Online/shared.svelte'
 
-import { appEvent, hiddenCommonCommands, localCommands } from './event'
+import { appEvent } from './event'
 // import { parseUrlParams } from '@/shared'
 // import * as commit from './commit'
 
@@ -94,7 +93,7 @@ export {
 
 export { getLoginDevices, getAppInfo, getSetting, removeLoginDevice, sendInitedEvent, setSetting } from '@/shared/ipc/app'
 
-// name: i18n.t('command.local.run')
+// name: i18n.t('command.run')
 let lastUsedCommands: string[]
 export const getLastUsedCommands = () => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -113,21 +112,4 @@ export const setLastUsedCommand = (command: string) => {
   }
   lastUsedCommands = commands
   setItem(LOCAL_STORE_KEYS.lastUsedCommands, JSON.stringify(commands))
-}
-
-export { localCommands }
-const allCommands = [...localCommands, ...hiddenCommonCommands]
-export const executeCommand = async (command: string, ...args: any[]): Promise<unknown> => {
-  if (allCommands.includes(command as (typeof localCommands)[number])) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    appEvent.executeCommand(command as (typeof localCommands)[number], ...args)
-  } else {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    return executeCommandRemote(command, ...args)
-  }
-}
-
-export const executeLocalCommand = (cmd: (typeof localCommands)[number], ...args: any[]) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  appEvent.executeCommand(cmd, ...args)
 }

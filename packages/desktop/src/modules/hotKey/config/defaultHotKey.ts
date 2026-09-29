@@ -1,42 +1,28 @@
-import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+import type { VIEW_MAIN_COMMANDS, MAIN_COMMANDS } from '@any-listen/common/command'
 
-const local: AnyListen.HotKey.HotKeyConfig<HOTKEY_Type> = {
+type LocalCommands = (typeof VIEW_MAIN_COMMANDS)[number] | (typeof MAIN_COMMANDS)[number]
+const local: AnyListen.HotKey.HotKeyConfig = {
   enable: true,
   keys: {
-    'mod+f5': 'player_toggle_play',
-    'mod+arrowleft': 'player_prev',
-    'mod+arrowright': 'player_next',
-    f1: 'view_main_focus_search_input',
-  },
+    'mod+f5': 'playToggle',
+    'mod+arrowleft': 'previous',
+    'mod+arrowright': 'next',
+    f1: 'focusSearchInput',
+  } satisfies Record<string, LocalCommands>,
 }
 
-const global: AnyListen.HotKey.HotKeyConfig<HOTKEY_Type> = {
+const global: AnyListen.HotKey.HotKeyConfig = {
   enable: false,
   keys: {
-    // MediaPlayPause: {
-    //   type: HOTKEY_PLAYER.toggle_play.type,
-    //   name: '',
-    //   action: HOTKEY_PLAYER.toggle_play.action,
-    // },
-    // MediaPreviousTrack: {
-    //   type: HOTKEY_PLAYER.prev.type,
-    //   name: '',
-    //   action: HOTKEY_PLAYER.prev.action,
-    // },
-    // MediaNextTrack: {
-    //   type: HOTKEY_PLAYER.next.type,
-    //   name: '',
-    //   action: HOTKEY_PLAYER.next.action,
-    // },
-    'mod+alt+f5': 'player_toggle_play',
-    'mod+alt+arrowleft': 'player_prev',
-    'mod+alt+arrowright': 'player_next',
-    'mod+alt+arrowup': 'player_volume_up',
-    'mod+alt+arrowdown': 'player_volume_down',
-    'mod+alt+0': 'win_lyric_toggle_visible',
-    'mod+alt+-': 'win_lyric_toggle_lock',
-    'mod+alt+=': 'win_lyric_toggle_always_top',
-  },
+    'mod+alt+f5': 'playToggle',
+    'mod+alt+arrowleft': 'previous',
+    'mod+alt+arrowright': 'next',
+    'mod+alt+arrowup': 'volumeUp',
+    'mod+alt+arrowdown': 'volumeDown',
+    'mod+alt+0': 'desktopLyric.showToggle',
+    'mod+alt+-': 'desktopLyric.lockToggle',
+    'mod+alt+=': 'desktopLyric.alwaysOnTopToggle',
+  } satisfies Record<string, LocalCommands>,
 }
 
 export default {

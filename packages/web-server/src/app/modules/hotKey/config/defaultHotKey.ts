@@ -1,18 +1,19 @@
-import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+import type { VIEW_MAIN_COMMANDS, MAIN_COMMANDS } from '@any-listen/common/command'
 
-const local: AnyListen.HotKey.HotKeyConfig<HOTKEY_Type> = {
+type LocalCommands = (typeof VIEW_MAIN_COMMANDS)[number] | (typeof MAIN_COMMANDS)[number]
+const local: AnyListen.HotKey.HotKeyConfig = {
   enable: true,
   keys: {
-    'mod+f5': 'player_toggle_play',
-    'mod+arrowleft': 'player_prev',
-    'mod+arrowright': 'player_next',
-    f1: 'view_main_focus_search_input',
-  },
+    'mod+f5': 'playToggle',
+    'mod+arrowleft': 'previous',
+    'mod+arrowright': 'next',
+    f1: 'focusSearchInput',
+  } satisfies Record<string, LocalCommands>,
 }
 
-const global: AnyListen.HotKey.HotKeyConfig<HOTKEY_Type> = {
+const global: AnyListen.HotKey.HotKeyConfig = {
   enable: false,
-  keys: {},
+  keys: {} satisfies Record<string, LocalCommands>,
 }
 
 export default {

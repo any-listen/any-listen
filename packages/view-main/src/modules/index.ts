@@ -3,6 +3,7 @@ import { connectIPC as _connectIPC } from '@/shared/ipc/ipc'
 
 import { initApp } from './app/init'
 import { sendConnectFailed, sendConnected, sendDesconnected, sendRelease } from './app/store/action'
+import { initCommand } from './command/init'
 import { initDislikeList } from './dislikeList/init'
 import { initExtension } from './extension/init'
 import { initHotkey } from './hotkey/init'
@@ -29,6 +30,7 @@ export const registerModules = () => {
   initVersion()
   initResource()
   initSync()
+  initCommand()
 }
 
 export const connectIPC = (pwd?: string) => {

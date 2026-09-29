@@ -1,12 +1,10 @@
-import type { HOTKEY_Type } from '@any-listen/common/hotKey'
-
-import { hotKeyConfigUpdatedEvent, hotKeyDownEvent } from './event'
+import { hotKeyConfigUpdatedEvent, hotKeyEnabledEvent } from './event'
 
 export default {
-  async hotKeyDown(config) {
-    hotKeyDownEvent.emit(config)
-  },
   async hotKeyConfigUpdated(config) {
-    hotKeyConfigUpdatedEvent.emit(config as AnyListen.HotKey.HotKeyConfigAll<HOTKEY_Type>)
+    hotKeyConfigUpdatedEvent.emit(config)
+  },
+  async hotKeyEnabled(config) {
+    hotKeyEnabledEvent.emit(config)
   },
 } satisfies Partial<AnyListen.IPC.ClientIPC>

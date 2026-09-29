@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Improved
+### Added
 
-- Improved remote song data parsing logic to increase song tag parsing speed and success rate.
+- Added **Keyboard Shortcut Settings** under _Settings > Keyboard Shortcut Settings_.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 优化
+### 新增
 
-- 优化远程歌曲数据解析逻辑，提高歌曲标签解析速度与成功率。
+- 新增 **「快捷键设置」**，位于 _设置 > 快捷键设置_。

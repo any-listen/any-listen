@@ -20,7 +20,6 @@ import {
   startExtension,
   uninstallExtension,
   updateExtension,
-  executeCommand,
   updateExtensionSettings,
   getExtensionConfigValues,
 } from '@/app/modules/extension'
@@ -99,9 +98,6 @@ export const createExposeExtension = () => {
     },
     async listProviderAction(event, action, params) {
       return listProviderAction(action, params)
-    },
-    async executeCommand(event, commandName, args) {
-      return executeCommand(commandName, args)
     },
   } satisfies Partial<ExposeClientFunctions>
 }

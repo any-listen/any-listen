@@ -1,7 +1,5 @@
-import type { HOTKEY_Type } from '@any-listen/common/hotKey'
-
 export interface InitState {
-  config: AnyListen.HotKey.HotKeyConfigAll<HOTKEY_Type>
+  config: AnyListen.HotKey.HotKeyConfigAll
   isEditingHotKey: boolean
 }
 

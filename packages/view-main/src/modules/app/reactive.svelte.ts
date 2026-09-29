@@ -1,15 +1,9 @@
 import { IPC_CODE } from '@any-listen/common/constants'
-import { onMount } from 'svelte'
 
 import { useSettingValue } from '@/modules/setting/reactive.svelte'
-import { i18n, type Message } from '@/plugins/i18n'
 import { getFontSizeWithScreen } from '@/shared'
 
-import { extI18n, extI18nMessageChangedEvent } from '../extension/i18n'
-import { resourceList } from '../extension/reactive.svelte'
-import { extensionState } from '../extension/store/state'
 import { settingEvent } from '../setting/store/event'
-import { localCommands } from './store/action'
 import { appEvent } from './store/event'
 import { appState } from './store/state'
 
@@ -102,59 +96,6 @@ export const useListItemHeight = (height: number) => {
   return {
     get val() {
       return listItemHeight
-    },
-  }
-}
-
-export const useCommands = () => {
-  let list = $state.raw<AnyListen.Extension.Command[]>([])
-
-  onMount(() => {
-    const buildCommands = (resourceList: AnyListen.Extension.ResourceList): AnyListen.Extension.Command[] => {
-      let cmds: AnyListen.Extension.Command[] = [
-        ...localCommands.map((cmd) => {
-          const tKey = `command.local.${cmd}.desc`
-          const desc = i18n.t(tKey as keyof Message)
-
-          return {
-            extensionId: '',
-            extensionName: '',
-            fullCommand: cmd,
-            command: cmd,
-            name: i18n.t(`command.local.${cmd}`),
-            description: desc === tKey ? undefined : desc,
-          } satisfies AnyListen.Extension.Command
-        }),
-        ...resourceList.commands
-          .filter((c) => !c.hidden)
-          .map((cmd) => {
-            return {
-              ...cmd,
-              command: `Extension: ${cmd.command}`,
-              name: i18n.t('command.space.extension') + extI18n.t(cmd.extensionId, cmd.name),
-              description: cmd.description ? extI18n.t(cmd.extensionId, cmd.description) : undefined,
-              extensionName: extI18n.t(cmd.extensionId, cmd.extensionName),
-            }
-          }),
-      ]
-      return cmds
-    }
-    const unsub = resourceList.subscribe((res) => {
-      list = buildCommands(res)
-    })
-    const unsub2 = extI18nMessageChangedEvent.on(() => {
-      list = buildCommands(extensionState.resourceList)
-    })
-
-    return () => {
-      unsub()
-      unsub2()
-    }
-  })
-
-  return {
-    get val() {
-      return list
     },
   }
 }

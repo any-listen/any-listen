@@ -5,10 +5,10 @@ export declare type ClientCommonActions = WarpPromiseRecord<{
   deeplink: (deeplink: string) => void
   /** 设置更新 */
   settingChanged: (keys: Array<keyof AnyListen.AppSetting>, setting: Partial<AnyListen.AppSetting>) => void
-  /** 快捷键触发（全局快捷键） */
-  hotKeyDown: (config: AnyListen.HotKey.HotKeyDownInfo) => void
   /** 快捷键配置更新 */
-  hotKeyConfigUpdated: <T extends string>(config: AnyListen.HotKey.HotKeyConfigAll<T>) => void
+  hotKeyConfigUpdated: (config: AnyListen.HotKey.Config) => void
+  /** 快捷键启用状态变更 */
+  hotKeyEnabled: (config: AnyListen.HotKey.Enable) => void
   /** 窗口显示变更 */
   winShow: (show: boolean) => void
   /** 全屏模式变更 */
@@ -26,6 +26,7 @@ export declare type ClientCommonActions = WarpPromiseRecord<{
   closeMessageBox: (key: string) => void
   updateInfo: (event: AnyListen.IPCCommon.UpdateInfo) => void
   appLog: (type: AnyListen.LogType, log: string) => void
+  executeCommand: (commandName: string, args: unknown[]) => Promise<unknown>
 }>
 
 declare global {

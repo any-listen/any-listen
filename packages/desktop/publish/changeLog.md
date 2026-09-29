@@ -9,6 +9,7 @@
 - Added a **Horizontal Alignment** option for **Classic Desktop Lyrics** under _Settings > Desktop Lyrics Settings > Classic Lyrics_ ([#299](https://github.com/any-listen/any-listen/issues/299)).
 - Added **Song Position Adjustment**, available from the song list context menu ([#302](https://github.com/any-listen/any-listen/issues/302)).
 - Added a **Convert Chinese Lyrics to Traditional Chinese** option for playback and downloaded Chinese lyrics, located under _Settings > Playback Settings_ ([#333](https://github.com/any-listen/any-listen/issues/333)).
+- Added **Keyboard Shortcut Settings** under _Settings > Keyboard Shortcut Settings_.
 
 ### Improved
 
@@ -52,6 +53,7 @@
 - 经典桌面歌词新增 **「水平对齐方式」** 选项，可在 _设置 > 桌面歌词设置 > 经典歌词_ 中调整（[#299](https://github.com/any-listen/any-listen/issues/299)）。
 - 新增 **「歌曲位置调整」** 功能，可在歌曲列表右键菜单中使用（[#302](https://github.com/any-listen/any-listen/issues/302)）。
 - 新增 **「将播放与下载的中文歌词转换为繁体」** 选项，位于 _设置 > 播放设置_（[#333](https://github.com/any-listen/any-listen/issues/333)）。
+- 新增 **「快捷键设置」**，位于 _设置 > 快捷键设置_。
 
 ### 优化
 

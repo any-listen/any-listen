@@ -1,5 +1,3 @@
-import type { HOTKEY_Type } from '@any-listen/common/hotKey'
-
 import { getHotKeyConfig, getHotkeyStatus, handleHotkeyConfigAction } from '@/modules/hotKey'
 
 import type { ExposeFunctions } from '.'
@@ -14,7 +12,7 @@ export const createExposeHotkey = () => {
       return getHotkeyStatus()
     },
     async hotkeyConfigAction(event, action) {
-      return handleHotkeyConfigAction(action as AnyListen.HotKey.HotKeyActions<HOTKEY_Type>)
+      return handleHotkeyConfigAction(action)
     },
   } satisfies Partial<ExposeFunctions>
 }

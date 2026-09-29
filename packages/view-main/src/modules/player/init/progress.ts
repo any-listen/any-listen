@@ -1,7 +1,7 @@
 import { getDocumentHidden, onVisibilityChange } from '@any-listen/web'
 
 import { onRelease } from '@/modules/app/shared'
-import { appEvent } from '@/modules/app/store/event'
+import { commandEvent } from '@/modules/command/event'
 import { updateListMusic } from '@/modules/musicLibrary/store/actions'
 import { settingState } from '@/modules/setting/store/state'
 import { getCurrentTime, getDuration, onTimeupdate, setCurrentTime } from '@/plugins/player'
@@ -97,21 +97,15 @@ export const initProgress = () => {
         })
       )
       unregistered.add(
-        appEvent.on('executeCommand', (cmd, ...args) => {
-          switch (cmd) {
-            case 'seekForward': {
-              const seekOffset = (args[0] as number | undefined) ?? 5
-              setProgress(Math.min(getCurrentTime() + seekOffset, getDuration()))
-              break
-            }
-            case 'seekBackward': {
-              const seekOffset = (args[0] as number | undefined) ?? 5
-              setProgress(Math.max(getCurrentTime() - seekOffset, 0))
-              break
-            }
-            default:
-              break
-          }
+        commandEvent.register('seekForward', async (time) => {
+          const seekOffset = time ?? 5
+          setProgress(Math.min(getCurrentTime() + seekOffset, getDuration()))
+        })
+      )
+      unregistered.add(
+        commandEvent.register('seekBackward', async (time) => {
+          const seekOffset = time ?? 5
+          setProgress(Math.max(getCurrentTime() - seekOffset, 0))
         })
       )
       unregistered.add(playerEvent.on('setProgress', setProgress))

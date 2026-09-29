@@ -7,10 +7,11 @@
   import { workers } from '@/worker'
   import { onMount, untrack, type ComponentExports } from 'svelte'
   import { t } from '@/plugins/i18n'
-  import { useCommands } from '@/modules/app/reactive.svelte'
-  import { executeCommand, getLastUsedCommands, setLastUsedCommand } from '@/modules/app/store/action'
-  import { appEvent } from '@/modules/app/store/event'
+  import { useCommands } from '@/modules/command/reactive.svelte'
+  import { getLastUsedCommands, setLastUsedCommand } from '@/modules/app/store/action'
   import { back, toOnlineSearch } from '@/modules/resource/actions'
+  import { executeCommand } from '@/modules/command/actions'
+  import { commandEvent } from '@/modules/command/event'
 
   let onlineResourceAvailable = useOnlineResourceAvailable()
 
@@ -93,9 +94,8 @@
   const handleListClick = (index: number, text: string) => {
     if (isCommandMode) {
       const command = text
-      void executeCommand(command).then(() => {
-        setLastUsedCommand(command)
-      })
+      void executeCommand(command)
+      setLastUsedCommand(command)
       currentText = ''
       if (onlineResourceAvailable.val) {
         isCommandMode ||= false
@@ -141,12 +141,18 @@
   })
 
   onMount(() => {
-    return appEvent.on('executeCommand', (command) => {
-      if (command != 'run') return
+    const unseb = commandEvent.register('run', async () => {
       searchInput?.focus()
       searchInput?.setText('> ')
       tipSearch('>')
     })
+    const unseb2 = commandEvent.register('focusSearchInput', async () => {
+      searchInput?.focus()
+    })
+    return () => {
+      unseb()
+      unseb2()
+    }
   })
 </script>
 

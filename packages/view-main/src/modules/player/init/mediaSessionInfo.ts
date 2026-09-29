@@ -2,8 +2,8 @@ import { buildUrl, checkPicUrl } from '@any-listen/web'
 
 import emptyAudioSource from '@/assets/medias/Silence02s.mp3'
 import { onRelease } from '@/modules/app/shared'
-import { executeLocalCommand } from '@/modules/app/store/action'
 import { appState } from '@/modules/app/store/state'
+import { executeLocalCommand } from '@/modules/command/actions'
 import { lyricEvent } from '@/modules/lyric/store/event'
 import { settingEvent } from '@/modules/setting/store/event'
 import { settingState } from '@/modules/setting/store/state'
@@ -122,12 +122,12 @@ export const initMediaSessionInfo = () => {
       navigator.mediaSession.setActionHandler('seekbackward', (details) => {
         console.log('seekbackward')
         const seekOffset = details.seekOffset ?? 5
-        executeLocalCommand('seekBackward', seekOffset)
+        void executeLocalCommand('seekBackward', seekOffset)
       })
       navigator.mediaSession.setActionHandler('seekforward', (details) => {
         console.log('seekforward')
         const seekOffset = details.seekOffset ?? 5
-        executeLocalCommand('seekForward', seekOffset)
+        void executeLocalCommand('seekForward', seekOffset)
       })
       navigator.mediaSession.setActionHandler('seekto', (details) => {
         console.log('seekto', details.seekTime)

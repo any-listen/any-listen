@@ -6,8 +6,8 @@ import { createPlayMusicInfo, createPlayMusicInfoList } from '@any-listen/common
 import { getRandom } from '@any-listen/common/utils'
 import { checkPicUrl } from '@any-listen/web'
 
-import { executeLocalCommand } from '@/modules/app/store/action'
 import { appState } from '@/modules/app/store/state'
+import { executeLocalCommand } from '@/modules/command/actions'
 import { addInfo } from '@/modules/dislikeList/actions'
 import {
   addListMusics,
@@ -810,7 +810,7 @@ export const setVolume = (value: number) => {
 }
 
 export const setVolumeMute = (value: boolean) => {
-  executeLocalCommand('muteToggle', value)
+  void executeLocalCommand('muteToggle', value)
 }
 
 export const setCollectStatus = (status: boolean) => {

@@ -29,11 +29,11 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
   setSetting: (setting: Partial<AnyListen.AppSetting>) => void
 
   /** 获取快捷键配置 */
-  getHotKey: <T extends string>() => AnyListen.HotKey.HotKeyConfigAll<T>
+  getHotKey: () => AnyListen.HotKey.HotKeyConfigAll
   /** 获取快捷键状态（是否占用） */
-  getHotkeyStatus: <T extends string>() => AnyListen.HotKey.HotKeyState<T>
+  getHotkeyStatus: () => AnyListen.HotKey.HotKeyState
   /** 快捷键配置更新操作 */
-  hotkeyConfigAction: <T extends string>(action: AnyListen.HotKey.HotKeyActions<T>) => boolean
+  hotkeyConfigAction: (action: AnyListen.HotKey.HotKeyActions) => void
 
   /** 获取 web 登录的设备 */
   getLoginDevices: () => Promise<{ list: AnyListen.LoginDevice[]; currentId: string }>
@@ -82,4 +82,5 @@ export declare type ServerCommonActions = WarpPromiseRecord<{
   setBackupPath: (path: string) => Promise<void>
   getAppLogs: (type: AnyListen.LogType) => Promise<string>
   clearAppLog: (type: AnyListen.LogType) => Promise<void>
+  executeCommand: (commandName: string, args: unknown[]) => Promise<unknown>
 }>

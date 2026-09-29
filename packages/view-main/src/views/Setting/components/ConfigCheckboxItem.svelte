@@ -2,8 +2,8 @@
   import Checkbox from '@/components/base/Checkbox.svelte'
   import TitleContent from './TitleContent.svelte'
   import Btn from '@/components/base/Btn.svelte'
-  import { executeCommand } from '@/shared/ipc/extension'
   import { t } from '@/plugins/i18n'
+  import { executeCommand } from '@/modules/command/actions'
   let {
     item,
     onchange,
@@ -57,14 +57,14 @@
 
 <TitleContent name={item.name} desc={item.description}>
   <div class="settings-item-config-checkbox">
-    {#each item.enum as enumItem}
+    {#each item.enum as enumItem, idx (idx)}
       {@render CheckBoxItem(enumItem, item.removeable ?? false, item.value?.includes(enumItem.value) ?? false, (checked) => {
         onchange(enumItem.value, checked)
       })}
     {/each}
     {#if item.actionCommands}
       <div class="settings-item-config-checkbox-action">
-        {#each item.actionCommands as cmd, idx}
+        {#each item.actionCommands as cmd, idx (idx)}
           <Btn
             min
             onclick={async () => {

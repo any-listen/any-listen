@@ -1,5 +1,5 @@
 import { onRelease } from '@/modules/app/shared'
-import { appEvent } from '@/modules/app/store/event'
+import { commandEvent } from '@/modules/command/event'
 import { createUnsubscriptionSet } from '@/shared'
 
 import { onPlayerCreated } from '../shared'
@@ -11,35 +11,43 @@ export const initPlayCmdAction = () => {
   onPlayerCreated(() => {
     unregistered.register((unregistered) => {
       unregistered.add(
-        appEvent.on('executeCommand', (cmd, ...args) => {
-          switch (cmd) {
-            case 'play':
-              play()
-              break
-            case 'pause':
-              pause()
-              break
-            case 'playToggle':
-              togglePlay()
-              break
-            case 'next':
-              void skipNext()
-              break
-            case 'previous':
-              void skipPrev()
-              break
-            case 'favorite':
-              void collectMusic()
-              break
-            case 'unfavorite':
-              uncollectMusic()
-              break
-            case 'dislike':
-              void dislikeMusic()
-              break
-            default:
-              break
-          }
+        commandEvent.register('play', async () => {
+          play()
+        })
+      )
+      unregistered.add(
+        commandEvent.register('pause', async () => {
+          pause()
+        })
+      )
+      unregistered.add(
+        commandEvent.register('playToggle', async () => {
+          togglePlay()
+        })
+      )
+      unregistered.add(
+        commandEvent.register('next', async () => {
+          void skipNext()
+        })
+      )
+      unregistered.add(
+        commandEvent.register('previous', async () => {
+          void skipPrev()
+        })
+      )
+      unregistered.add(
+        commandEvent.register('favorite', async () => {
+          void collectMusic()
+        })
+      )
+      unregistered.add(
+        commandEvent.register('unfavorite', async () => {
+          uncollectMusic()
+        })
+      )
+      unregistered.add(
+        commandEvent.register('dislike', async () => {
+          void dislikeMusic()
         })
       )
     })

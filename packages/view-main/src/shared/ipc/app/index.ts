@@ -116,3 +116,7 @@ export const getAppLogs: AnyListen.IPC.ServerIPC['getAppLogs'] = async (type) =>
 export const clearAppLog: AnyListen.IPC.ServerIPC['clearAppLog'] = async (type) => {
   return ipc.clearAppLog(type)
 }
+
+export const executeCommand = async (cmd: string, ...args: unknown[]) => {
+  return ipc.executeCommand(cmd, args)
+}

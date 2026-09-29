@@ -1,45 +1,23 @@
-import type { HOTKEY_Type } from '@any-listen/common/hotKey'
+import _Event, { type EventType } from '@any-listen/web/Event'
 
-const nextTick = typeof queueMicrotask === 'function' ? queueMicrotask : setTimeout
-
-export default class Event {
-  listeners: Map<string, Array<() => void>>
-  constructor() {
-    this.listeners = new Map()
+class Event extends _Event {
+  emitEvent<K extends keyof EventMethods>(eventName: K, ...args: unknown[]) {
+    this.emit(eventName, ...args)
   }
 
-  on(eventName: HOTKEY_Type, listener: () => void) {
-    let targetListeners = this.listeners.get(eventName)
-    if (!targetListeners) this.listeners.set(eventName, (targetListeners = []))
-    targetListeners.push(listener)
-    return () => {
-      this.off(eventName, listener)
-    }
+  configInit(config: AnyListen.HotKey.HotKeyConfigAll) {
+    this.emitEvent('configInit', config)
   }
 
-  off(eventName: HOTKEY_Type, listener: () => void) {
-    let targetListeners = this.listeners.get(eventName)
-    if (!targetListeners) return
-    const index = targetListeners.indexOf(listener)
-    if (index < 0) return
-    targetListeners.splice(index, 1)
+  configUpdated(config: AnyListen.HotKey.Config) {
+    this.emitEvent('configUpdated', config)
   }
 
-  emit(eventName: HOTKEY_Type) {
-    nextTick(() => {
-      let targetListeners = this.listeners.get(eventName)
-      if (!targetListeners) return
-      for (const listener of Array.from(targetListeners)) {
-        listener()
-      }
-    })
-  }
-
-  offAll(eventName: HOTKEY_Type) {
-    let targetListeners = this.listeners.get(eventName)
-    if (!targetListeners) return
-    this.listeners.delete(eventName)
+  enableUpdated(config: AnyListen.HotKey.Enable) {
+    this.emitEvent('enableUpdated', config)
   }
 }
 
-export const hotkeyEvent = new Event()
+type EventMethods = Omit<Event, keyof _Event | 'emitEvent'>
+
+export const hotkeyEvent = new Event() as EventType<Event>

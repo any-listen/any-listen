@@ -218,7 +218,11 @@ export const unmaximize = () => {
 }
 export const toggleHide = () => {
   if (!browserWindow) return
-  browserWindow.isVisible() ? browserWindow.hide() : browserWindow.show()
+  if (appState.appSetting['tray.enable']) {
+    browserWindow.isVisible() ? browserWindow.hide() : showWindow()
+  } else {
+    browserWindow.isMinimized() ? showWindow() : browserWindow.minimize()
+  }
 }
 export const toggleMinimize = () => {
   if (!browserWindow) return
@@ -236,7 +240,11 @@ export const showWindow = () => {
 }
 export const hideWindow = () => {
   if (!browserWindow) return
-  browserWindow.hide()
+  if (appState.appSetting['tray.enable']) {
+    browserWindow.hide()
+  } else {
+    browserWindow.minimize()
+  }
 }
 export const setWindowBounds = (options: Partial<Electron.Rectangle>) => {
   if (!browserWindow) return
@@ -276,6 +284,7 @@ export const setFullScreen = (isFullscreen: boolean): boolean => {
   } else {
     browserWindow.setFullScreen(isFullscreen)
   }
+  winMainState.isFullScreen = isFullscreen
   return isFullscreen
 }
 

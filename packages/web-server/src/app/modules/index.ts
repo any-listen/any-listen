@@ -7,6 +7,7 @@ import { API_PREFIX, PROXY_SERVER_PATH } from '@any-listen/common/constants'
 import { appState } from '../app'
 // import { initUserApi } from './userApi'
 import { workers } from '../worker'
+import { initCommand } from './command'
 import { initExtension } from './extension'
 import { initHotKey } from './hotKey'
 import { initMusicList } from './musicList'
@@ -31,6 +32,7 @@ export const initModules = async () => {
       `${API_PREFIX}${PROXY_SERVER_PATH}`,
       appState.cacheDataPath
     ),
+    initCommand(),
     initAppLog(appState.dataPath),
   ])
   // initMusicList()

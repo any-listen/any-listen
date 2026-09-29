@@ -50,7 +50,7 @@ export default class KeyboardEvent {
           if (capture) {
             listener({
               ...event,
-              // eslint-disable-next-line @typescript-eslint/no-loop-func
+              // eslint-disable-next-line no-loop-func
               stopPropagation() {
                 event.event?.stopPropagation()
                 isStop = true
@@ -67,7 +67,7 @@ export default class KeyboardEvent {
             if (isStop) return
             listener({
               ...event,
-              // eslint-disable-next-line @typescript-eslint/no-loop-func
+              // eslint-disable-next-line no-loop-func
               stopPropagation() {
                 event.event?.stopPropagation()
                 isStop = true

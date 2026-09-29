@@ -1,17 +1,20 @@
-import type { HOTKEY_Type } from '@any-listen/common/hotKey'
 import _Event, { type EventType } from '@any-listen/nodejs/Event'
 
 export class Event extends _Event {
-  emitEvent<K extends keyof EventMethods>(eventName: K, ...args: any[]) {
+  emitEvent<K extends keyof EventMethods>(eventName: K, ...args: unknown[]) {
     this.emit(eventName, ...args)
   }
 
-  hot_key_down(keyInfo: AnyListen.HotKey.HotKeyDownInfo) {
-    this.emitEvent('hot_key_down', keyInfo)
+  hot_key_down(key: string) {
+    this.emitEvent('hot_key_down', key)
   }
 
-  hot_key_config_update(config: AnyListen.HotKey.HotKeyConfigAll<HOTKEY_Type>) {
-    this.emitEvent('hot_key_config_update', config)
+  config_updated(config: AnyListen.HotKey.Config) {
+    this.emitEvent('config_updated', config)
+  }
+
+  enable_chenged(config: AnyListen.HotKey.Enable) {
+    this.emitEvent('enable_chenged', config)
   }
 }
 
