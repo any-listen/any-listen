@@ -2,7 +2,7 @@
 
 ### Fixed
 
-- Fixed an issue where some lyrics could overflow the interface ([#366](https://github.com/any-listen/any-listen/issues/366)).
+- Fixed an issue where **Action Commands** in extension settings did not work ([#367](https://github.com/any-listen/any-listen/issues/367)).
 
 ---
 
@@ -10,4 +10,4 @@
 
 ### 修复
 
-- 修复某些歌词显示溢出界面的问题（[#366](https://github.com/any-listen/any-listen/issues/366)）。
+- 修复扩展设置中 **「操作命令」** 无法生效的问题（[#367](https://github.com/any-listen/any-listen/issues/367)）。
