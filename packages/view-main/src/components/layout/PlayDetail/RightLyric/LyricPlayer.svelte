@@ -118,6 +118,8 @@
     :global {
       .font-lrc {
         color: @unplay-color;
+        word-break: normal;
+        overflow-wrap: anywhere;
       }
       .line-content {
         padding: calc(var(--play-detail-lrc-font-size, 16px) / 1.8) 8% calc(var(--play-detail-lrc-font-size, 16px) / 1.8) 1px;

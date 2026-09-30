@@ -110,6 +110,8 @@
       .shadow {
         padding: 0.14em 0.07em;
         margin: 0 -0.07em;
+        word-break: normal;
+        overflow-wrap: anywhere;
       }
 
       .font-lrc {

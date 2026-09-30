@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Added
+### Fixed
 
-- Added **Keyboard Shortcut Settings** under _Settings > Keyboard Shortcut Settings_.
+- Fixed an issue where some lyrics could overflow the interface ([#366](https://github.com/any-listen/any-listen/issues/366)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 新增
+### 修复
 
-- 新增 **「快捷键设置」**，位于 _设置 > 快捷键设置_。
+- 修复某些歌词显示溢出界面的问题（[#366](https://github.com/any-listen/any-listen/issues/366)）。

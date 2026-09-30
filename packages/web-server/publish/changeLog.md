@@ -20,6 +20,7 @@
 - Fixed an issue where some lyrics did not wrap properly.
 - Fixed an issue with `setTimeout`-related APIs in the extension-isolated API environment ([#301](https://github.com/any-listen/any-listen/issues/301)).
 - Fixed an issue where data could not be read from some WebDAV servers ([#359](https://github.com/any-listen/any-listen/issues/359)).
+- Fixed an issue where some lyrics could overflow the interface ([#366](https://github.com/any-listen/any-listen/issues/366)).
 
 ### Extension System
 
@@ -51,6 +52,7 @@
 - 修复某些歌词不换行的问题。
 - 修复扩展隔离 API 环境的 `setTimeout` 相关 API 异常问题（[#301](https://github.com/any-listen/any-listen/issues/301)）。
 - 修复无法读取某些 WebDAV 服务端数据的问题（[#359](https://github.com/any-listen/any-listen/issues/359)）。
+- 修复某些歌词显示溢出界面的问题（[#366](https://github.com/any-listen/any-listen/issues/366)）。
 
 ### 扩展系统
 
