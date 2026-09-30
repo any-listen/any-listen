@@ -390,8 +390,8 @@ importers:
         specifier: ^7.3.1
         version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(less@4.9.1))
       '@swc/html':
-        specifier: ^1.16.12
-        version: 1.16.12
+        specifier: 1.16.2
+        version: 1.16.2
       '@types/postcss-pxtorem':
         specifier: ^6.1.0
         version: 6.1.0
@@ -484,8 +484,8 @@ importers:
         specifier: ^7.3.1
         version: 7.3.1(svelte@5.57.1(@typescript-eslint/types@8.71.0))(vite@8.3.1(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(less@4.9.1))
       '@swc/html':
-        specifier: ^1.16.12
-        version: 1.16.12
+        specifier: 1.16.2
+        version: 1.16.2
       '@types/postcss-pxtorem':
         specifier: ^6.1.0
         version: 6.1.0
@@ -1280,86 +1280,86 @@ packages:
   '@swc/counter@0.1.3':
     resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
 
-  '@swc/html-darwin-arm64@1.16.12':
-    resolution: {integrity: sha512-U9GPAsYUJGvc0KN1RaXtP7cf5Od3+yxTy2mxhUSWVXPHbEmPhgjw4wxEXlZt7GhxeQNqblHhf7BZJ63p6y7I9A==}
+  '@swc/html-darwin-arm64@1.16.2':
+    resolution: {integrity: sha512-SNBUxkxLBXD0ATwnOG1rF8mpSrRtFDfqWnEUmbm/g4KwmCt7NuHHv9YYqA3lqfq90Ucc+Xlk7afx8KAW/utz4A==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@swc/html-darwin-x64@1.16.12':
-    resolution: {integrity: sha512-5Tz0LH8tOo46NFn3wBpTousIvfALbQ9CcwP0Dw42VG1YTGU61gK41RvSUakEOZ47P1x5P/Dj6eu2Sks1ouc57g==}
+  '@swc/html-darwin-x64@1.16.2':
+    resolution: {integrity: sha512-WVBgn6yrBPMZu+DL95/XGAXYcgd1nhd67Ml1UjMtFoFMVKY+VRpCq8JpTZTMXhWbVoRENUHk+3PHu0nNjlE/Fg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [darwin]
 
-  '@swc/html-linux-arm-gnueabihf@1.16.12':
-    resolution: {integrity: sha512-KR+TraFvLkE7wkWWWWcumKLrRX/0914G5CvBUX6Wqe6SBitf9Y2dOgd3dmbXHImbWnC40UEZxEqOKdrF6cac/g==}
+  '@swc/html-linux-arm-gnueabihf@1.16.2':
+    resolution: {integrity: sha512-V9F/Akd2TXrf5nUhdLgdy3FoVFxQbw8pA2AOyqnEOa2Mbm1R7DZJJ0GdShEMcoyMyMDB9r/4pWuWfxNtP4mFHA==}
     engines: {node: '>=10'}
     cpu: [arm]
     os: [linux]
 
-  '@swc/html-linux-arm64-gnu@1.16.12':
-    resolution: {integrity: sha512-HeMCfYPgk0XGby68//Lbkt1drCLRa11B33IoMHwVqztwBcvdtBjd64lyVwPJHZvPauwu7r7mVXU/YYTXXRfNQw==}
+  '@swc/html-linux-arm64-gnu@1.16.2':
+    resolution: {integrity: sha512-jonZVtHc6BesMjC/muUEJGzE1L2kVdgiPVuHc7CL79MrUm0Hjf8LS4Wmtjqe2bLTfRcaMfaYl/60ZcRXHCaYSQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@swc/html-linux-arm64-musl@1.16.12':
-    resolution: {integrity: sha512-uSP/tkJ59Rvywz/ssYLJ5zUwSdnRrKl3E2j/gUrL9eQLCWbe3dgTqIDijDeK3Ke0sBr9OdPCevRmIlZaF0A08w==}
+  '@swc/html-linux-arm64-musl@1.16.2':
+    resolution: {integrity: sha512-dvki9/sgacHk9ouORmnIok5FbpeE9zUE8yqGGhL1kitNJi6/TKzfnMOpRxSxeDk1/ccvJTAdjRGDIGkT45+b3Q==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@swc/html-linux-ppc64-gnu@1.16.12':
-    resolution: {integrity: sha512-iqo8gcOPVyerXAQWRqv8AGq1YR41yVt8DR1M3kWzUnY8wlLAOsXv9IVskn7G7Ewr9LLJKT2dI4SbWNY6IAofZw==}
+  '@swc/html-linux-ppc64-gnu@1.16.2':
+    resolution: {integrity: sha512-6m0vVWHl9MW7cmWKVgKlFW6yhRv0uahMEaDxNIvXrPC3LdbbiiYZui+ryhyQGIYeVps3OMujzUjc0GihNz/afQ==}
     engines: {node: '>=10'}
     cpu: [ppc64]
     os: [linux]
     libc: [glibc]
 
-  '@swc/html-linux-s390x-gnu@1.16.12':
-    resolution: {integrity: sha512-FQb15GnafyEYwBAmj26zT+j5gtE28h3xnEwkJU/8sLv+hCcFDON33fXp02nH1qdyekAH0JmLiiGJ1qLamPASWw==}
+  '@swc/html-linux-s390x-gnu@1.16.2':
+    resolution: {integrity: sha512-TOlz6wgKyZjg4THJsNZfDz/rAMO+rBa0s2eewTeHEfuJhI+jGu7H6Co6bdbMpN3oyDvTMG7N1f1ktSbkE0erAg==}
     engines: {node: '>=10'}
     cpu: [s390x]
     os: [linux]
     libc: [glibc]
 
-  '@swc/html-linux-x64-gnu@1.16.12':
-    resolution: {integrity: sha512-/AyMCPz/Kv8+84fcogHamYj1k/8zTIUyk03f5raNi02J6D19avw/A4pt+oCs3VNhG7bGu6t0pYxE8PL+D1OKvQ==}
+  '@swc/html-linux-x64-gnu@1.16.2':
+    resolution: {integrity: sha512-5EduoVpsnuAAkG9BW8COxcIKAe5swgNAEo+BVkAJCOy1ZMZm0krQYBdvlaDCsGGE9yLDKVPm7rpYIi7vTTZTbA==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@swc/html-linux-x64-musl@1.16.12':
-    resolution: {integrity: sha512-VrVm2B74OBtbJ9ThtGxDjrslPh9ENc7pmZNXGIp6H/ecI9W+BNNmBiVZpmTDBIT0i+poFTuRE1ff8Ok6hf22IA==}
+  '@swc/html-linux-x64-musl@1.16.2':
+    resolution: {integrity: sha512-c0Z84dvBd0oh1ZcBHnM18itmvJFLbCZBKFF2lEDHsGBSLQ/1sPbggEKsVO4KgWkkhwQV2l9AB4jnsw1HrwZJCg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@swc/html-win32-arm64-msvc@1.16.12':
-    resolution: {integrity: sha512-yMr3hxOfTfUN30964jIaewg40F4rIqUyIYouANfRHOD2E2b67TH9QZfgxY7LlaYozQieYBjlqxjFvi6CplRlww==}
+  '@swc/html-win32-arm64-msvc@1.16.2':
+    resolution: {integrity: sha512-Aq7V2B5gS23X59DzV2z892c4NBHYtJbwhvsCjJN1MBMx723htjgNE9KVIJp9dQaJBr2PrNfb/u3QFwnWV2tAoQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [win32]
 
-  '@swc/html-win32-ia32-msvc@1.16.12':
-    resolution: {integrity: sha512-uRrI2L3/xdOVZzy5z6NQ9gof3zv5PXumSCxOBbJHBpPJLgekMWiJh4yZuQNUI3HRYhhxoynJus65XCrg5aB/eQ==}
+  '@swc/html-win32-ia32-msvc@1.16.2':
+    resolution: {integrity: sha512-9gslPcsfXxKvAZtOvDkxGuEbM7lqBrONzLAyRsyUtw8KxFcSYkGIO48RDTstGWOkgTgKjjAq/WWqt9qr/NcE3A==}
     engines: {node: '>=10'}
     cpu: [ia32]
     os: [win32]
 
-  '@swc/html-win32-x64-msvc@1.16.12':
-    resolution: {integrity: sha512-3WNtf3ZJh6ghb95sIR61XGuvdB+uLtQJBIHIIe3Iz6GmsgwRckwcTpXw9c4DRfpmjM39VHFswM9sTPYLRtf5PQ==}
+  '@swc/html-win32-x64-msvc@1.16.2':
+    resolution: {integrity: sha512-Kdb4VdC8FyF5s1MQaFUNeASLckHECrb/oYy/6OCtU+hbgxQ/o/JCgE4uCe8YAg0LCWSOjhx73PCZDGwPf1TpKw==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [win32]
 
-  '@swc/html@1.16.12':
-    resolution: {integrity: sha512-Tp3Gfl1a8/vd23+WcvFYedT9eaSJXNmgrk3yhIT+dbNxBpVek2vYFIWDSRTKD4mTriu5HSlz9evJuNGvVGkPxg==}
+  '@swc/html@1.16.2':
+    resolution: {integrity: sha512-RmWH8m5dePWDFpHpmFKquZCRe5SyD/Sb0FBPxWcWv/tsjtlJl6oHeaxBsTL2edvaHuW385Fy5nPuTjDD/a+GEA==}
     engines: {node: '>=14'}
 
   '@szmarczak/http-timer@4.0.6':
@@ -5136,58 +5136,58 @@ snapshots:
 
   '@swc/counter@0.1.3': {}
 
-  '@swc/html-darwin-arm64@1.16.12':
+  '@swc/html-darwin-arm64@1.16.2':
     optional: true
 
-  '@swc/html-darwin-x64@1.16.12':
+  '@swc/html-darwin-x64@1.16.2':
     optional: true
 
-  '@swc/html-linux-arm-gnueabihf@1.16.12':
+  '@swc/html-linux-arm-gnueabihf@1.16.2':
     optional: true
 
-  '@swc/html-linux-arm64-gnu@1.16.12':
+  '@swc/html-linux-arm64-gnu@1.16.2':
     optional: true
 
-  '@swc/html-linux-arm64-musl@1.16.12':
+  '@swc/html-linux-arm64-musl@1.16.2':
     optional: true
 
-  '@swc/html-linux-ppc64-gnu@1.16.12':
+  '@swc/html-linux-ppc64-gnu@1.16.2':
     optional: true
 
-  '@swc/html-linux-s390x-gnu@1.16.12':
+  '@swc/html-linux-s390x-gnu@1.16.2':
     optional: true
 
-  '@swc/html-linux-x64-gnu@1.16.12':
+  '@swc/html-linux-x64-gnu@1.16.2':
     optional: true
 
-  '@swc/html-linux-x64-musl@1.16.12':
+  '@swc/html-linux-x64-musl@1.16.2':
     optional: true
 
-  '@swc/html-win32-arm64-msvc@1.16.12':
+  '@swc/html-win32-arm64-msvc@1.16.2':
     optional: true
 
-  '@swc/html-win32-ia32-msvc@1.16.12':
+  '@swc/html-win32-ia32-msvc@1.16.2':
     optional: true
 
-  '@swc/html-win32-x64-msvc@1.16.12':
+  '@swc/html-win32-x64-msvc@1.16.2':
     optional: true
 
-  '@swc/html@1.16.12':
+  '@swc/html@1.16.2':
     dependencies:
       '@swc/counter': 0.1.3
     optionalDependencies:
-      '@swc/html-darwin-arm64': 1.16.12
-      '@swc/html-darwin-x64': 1.16.12
-      '@swc/html-linux-arm-gnueabihf': 1.16.12
-      '@swc/html-linux-arm64-gnu': 1.16.12
-      '@swc/html-linux-arm64-musl': 1.16.12
-      '@swc/html-linux-ppc64-gnu': 1.16.12
-      '@swc/html-linux-s390x-gnu': 1.16.12
-      '@swc/html-linux-x64-gnu': 1.16.12
-      '@swc/html-linux-x64-musl': 1.16.12
-      '@swc/html-win32-arm64-msvc': 1.16.12
-      '@swc/html-win32-ia32-msvc': 1.16.12
-      '@swc/html-win32-x64-msvc': 1.16.12
+      '@swc/html-darwin-arm64': 1.16.2
+      '@swc/html-darwin-x64': 1.16.2
+      '@swc/html-linux-arm-gnueabihf': 1.16.2
+      '@swc/html-linux-arm64-gnu': 1.16.2
+      '@swc/html-linux-arm64-musl': 1.16.2
+      '@swc/html-linux-ppc64-gnu': 1.16.2
+      '@swc/html-linux-s390x-gnu': 1.16.2
+      '@swc/html-linux-x64-gnu': 1.16.2
+      '@swc/html-linux-x64-musl': 1.16.2
+      '@swc/html-win32-arm64-msvc': 1.16.2
+      '@swc/html-win32-ia32-msvc': 1.16.2
+      '@swc/html-win32-x64-msvc': 1.16.2
 
   '@szmarczak/http-timer@4.0.6':
     dependencies:
