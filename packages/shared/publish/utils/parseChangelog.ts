@@ -1,27 +1,28 @@
-/**
- *
- * @param {string} text
- * @returns
- */
-export const parseChangelog = (text) => {
-  const versions = []
+export interface ChangelogVersion {
+  version: string
+  date: string
+  desc: string
+}
+
+export const parseChangelog = (text: string): ChangelogVersion[] => {
+  const versions: ChangelogVersion[] = []
   const lines = text.split(/\r\n|\r|\n/)
-  let currentVersion = null
-  let currentDate = null
+  let currentVersion: string | null = null
+  let currentDate: string | null = null
   let currentDesc = ''
 
   for (const line of lines) {
-    const versionMatch = line.match(/^\s*##\s+\[?(\d+\.\d+\.\d+)\]?.*?-\s+(\d{4}-\d{2}-\d{2})$/)
+    const versionMatch = /^\s*##\s+\[?(\d+\.\d+\.\d+)\]?.*?-\s+(\d{4}-\d{2}-\d{2})$/.exec(line)
     if (versionMatch) {
       if (currentVersion) {
         versions.push({
           version: currentVersion,
-          date: currentDate,
+          date: currentDate ?? '',
           desc: currentDesc.trim(),
         })
       }
       currentVersion = versionMatch[1]
-      currentDate = versionMatch[3]
+      currentDate = versionMatch[2]
       currentDesc = ''
     } else {
       currentDesc += `${line}\n`
@@ -31,7 +32,7 @@ export const parseChangelog = (text) => {
   if (currentVersion) {
     versions.push({
       version: currentVersion,
-      date: currentDate,
+      date: currentDate ?? '',
       desc: currentDesc.trim(),
     })
   }

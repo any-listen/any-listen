@@ -2,12 +2,11 @@
   "name": "@shared/publish",
   "type": "module",
   "scripts": {
-    "pub": "node index.js"
+    "pub": "node index.ts"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
-    "@any-listen/types": "workspace:@shared/types@*",
-    "chalk": "^6.0.0"
+    "@any-listen/types": "workspace:@shared/types@*"
   }
 }

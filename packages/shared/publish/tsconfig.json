@@ -6,6 +6,8 @@
     // ],
     "rootDir": "./",
     "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "module": "nodenext",
     "target": "ESNext",
     "checkJs": true,

@@ -2,13 +2,12 @@
   "name": "@shared/deps-update",
   "type": "module",
   "scripts": {
-    "check": "node index.js"
+    "check": "node index.ts"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/nodejs": "workspace:@shared/nodejs@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "chalk": "^6.0.0",
     "npm-check-updates": "^23.1.0"
   }
 }
