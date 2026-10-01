@@ -75,7 +75,7 @@ const parseNewVersion = (oldVer: string, newVer: string): string => {
       .map((n, i) => {
         if (prevColor !== nochange) return prevColor(n)
         if (n > oldParts[i]) {
-          prevColor = colors[i]!
+          prevColor = prefix ? colors[i] : color.red
           return prevColor(n)
         }
         return nochange(n)
@@ -88,6 +88,7 @@ const parseNewVersion = (oldVer: string, newVer: string): string => {
 //   parseNewVersion('^1.2.3', '^2.0.0'),
 //   parseNewVersion('^1.2.3', '^1.3.0'),
 //   parseNewVersion('~1.2.3', '~1.3.4'),
+//   parseNewVersion('^1.2.3', '^1.2.4'),
 //   parseNewVersion('1.2.3', '1.2.4')
 // )
 let logs: UpdateLogGroup[] = []
