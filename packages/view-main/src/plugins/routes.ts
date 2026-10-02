@@ -2,6 +2,7 @@ import type { ComponentProps } from 'svelte'
 
 // import Vue from 'vue'
 import type Router from '@/plugins/svelte-spa-router/Router.svelte'
+import Download from '@/views/Download/index.svelte'
 import Extenstion from '@/views/Extenstion/index.svelte'
 import Library from '@/views/Library/index.svelte'
 import Online from '@/views/Online/index.svelte'
@@ -19,7 +20,7 @@ const routes: ComponentProps<typeof Router>['routes'] = {
   '/songList/detail': Search,
   '/topSongs': Search,
   '/list': Search,
-  '/download': Search,
+  '/download': Download,
   '/settings': Setting,
   '/extenstion': Extenstion,
   '*': Library,

@@ -3,10 +3,11 @@ import path from 'node:path'
 
 import { MEDIA_FILE_TYPES, PIC_FILE_TYPES } from '@any-listen/common/constants'
 import { buildVirtualPublicPath } from '@any-listen/common/tools'
+import { filterFileName } from '@any-listen/common/utils'
 import { extname, joinPath, normalizePath, toSha256 } from '@any-listen/nodejs'
+import { isPathInside, resolveRealPath } from '@any-listen/nodejs/download/path'
 
 import { appState } from '@/app/app/state'
-import { filterFileName } from '@/app/shared/utils'
 import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
 
 // const devHost = 'http://localhost:9500'
@@ -20,6 +21,18 @@ export const checkAllowPath = (filePath: string, allowedDirs = global.anylisten.
 export const checkAllowPathError = (filePath: string) => {
   if (checkAllowPath(filePath)) return
   throw new Error(`Not allow path: ${filePath}`)
+}
+
+export const checkDownloadPath = async (directory: string) => {
+  directory = path.resolve(normalizePath(directory))
+  const realPath = await resolveRealPath(directory)
+  for (const root of global.anylisten.config.allowPublicDir) {
+    const allowedRoot = path.resolve(normalizePath(root))
+    const realRoot = await resolveRealPath(allowedRoot)
+    if (!checkAllowPath(directory, [`${allowedRoot}${path.sep}`, `${realRoot}${path.sep}`])) continue
+    if (isPathInside(realRoot, realPath)) return
+  }
+  throw new Error(`Not allow path: ${directory}`)
 }
 
 export const createExtensionIconPublicPath = (extDir: string, filePath: string) => {

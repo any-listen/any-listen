@@ -35,7 +35,6 @@ const migrateV1 = (db: Database.Database) => {
     COMMIT;
   `
   db.exec(sql)
-  updateDBVersion(db)
 }
 const migrateV2 = (machineId: string) => {
   // db.prepare('')
@@ -70,7 +69,25 @@ export default (db: Database.Database, machineId: string) => {
     // fall through
     case '2':
       migrateV2(machineId)
-      updateDBVersion(db)
+    // fall through
+    case '3':
+      db.transaction(() => {
+        // Recreate the table using the canonical definition so verifyDB also
+        // accepts databases upgraded from v3 (it compares the stored SQL).
+        db.exec(`
+          ALTER TABLE download_list RENAME TO download_list_old;
+          ${tables.get('download_list')}
+          INSERT INTO download_list (
+            id, is_complate, status, status_text, progress_downloaded, progress_total,
+            url, quality, ext, file_name, file_path, music_info, position
+          )
+          SELECT id, is_complate, status, status_text, progress_downloaded, progress_total,
+            url, quality, ext, file_name, file_path, music_info, position
+          FROM download_list_old;
+          DROP TABLE download_list_old;
+        `)
+        updateDBVersion(db)
+      })()
       break
   }
 }

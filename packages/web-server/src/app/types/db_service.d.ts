@@ -58,22 +58,6 @@ declare namespace AnyListen {
       url: string
     }
 
-    interface DownloadMusicInfo {
-      id: string
-      isComplate: 0 | 1
-      status: Download.DownloadTaskStatus
-      statusText: string
-      progress_downloaded: number
-      progress_total: number
-      url: string | null
-      quality: Music.Quality
-      ext: Download.FileExt
-      fileName: string
-      filePath: string
-      musicInfo: string
-      position: number
-    }
-
     interface DislikeInfo {
       // type: 'music'
       content: string

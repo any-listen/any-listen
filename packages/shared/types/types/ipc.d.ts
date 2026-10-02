@@ -1,4 +1,5 @@
 import './dislike_list_ipc'
+import './download_list_ipc'
 import './extension_ipc'
 import type { ClientCommonActions as _ClientCommonActions } from './ipc_client_common_actions'
 import type { ServerCommonActions as _ServerCommonActions } from './ipc_server_common_actions'
@@ -27,6 +28,7 @@ import './sync_ipc'
 // type WarpSendActions<Actions extends Record<string, (...args: any[]) => any>> = WarpOnActions<PickSendActions<Actions>>
 
 type ClientAllActions = AnyListen.IPC.ClientCommonActions &
+  AnyListen.IPCDownload.ClientActions &
   AnyListen.IPCTheme.ClientActions &
   AnyListen.IPCPlayer.ClientActions &
   AnyListen.IPCList.ClientActions &
@@ -34,6 +36,7 @@ type ClientAllActions = AnyListen.IPC.ClientCommonActions &
   AnyListen.IPCExtension.ClientActions &
   AnyListen.IPCSync.ClientActions
 type ServerAllActions = AnyListen.IPC.ServerCommonActions &
+  AnyListen.IPCDownload.ServerActions &
   AnyListen.IPCMusic.ServerActions &
   AnyListen.IPCResource.ServerActions &
   AnyListen.IPCTheme.ServerActions &
@@ -65,10 +68,11 @@ declare global {
       }) => void
       type WinType = 'main' | 'desktopLyric'
       type ServerCommonActions = _ServerCommonActions &
+        IPCDownload.ServerActions &
         IPCMusic.ServerActions &
         IPCResource.ServerActions &
         IPCSoundEffect.ServerActions
-      type ClientCommonActions = _ClientCommonActions
+      type ClientCommonActions = _ClientCommonActions & IPCDownload.ClientActions
 
       type ClientICPCommonActions<Socket = undefined> = WarpIPCHandlerActions<Socket, ClientCommonActions>
       type ClientIPCActions<Socket = undefined> = WarpIPCHandlerActions<Socket, ClientAllActions>

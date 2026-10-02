@@ -12,7 +12,6 @@ import { getRequestAgent } from './util'
 //   headers: {},
 //   fileName: '', // Custom filename when saved
 //   override: false, // if true it will override the file, otherwise will append '(number)' to the end of file
-//   forceResume: false, // If the server does not return the "accept-ranges" header, can be force if it does support it
 //   // httpRequestOptions: {}, // Override the http request options
 //   // httpsRequestOptions: {}, // Override the https request options, ex: to add SSL Certs
 // }
@@ -22,7 +21,6 @@ export interface Options {
   path: string
   method?: DownloaderOptions['requestOptions']['method']
   headers?: DownloaderOptions['requestOptions']['headers']
-  forceResume?: boolean
   proxy?: { host: string; port: number }
   onCompleted?: () => void
   onError?: (error: Error) => void
@@ -36,7 +34,6 @@ export const createDownload = ({
   url,
   path,
   method = 'get',
-  forceResume,
   proxy,
   headers = {},
   // resumeTime = 5000,
@@ -58,15 +55,12 @@ export const createDownload = ({
       agent: getRequestAgent(url, proxy),
       timeout: 60 * 1000,
     },
-
-    forceResume,
   })
 
   dl.on('completed', () => {
     onCompleted()
   })
     .on('error', (err: Error) => {
-      if (err.message === 'socket hang up') return
       onError(err)
     })
     .on('start', () => {
@@ -76,7 +70,7 @@ export const createDownload = ({
     .on('progress', (stats) => {
       const speed = sizeFormate(stats.speed)
       onProgress({
-        progress: parseInt(stats.progress.toFixed(2)),
+        progress: Number(stats.progress.toFixed(2)),
         speed,
         downloaded: stats.downloaded,
         total: stats.total,
@@ -100,7 +94,7 @@ export const createDownload = ({
   // debugDownload && console.log('Downloading: ', url)
 
   dl.start().catch((err) => {
-    onError(err)
+    dl.__handleError(err as Error)
   })
 
   return dl

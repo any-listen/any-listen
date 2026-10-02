@@ -328,6 +328,17 @@ export const settings: SettingListSection[] = [
     ],
   },
   {
+    id: 'download',
+    name: 'download.settings',
+    list: [
+      {
+        id: 'download.settings',
+        type: 'component',
+        component: async () => import('./Download.svelte'),
+      },
+    ],
+  },
+  {
     id: 'hotkey',
     name: 'settings.hotkey',
     // t('settings.hotkey')
