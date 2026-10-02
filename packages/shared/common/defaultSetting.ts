@@ -129,6 +129,15 @@ const defaultSetting: AnyListen.AppSetting = {
 
   'backup.backupPath': '',
 
+  'download.enable': false,
+  'download.isSavePathGroupByListName': false,
+  'download.maxDownloadNum': 3,
+  'download.skipExistFile': true,
+  'download.isDownloadLrc': false,
+  'download.isDownloadLxLrc': true,
+  'download.isDownloadTLrc': false,
+  'download.isDownloadRLrc': false,
+  'download.lrcFormat': 'utf8',
   'download.savePath': '',
   'download.fileName': '%name% - %singer%',
 

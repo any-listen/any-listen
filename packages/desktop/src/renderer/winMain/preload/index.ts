@@ -7,6 +7,7 @@ import { createMainCall } from '@/shared/ipc/renderer'
 import { createClientApp, createExposeApp } from './app'
 import { createClientData } from './data'
 import { createClientDislike, createExposeDislike } from './dislike'
+import { createClientDownload, createExposeDownload } from './download'
 import { createClientExtension, createExposeExtension } from './extension'
 import { createClientHotkey, createExposeHotkey } from './hotkey'
 import { createClientList, createExposeList } from './list'
@@ -44,6 +45,7 @@ const connectIPCService: AnyListen.IPC.ConnectIPCSrivice = ({ onConnected, clien
   })
   const exposeObj: ExposeFunctions = {
     ...createExposeApp(clientCall),
+    ...createExposeDownload(clientCall),
     ...createExposePlayer(clientCall),
     ...createExposeHotkey(clientCall),
     ...createExposeList(clientCall),
@@ -59,6 +61,7 @@ const connectIPCService: AnyListen.IPC.ConnectIPCSrivice = ({ onConnected, clien
     ...createClientApp(mainCall),
     ...createClientPlayer(mainCall),
     ...createClientData(mainCall),
+    ...createClientDownload(mainCall),
     ...createClientHotkey(mainCall),
     ...createClientList(mainCall),
     ...createClientMusic(mainCall),

@@ -15,6 +15,7 @@ declare global {
   }
 
   interface Anylisten {
+    serverHost: string
     dataPath: string
     config: AnyListen.Config
     publicStaticPaths: Cache<string>

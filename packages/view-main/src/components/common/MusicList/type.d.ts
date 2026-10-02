@@ -1,4 +1,5 @@
 export interface MenuSelectInfo {
+  listName?: string
   listId: string
   musicInfo: AnyListen.Music.MusicInfo
   selectedList: AnyListen.Music.MusicInfo[]

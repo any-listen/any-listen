@@ -7,7 +7,7 @@ import { getDB } from '../../db'
 export const createQueryStatement = () => {
   const db = getDB()
   return db.prepare<[]>(`
-    SELECT "id", "isComplate", "status", "statusText", "progress_downloaded", "progress_total", "url", "quality", "ext", "fileName", "filePath", "musicInfo", "position"
+    SELECT "id", "is_complate" AS "isComplate", "status", "status_text" AS "statusText", "progress_downloaded", "progress_total", "url", "quality", "ext", "file_name" AS "fileName", "file_path" AS "filePath", "task_meta" AS "taskMeta", "music_info" AS "musicInfo", "position"
     FROM download_list
     ORDER BY "position" ASC
   `)
@@ -20,8 +20,8 @@ export const createQueryStatement = () => {
 export const createInsertStatement = () => {
   const db = getDB()
   return db.prepare<[AnyListen.DBService.DownloadMusicInfo]>(`
-    INSERT INTO "main"."download_list" ("id", "isComplate", "status", "statusText", "progress_downloaded", "progress_total", "url", "quality", "ext", "fileName", "filePath", "musicInfo", "position")
-    VALUES (@id, @isComplate, @status, @statusText, @progress_downloaded, @progress_total, @url, @quality, @ext, @fileName, @filePath, @musicInfo, @position)`)
+    INSERT INTO "main"."download_list" ("id", "is_complate", "status", "status_text", "progress_downloaded", "progress_total", "url", "quality", "ext", "file_name", "file_path", "task_meta", "music_info", "position")
+    VALUES (@id, @isComplate, @status, @statusText, @progress_downloaded, @progress_total, @url, @quality, @ext, @fileName, @filePath, @taskMeta, @musicInfo, @position)`)
 }
 
 /**
@@ -55,7 +55,7 @@ export const createUpdateStatement = () => {
   const db = getDB()
   return db.prepare<[AnyListen.DBService.DownloadMusicInfo]>(`
     UPDATE "main"."download_list"
-    SET "isComplate"=@isComplate, "status"=@status, "statusText"=@statusText, "progress_downloaded"=@progress_downloaded, "progress_total"=@progress_total, "url"=@url, "filePath"=@filePath
+    SET "is_complate"=@isComplate, "status"=@status, "status_text"=@statusText, "progress_downloaded"=@progress_downloaded, "progress_total"=@progress_total, "url"=@url, "quality"=@quality, "ext"=@ext, "file_name"=@fileName, "file_path"=@filePath, "task_meta"=@taskMeta
     WHERE "id"=@id`)
 }
 

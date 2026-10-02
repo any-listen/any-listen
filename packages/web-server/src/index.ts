@@ -39,6 +39,7 @@ const envParamKeys = Object.values(ENV_PARAMS)
 const dataPath = envParams.DATA_PATH ?? path.join(__dirname, '../data')
 const logPath = envParams.LOG_PATH ?? path.join(dataPath, 'logs')
 global.anylisten = {
+  serverHost: '',
   dataPath,
   config: defaultConfig,
   publicStaticPaths: createCache({
@@ -190,6 +191,12 @@ server.on('error', (error: NodeJS.ErrnoException) => {
  */
 server.on('listening', async () => {
   const addr = server.address()
+  if (addr && typeof addr !== 'string') {
+    let host = addr.address
+    if (host === '0.0.0.0') host = '127.0.0.1'
+    else if (host === '::') host = '::1'
+    global.anylisten.serverHost = `http://${host.includes(':') ? `[${host}]` : host}:${addr.port}`
+  }
   const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`
   startupLog.info(`Listening on ${bindIP} ${bind}`)
 

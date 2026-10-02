@@ -18,6 +18,7 @@ const toDBDownloadInfo = (musicInfos: AnyListen.Download.ListItem[], offset = 0)
       ext: info.metadata.ext,
       fileName: info.metadata.fileName,
       filePath: info.metadata.filePath,
+      taskMeta: JSON.stringify(info.metadata.task ?? {}),
       musicInfo: JSON.stringify(info.metadata.musicInfo),
       position: offset + index,
     }
@@ -34,10 +35,11 @@ const initDownloadList = () => {
       statusText: item.statusText,
       downloaded: item.progress_downloaded,
       total: item.progress_total,
-      progress: item.progress_total ? parseInt((item.progress_downloaded / item.progress_total).toFixed(2)) * 100 : 0,
+      progress: item.progress_total ? Math.round((item.progress_downloaded / item.progress_total) * 100) : 0,
       speed: '',
       writeQueue: 0,
       metadata: {
+        task: JSON.parse(item.taskMeta) as AnyListen.Download.TaskMeta,
         musicInfo,
         url: item.url,
         quality: item.quality,
@@ -74,7 +76,7 @@ export const downloadInfoSave = (
     arrUnshift(newList, downloadInfos)
     inertDownloadList(
       toDBDownloadInfo(downloadInfos),
-      newList.slice(downloadInfos.length - 1).map((info, index) => {
+      newList.map((info, index) => {
         return { id: info.id, position: index }
       })
     )
@@ -119,4 +121,5 @@ export const downloadInfoRemove = (ids: string[]) => {
  */
 export const downloadInfoClear = () => {
   clearDownloadList()
+  list = []
 }

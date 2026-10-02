@@ -1,10 +1,17 @@
-export const useSelect = (props: { isShiftDown: boolean; list: AnyListen.Music.MusicInfo[] }) => {
-  let selectedList: AnyListen.Music.MusicInfo[] = $state.raw([])
+export const useSelect = <T extends object = AnyListen.Music.MusicInfo>(props: {
+  isShiftDown: boolean
+  list: T[]
+  keyname?: keyof T
+}) => {
+  let selectedList: T[] = $state.raw([])
   let selectIndex = $state(0)
 
   return {
     get list() {
-      return selectedList
+      const key = props.keyname
+      if (!key) return selectedList
+      const selectedIds = new Set(selectedList.map((item) => item[key]))
+      return props.list.filter((item) => selectedIds.has(item[key]))
     },
     get selectIndex() {
       return selectIndex
@@ -15,11 +22,13 @@ export const useSelect = (props: { isShiftDown: boolean; list: AnyListen.Music.M
     setSelectIndex(idx: number) {
       selectIndex = idx
     },
-    override(list: AnyListen.Music.MusicInfo[]) {
+    override(list: T[]) {
       selectedList = list
     },
-    addOrRemove(info: AnyListen.Music.MusicInfo) {
-      let idx = selectedList.indexOf(info)
+    addOrRemove(info: T) {
+      let idx = props.keyname
+        ? selectedList.findIndex((selected) => selected[props.keyname!] === info[props.keyname!])
+        : selectedList.indexOf(info)
       if (idx < 0) {
         selectedList = [...selectedList, info]
       } else {

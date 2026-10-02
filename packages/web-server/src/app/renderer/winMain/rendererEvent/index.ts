@@ -7,6 +7,7 @@ import { appLog } from '@/shared/log4js'
 import { createExposeApp, createServerApp } from './app'
 import { createExposeData } from './data'
 import { createExposeDislike, createServerDislike } from './dislike'
+import { createExposeDownload, createServerDownload } from './download'
 import { createExposeExtension, createServerExtension } from './extension'
 import { createExposeHotkey, createServerHotkey } from './hotkey'
 import { createExposeList, createServerList } from './list'
@@ -53,6 +54,7 @@ export const init = () => {
     ...createExposeApp(),
     ...createExposePlayer(),
     ...createExposeData(),
+    ...createExposeDownload(),
     ...createExposeHotkey(),
     ...createExposeList(),
     ...createExposeMusic(),
@@ -109,6 +111,7 @@ export const rendererIPC: ExposeServerFunctions = {
   ...createServerHotkey(),
   ...createServerList(),
   ...createServerDislike(),
+  ...createServerDownload(),
   ...createServerTheme(),
   ...createServerExtension(),
   ...createServerSync(),

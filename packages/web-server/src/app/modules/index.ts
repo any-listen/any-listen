@@ -8,6 +8,7 @@ import { appState } from '../app'
 // import { initUserApi } from './userApi'
 import { workers } from '../worker'
 import { initCommand } from './command'
+import { initDownload } from './download'
 import { initExtension } from './extension'
 import { initHotKey } from './hotKey'
 import { initMusicList } from './musicList'
@@ -33,6 +34,7 @@ export const initModules = async () => {
       appState.cacheDataPath
     ),
     initCommand(),
+    initDownload(),
     initAppLog(appState.dataPath),
   ])
   // initMusicList()
