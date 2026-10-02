@@ -19,7 +19,7 @@ import { startCheckUpdateTimeout, update } from '@/shared/update'
 
 import { version } from '../../package.json'
 import { setSkipTrayQuit } from './actions'
-import { getAppSetting, saveSetting } from './data'
+import { initAppSetting, saveSetting } from './data'
 import { appEvent } from './event'
 import { appState } from './state'
 
@@ -298,7 +298,7 @@ export const initAppEnv = async () => {
   await setUserDataPath()
   ;[appState.machineId, appState.appSetting] = await Promise.all([
     initDeviceId(appState.dataPath),
-    getAppSetting().then((res) => res.setting),
+    initAppSetting().then((res) => res.setting),
   ])
   if (import.meta.env.VITE_IS_MAC) {
     appState.envParams.cmdParams.dt = true

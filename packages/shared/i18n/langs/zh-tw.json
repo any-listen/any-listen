@@ -653,6 +653,7 @@
   "settings.player.status_bar_lyric": "顯示狀態欄歌詞（需啟用系統托盤）",
   "settings.player.title_lyric": "顯示標題欄歌詞",
   "settings.tray.theme_id": "托盤圖標樣式",
+  "settings.tray.theme_id_auto": "跟隨系統亮暗模式",
   "settings.tray.theme_id_dark": "黑色",
   "settings.tray.theme_id_light": "白色",
   "settings.tray.theme_id_origin": "原色",

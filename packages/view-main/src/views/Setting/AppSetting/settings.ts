@@ -444,7 +444,7 @@ export const settings: SettingListSection[] = [
             description: 'settings.common.transparent_window_desc',
             type: 'boolean',
           },
-      // t('settings.common.enable_trash_desc')
+      // t('settings.tray.theme_id_auto')
       import.meta.env.VITE_IS_DESKTOP
         ? {
             field: 'common.enableTrash',
@@ -462,6 +462,7 @@ export const settings: SettingListSection[] = [
               { value: 0, name: 'settings.tray.theme_id_light' },
               { value: 2, name: 'settings.tray.theme_id_dark' },
               { value: 1, name: 'settings.tray.theme_id_origin' },
+              { value: -1, name: 'settings.tray.theme_id_auto' },
             ] satisfies Array<{ value: AnyListen.AppSetting['tray.themeId']; name: keyof Message }>,
           }
         : null,

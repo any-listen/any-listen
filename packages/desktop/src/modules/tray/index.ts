@@ -6,6 +6,7 @@ import { actions } from '@/actions'
 import { appEvent, appState, updateSetting } from '@/app'
 import { i18n } from '@/i18n'
 import type { WinMainEvent } from '@/renderer/winMain'
+import { getOSVersion, getWindowsTaskbarTheme } from '@/shared/utils'
 
 import { playerEvent } from '../player'
 
@@ -51,8 +52,22 @@ const themeList = [
   },
 ]
 
-const getTrayImage = (themeId: number) => {
-  let theme = themeList.find((item) => item.id === themeId) ?? themeList[0]
+const getUseDarkColors = async () => {
+  if (import.meta.env.VITE_IS_WINDOWS) {
+    if (getOSVersion() == '10') {
+      const taskbarTheme = await getWindowsTaskbarTheme()
+      if (taskbarTheme) return taskbarTheme === 'dark'
+    }
+  }
+  return appState.shouldUseDarkColors
+}
+const getTrayImage = async (themeId: number) => {
+  let theme =
+    themeId == -1
+      ? (await getUseDarkColors())
+        ? themeList[0]
+        : themeList[2]
+      : (themeList.find((item) => item.id === themeId) ?? themeList[0])
   const iconPath = path.join(
     appState.staticPath,
     'images/tray',
@@ -61,13 +76,14 @@ const getTrayImage = (themeId: number) => {
   return nativeImage.createFromPath(iconPath)
 }
 
-export const createTray = () => {
+export const createTray = async () => {
   if ((tray && !tray.isDestroyed()) || !appState.appSetting['tray.enable']) return
 
   themeId = appState.appSetting['tray.themeId']
 
   // 托盘
-  tray = new Tray(getTrayImage(themeId))
+  // eslint-disable-next-line require-atomic-updates
+  tray = new Tray(await getTrayImage(themeId))
 
   // tray.setToolTip(i18n.t('app_name'))
   // createMenu()
@@ -271,14 +287,18 @@ const setTip = () => {
   tray.setToolTip(tip)
 }
 
-const init = () => {
+const setTrayImage = async (themeId: number) => {
+  tray?.setImage(await getTrayImage(themeId))
+}
+
+const init = async () => {
   if (themeId != appState.appSetting['tray.themeId']) {
     themeId = appState.appSetting['tray.themeId']
-    tray?.setImage(getTrayImage(themeId))
+    await setTrayImage(themeId)
   }
   if (isEnableTray !== appState.appSetting['tray.enable']) {
     isEnableTray = appState.appSetting['tray.enable']
-    appState.appSetting['tray.enable'] ? createTray() : destroyTray()
+    appState.appSetting['tray.enable'] ? await createTray() : destroyTray()
   }
   if (isShowStatusBarLyric !== appState.appSetting['player.isShowStatusBarLyric']) {
     isShowStatusBarLyric = appState.appSetting['player.isShowStatusBarLyric']
@@ -297,14 +317,18 @@ export const initTray = async () => {
   tipInfo.defaultTip = i18n.t('app_name')
   appEvent.on('updated_config', (keys) => {
     if (!watchConfigKeys.some((key) => keys.includes(key))) return
-    init()
+    void init()
   })
   appEvent.on('inited', () => {
-    init()
+    void init()
   })
   appEvent.on('locale_change', () => {
     tipInfo.defaultTip = i18n.t('app_name')
-    init()
+    void init()
+  })
+  appEvent.on('system_theme_change', () => {
+    if (appState.appSetting['tray.themeId'] !== -1) return
+    void setTrayImage(themeId)
   })
   playerEvent.on('musicInfoUpdated', (info) => {
     if (info.id !== undefined) {

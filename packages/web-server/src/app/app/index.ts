@@ -12,7 +12,7 @@ import { checkAndCreateDir, removePath } from '@/shared/utils'
 import { version } from '../../../package.json' with { type: 'json' }
 import { i18n } from '../i18n'
 import { boxTools } from '../modules/extension/clientTools'
-import { getAppSetting, saveSetting } from './data'
+import { initAppSetting, saveSetting } from './data'
 import { appEvent } from './event'
 import { appState } from './state'
 
@@ -123,7 +123,7 @@ export const initAppEnv = async () => {
   await setUserDataPath()
   ;[appState.machineId, appState.appSetting] = await Promise.all([
     initDeviceId(appState.dataPath),
-    getAppSetting().then((res) => res.setting),
+    initAppSetting().then((res) => res.setting),
   ])
   listenerAppEvent()
   initCommon({

@@ -652,6 +652,7 @@
   "settings.player.status_bar_lyric": "显示状态栏歌词（需启用系统托盘）",
   "settings.player.title_lyric": "显示标题栏歌词",
   "settings.tray.theme_id": "托盘图标样式",
+  "settings.tray.theme_id_auto": "跟随系统亮暗模式",
   "settings.tray.theme_id_dark": "黑色",
   "settings.tray.theme_id_light": "白色",
   "settings.tray.theme_id_origin": "原色",

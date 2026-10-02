@@ -1,3 +1,4 @@
+import { exec } from 'node:child_process'
 import fs from 'node:fs'
 
 import { checkFile } from '@any-listen/nodejs/index'
@@ -25,4 +26,30 @@ export const openDevTools = (webContents: Electron.WebContents) => {
   webContents.openDevTools({
     mode: 'undocked',
   })
+}
+
+export const getWindowsTaskbarTheme = async () => {
+  try {
+    const output = await new Promise<string>((resolve, reject) => {
+      exec(
+        'reg query "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize" /v SystemUsesLightTheme',
+        { encoding: 'utf8' },
+        (error, stdout, stderr) => {
+          if (error) {
+            reject(error)
+          } else {
+            resolve(stdout)
+          }
+        }
+      )
+    })
+
+    const match = /SystemUsesLightTheme\s+REG_DWORD\s+0x([0-9a-f]+)/i.exec(output)
+
+    if (!match) return null
+
+    return parseInt(match[1], 16) === 1 ? 'light' : 'dark'
+  } catch {
+    return null
+  }
 }

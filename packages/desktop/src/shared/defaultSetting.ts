@@ -3,6 +3,7 @@ import defaultSetting from '@any-listen/common/defaultSetting'
 // import path from 'node:path'
 
 if (import.meta.env.VITE_IS_WINDOWS) {
+  defaultSetting['tray.themeId'] = -1
   defaultSetting['playDetail.coverStyle'] = 'square'
   // defaultSetting['desktopLyric.isLockScreen'] = true
 } else {

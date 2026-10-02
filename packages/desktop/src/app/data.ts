@@ -85,7 +85,7 @@ export const saveSetting = (setting?: Partial<AnyListen.AppSetting>, isInit = fa
 /**
  * 初始化设置
  */
-export const getAppSetting = async () => {
+export const initAppSetting = async () => {
   const storeConfig = getStore(STORE_NAMES.APP_SETTINGS)
 
   let setting = storeConfig.get('setting') as AnyListen.AppSetting | undefined

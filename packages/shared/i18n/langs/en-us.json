@@ -653,6 +653,7 @@
   "settings.player.status_bar_lyric": "Display status bar lyrics (need to enable system tray)",
   "settings.player.title_lyric": "Show title bar lyrics",
   "settings.tray.theme_id": "Pallet icon style",
+  "settings.tray.theme_id_auto": "Follow system light and dark modes",
   "settings.tray.theme_id_dark": "black",
   "settings.tray.theme_id_light": "White",
   "settings.tray.theme_id_origin": "primary color",
