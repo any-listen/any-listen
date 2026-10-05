@@ -1,6 +1,5 @@
 import { throttle } from '@any-listen/common/utils'
 
-import { showMessageBox, t } from '../../common'
 import { winMainReadyEvent } from '../../common/event'
 import { musicListEvent, sendMusicListAction } from '../../modules/musicList'
 import { logs } from '../logs'
@@ -78,13 +77,13 @@ const handleSyncList = async () => {
   while (state.waitingSyncLists.length) {
     // TODO multi sync
     const list = state.waitingSyncLists.shift()!
-    await syncList(list).catch((err: Error) => {
-      void showMessageBox({
-        detail: t('extension.list_provider.get_list_music_ids_error', {
-          name: list.name,
-          err: err.message,
-        }),
-      })
+    await syncList(list).catch(() => {
+      // void showMessageBox({
+      //   detail: t('extension.list_provider.get_list_music_ids_error', {
+      //     name: list.name,
+      //     err: err.message,
+      //   }),
+      // })
     })
   }
   state.syncing = false
