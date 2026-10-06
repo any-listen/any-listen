@@ -18,6 +18,7 @@
     "pack:mac:dmg": "pnpm -F desktop pack:mac:dmg",
     "pack:mac:dmg:arm64": "pnpm -F desktop pack:mac:dmg:arm64",
     "publish:win": "pnpm -F desktop publish:win",
+    "publish:win_green": "pnpm -F desktop publish:win:green",
     "publish:win_legacy": "pnpm -F desktop publish:win_legacy:setup && pnpm -F desktop publish:win_legacy:green",
     "publish:mac": "pnpm -F desktop publish:mac",
     "publish:linux": "pnpm -F desktop publish:linux",
