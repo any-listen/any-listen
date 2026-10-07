@@ -119,6 +119,8 @@
   }}
   onkeyup={handleKeyup}
   oncontextmenu={handleContextMenu}
+  // https://github.com/any-listen/any-listen/issues/298
+  onwheel={() => {}}
 />
 
 <style lang="less">
