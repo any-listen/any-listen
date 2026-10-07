@@ -1,7 +1,7 @@
 <script lang="ts">
   import { clipboardReadText } from '@/shared/ipc/app'
   import { onMount, tick } from 'svelte'
-  import type { FocusEventHandler, HTMLInputTypeAttribute, KeyboardEventHandler } from 'svelte/elements'
+  import type { FocusEventHandler, HTMLInputTypeAttribute, KeyboardEventHandler, WheelEventHandler } from 'svelte/elements'
   let {
     min = false,
     placeholder = '',
@@ -59,6 +59,20 @@
   const handleKeyup = (event: KeyboardEvent) => {
     if (event.key != 'enter') return
     onsubmit(domInput.value.trim())
+  }
+  // 数值输入框聚焦时滚动滚轮：仅调整数值，阻止页面跟随滚动
+  const handleWheel: WheelEventHandler<HTMLInputElement> = (event) => {
+    if (type != 'number' || document.activeElement !== domInput || disabled || readonly) return
+    event.preventDefault()
+    const current = Number(domInput.value)
+    if (isNaN(current)) return
+    let newValue = String(current - Math.sign(event.deltaY))
+    if (onbeforechange) newValue = onbeforechange(newValue)
+    if (newValue !== domInput.value) {
+      domInput.value = newValue
+      handleInput()
+    }
+    onchange(newValue)
   }
   export const focus = () => {
     domInput.focus()
@@ -118,6 +132,7 @@
     onchange(newValue)
   }}
   onkeyup={handleKeyup}
+  onwheel={handleWheel}
   oncontextmenu={handleContextMenu}
 />
 

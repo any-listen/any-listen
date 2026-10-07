@@ -7,6 +7,7 @@
 ### Fixed
 
 - Fixed an issue where the **Automatic Sync** option in online list settings could not be saved.
+- Fixed an issue where scrolling the mouse wheel on a focused number input in Settings also scrolled the page ([#298](https://github.com/any-listen/any-listen/issues/298)).
 
 ---
 
@@ -19,3 +20,4 @@
 ### 修复
 
 - 修复在线列表设置中的 **「自动同步」** 选项无法保存的问题。
+- 修复设置页面数值输入框在聚焦时滚动鼠标滚轮，页面也会跟随滚动的问题（[#298](https://github.com/any-listen/any-listen/issues/298)）。
