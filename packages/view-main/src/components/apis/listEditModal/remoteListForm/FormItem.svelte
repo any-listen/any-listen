@@ -19,7 +19,7 @@
       name={item.name}
       desc={item.description}
       textarea={item.textarea}
-      value={item.value ?? item.default}
+      value={item.value ?? item.default ?? ''}
       onchange={(val) => {
         onchange(val)
         // void updateExtensionSettings(id, { [item.field]: val.trim() })
@@ -30,7 +30,7 @@
       id={`extenstion_${item.field}_${item.type}`}
       name={item.name}
       desc={item.description}
-      checked={item.value ?? item.default}
+      checked={item.value ?? item.default ?? false}
       onchange={(val) => {
         onchange(val)
         // void updateExtensionSettings(id, { [item.field]: val })
@@ -40,7 +40,7 @@
     <SelectionItem
       name={item.name}
       desc={item.description}
-      value={item.value ?? item.default}
+      value={item.value ?? item.default ?? ''}
       list={item.enum.map((n, idx) => ({ label: item.enumName[idx], value: n }))}
       onchange={(val) => {
         onchange(val)

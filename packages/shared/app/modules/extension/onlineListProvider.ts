@@ -106,7 +106,7 @@ export const syncAllList = throttle(async () => {
     new Set([
       ...state.waitingSyncLists,
       ...(userLists.filter((l) => {
-        if (l.type !== 'online') return false
+        if (l.type !== 'online' || !l.meta.autoSync) return false
         const ids = filteredExts.get(l.meta.extensionId)
         if (!ids) return false
         if (ids.has(l.meta.source)) return true
@@ -178,7 +178,7 @@ export const initListProvider = async () => {
   })
   musicListEvent.on('list_create', async (pos, lists) => {
     for (const list of lists) {
-      if (list.type !== 'online') continue
+      if (list.type !== 'online' || !list.meta.autoSync) continue
       state.waitingSyncLists.push(list)
     }
     // console.log('run list provider sync after create list', state.initing)
@@ -187,7 +187,7 @@ export const initListProvider = async () => {
   musicListEvent.on('list_update', async (lists, isSync, isRemote) => {
     if (isSync || isRemote) return
     for (const list of lists) {
-      if (list.type !== 'online') continue
+      if (list.type !== 'online' || !list.meta.autoSync) continue
       state.waitingSyncLists.push(list)
     }
     // console.log('run list provider sync after update list', state.initing)

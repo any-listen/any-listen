@@ -77,5 +77,6 @@
     // min-height: 0;
     // max-height: 100%;
     // overflow: hidden;
+    gap: 10px;
   }
 </style>

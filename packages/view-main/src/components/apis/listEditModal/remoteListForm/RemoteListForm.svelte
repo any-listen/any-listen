@@ -132,7 +132,7 @@
     // padding: 0 15px;
     // width: 320px;
     flex-flow: column nowrap;
-    gap: 10px;
+    gap: 8px;
     min-height: 0;
     // max-height: 100%;
     // overflow: hidden;

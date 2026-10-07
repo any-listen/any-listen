@@ -85,6 +85,8 @@
   "edit_list_modal.local_list_form.path_update_device_id": "Mark the list as natively created",
   "edit_list_modal.local_list_form.use_polling": "Use polling to monitor file changes",
   "edit_list_modal.local_list_form.use_polling_tip": "This option is used to solve the problem of list update errors in mounted network locations or other non-standard locations. If no problems are encountered, it is not recommended to enable this option.",
+  "edit_list_modal.online_list_form.auto_sync": "Enable automatic sync",
+  "edit_list_modal.online_list_form.auto_sync_tip": "Once enabled, the list will be automatically synced from the remote at around 11am every morning",
   "edit_list_modal.online_list_form.source": "source name",
   "edit_list_modal.online_list_form.source_type": "List type",
   "edit_list_modal.online_list_form.source_type_album": "Album",

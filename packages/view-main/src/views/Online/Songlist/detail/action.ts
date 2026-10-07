@@ -28,6 +28,7 @@ export const saveList = async (listInfo: {
       pic: listInfo.pic ?? '',
       desc: listInfo.desc ?? '',
       syncId: listInfo.id,
+      autoSync: false,
       createTime: 0,
       updateTime: 0,
       playCount: 0,

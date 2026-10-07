@@ -85,6 +85,8 @@
   "edit_list_modal.local_list_form.path_update_device_id": "将该列表标记为本机创建",
   "edit_list_modal.local_list_form.use_polling": "使用轮询监听文件变动",
   "edit_list_modal.local_list_form.use_polling_tip": "该选项用于解决挂载的网络位置或在其他非标准位置的情况下列表更新报错的问题，若没有遇到问题，不建议启用该选项",
+  "edit_list_modal.online_list_form.auto_sync": "启用自动同步",
+  "edit_list_modal.online_list_form.auto_sync_tip": "启用后将在每天早上 11 点左右自动从远程同步列表",
   "edit_list_modal.online_list_form.source": "源名称",
   "edit_list_modal.online_list_form.source_type": "列表类型",
   "edit_list_modal.online_list_form.source_type_album": "专辑",

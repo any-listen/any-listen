@@ -85,6 +85,8 @@
   "edit_list_modal.local_list_form.path_update_device_id": "將該列表標記為本機創建",
   "edit_list_modal.local_list_form.use_polling": "使用輪詢監聽檔案變動",
   "edit_list_modal.local_list_form.use_polling_tip": "此選項用於解決掛載的網路位置或在其他非標準位置的情況下清單更新報錯的問題，若沒有遇到問題，不建議啟用該選項",
+  "edit_list_modal.online_list_form.auto_sync": "啟用自動同步",
+  "edit_list_modal.online_list_form.auto_sync_tip": "啟用後將在每天早上 11 點左右自動從遠端同步列表",
   "edit_list_modal.online_list_form.source": "來源名稱",
   "edit_list_modal.online_list_form.source_type": "清單類型",
   "edit_list_modal.online_list_form.source_type_album": "專輯",

@@ -5,6 +5,7 @@
   import FormItem from './FormItem.svelte'
   import { resourceList } from '@/modules/extension/reactive.svelte'
   import { extT } from '@/modules/extension/i18n'
+  import Checkbox from '@/components/base/Checkbox.svelte'
 
   let {
     item,
@@ -28,6 +29,7 @@
       extensionId: '',
       source: '',
       syncId: '',
+      autoSync: false,
       syncTime: 0,
       pic: '',
       songCount: 0,
@@ -79,6 +81,17 @@
 
 <main class="main">
   <Input autofocus placeholder={$t('edit_list_modal__form_list_name')} bind:value={listInfo.name} />
+  <FormItem>
+    <Checkbox
+      id="auto_sync"
+      checked={listInfo.meta.autoSync ?? false}
+      onchange={(checked) => {
+        listInfo.meta.autoSync = checked
+      }}
+      label={$t('edit_list_modal.online_list_form.auto_sync')}
+    />
+    <p class="tip">{$t('edit_list_modal.online_list_form.auto_sync_tip')}</p>
+  </FormItem>
   <FormItem label={$t('edit_list_modal.online_list_form.source_type')}>
     <p>{$t(`edit_list_modal.online_list_form.source_type_${listInfo.meta.sourceType}`)}</p>
   </FormItem>
@@ -100,16 +113,19 @@
     // min-height: 0;
     // max-height: 100%;
     // overflow: hidden;
+    gap: 8px;
     p {
       font-size: 14px;
-    }
-    :global(.list-form-item:first-of-type) {
-      margin-top: 8px;
     }
   }
   .path {
     padding-right: 8px;
     font-size: 13px;
     // color: var(--color-primary);
+  }
+  .tip {
+    // padding-left: 19px;
+    font-size: 12px;
+    opacity: 0.7;
   }
 </style>

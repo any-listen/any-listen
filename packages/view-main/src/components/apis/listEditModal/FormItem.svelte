@@ -33,7 +33,7 @@
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
-    min-height: 26px;
+    // min-height: 26px;
   }
   .list-form-item-title {
     flex: none;

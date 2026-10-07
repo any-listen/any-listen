@@ -27,6 +27,7 @@ declare namespace AnyListen {
       source: string
       syncId: string
       syncTime: number
+      autoSync?: boolean
       sourceType: SourceType
       [key: string]: unknown
     }
