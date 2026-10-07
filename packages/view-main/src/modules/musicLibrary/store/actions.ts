@@ -59,11 +59,10 @@ export const createUserList = async (position: number, info: AnyListen.List.User
         // TODO
         parentId: null,
         meta: {
+          ...info.meta,
           createTime: Date.now(),
-          desc: '',
           playCount: 0,
           songCount: 0,
-          pic: '',
           posTime: Date.now(),
           updateTime: Date.now(),
         },
@@ -83,10 +82,8 @@ export const createUserList = async (position: number, info: AnyListen.List.User
         meta: {
           ...info.meta,
           createTime: Date.now(),
-          desc: '',
           playCount: 0,
           songCount: 0,
-          pic: '',
           posTime: Date.now(),
           updateTime: Date.now(),
         },
@@ -106,10 +103,8 @@ export const createUserList = async (position: number, info: AnyListen.List.User
         meta: {
           ...info.meta,
           createTime: Date.now(),
-          desc: '',
           playCount: 0,
           songCount: 0,
-          pic: '',
           posTime: Date.now(),
           updateTime: Date.now(),
         },
@@ -156,6 +151,8 @@ export const updateUserList = async (info: AnyListen.List.UserListInfo) => {
             name: info.name,
             meta: {
               ...targetList.meta,
+              pic: info.meta.pic,
+              desc: info.meta.desc,
               updateTime: Date.now(),
             },
           },

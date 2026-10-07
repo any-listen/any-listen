@@ -4,6 +4,8 @@
   import { t } from '@/plugins/i18n'
   import type { ListInfo } from './type'
   import Image from '@/components/base/Image.svelte'
+  import Dropdown from '@/components/material/Dropdown.svelte'
+  import BtnMerge from '@/components/base/BtnMerge.svelte'
   let {
     source,
     disabled,
@@ -15,6 +17,7 @@
     onplay,
     onplayrandom,
     onsave,
+    onsaveasgeneral,
     onmulti,
     onfind,
     onduplicate,
@@ -30,6 +33,7 @@
     onplay: () => void
     onplayrandom: () => void
     onsave: () => void
+    onsaveasgeneral: () => void
     onmulti: () => void
     onfind: () => void
     onduplicate: () => void
@@ -67,10 +71,28 @@
           {$t('play_random')}
         </Btn>
         {#if source !== 'local' && saveable}
-          <Btn {disabled} icontext onclick={onsave}>
-            <SvgIcon name="favorite_folder" />
-            {$t('save_list')}
-          </Btn>
+          <BtnMerge>
+            <Btn {disabled} icontext onclick={onsave}>
+              <SvgIcon name="favorite_folder" />
+              {$t('save_list')}
+            </Btn>
+            <Dropdown
+              aria-label={$t('btn_more')}
+              menu={[
+                {
+                  key: 'save_as_local',
+                  disabled,
+                  label: $t('save_as_local_list'),
+                  icon: 'favorite_folder',
+                  onclick: onsaveasgeneral,
+                },
+              ]}
+            >
+              {#snippet trigger()}
+                <SvgIcon name="more" />
+              {/snippet}
+            </Dropdown>
+          </BtnMerge>
         {/if}
       </div>
       <div class="btns">

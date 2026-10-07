@@ -1,6 +1,8 @@
 <script lang="ts">
   import Btn from '@/components/base/Btn.svelte'
+  import BtnMerge from '@/components/base/BtnMerge.svelte'
   import SvgIcon from '@/components/base/SvgIcon.svelte'
+  import Dropdown from '@/components/material/Dropdown.svelte'
   import { t } from '@/plugins/i18n'
   let {
     source,
@@ -12,6 +14,7 @@
     onplay,
     onplayrandom,
     onsave,
+    onsaveasgeneral,
     onmulti,
     onfind,
     onduplicate,
@@ -26,6 +29,7 @@
     onplay: () => void
     onplayrandom: () => void
     onsave: () => void
+    onsaveasgeneral: () => void
     onmulti: () => void
     onfind: () => void
     onduplicate: () => void
@@ -48,10 +52,28 @@
       {$t('play_random')}
     </Btn>
     {#if source !== 'local' && saveable}
-      <Btn min {disabled} icontext onclick={onsave}>
-        <SvgIcon name="favorite_folder" />
-        {$t('save_list')}
-      </Btn>
+      <BtnMerge>
+        <Btn min {disabled} icontext onclick={onsave}>
+          <SvgIcon name="favorite_folder" />
+          {$t('save_list')}
+        </Btn>
+        <Dropdown
+          aria-label={$t('btn_more')}
+          menu={[
+            {
+              key: 'save_as_local',
+              disabled,
+              label: $t('save_as_local_list'),
+              icon: 'favorite_folder',
+              onclick: onsaveasgeneral,
+            },
+          ]}
+        >
+          {#snippet trigger()}
+            <SvgIcon name="more" />
+          {/snippet}
+        </Dropdown>
+      </BtnMerge>
     {/if}
   </div>
   <div class="btns">

@@ -6,7 +6,7 @@
   import { location, query, getLocation } from '@/plugins/routes'
   import { tick, untrack, type ComponentExports } from 'svelte'
   import { urlParamKeyMap, useActiveSource } from '../../shared.svelte'
-  import { saveList } from './action'
+  import { saveList, saveListAsGeneral } from './action'
   import { pushRoute, replaceRoute, setLastHistory } from '@/modules/resource/actions'
 
   const activeSource = useActiveSource('songlist', 'songlist')
@@ -120,6 +120,16 @@
       }}
       onsave={async () => {
         await saveList({
+          id: searchInfo.id,
+          name: info?.name ?? searchInfo.id,
+          pic: info?.img,
+          desc: info?.desc,
+          extensionId: activeSource.val!.extensionId,
+          source: activeSource.val!.id,
+        })
+      }}
+      onsaveasgeneral={async () => {
+        await saveListAsGeneral({
           id: searchInfo.id,
           name: info?.name ?? searchInfo.id,
           pic: info?.img,

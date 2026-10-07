@@ -1,6 +1,7 @@
 import { showNotify } from '@/components/apis/notify'
-import { createUserList } from '@/modules/musicLibrary/store/actions'
+import { addListMusics, createUserList } from '@/modules/musicLibrary/store/actions'
 import { musicLibraryState } from '@/modules/musicLibrary/store/state'
+import { songlistDetailAll } from '@/modules/resource/songlist/detail/actions'
 import { i18n } from '@/plugins/i18n'
 
 export const saveList = async (listInfo: {
@@ -38,5 +39,33 @@ export const saveList = async (listInfo: {
       sourceType: 'songlist',
     },
   })
+  showNotify(i18n.t('music_add_modal_add_success'))
+}
+
+export const saveListAsGeneral = async (listInfo: {
+  extensionId: string
+  source: string
+  id: string
+  name: string
+  pic?: string
+  desc?: string
+}) => {
+  const listId = await createUserList(musicLibraryState.userLists.length, {
+    id: '',
+    name: listInfo.name,
+    parentId: null,
+    type: 'general',
+    meta: {
+      createTime: 0,
+      updateTime: 0,
+      desc: listInfo.desc ?? '',
+      playCount: 0,
+      posTime: 0,
+      pic: listInfo.pic ?? '',
+      songCount: 0,
+    },
+  })
+  const allMusics = await songlistDetailAll(listInfo.extensionId, listInfo.source, listInfo.id)
+  await addListMusics(listId, allMusics)
   showNotify(i18n.t('music_add_modal_add_success'))
 }

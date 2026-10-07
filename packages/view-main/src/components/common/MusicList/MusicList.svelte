@@ -20,6 +20,7 @@
     listinfo,
     onscroll,
     onsave,
+    onsaveasgeneral,
     onreload,
   }: {
     loading?: boolean
@@ -31,6 +32,7 @@
     listinfo: ListInfo
     onscroll?: (pos: number) => void
     onsave?: () => Promise<void>
+    onsaveasgeneral?: () => Promise<void>
     onreload?: () => void
   } = $props()
   let multimode = $state(false)
@@ -84,6 +86,9 @@
         onsave={async () => {
           await onsave?.()
         }}
+        onsaveasgeneral={async () => {
+          await onsaveasgeneral?.()
+        }}
       />
     {:else}
       <Header
@@ -117,6 +122,9 @@
         }}
         onsave={async () => {
           await onsave?.()
+        }}
+        onsaveasgeneral={async () => {
+          await onsaveasgeneral?.()
         }}
       />
     {/if}
