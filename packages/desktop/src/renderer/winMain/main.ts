@@ -62,7 +62,12 @@ const winEvent = () => {
     }
   })
 
+  let showed = false
   const handlerReadyToShow = () => {
+    if (import.meta.env.VITE_IS_LINUX) {
+      if (showed) return
+      showed = true
+    }
     showWindow()
     setThumbarButtons()
     winMainEvent.ready_to_show()

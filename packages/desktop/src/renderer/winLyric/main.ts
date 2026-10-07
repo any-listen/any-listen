@@ -88,7 +88,12 @@ const winEvent = () => {
   //   browserWindow.webContents.send('focus')
   // })
 
+  let showed = false
   const handlerReadyToShow = () => {
+    if (import.meta.env.VITE_IS_LINUX) {
+      if (showed) return
+      showed = true
+    }
     showWindow()
     if (appState.appSetting['desktopLyric.isLock']) {
       browserWindow!.setIgnoreMouseEvents(true, { forward: !isLinux && appState.appSetting['desktopLyric.isHoverHide'] })
