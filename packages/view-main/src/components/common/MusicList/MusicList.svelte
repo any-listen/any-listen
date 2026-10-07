@@ -71,7 +71,10 @@
         onmulti={() => {
           multimode = !multimode
         }}
-        onplay={() => {
+        onplay={async () => {
+          if (settingState.setting['player.togglePlayMethod'] != 'listLoop') {
+            await updateSetting({ 'player.togglePlayMethod': 'listLoop' })
+          }
           void playMusic(listinfo.id, list, list[0], source, getListMetaInfo(listinfo), true)
         }}
         onplayrandom={async () => {
@@ -108,7 +111,10 @@
         onmulti={() => {
           multimode = !multimode
         }}
-        onplay={() => {
+        onplay={async () => {
+          if (settingState.setting['player.togglePlayMethod'] != 'listLoop') {
+            await updateSetting({ 'player.togglePlayMethod': 'listLoop' })
+          }
           void playMusic(listinfo.id, list, list[0], source, getListMetaInfo(listinfo), true)
         }}
         onplayrandom={async () => {
