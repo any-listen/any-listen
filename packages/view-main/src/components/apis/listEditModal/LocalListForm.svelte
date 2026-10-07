@@ -57,13 +57,14 @@
   }
   export const submit = async () => {
     verify()
+    const info = $state.snapshot(listInfo)
     if (item) {
       await editUserList({
-        ...listInfo,
-        meta: updateDeviceId ? { ...listInfo.meta, deviceId: appState.machineId } : listInfo.meta,
+        ...info,
+        meta: updateDeviceId ? { ...info.meta, deviceId: appState.machineId } : info.meta,
       })
     } else {
-      await createUserList({ ...listInfo, parentId: targetId || null })
+      await createUserList({ ...info, parentId: targetId || null })
     }
   }
 

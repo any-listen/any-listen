@@ -194,6 +194,7 @@ export const updateUserList = async (info: AnyListen.List.UserListInfo) => {
         name: info.name,
         meta: {
           ...targetList.meta,
+          ...info.meta,
           updateTime: Date.now(),
         },
       }

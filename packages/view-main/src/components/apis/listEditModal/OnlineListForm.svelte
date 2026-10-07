@@ -63,10 +63,11 @@
   }
   export const submit = async () => {
     if (!verify()) return
+    const info = $state.snapshot(listInfo)
     if (item) {
-      await editUserList(listInfo)
+      await editUserList(info)
     } else {
-      await createUserList({ ...listInfo, parentId: targetId || null })
+      await createUserList({ ...info, parentId: targetId || null })
     }
   }
 
