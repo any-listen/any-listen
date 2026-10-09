@@ -72,7 +72,9 @@
           multimode = !multimode
         }}
         onplay={async () => {
-          if (settingState.setting['player.togglePlayMethod'] != 'listLoop') {
+          const method = settingState.setting['player.togglePlayMethod']
+          // 列表循环、列表随机、顺序播放本身就能达到「播放全部」的效果，无需更改模式
+          if (method != 'listLoop' && method != 'random' && method != 'list') {
             await updateSetting({ 'player.togglePlayMethod': 'listLoop' })
           }
           void playMusic(listinfo.id, list, list[0], source, getListMetaInfo(listinfo), true)
@@ -112,7 +114,9 @@
           multimode = !multimode
         }}
         onplay={async () => {
-          if (settingState.setting['player.togglePlayMethod'] != 'listLoop') {
+          const method = settingState.setting['player.togglePlayMethod']
+          // 列表循环、列表随机、顺序播放本身就能达到「播放全部」的效果，无需更改模式
+          if (method != 'listLoop' && method != 'random' && method != 'list') {
             await updateSetting({ 'player.togglePlayMethod': 'listLoop' })
           }
           void playMusic(listinfo.id, list, list[0], source, getListMetaInfo(listinfo), true)
