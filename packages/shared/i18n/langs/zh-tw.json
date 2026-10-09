@@ -624,6 +624,7 @@
   "settings.other.resource_cache_label": "已使用緩存大小：",
   "settings.play_detail": "播放詳情頁設置",
   "settings.play_detail.cover_style": "封面樣式",
+  "settings.play_detail.lyric_color": "歌詞顏色",
   "settings.play_detail.cover_style_cd": "CD",
   "settings.play_detail.cover_style_square": "正方形",
   "settings.play_detail.delay_scroll": "延遲歌詞滾動",

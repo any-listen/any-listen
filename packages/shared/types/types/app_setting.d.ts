@@ -309,6 +309,21 @@ declare global {
       'playDetail.style.fontWeight': boolean
 
       /**
+       * 播放详情页-未播放歌词颜色（空字符串表示跟随主题）
+       */
+      'playDetail.style.lyricUnplayColor': string
+
+      /**
+       * 播放详情页-已播放歌词颜色（空字符串表示跟随主题）
+       */
+      'playDetail.style.lyricPlayedColor': string
+
+      /**
+       * 播放详情页-歌词阴影颜色（空字符串表示跟随主题）
+       */
+      'playDetail.style.lyricShadowColor': string
+
+      /**
        * 播放详情页-是否延迟桌面歌词滚动
        */
       'playDetail.isDelayScroll': boolean

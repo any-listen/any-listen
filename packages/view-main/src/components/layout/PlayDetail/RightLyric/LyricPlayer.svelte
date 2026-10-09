@@ -19,7 +19,12 @@
   // const isShowLyricProgressSetting = useSettingValue('playDetail.isShowLyricProgressSetting')
   const fontSize = useSettingValue('playDetail.style.fontSize')
   const fontWeight = useSettingValue('playDetail.style.fontWeight')
-  const styles = $derived(`--play-detail-lrc-font-size:${(fontSize.val / 100 + 0.8) * winRadio}rem; text-align:${textAlign.val};`)
+  const lyricUnplayColor = useSettingValue('playDetail.style.lyricUnplayColor')
+  const lyricPlayedColor = useSettingValue('playDetail.style.lyricPlayedColor')
+  const lyricShadowColor = useSettingValue('playDetail.style.lyricShadowColor')
+  const styles = $derived(
+      `--play-detail-lrc-font-size:${(fontSize.val / 100 + 0.8) * winRadio}rem; text-align:${textAlign.val};${lyricUnplayColor.val ? `--play-detail-lrc-unplay-color:${lyricUnplayColor.val};` : ''}${lyricPlayedColor.val ? `--play-detail-lrc-played-color:${lyricPlayedColor.val};` : ''}${lyricShadowColor.val ? `--play-detail-lrc-shadow-color:${lyricShadowColor.val};` : ''}`
+  )
   let lyricMenu = $state<ComponentExports<typeof LyricMenu>>()
 
   const {
@@ -98,9 +103,9 @@
 <LyricMenu bind:this={lyricMenu} />
 
 <style lang="less">
-  @unplay-color: var(--color-300);
-  @unplay-font-color: var(--color-250);
-  @played-color: var(--color-primary-dark-100);
+  @unplay-color: var(--play-detail-lrc-unplay-color, var(--color-300));
+  @unplay-font-color: var(--play-detail-lrc-unplay-color, var(--color-250));
+  @played-color: var(--play-detail-lrc-played-color, var(--color-primary-dark-100));
 
   .lyric {
     // text-align: center;
@@ -127,9 +132,9 @@
         color: @unplay-color;
         overflow-wrap: break-word;
         text-shadow:
-          0 0 2px var(--color-primary-light-100-alpha-900),
-          0 0 3px var(--color-primary-light-100-alpha-900),
-          0 0 4px var(--color-primary-dark-700-alpha-900);
+          0 0 2px var(--play-detail-lrc-shadow-color, var(--color-primary-light-100-alpha-900)),
+          0 0 3px var(--play-detail-lrc-shadow-color, var(--color-primary-light-100-alpha-900)),
+          0 0 4px var(--play-detail-lrc-shadow-color, var(--color-primary-dark-700-alpha-900));
         transition: @transition-slow !important;
         transition-property: padding, transform !important;
 

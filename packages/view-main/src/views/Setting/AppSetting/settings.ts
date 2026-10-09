@@ -303,6 +303,12 @@ export const settings: SettingListSection[] = [
           { value: 'right', name: 'settings.play_detail.style_align_right' },
         ] satisfies Array<{ value: AnyListen.AppSetting['playDetail.style.align']; name: keyof Message }>,
       },
+      {
+        id: 'playDetail.style.lyricUnplayColor',
+        name: 'settings.play_detail.lyric_color',
+        type: 'component',
+        component: async () => import('./PlayDetailLyricTheme.svelte'),
+      },
     ],
   },
   {

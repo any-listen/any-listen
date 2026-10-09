@@ -623,6 +623,7 @@
   "settings.other.resource_cache_label": "已使用缓存大小：",
   "settings.play_detail": "播放详情页设置",
   "settings.play_detail.cover_style": "封面样式",
+  "settings.play_detail.lyric_color": "歌词颜色",
   "settings.play_detail.cover_style_cd": "CD",
   "settings.play_detail.cover_style_square": "正方形",
   "settings.play_detail.delay_scroll": "延迟歌词滚动",

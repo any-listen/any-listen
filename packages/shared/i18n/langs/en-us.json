@@ -624,6 +624,7 @@
   "settings.other.resource_cache_label": "Cache size used: ",
   "settings.play_detail": "Play Details Page Settings",
   "settings.play_detail.cover_style": "Cover style",
+  "settings.play_detail.lyric_color": "Lyric colors",
   "settings.play_detail.cover_style_cd": "CD",
   "settings.play_detail.cover_style_square": "Square",
   "settings.play_detail.delay_scroll": "Delay lyrics scroll",
