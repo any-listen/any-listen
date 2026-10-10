@@ -11,6 +11,7 @@
 
 ### Changed
 
+- Clicking **Play all** now automatically switches the play mode to **List loop** ([#379](https://github.com/any-listen/any-listen/issues/379)).
 - Online lists no longer sync remote lists automatically by default, including previously created lists. To enable automatic syncing for a list, turn it on in that list's settings.
 
 ---
@@ -28,4 +29,5 @@
 
 ### 变更
 
+- 点击 **「播放全部」** 时会自动将播放模式切换为 **「列表循环」**（[#379](https://github.com/any-listen/any-listen/issues/379)）。
 - 新创建的在线列表和已有在线列表默认不再自动同步远程列表。如需自动同步某个列表，可在该列表的设置中启用。
