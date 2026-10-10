@@ -169,6 +169,7 @@ tables.set(
     "ext" TEXT NOT NULL,
     "file_name" TEXT NOT NULL,
     "file_path" TEXT NOT NULL,
+    "task_meta" TEXT NOT NULL DEFAULT '{}',
     "music_info" TEXT NOT NULL,
     "position" INTEGER NOT NULL,
     PRIMARY KEY("id")
@@ -213,4 +214,4 @@ tables.set(
 
 export default tables
 
-export const DB_VERSION = '3'
+export const DB_VERSION = '4'

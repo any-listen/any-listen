@@ -5,6 +5,7 @@ import { initApp } from './app/init'
 import { sendConnectFailed, sendConnected, sendDesconnected, sendRelease } from './app/store/action'
 import { initCommand } from './command/init'
 import { initDislikeList } from './dislikeList/init'
+import { initDownload } from './download/store.svelte'
 import { initExtension } from './extension/init'
 import { initHotkey } from './hotkey/init'
 import { initLyric } from './lyric/init'
@@ -25,6 +26,7 @@ export const registerModules = () => {
   initPlayer()
   initLyric()
   initDislikeList()
+  initDownload()
   initExtension()
   initHotkey()
   initVersion()

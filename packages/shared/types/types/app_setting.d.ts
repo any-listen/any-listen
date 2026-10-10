@@ -554,6 +554,16 @@ declare global {
       /**
        * 下载路径
        */
+      'download.enable': boolean
+      'download.isSavePathGroupByListName': boolean
+      'download.maxDownloadNum': number
+      'download.skipExistFile': boolean
+      'download.isDownloadLrc': boolean
+      'download.isDownloadLxLrc': boolean
+      'download.isDownloadTLrc': boolean
+      'download.isDownloadRLrc': boolean
+      'download.lrcFormat': 'utf8' | 'gbk'
+
       'download.savePath': string
 
       /**

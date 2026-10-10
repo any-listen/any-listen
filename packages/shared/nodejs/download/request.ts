@@ -45,11 +45,13 @@ const applyTimeout = (request: http.ClientRequest, time: number) => {
     if (request.destroyed) return
     request.destroy(new Error('Request timeout'))
   }, time)
-  request.on('response', () => {
+  const clear = () => {
     if (!timeout) return
     clearTimeout(timeout)
     timeout = null
-  })
+  }
+  request.once('response', clear)
+  request.once('close', clear)
 }
 
 // const isRequireRedirect = (response: http.IncomingMessage) => {

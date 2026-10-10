@@ -1,6 +1,7 @@
 import app from './app/remote'
 import command from './command/remote'
 import dislike from './dislike/remote'
+import download from './download/remote'
 import extension from './extension/remote'
 import hotkey from './hotkey/remote'
 import list from './list/remote'
@@ -26,6 +27,7 @@ export const connectIPC = (
   const exposeFuncs: AnyListen.IPC.ClientIPC = {
     ...app,
     ...dislike,
+    ...download,
     ...extension,
     ...hotkey,
     ...list,

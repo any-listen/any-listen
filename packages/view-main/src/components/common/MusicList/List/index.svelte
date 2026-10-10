@@ -167,6 +167,7 @@
             menu!.show(
               {
                 listId: listinfo.id,
+                listName: listinfo.name,
                 musicInfo: item,
                 selectedList: select.list,
                 onRemoveAllSelected() {

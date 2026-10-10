@@ -5,8 +5,10 @@
   import { LIST_IDS } from '@any-listen/common/constants'
   import { useExtensionError, useExtensionNewVersionNum } from '@/modules/extension/reactive.svelte'
   import { useOnlineResourceAvailable } from '@/views/Online/shared.svelte'
+  import { useSettingValue } from '@/modules/setting/reactive.svelte'
   import { toOnlineSearch } from '@/modules/resource/actions'
 
+  const downloadEnabled = useSettingValue('download.enable')
   const lastPlayedUrl = `/library?id=${LIST_IDS.LAST_PLAYED}`
 
   const newExtVerNum = useExtensionNewVersionNum()
@@ -63,14 +65,13 @@
         iconSize: '0 0 24 24',
         enable: true,
       },
-      // {
-      //   to: '/download',
-      //   name: $t('download'),
-      //   icon: '#icon-download-2',
-      //   iconSize: '0 0 425.2 425.2',
-      //   // enable: appSetting['download.enable'],
-      //   enable: true,
-      // },
+      {
+        to: '/download',
+        name: $t('download.tasks'),
+        icon: '#icon-download-2',
+        iconSize: '0 0 425.2 425.2',
+        enable: downloadEnabled.val,
+      },
       {
         to: '/settings',
         name: $t('setting'),
