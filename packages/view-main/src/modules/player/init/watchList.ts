@@ -68,7 +68,7 @@ const throttleListChangeSync = throttle(async () => {
 
   const musicMap = new Map<string, AnyListen.Player.PlayMusicInfo>()
   const newList = playerState.playList.filter((m) => {
-    musicMap.set(m.itemId, m)
+    if (!m.playLater) musicMap.set(m.itemId, m)
     return m.playLater
   })
   const curSyncId = syncId
