@@ -10,6 +10,7 @@
 
 - Fixed an issue where scrolling the mouse wheel over a number input changed both the input value and the page scroll position ([#298](https://github.com/any-listen/any-listen/issues/298)).
 - Fixed frame drops on Linux Wayland ([#386](https://github.com/any-listen/any-listen/issues/386)).
+- Fixed an issue where the desktop lyrics window size changed unexpectedly on Windows when display scaling was not set to 100% ([#387](https://github.com/any-listen/any-listen/issues/387)).
 
 ### Changed
 
@@ -30,6 +31,7 @@
 
 - 修复在数字输入框上滚动鼠标滚轮时，输入框数值和页面滚动位置同时改变的问题（[#298](https://github.com/any-listen/any-listen/issues/298)）。
 - 修复 Linux Wayland 下的掉帧问题（[#386](https://github.com/any-listen/any-listen/issues/386)）。
+- 修复 Windows 显示缩放比例不为 100% 时桌面歌词窗口大小意外改变的问题（[#387](https://github.com/any-listen/any-listen/issues/387)）。
 
 ### 变更
 

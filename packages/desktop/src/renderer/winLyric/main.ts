@@ -73,13 +73,19 @@ const winEvent = () => {
     }
   })
 
+  let showed = false
   browserWindow.on('resize', () => {
     // bounds = browserWindow.getBounds()
-    // console.log(bounds)
+    if (import.meta.env.VITE_IS_WINDOWS) if (!showed) return
     isWinBoundsUpdateing = true
     const bounds = browserWindow!.getBounds()
     saveBoundsConfig(buildConfig(bounds))
   })
+  if (import.meta.env.VITE_IS_WINDOWS) {
+    browserWindow.once('show', () => {
+      showed = true
+    })
+  }
 
   // browserWindow.on('restore', () => {
   //   browserWindow.webContents.send('restore')
@@ -88,11 +94,11 @@ const winEvent = () => {
   //   browserWindow.webContents.send('focus')
   // })
 
-  let showed = false
+  let readyShowed = false
   const handlerReadyToShow = () => {
     if (import.meta.env.VITE_IS_LINUX) {
-      if (showed) return
-      showed = true
+      if (readyShowed) return
+      readyShowed = true
     }
     showWindow()
     if (appState.appSetting['desktopLyric.isLock']) {
