@@ -330,6 +330,16 @@ const handlePlayList = async (
     commit.setIsLinkedList(true)
     targetPlayMusicInfo = newList.find((m) => m.musicInfo.id == targetMusicInfo.id)
     setPlayMusicInfo(targetPlayMusicInfo!, index)
+  } else if (isClianHistory) {
+    // 清理已播放的音乐列表
+    if (playerState.playList[0]?.playLater) {
+      const idx = playerState.playList.findIndex((m) => !m.playLater)
+      await setPlayListMusic({
+        list: playerState.playList.slice(idx),
+        listId: playerState.playInfo.listId,
+        source: playerState.playInfo.source,
+      })
+    }
   }
   commit.setPlaying(true)
   handlePlay()
