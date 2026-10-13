@@ -178,7 +178,7 @@ export const initListProvider = async () => {
   })
   musicListEvent.on('list_create', async (pos, lists) => {
     for (const list of lists) {
-      if (list.type !== 'online' || !list.meta.autoSync) continue
+      if (list.type !== 'online') continue
       state.waitingSyncLists.push(list)
     }
     // console.log('run list provider sync after create list', state.initing)
