@@ -95,7 +95,13 @@ export const addPlayLaterMusic = async (
         unsub()
       }
     })
-    void addPlayListMusic({ musics: list, pos: isTop ? 0 : playerState.playList.findIndex((m) => m.playLater) + 1 })
+    let pos: number
+    if (isTop) pos = 0
+    else {
+      const lastIndex = playerState.playList.findIndex((m) => !m.playLater)
+      pos = lastIndex === -1 ? playerState.playList.length : lastIndex
+    }
+    void addPlayListMusic({ musics: list, pos })
   })
 }
 

@@ -9,6 +9,7 @@
 
 - Fixed an issue where scrolling the mouse wheel over a number input changed both the input value and the page scroll position ([#298](https://github.com/any-listen/any-listen/issues/298)).
 - Fixed a conflict between local keyboard shortcuts and text input in input fields ([#388](https://github.com/any-listen/any-listen/issues/388)).
+- Fixed an issue where playback position was calculated incorrectly when adding songs to Play Next ([#389](https://github.com/any-listen/any-listen/issues/389)).
 
 ### Changed
 
@@ -28,6 +29,7 @@
 
 - 修复在数字输入框上滚动鼠标滚轮时，输入框数值和页面滚动位置同时改变的问题（[#298](https://github.com/any-listen/any-listen/issues/298)）。
 - 修复本地快捷键与输入框输入冲突的问题（[#388](https://github.com/any-listen/any-listen/issues/388)）。
+- 修复添加歌曲到稍后播放时播放位置计算异常的问题（[#389](https://github.com/any-listen/any-listen/issues/389)）。
 
 ### 变更
 
