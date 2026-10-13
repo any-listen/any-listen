@@ -63,18 +63,22 @@ export const initSingleInstanceHandle = () => {
 }
 
 export const applyElectronEnvParams = () => {
+  appState['electronParams.ozonePlatform'] = app.commandLine.getSwitchValue('ozone-platform')
+
   // Is disable hardware acceleration
   if (appState.envParams.cmdParams.dha) app.disableHardwareAcceleration()
   if (appState.envParams.cmdParams.dhmkh) app.commandLine.appendSwitch('disable-features', 'HardwareMediaKeyHandling')
 
   // fix linux transparent fail. https://github.com/electron/electron/issues/25153#issuecomment-843688494
-  if (import.meta.env.VITE_IS_LINUX) app.commandLine.appendSwitch('use-gl', 'desktop')
+  if (import.meta.env.VITE_IS_LINUX) {
+    // https://github.com/any-listen/any-listen/issues/386
+    if (appState['electronParams.ozonePlatform'] !== 'wayland') {
+      app.commandLine.appendSwitch('use-gl', 'desktop')
+    }
+  }
 
   // https://github.com/electron/electron/issues/22691
-  app.commandLine.appendSwitch('wm-window-animations-disabled')
-
-  // https://github.com/electron/electron/issues/38790#issuecomment-1592911862
-  app.commandLine.appendSwitch('disable-features', 'WidgetLayering')
+  if (import.meta.env.VITE_IS_WINDOWS) app.commandLine.appendSwitch('wm-window-animations-disabled')
 
   app.commandLine.appendSwitch('--disable-gpu-sandbox')
 
@@ -83,8 +87,6 @@ export const applyElectronEnvParams = () => {
     app.commandLine.appendSwitch('proxy-server', appState.envParams.cmdParams['proxy-server'])
     app.commandLine.appendSwitch('proxy-bypass-list', appState.envParams.cmdParams['proxy-bypass-list'] ?? '<local>')
   }
-
-  appState['electronParams.ozonePlatform'] = app.commandLine.getSwitchValue('ozone-platform')
 }
 
 export const setUserDataPath = async () => {
