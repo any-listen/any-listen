@@ -13,7 +13,7 @@ export const registerKeyEvent = () => {
     const kevent = { event, keys, key, eventKey, type, inputing }
     // console.log(key, eventKey, type, event, keys)
     keyboardEvent.emitAnyKey(kevent)
-    if (hotkeyState.isEditingHotKey) return
+    if (hotkeyState.isEditingHotKey || inputing) return
     // console.log(hotkeyState.isEditingHotKey, isEditing)
     void keyboardEvent.emit(key, kevent).then((stopped) => {
       if (stopped) return
