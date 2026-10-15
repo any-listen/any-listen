@@ -133,11 +133,11 @@
         transition: @transition-slow !important;
         transition-property: padding, transform !important;
 
-        &.active {
-          // padding: var(--play-detail-lrc-font-size, 16px) 1px;
-          padding-top: calc(var(--play-detail-lrc-font-size, 16px) * 1.2);
-          padding-bottom: calc(var(--play-detail-lrc-font-size, 16px) * 1.2);
-        }
+        // &.active {
+        //   // padding: var(--play-detail-lrc-font-size, 16px) 1px;
+        //   padding-top: calc(var(--play-detail-lrc-font-size, 16px) * 1.2);
+        //   padding-bottom: calc(var(--play-detail-lrc-font-size, 16px) * 1.2);
+        // }
 
         .extended {
           margin-top: 5px;
@@ -203,6 +203,8 @@
     :global {
       .line-content {
         &.active {
+          padding-top: calc(var(--play-detail-lrc-font-size, 16px) * 1.3);
+          padding-bottom: calc(var(--play-detail-lrc-font-size, 16px) * 1.3);
           transform: scale(1.1);
           // .extended {
           //   // font-size: 1em;

@@ -2,6 +2,8 @@
   import { t } from '@/plugins/i18n'
   import { useSettingValue } from '@/modules/setting/reactive.svelte'
   import { updateSetting } from '@/modules/setting/store/action'
+  import defaultSetting from '@any-listen/common/defaultSetting'
+  const defaultFontSize = defaultSetting['playDetail.style.fontSize']
   const fontSize = useSettingValue('playDetail.style.fontSize')
 
   const setPlayDetailLyricFont = async (size: number) => {
@@ -17,7 +19,7 @@
     await setPlayDetailLyricFont(Math.max(fontSize.val - step, 30))
   }
   const fontSizeReset = async () => {
-    await setPlayDetailLyricFont(100)
+    await setPlayDetailLyricFont(defaultFontSize)
   }
 </script>
 
@@ -26,7 +28,7 @@
     <div class="title">{$t('lyric_menu.lrc_size', { size: fontSize.val })}</div>
     <button
       class="btn title-btn"
-      disabled={fontSize.val == 100}
+      disabled={fontSize.val == defaultFontSize}
       data-ignore-tip
       aria-label={$t('lyric_menu.size_reset')}
       onclick={fontSizeReset}
