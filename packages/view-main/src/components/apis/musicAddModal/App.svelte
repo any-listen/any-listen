@@ -15,8 +15,8 @@
     onafterleave: () => void
   } = $props()
 
-  const listItemHeight = useListItemHeight(2.6)
-  const picStyle = $derived(`height:${listItemHeight.val * 0.6}px;`)
+  const listItemHeight = useListItemHeight(3.2)
+  const picStyle = $derived(`height:${listItemHeight.val * 0.8}px;width:${listItemHeight.val * 0.8}px;`)
 
   let visible = $state(false)
   let isMove = $state(false)
@@ -71,7 +71,7 @@
   // })
 </script>
 
-<Modal bind:visible teleport="#root" {onafterleave}>
+<Modal bind:visible teleport="#root" width="65%" maxwidth="60rem" {onafterleave}>
   <main class="main">
     <div class="header">
       <h2>{title}</h2>
@@ -101,7 +101,7 @@
     display: flex;
     flex: auto;
     flex-flow: column nowrap;
-    width: 460px;
+    // width: 560px;
     min-height: 0;
     padding: 0 10px;
     // max-height: 100%;
@@ -127,8 +127,10 @@
     overflow: hidden;
   }
   .list {
-    display: flex;
-    flex-flow: column nowrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 6px;
+    align-content: start;
     max-height: 100%;
     // gap: 10px;
     // font-size: 14px;
