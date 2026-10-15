@@ -50,10 +50,10 @@
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
-    "electron": "42.11.12",
+    "electron": "42.11.14",
     "electron-builder": "26.15.3",
     "electron-debug": "^4.1.0",
-    "electron-to-chromium": "^1.5.453",
+    "electron-to-chromium": "^1.5.456",
     "tar": "^7.5.22",
     "vite": "^8.3.4"
   }
