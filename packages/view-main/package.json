@@ -30,17 +30,17 @@
     "@types/sortablejs": "^1.15.9",
     "eslint-plugin-svelte": "^3.23.1",
     "less": "^4.9.1",
-    "postcss": "^8.5.30",
+    "postcss": "^8.5.31",
     "postcss-pxtorem": "^6.1.0",
     "stylelint": "^17.16.0",
     "stylelint-config-html": "^2.0.0",
-    "stylelint-config-recess-order": "^7.8.0",
+    "stylelint-config-recess-order": "^7.8.2",
     "stylelint-config-standard-less": "^4.1.0",
     "svelte": "^5.57.2",
-    "svelte-check": "^4.7.6",
+    "svelte-check": "^4.7.7",
     "svelte-eslint-parser": "^1.9.0",
     "svelte-preprocess": "6.0.5",
-    "vite": "^8.3.4",
+    "vite": "^8.3.5",
     "vite-plugin-svg-icons": "^2.0.1"
   }
 }
