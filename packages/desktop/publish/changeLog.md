@@ -17,6 +17,7 @@
 - Fixed an issue where the desktop lyrics window size changed unexpectedly on Windows when display scaling was not set to 100% ([#387](https://github.com/any-listen/any-listen/issues/387)).
 - Fixed a conflict between local keyboard shortcuts and text input in input fields ([#388](https://github.com/any-listen/any-listen/issues/388)).
 - Fixed an issue where playback position was calculated incorrectly when adding songs to Play Next ([#389](https://github.com/any-listen/any-listen/issues/389)).
+- Fixed inaccurate lyric progress positioning at certain font sizes ([#391](https://github.com/any-listen/any-listen/issues/391)).
 
 ### Changed
 
@@ -45,6 +46,7 @@
 - 修复 Windows 显示缩放比例不为 100% 时桌面歌词窗口大小意外改变的问题（[#387](https://github.com/any-listen/any-listen/issues/387)）。
 - 修复本地快捷键与输入框输入冲突的问题（[#388](https://github.com/any-listen/any-listen/issues/388)）。
 - 修复添加歌曲到稍后播放时播放位置计算异常的问题（[#389](https://github.com/any-listen/any-listen/issues/389)）。
+- 修复特定字体大小设置下歌词定位进度不准确的问题（[#391](https://github.com/any-listen/any-listen/issues/391)）。
 
 ### 变更
 

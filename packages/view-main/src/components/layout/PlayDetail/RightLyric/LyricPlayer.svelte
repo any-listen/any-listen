@@ -122,7 +122,9 @@
         overflow-wrap: anywhere;
       }
       .line-content {
-        padding: calc(var(--play-detail-lrc-font-size, 16px) / 1.8) 8% calc(var(--play-detail-lrc-font-size, 16px) / 1.8) 1px;
+        // Ignore formatting for the following padding rule
+        // prettier-ignore
+        padding: calc(var(--play-detail-lrc-font-size, 16px) / 1.8) 8% calc(var(--play-detail-lrc-font-size, 16px) / 1.8) 1Px;
         line-height: 1.2;
         color: @unplay-color;
         overflow-wrap: break-word;

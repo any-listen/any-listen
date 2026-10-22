@@ -1,21 +1,13 @@
 <!--- @lang: en-us -->
 
-### Improved
+### Fixed
 
-- Improved the **Add Songs** dialog with a horizontal layout and more playlist information.
-
-### Changed
-
-- Updated the default settings for the Now Playing page: set the **Lyrics Font Size** to 80, and disable **Bold Lyrics** and **Delayed Scrolling**.
+- Fixed inaccurate lyric progress positioning at certain font sizes ([#391](https://github.com/any-listen/any-listen/issues/391)).
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 优化
+### 修复
 
-- 优化 **「添加歌曲」** 弹窗，采用横向布局并展示更多歌单信息。
-
-### 变更
-
-- 调整播放详情页默认设置：将 **「歌词字体大小」** 设为 80，关闭 **「加粗歌词」** 和 **「延迟滚动」**。
+- 修复特定字体大小设置下歌词定位进度不准确的问题（[#391](https://github.com/any-listen/any-listen/issues/391)）。
