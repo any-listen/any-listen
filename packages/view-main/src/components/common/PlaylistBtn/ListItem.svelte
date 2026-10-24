@@ -11,11 +11,13 @@
   import Btn from '@/components/base/Btn.svelte'
   import { scrollListTo } from '@/modules/app/store/action'
   import { onMount, tick } from 'svelte'
-  import { getMusicPicDelay } from '@/modules/player/store/actions'
+  import { getMusicPicDelay, playIndex } from '@/modules/player/store/actions'
+  import { removeMusic } from './shared'
   // console.log(querystring)
   let {
     info,
     picstyle,
+    index,
     // selected,
     // selectedactive,
     playing,
@@ -77,6 +79,7 @@
   tabindex="0"
   onkeydown={handleClick}
   onclick={handleClick}
+  ontouchend={handleClick}
   {oncontextmenu}
 >
   <div class="pic" style={picstyle}>
@@ -120,7 +123,17 @@
       <SvgIcon name="step-into" />
     </div>
   {/if}
-  <div class="goto" style="flex: 0 0 9%;">
+  <div class="btns" style="flex: 0 0 9%;">
+    <Btn
+      outline
+      icon
+      onclick={(evt) => {
+        evt.stopPropagation()
+        playIndex(index)
+      }}
+    >
+      <SvgIcon name="play" />
+    </Btn>
     <Btn
       outline
       icon
@@ -129,6 +142,15 @@
       }}
     >
       <SvgIcon name="visit" />
+    </Btn>
+    <Btn
+      outline
+      icon
+      onclick={async () => {
+        await removeMusic(info.itemId)
+      }}
+    >
+      <SvgIcon name="multiply" />
     </Btn>
   </div>
   <div class="time" style="flex: 0 0 9%;">
@@ -167,7 +189,7 @@
       }
     }
     &:hover {
-      .goto {
+      .btns {
         opacity: 1;
       }
     }
@@ -294,7 +316,9 @@
     text-align: center;
   }
 
-  .goto {
+  .btns {
+    display: flex;
+    flex-flow: row nowrap;
     opacity: 0;
     transition: opacity @transition-fast;
   }

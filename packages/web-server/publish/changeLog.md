@@ -4,6 +4,7 @@
 
 - Added a **Save as Regular Playlist** button to song lists in the Online Resources section. Selecting it creates a regular playlist and adds the songs to it.
 - Added an **Automatic Sync** option to online list settings. Disabled by default.
+- Added **Play** and **Remove** buttons for songs in playlists ([#385](https://github.com/any-listen/any-listen/issues/385)).
 
 ### Improved
 
@@ -31,6 +32,7 @@
 
 - 在线资源板块的歌曲列表中新增 **「收藏为普通列表」** 按钮，点击后会创建一个普通列表，并将当前列表中的歌曲添加到该列表。
 - 在线列表设置新增 **「自动同步」** 选项，默认关闭。
+- 播放列表新增歌曲 **「播放」** 和 **「移除」** 按钮（[#385](https://github.com/any-listen/any-listen/issues/385)）。
 
 ### 优化
 
