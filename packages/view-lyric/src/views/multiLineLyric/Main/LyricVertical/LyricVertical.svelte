@@ -127,7 +127,7 @@
         line-height: 1.2;
         color: var(--color-lyric-unplay);
         overflow-wrap: break-word;
-        transition: 0.6s ease !important;
+        transition: 0.6s linear !important;
         transition-property: padding, transform !important;
 
         .font-lrc {

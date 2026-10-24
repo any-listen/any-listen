@@ -132,7 +132,7 @@
           0 0 2px var(--color-primary-light-100-alpha-900),
           0 0 3px var(--color-primary-light-100-alpha-900),
           0 0 4px var(--color-primary-dark-700-alpha-900);
-        transition: @transition-slow !important;
+        transition: 0.6s linear !important;
         transition-property: padding, transform !important;
 
         // &.active {

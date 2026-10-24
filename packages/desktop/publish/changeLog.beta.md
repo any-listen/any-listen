@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Improved
 
-- Fixed inaccurate lyric progress positioning at certain font sizes ([#391](https://github.com/any-listen/any-listen/issues/391)).
+- Improved the lyric scaling animations on the Now Playing page and in desktop lyrics.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 优化
 
-- 修复特定字体大小设置下歌词定位进度不准确的问题（[#391](https://github.com/any-listen/any-listen/issues/391)）。
+- 优化播放详情页与桌面歌词的歌词缩放动画效果。

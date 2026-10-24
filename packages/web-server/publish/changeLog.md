@@ -8,6 +8,7 @@
 ### Improved
 
 - Improved the **Add Songs** dialog with a horizontal layout and more playlist information.
+- Improved the lyric scaling animations on the Now Playing page.
 
 ### Fixed
 
@@ -34,6 +35,7 @@
 ### 优化
 
 - 优化 **「添加歌曲」** 弹窗，采用横向布局并展示更多歌单信息。
+- 优化播放详情页歌词缩放动画效果。
 
 ### 修复
 
