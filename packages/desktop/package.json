@@ -43,7 +43,7 @@
     "@any-listen/theme": "workspace:@shared/theme@*",
     "better-sqlite3": "^13.0.3",
     "electron-log": "5.4.4",
-    "electron-updater": "^6.8.9",
+    "electron-updater": "^6.8.11",
     "font-list": "^2.1.0",
     "message2call": "^2.0.3"
   },
@@ -51,9 +51,9 @@
     "@any-listen/eslint": "workspace:@shared/eslint@*",
     "@any-listen/types": "workspace:@shared/types@*",
     "electron": "42.11.18",
-    "electron-builder": "26.15.3",
+    "electron-builder": "26.18.0",
     "electron-debug": "^4.1.0",
-    "electron-to-chromium": "^1.5.463",
+    "electron-to-chromium": "^1.5.464",
     "tar": "^7.5.22",
     "vite": "^8.3.5"
   }

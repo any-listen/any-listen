@@ -1,7 +1,7 @@
 const minor = ['@types/node', 'undici', 'typescript', 'electron', 'electron-debug']
 const newest = ['oxfmt']
 const patch = []
-const ignore = ['@types/ws', '@simonwep/pickr']
+const ignore = ['@types/ws', '@simonwep/pickr', '@swc/html']
 
 const cooldown = '8h'
 
