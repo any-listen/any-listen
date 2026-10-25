@@ -24,8 +24,6 @@ body:
           required: true
         - label: 我同意遵守项目的[行为准则](https://github.com/any-listen/any-listen/blob/main/docs/CODE_OF_CONDUCT_zh.md)。
           required: true
-        - label: 我会尝试提交一个 PR 以解决这个 issue。
-          required: false
 
   - type: dropdown
     id: check-app-type
