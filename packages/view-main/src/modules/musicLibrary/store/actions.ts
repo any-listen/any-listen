@@ -24,7 +24,15 @@ import {
 import { musicLibraryState } from './state'
 
 export { getSubUserLists, setFetchingListStatus, setUserListInited, userListExist, clearListCover, setListCover } from './commit'
-export { parseMusicMetadata, removeUserList, sortListMusics, syncUserList, updateListMusicsPosition } from './listRemoteActions'
+export {
+  parseMusicMetadata,
+  removeUserList,
+  sortListMusics,
+  syncUserList,
+  updateListMusicsPosition,
+  getListPrevSelectId,
+  saveListPrevSelectId,
+} from './listRemoteActions'
 
 /**
  * 获取所有列表

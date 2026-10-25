@@ -20,10 +20,14 @@ export const sendListAction: AnyListen.IPC.ServerIPC['listAction'] = async (acti
   return ipc.listAction(action)
 }
 
+let lastId: string | null = null
 export const getListPrevSelectId: AnyListen.IPC.ServerIPC['getListPrevSelectId'] = async () => {
-  return ipc.getListPrevSelectId()
+  lastId = await ipc.getListPrevSelectId()
+  return lastId
 }
 export const saveListPrevSelectId: AnyListen.IPC.ServerIPC['saveListPrevSelectId'] = async (id) => {
+  if (lastId === id) return
+  lastId = id
   await ipc.saveListPrevSelectId(id)
 }
 export const getListScrollPosition: AnyListen.IPC.ServerIPC['getListScrollPosition'] = async () => {

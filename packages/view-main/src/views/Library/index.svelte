@@ -11,6 +11,8 @@
     saveListScrollPosition,
     userListExist,
     sortListMusics,
+    getListPrevSelectId,
+    saveListPrevSelectId,
   } from '@/modules/musicLibrary/store/actions'
   import { type ComponentExports, tick, untrack } from 'svelte'
   import { LIST_IDS } from '@any-listen/common/constants'
@@ -141,8 +143,13 @@
 
   $effect(() => {
     const id = $query.id
-    if (!$userListsAll.some((l) => l.id == id) && $userListInited) {
-      void replace(`/library?id=${LIST_IDS.LOVE}`)
+    if (!$userListInited) return
+    if (id && $userListsAll.some((l) => l.id == id)) {
+      void saveListPrevSelectId(id)
+    } else {
+      void getListPrevSelectId().then((prevId) => {
+        void replace(`/library?id=${prevId || LIST_IDS.LOVE}`)
+      })
     }
   })
 </script>

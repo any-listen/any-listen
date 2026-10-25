@@ -54,43 +54,42 @@ export const LIST_IDS = {
 } as const
 
 export const DATA_KEYS = {
-  viewPrevState: 'viewPrevState',
+  // viewPrevState: 'viewPrevState',
   searchHistoryList: 'searchHistoryList',
-  listScrollPosition: 'listScrollPosition',
   listPrevSelectId: 'listPrevSelectId',
-  listUpdateInfo: 'listUpdateInfo',
+  // listUpdateInfo: 'listUpdateInfo',
   ignoreVersion: 'ignoreVersion',
 
-  topSongsSetting: 'topSongsSetting',
-  songlistSetting: 'songlistSetting',
-  searchSetting: 'searchSetting',
+  // topSongsSetting: 'topSongsSetting',
+  // songlistSetting: 'songlistSetting',
+  // searchSetting: 'searchSetting',
 
   lastStartInfo: 'lastStartInfo',
 } as const
 
-export const DEFAULT_SETTING = {
-  topSongs: {
-    source: 'kw',
-    boardId: 'kw__16',
-  },
+// export const DEFAULT_SETTING = {
+//   topSongs: {
+//     source: 'kw',
+//     boardId: 'kw__16',
+//   },
 
-  songList: {
-    source: 'kw',
-    sortId: 'new',
-    tagId: '',
-  },
+//   songList: {
+//     source: 'kw',
+//     sortId: 'new',
+//     tagId: '',
+//   },
 
-  search: {
-    temp_source: 'kw',
-    source: 'all',
-    type: 'music',
-  },
+//   search: {
+//     temp_source: 'kw',
+//     source: 'all',
+//     type: 'music',
+//   },
 
-  viewPrevState: {
-    url: '/search',
-    query: {},
-  },
-}
+//   viewPrevState: {
+//     url: '/search',
+//     query: {},
+//   },
+// }
 
 export const DOWNLOAD_STATUS = {
   RUN: 'run',
