@@ -1,13 +1,13 @@
 <!--- @lang: en-us -->
 
-### Fixed
+### Changed
 
-- Fixed a build failure.
+- Desktop lyrics now use **Multi-line Lyrics** mode by default.
 
 ---
 
 <!--- @lang: zh-cn -->
 
-### 修复
+### 变更
 
-- 修复构建失败。
+- 桌面歌词默认使用 **「多行歌词」** 模式。

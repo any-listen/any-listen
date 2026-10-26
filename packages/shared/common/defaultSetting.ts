@@ -79,7 +79,7 @@ const defaultSetting: AnyListen.AppSetting = {
   'desktopLyric.pauseHide': true,
   'desktopLyric.isLockScreen': true,
   'desktopLyric.isHoverHide': false,
-  'desktopLyric.mode': 'classic',
+  'desktopLyric.mode': 'multiLine',
 
   'desktopLyric.classic.x': null,
   'desktopLyric.classic.y': null,
