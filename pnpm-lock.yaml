@@ -69,8 +69,8 @@ importers:
         specifier: workspace:@shared/types@*
         version: link:../shared/types
       electron:
-        specifier: 42.11.18
-        version: 42.11.18
+        specifier: ^43.8.3
+        version: 43.8.3
       electron-builder:
         specifier: 26.18.0
         version: 26.18.0(electron-builder-squirrel-windows@26.18.0)
@@ -111,8 +111,8 @@ importers:
         specifier: ^0.7.3
         version: 0.7.3
       jschardet:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^4.1.0
+        version: 4.1.0
       jsonschema:
         specifier: ^1.5.0
         version: 1.5.0
@@ -237,11 +237,11 @@ importers:
         specifier: ^0.7.3
         version: 0.7.3
       jschardet:
-        specifier: ^4.0.0
-        version: 4.0.0
+        specifier: ^4.1.0
+        version: 4.1.0
       music-metadata:
-        specifier: ^12.3.0
-        version: 12.3.0
+        specifier: ^12.3.2
+        version: 12.3.2
       tar:
         specifier: ^7.5.22
         version: 7.5.22
@@ -2170,8 +2170,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@42.11.18:
-    resolution: {integrity: sha512-hbzodG06x/l7uq+oeyob5ugv6qZBmJRWC7Uto5QEE99xSHUARz6d+++Rz+79T/ssTYTQkONW4ciTTcJuAbXKIQ==}
+  electron@43.8.3:
+    resolution: {integrity: sha512-KgvSm3bHXz96hSXzqxyRjLeli80rIdszbDQFKlRSfckmGazTPCH/CxUN31Dp9c5rFKTQSNf9gPJRWl1yWNB3pA==}
     engines: {node: '>= 22.12.0'}
     hasBin: true
 
@@ -2953,8 +2953,8 @@ packages:
     resolution: {integrity: sha512-paNr4LFIFPjeeSmwNYdrb8FafLLG/Cr2Af3GjbsHJ5CxIjH4r0c2emlmRdAtpPAieP1gRVzk6buBbVP5gBMGAg==}
     hasBin: true
 
-  jschardet@4.0.0:
-    resolution: {integrity: sha512-EsNiLV+xzeMBtkGL/HeWoUivNkGIr8JmaC5A5j7DBlKnhp4CcBTWKEOtNg6vlmf+mkn9yQ9Wals47u7+LoTr7w==}
+  jschardet@4.1.0:
+    resolution: {integrity: sha512-ighRZ11mb6l4m+xSKoivuqNj44qkObODXsAnnkkfYcY4JfYRnEgAe/w1c3mbnJtTQmLtfebAUfXGsUGUJImexg==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -3354,8 +3354,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  music-metadata@12.3.0:
-    resolution: {integrity: sha512-2psGX4VkpdtzoaEGdGWC7paJ0WC2iP0p4qTYIx1B206aCq0kTmwlfhWbLGQVBygmr63kVntehxzapPsHLeJXtg==}
+  music-metadata@12.3.2:
+    resolution: {integrity: sha512-U+Wu8c/7xa8wP331oVuRTAJSHcEWQIkLjpuyRJG+CAIszGYhpr5CRDv6PqkkVHDoX3ndjmdJlB6S49AaLq8SbQ==}
     engines: {node: '>=22'}
 
   nanoid@3.3.20:
@@ -6066,7 +6066,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@42.11.18:
+  electron@43.8.3:
     dependencies:
       '@electron-internal/extract-zip': 1.0.6
       '@electron/get': 5.1.0
@@ -7011,7 +7011,7 @@ snapshots:
     dependencies:
       argparse: 3.0.4
 
-  jschardet@4.0.0: {}
+  jschardet@4.1.0: {}
 
   json-buffer@3.0.1: {}
 
@@ -7377,7 +7377,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  music-metadata@12.3.0:
+  music-metadata@12.3.2:
     dependencies:
       '@borewit/text-codec': 0.2.2
       '@tokenizer/token': 0.3.0
