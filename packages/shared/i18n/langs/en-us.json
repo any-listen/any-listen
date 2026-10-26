@@ -809,6 +809,8 @@
   "tray.music_singer": "Artist: ",
   "tray.show_statusbar_lyric": "Show status bar lyrics",
   "update.checking_failed": "❌ Check for update failed: {msg}",
+  "update.not_supported_on_mac": "The MacOS editions does not support automatic updates, please download the installation package update manually.",
+  "update.not_supported_on_windows_legacy": "Windows legacy editions do not support automatic updates, please download the installation package updates manually.",
   "update.update_failed": "❌ Update failed: {msg}",
   "update_download_failed_tip": "❌ Failed to download update: {msg}",
   "update_failed_tip": "Automatically downloading of the new version failed. You can try to download the update again or manually download the update.\n\nThe address of the new version is written under the update pop-up window. Download the new version and directly overwrite the installation. If the installation fails, please refer to the common problems to solve it.\n\nNote: Currently, only the Windows installation version can be automatically updated (Linux's AppImage and deb versions also seem to be OK, not tested). Please download and update other versions manually!",

@@ -808,6 +808,8 @@
   "tray.music_singer": "艺术家：",
   "tray.show_statusbar_lyric": "显示状态栏歌词",
   "update.checking_failed": "❌ 检查更新失败：{msg}",
+  "update.not_supported_on_mac": "MacOS 版不支持自动更新，请手动下载安装包更新",
+  "update.not_supported_on_windows_legacy": "Windows 遗留版不支持自动更新，请手动下载安装包更新",
   "update.update_failed": "❌ 更新失败：{msg}",
   "update_download_failed_tip": "❌ 下载更新失败：{msg}",
   "update_failed_tip": "自动下载新版本失败，你可以尝试重新下载更新或者手动去下载更新。\n新版地址在更新弹窗下面有写，下载新版直接覆盖安装即可，若安装失败则看常见问题解决。\n注意：目前只有 Windows 安装版可以自动更新（Linux 的 AppImage、deb 版似乎也可以，未测试），其他版本请手动下载更新！",

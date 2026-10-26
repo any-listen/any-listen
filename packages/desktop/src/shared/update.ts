@@ -1,5 +1,7 @@
 import { getLatestVersion } from '@any-listen/common/tools'
 
+import { i18n } from '@/i18n'
+
 import { appEvent, appState } from '../app'
 import { checkUpdate, downloadUpdate, initUpdate, restartUpdate } from './electronUpdate'
 import { request } from './request'
@@ -33,7 +35,7 @@ class UpdateEvent {
     if (!targetListeners) this.listeners.set(eventName, (targetListeners = []))
     targetListeners.push(listener as Listener)
     return () => {
-      this.off(eventName, listener as Listener)
+      this.off(eventName, listener)
     }
   }
   emit<T extends keyof EventTypes>(eventName: T, ...[event]: EventTypes[T] extends never ? [] : [event: EventTypes[T]]) {
@@ -138,8 +140,15 @@ export class Update extends UpdateEvent {
 
     return this.checkUpdateStatus(isAutoUpdate)
   }
-  // eslint-disable-next-line @typescript-eslint/class-methods-use-this
   async downloadUpdate() {
+    if (import.meta.env.VITE_IS_MAC) {
+      this.emit('error', new Error(i18n.t('update.not_supported_on_mac')))
+      return
+    }
+    if (import.meta.env.VITE_IS_WINDOWS_LEGACY) {
+      this.emit('error', new Error(i18n.t('update.not_supported_on_windows_legacy')))
+      return
+    }
     await downloadUpdate()
   }
   async isUpdateAvailable() {

@@ -62,9 +62,18 @@ export const checkUpdate = async (allowPrerelease: boolean) => {
 }
 
 export const downloadUpdate = async () => {
-  if (!autoUpdater.isUpdaterActive()) {
-    update.emit('error', new Error('No update available'))
-    return
+  try {
+    if (!autoUpdater.isUpdaterActive()) {
+      update.emit('error', new Error('No update available'))
+      return
+    }
+  } catch (err) {
+    // update.emit('error', err as Error)
+    await autoUpdater.checkForUpdates()
+    if (!autoUpdater.isUpdaterActive()) {
+      update.emit('error', new Error('No update available'))
+      return
+    }
   }
   update.emit('download_progress', { percent: 0, bytesPerSecond: 0, total: 0, transferred: 0, delta: 0 })
   await autoUpdater.downloadUpdate().catch((err: Error) => {

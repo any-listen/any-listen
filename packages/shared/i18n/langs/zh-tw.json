@@ -810,6 +810,8 @@
   "tray.music_singer": "演出者：",
   "tray.show_statusbar_lyric": "顯示狀態欄歌詞",
   "update.checking_failed": "❌ 檢查更新失敗：{msg}",
+  "update.not_supported_on_mac": "MacOS 版不支援自動更新，請手動下載安裝包更新",
+  "update.not_supported_on_windows_legacy": "Windows 遺留版不支援自動更新，請手動下載安裝包更新",
   "update.update_failed": "❌ 更新失敗：{msg}",
   "update_download_failed_tip": "❌ 下載更新失敗：{msg}",
   "update_failed_tip": "自動下載新版本失敗，你可以嘗試重新下載更新或者手動去下載更新。\n新版地址在更新彈窗下面有寫，下載新版直接覆蓋安裝即可，若安裝失敗則看常見問題解決。\n注意：目前只有 Windows 安裝版可以自動更新（Linux 的 AppImage、deb 版似乎也可以，未測試），其他版本請手動下載更新！",
