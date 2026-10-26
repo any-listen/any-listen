@@ -1,4 +1,6 @@
 {
+  "player.play_bar_style_to_mini": "Switch to mini play bar",
+  "player.play_bar_style_exit_mini": "Switch to full play bar (right-click)",
   "app_name": "Any Listen",
   "batch_select": "Bulk selection",
   "batch_select_exit": "Exit multiple selection",

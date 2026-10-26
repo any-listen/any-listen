@@ -7,7 +7,7 @@
   // import CommentBtn from '@/components/common/CommentBtn.svelte'
   import DesktopLyricBtn from '@/components/common/DesktopLyricBtn/index.svelte'
   // import PlaybackRateBtn from '@/components/common/PlaybackRateBtn.svelte'
-
+  import TogglePlayBarStyleBtn from '@/components/common/TogglePlayBarStyleBtn.svelte'
   // import { t } from '@/plugins/i18n'
 </script>
 
@@ -32,6 +32,7 @@
   <VolumeBtn />
   <TogglePlayModeBtn />
   <DesktopLyricBtn />
+  <TogglePlayBarStyleBtn />
   <!-- <PlaybackRateBtn /> -->
   <!-- <SoundEffectBtn /> -->
   <!-- <common-toggle-play-mode-btn />

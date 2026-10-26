@@ -1,4 +1,6 @@
 {
+  "player.play_bar_style_to_mini": "切換到迷你播放欄",
+  "player.play_bar_style_exit_mini": "切換到完整播放欄（右鍵）",
   "app_name": "Any Listen",
   "batch_select": "大量選擇",
   "batch_select_exit": "退出多選",
