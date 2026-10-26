@@ -1,6 +1,6 @@
 <script lang="ts">
   import { t } from '@/plugins/i18n'
-  import Btn from '../../base/Btn.svelte'
+  import Btn from '@/components/base/Btn.svelte'
   import { useSettingValue } from '@/modules/setting/reactive.svelte'
   import { updateSetting } from '@/modules/setting/store/action'
   import { settingState } from '@/modules/setting/store/state'
@@ -16,14 +16,12 @@
 
   const isMini = $derived(barStyle.val === 'mini')
 
-  let btnTitle = $derived(
-    isMini ? $t('player.play_bar_style_exit_mini') : $t('player.play_bar_style_to_mini')
-  )
+  let btnTitle = $derived(isMini ? $t('player.play_bar_style_exit_mini') : $t('player.play_bar_style_to_mini'))
 
   const cycleStyle = async () => {
     const current = settingState.setting['common.playBarProgressStyle']
     // centerControl 系列视为 full 处理
-    const idx = Math.max(0, CYCLE.indexOf((CYCLE.includes(current) ? current : 'full') as BarStyle))
+    const idx = Math.max(0, CYCLE.indexOf(CYCLE.includes(current) ? current : 'full'))
     const next = CYCLE[(idx + 1) % CYCLE.length]
     await updateSetting({ 'common.playBarProgressStyle': next })
   }
@@ -35,13 +33,7 @@
 </script>
 
 <div class="icon">
-  <Btn
-    icon
-    link
-    onclick={cycleStyle}
-    oncontextmenu={backToFull}
-    aria-label={btnTitle}
-  >
+  <Btn icon link onclick={cycleStyle} oncontextmenu={backToFull} aria-label={btnTitle}>
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 0 512 512">
       {#if isMini}
         <!-- 当前处于迷你模式：显示"还原"图标，点击逐步放大 -->
