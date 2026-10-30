@@ -1,5 +1,6 @@
 import { updateSetting } from '@/modules/setting/store/action'
 import { settingState } from '@/modules/setting/store/state'
+import { i18n } from '@/plugins/i18n'
 import { getItem, setItem } from '@/shared/browser/store'
 
 import { playerEvent } from './event'
@@ -49,16 +50,22 @@ export const getMediaDevices = async () => {
 
 export const requestMediaDevicePermission = async () => {
   try {
+    if (!navigator.mediaDevices as unknown as MediaDevices | undefined) {
+      setHasMediaDevicePermission(false)
+      throw new Error(location.protocol == 'http:' ? i18n.t('media_device.httpNotAllowed') : i18n.t('media_device.notAvailable'))
+    }
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
     stream.getTracks().forEach((track) => track.stop())
     setHasMediaDevicePermission(true)
   } catch (err) {
-    console.log('requestMediaDevicePermission error', err)
-    if ((err as DOMException).name === 'NotAllowedError') {
-      setHasMediaDevicePermission(false)
-    } else {
-      setHasMediaDevicePermission(true)
+    switch ((err as DOMException).name) {
+      case 'TypeError':
+      case 'NotAllowedError':
+        setHasMediaDevicePermission(false)
+        throw err
+      default:
+        setHasMediaDevicePermission(true)
+        break
     }
   }
-  return hasDevicePermission
 }
