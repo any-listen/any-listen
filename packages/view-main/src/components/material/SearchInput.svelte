@@ -42,20 +42,45 @@
   let isFocus = false
   let isShowList = false
   let maxHeight = '0'
+  let hideTimer: ReturnType<typeof setTimeout> | undefined
 
+  const clearHideTimer = () => {
+    if (hideTimer != null) {
+      clearTimeout(hideTimer)
+      hideTimer = undefined
+    }
+  }
   const showList = () => {
+    clearHideTimer()
     isShowList = true
     isActive = true
     maxHeight = `${document.body.clientHeight * 0.6}px`
     listStyle = `height: ${domList?.scrollHeight ?? 0}px; max-height: ${maxHeight};`
   }
   const hideList = () => {
+    clearHideTimer()
     isShowList = false
     listStyle = `height: 0; max-height: ${maxHeight};`
     void tick().then(() => {
+      if (isShowList) return
       selectIndex = -1
       isActive = false
     })
+  }
+  const scheduleHideList = () => {
+    clearHideTimer()
+    hideTimer = setTimeout(() => {
+      hideTimer = undefined
+      hideList()
+    }, 80)
+  }
+  const selectListItem = (index: number) => {
+    const item = list[index]
+    if (!item) return
+    // 选中后把焦点还给输入框，避免焦点留在即将收起的候选项上
+    domInput?.focus()
+    onlistclick?.(index, item.id)
+    hideList()
   }
   const handleSearch = () => {
     hideList()
@@ -131,11 +156,12 @@
           isFocus = true
           showList()
         }}
-        onblur={() => {
+        onblur={(evt) => {
+          // 焦点落在候选项上（Tab 或未拦截 mousedown 的情况）时不要收起列表
+          const next = evt.relatedTarget as Node | null
+          if (next && domList?.contains(next)) return
           isFocus = false
-          setTimeout(() => {
-            hideList()
-          }, 80)
+          scheduleHideList()
         }}
         oninput={(evt) => {
           text = (evt.target as HTMLInputElement).value
@@ -180,6 +206,19 @@
         bind:this={domList}
         role="list"
         class="list"
+        onmousedown={(evt) => {
+          if (evt.button !== 0) return
+          // 取消可能已排队的收起，保持输入框焦点，避免高度收缩把底部候选项裁掉
+          clearHideTimer()
+          evt.preventDefault()
+        }}
+        onfocusin={clearHideTimer}
+        onfocusout={(evt) => {
+          const next = evt.relatedTarget as Node | null
+          if (next && domList?.contains(next)) return
+          isFocus = false
+          scheduleHideList()
+        }}
         onmouseleave={() => {
           selectIndex = -1
         }}
@@ -192,7 +231,7 @@
             aria-label={item.title}
             onkeydown={(evt) => {
               if (evt.key === 'Enter') {
-                onlistclick?.(index, item.id)
+                selectListItem(index)
               }
             }}
             class:select={selectIndex === index}
@@ -201,7 +240,7 @@
             }}
             onclick={(evt) => {
               evt.stopPropagation()
-              onlistclick?.(index, item.id)
+              selectListItem(index)
             }}
           >
             {#if item.label}

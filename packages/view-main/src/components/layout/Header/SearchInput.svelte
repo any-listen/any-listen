@@ -40,8 +40,9 @@
     return workers.main.searchCommand(cmds, command)
   }
   const tipSearch = debounce(async (text: string) => {
+    // 已提交或已选中候选项时，丢弃这次延迟触发的搜索
+    if (submitted) return
     currentText = text
-    submitted = false
     if (onlineResourceAvailable.val) {
       if (!text) {
         isCommandMode ||= false
@@ -92,6 +93,8 @@
   }
 
   const handleListClick = (index: number, text: string) => {
+    // 选中候选项后忽略仍在途的 tipSearch 结果，避免下拉被迟到结果重新打开
+    submitted = true
     if (isCommandMode) {
       const command = text
       void executeCommand(command)
@@ -144,6 +147,8 @@
     const unseb = commandEvent.register('run', async () => {
       searchInput?.focus()
       searchInput?.setText('> ')
+      currentText = '>'
+      submitted = false
       tipSearch('>')
     })
     const unseb2 = commandEvent.register('focusSearchInput', async () => {
@@ -163,7 +168,11 @@
   placeholder={$t('search.placeholder')}
   bind:this={searchInput}
   oninput={(text: string) => {
-    tipSearch(text.trim())
+    const value = text.trim()
+    // 立即更新，使在途的旧搜索请求因 currentText 不匹配而被丢弃
+    currentText = value
+    submitted = false
+    tipSearch(value)
   }}
   onsubmit={handleSubmit}
   onlistclick={handleListClick}
