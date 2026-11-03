@@ -133,8 +133,11 @@ const overrideListScrollInfo = async (ids: string[]) => {
   saveListScrollInfoThrottle()
 }
 
-const updateSongCount = async (listIds: string[]) => {
+const waitUpdateListIds = new Set<string>()
+const updateSongCountThrottle = throttle(async () => {
   let updatedLists: AnyListen.List.MyListInfo[] = []
+  const listIds = Array.from(waitUpdateListIds)
+  waitUpdateListIds.clear()
   const targetLists = await dbService.getListInfos(listIds)
   for (const targetList of targetLists) {
     if (targetList) updatedLists.push(targetList)
@@ -142,6 +145,10 @@ const updateSongCount = async (listIds: string[]) => {
   if (updatedLists.length) {
     void musicListEvent.listAction({ action: 'list_update', data: { lists: updatedLists, sync: true } })
   }
+}, 500)
+const updateSongCount = async (listIds: string[]) => {
+  for (const id of listIds) waitUpdateListIds.add(id)
+  updateSongCountThrottle()
 }
 export const sendMusicListAction = async (action: AnyListen.IPCList.ActionList) => {
   await musicListEvent.listAction(action)
