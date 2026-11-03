@@ -30,9 +30,15 @@ export const encodePath = (path: string) => pathToFileURL(path).href
  * @param path 路径
  * @param read 只检查读取
  */
+export const checkPathWithError = async (path: string, read = false) =>
+  fs.promises.access(path, read ? fs.constants.R_OK : fs.constants.R_OK | fs.constants.W_OK)
+/**
+ * 检查路径是否存在
+ * @param path 路径
+ * @param read 只检查读取
+ */
 export const checkPath = async (path: string, read = false) =>
-  fs.promises
-    .access(path, read ? fs.constants.R_OK : fs.constants.R_OK | fs.constants.W_OK)
+  checkPathWithError(path, read)
     .then(() => true)
     .catch(() => false)
 

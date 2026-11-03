@@ -2,11 +2,7 @@
 
 ### Fixed
 
-- Fixed an issue where using the keyboard shortcut to open Search unexpectedly activated list multi-selection mode.
-
-### Changed
-
-- Desktop lyrics now use **Multi-line Lyrics** mode by default.
+- Fixed an issue with checking the availability of local playlist paths.
 
 ---
 
@@ -14,8 +10,4 @@
 
 ### 修复
 
-- 修复使用快捷键打开搜索时意外进入列表多选模式的问题。
-
-### 变更
-
-- 桌面歌词默认使用 **「多行歌词」** 模式。
+- 修复本地列表路径可用性检查异常的问题。

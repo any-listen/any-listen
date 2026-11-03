@@ -1,8 +1,8 @@
-import chokidar from 'chokidar'
-import type { EventName } from 'chokidar/handler.js'
+import chokidar, { type FSWatcherEventMap } from 'chokidar'
 
 import { isMusicFile } from './music'
 
+type EventName = FSWatcherEventMap['all']['0']
 export type FileAction = Extract<EventName, 'add' | 'change' | 'unlink'>
 // export type FileAction = 'add' | 'change' | 'unlink'
 export const watchMusicDir = (

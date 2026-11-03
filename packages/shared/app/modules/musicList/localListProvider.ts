@@ -1,5 +1,5 @@
 import { throttle } from '@any-listen/common/utils'
-import { checkPath } from '@any-listen/nodejs'
+import { checkPathWithError } from '@any-listen/nodejs'
 import type { FileAction } from '@any-listen/nodejs/watcher'
 
 import { getSettings, showMessageBox, t } from '../../common'
@@ -12,12 +12,12 @@ import { musicListEvent } from './event'
 import { sendMusicListAction } from './index'
 
 export const verifyLocalListCreate = async (info: AnyListen.List.LocalListInfo) => {
-  await checkPath(info.meta.path, true)
+  await checkPathWithError(info.meta.path, true)
 }
 
 export const verifyLocalListUpdate = async (info: AnyListen.List.LocalListInfo) => {
   if (info.meta.deviceId !== getDeviceId()) return
-  await checkPath(info.meta.path, true)
+  await checkPathWithError(info.meta.path, true)
 }
 
 export const verifyLocalListMusicRemove = async (
@@ -234,7 +234,7 @@ const syncList = async (list: AnyListen.List.LocalListInfo) => {
     if (targetWatch[0] === list.meta.path) return
     await removeWatcher(list.id)
   }
-  await checkPath(list.meta.path, true)
+  await checkPathWithError(list.meta.path, true)
   let promiseFuncs: [() => void, (err: Error) => void]
   const promise = new Promise<void>((resolve, reject) => {
     promiseFuncs = [resolve, reject]
