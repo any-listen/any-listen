@@ -17,13 +17,13 @@
     "@any-listen/theme": "workspace:@shared/theme@*",
     "@any-listen/web": "workspace:@shared/web@*",
     "@koa/cors": "^5.0.0",
-    "@koa/router": "^15.7.0",
+    "@koa/router": "^15.7.1",
     "better-sqlite3": "^13.0.3",
     "jsonwebtoken": "^9.0.3",
-    "koa": "^3.2.1",
+    "koa": "^3.3.0",
     "log4js": "6.9.1",
     "message2call": "^2.0.3",
-    "ws": "^8.22.0"
+    "ws": "^8.22.1"
   },
   "devDependencies": {
     "@any-listen/eslint": "workspace:@shared/eslint@*",
