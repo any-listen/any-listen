@@ -148,7 +148,8 @@
       void saveListPrevSelectId(id)
     } else {
       void getListPrevSelectId().then((prevId) => {
-        void replace(`/library?id=${prevId || LIST_IDS.LOVE}`)
+        if (!prevId || $userListsAll.every((l) => l.id != prevId)) prevId = LIST_IDS.LOVE
+        void replace(`/library?id=${prevId}`)
       })
     }
   })
