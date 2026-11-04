@@ -3,6 +3,7 @@
 ### Improved
 
 - The app now automatically selects the last-selected playlist on startup ([#401](https://github.com/any-listen/any-listen/issues/401)).
+- Improved the click interaction for items in the dropdown under the top search box ([#415](https://github.com/any-listen/any-listen/issues/415)).
 
 ### Fixed
 
@@ -22,6 +23,7 @@
 ### 优化
 
 - 程序启动时自动选中上次选中的歌单（[#401](https://github.com/any-listen/any-listen/issues/401)）。
+- 优化顶部搜索框下拉列表项的点击交互体验（[#415](https://github.com/any-listen/any-listen/issues/415)）。
 
 ### 修复
 

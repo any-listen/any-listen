@@ -39,9 +39,8 @@
     }
     return workers.main.searchCommand(cmds, command)
   }
-  const tipSearch = debounce(async (text: string) => {
-    currentText = text
-    submitted = false
+  const handleTipSearch = debounce(async (text: string) => {
+    if (submitted) return
     if (onlineResourceAvailable.val) {
       if (!text) {
         isCommandMode ||= false
@@ -71,6 +70,11 @@
       searchInput?.setList(list.map((item) => ({ title: item, id: item })))
     })
   }, 50)
+  const tipSearch = (text: string) => {
+    currentText = text
+    submitted = false
+    handleTipSearch(text)
+  }
 
   const handleSubmit = (text: string) => {
     if (!onlineResourceAvailable.val) return
@@ -92,6 +96,7 @@
   }
 
   const handleListClick = (index: number, text: string) => {
+    submitted = true
     if (isCommandMode) {
       const command = text
       void executeCommand(command)

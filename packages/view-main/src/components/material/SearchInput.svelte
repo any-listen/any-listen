@@ -42,8 +42,14 @@
   let isFocus = false
   let isShowList = false
   let maxHeight = '0'
+  let delayHideTimeout: number | null = null
 
   const showList = () => {
+    if (delayHideTimeout) {
+      clearTimeout(delayHideTimeout)
+      delayHideTimeout = null
+    }
+    isFocus = true
     isShowList = true
     isActive = true
     maxHeight = `${document.body.clientHeight * 0.6}px`
@@ -56,6 +62,14 @@
       selectIndex = -1
       isActive = false
     })
+  }
+  const delayHideList = () => {
+    isFocus = false
+    if (delayHideTimeout) clearTimeout(delayHideTimeout)
+    delayHideTimeout = setTimeout(() => {
+      delayHideTimeout = null
+      hideList()
+    }, 50)
   }
   const handleSearch = () => {
     hideList()
@@ -127,16 +141,8 @@
         bind:this={domInput}
         bind:value={text}
         {placeholder}
-        onfocus={() => {
-          isFocus = true
-          showList()
-        }}
-        onblur={() => {
-          isFocus = false
-          setTimeout(() => {
-            hideList()
-          }, 80)
-        }}
+        onfocus={showList}
+        onblur={delayHideList}
         oninput={(evt) => {
           text = (evt.target as HTMLInputElement).value
           oninput?.(text)
@@ -195,6 +201,8 @@
                 onlistclick?.(index, item.id)
               }
             }}
+            onfocus={showList}
+            onblur={delayHideList}
             class:select={selectIndex === index}
             onmouseenter={() => {
               selectIndex = index
