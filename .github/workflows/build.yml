@@ -59,7 +59,9 @@ jobs:
 
   desktop-win:
     name: Desktop (Windows, unpacked)
-    runs-on: windows-latest
+    # windows-latest currently ships a Visual Studio version that node-gyp cannot
+    # detect, which breaks the better-sqlite3 native build the packaged app needs
+    runs-on: windows-2022
     steps:
       - name: Checkout
         uses: actions/checkout@v4
