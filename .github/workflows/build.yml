@@ -1,0 +1,99 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - feat/lx-music-sync
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # electron-builder should never try to sign on CI
+  CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+jobs:
+  web-server:
+    name: Web server bundle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Ensure better-sqlite3 binding
+        run: node .github/scripts/ensure-sqlite-binding.cjs
+
+      - name: Build web server
+        run: pnpm build:web
+
+      - name: Verify the lx-sync extension is bundled
+        run: |
+          set -euo pipefail
+          bundle=build/server/extension-service.worker.js
+          test -f "$bundle"
+          grep -q "internal.lx-sync" "$bundle"
+          grep -q "dislike_sync_get_list_data" "$bundle"
+          echo "lx-sync extension is present in $bundle"
+
+      - name: Upload web server bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: any-listen-web-server
+          path: build
+          if-no-files-found: error
+
+  desktop-win:
+    name: Desktop (Windows, unpacked)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Ensure better-sqlite3 binding
+        run: node .github/scripts/ensure-sqlite-binding.cjs
+
+      - name: Build unpacked desktop app
+        run: pnpm build:dir
+
+      - name: Verify the lx-sync extension is bundled
+        shell: pwsh
+        run: |
+          $bundle = 'packages/desktop/dist/electron/extension-service.worker.js'
+          if (-not (Test-Path $bundle)) { throw "missing $bundle" }
+          if (-not (Select-String -Path $bundle -Pattern 'internal.lx-sync' -Quiet)) { throw 'lx-sync extension is not bundled' }
+          if (-not (Select-String -Path $bundle -Pattern 'dislike_sync_get_list_data' -Quiet)) { throw 'dislike sync is not bundled' }
+          Write-Output "lx-sync extension is present in $bundle"
+
+      - name: Upload unpacked desktop app
+        uses: actions/upload-artifact@v4
+        with:
+          name: any-listen-desktop-win-unpacked
+          path: build/win-unpacked
+          if-no-files-found: error
