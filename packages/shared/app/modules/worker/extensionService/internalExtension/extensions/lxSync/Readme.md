@@ -39,22 +39,30 @@ The user name of `LX_USER_anylisten` is `anylisten`, its password is `change-me`
 
 ## Client side
 
-1. Enable the `LX Music Sync` extension (internal extensions are loaded automatically, the settings are under `Settings → Extension Settings → LX Music Sync`).
+1. Internal extensions are loaded automatically, the settings are under `Settings → Extension Settings → LX Music Sync`.
 2. Fill in the server address, the connection code (the password from `LX_USER_xxx`) and a device name.
-3. Keep `Auto sync` enabled so the client connects on startup.
+3. Tick `Enable sync`. The connection settings become read-only while sync is on, so untick it to edit them again.
 
 ### Settings
 
 | Field              | Description                                                                  |
 | ------------------ | ---------------------------------------------------------------------------- |
+| `enabled`          | Connect to the sync server right away; untick to disconnect                  |
 | `serverUrl`        | Base address of the sync server, e.g. `http://192.168.1.10:9527`             |
 | `authCode`         | Password of the server user (`LX_USER_xxx`), used only for the first pairing |
 | `deviceName`       | Name shown on the other devices                                              |
 | `syncMode`         | How local and remote lists are merged when both sides have data              |
-| `autoSync`         | Connect on startup and keep the connection for real-time updates             |
 | `autoSyncInterval` | Reconnect + sync interval in minutes, `0` disables the periodic sync         |
 
+All fields except `enabled` use `disabledWhen: { field: 'enabled', value: true }`, the extension host resolves it and greys the fields out. Changes are applied immediately (no restart): turning the switch off disconnects, turning it on reconnects, and editing a connection field reconnects with the new value.
+
 `syncMode` values: `merge_local_remote` (merge, local order wins), `merge_remote_local` (merge, remote order wins), `overwrite_local_remote` (push local to the server), `overwrite_remote_local` (pull the server list over the local one).
+
+### Feedback
+
+- A dialog confirms the connection once it is established (`Connected to "<server name>"`).
+- A failure opens a dialog with the reason, translated into an actionable sentence: unsupported protocol, unreachable host or wrong port, DNS failure, timeout, blocked IP, wrong connection code, missing connection code or a response that does not look like the sync server.
+- The same reason is only reported once, so the reconnect backoff does not spam the user; it is reported again only when the state goes back to healthy and fails again.
 
 ### Commands
 

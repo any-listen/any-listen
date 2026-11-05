@@ -1,6 +1,7 @@
+import { extensionEvent } from '../../../event'
 import type { ExtensionContext, ExtensionHostContext } from '../type'
 import { LxSyncClient } from './client'
-import type { SyncClientStatusInfo } from './client'
+import type { SyncClientStatus, SyncClientStatusInfo } from './client'
 import {
   applyLxDislikeAction,
   applyLxListAction,
@@ -29,11 +30,19 @@ export const pkg: AnyListen.Extension.Manifest = {
   contributes: {
     settings: [
       {
+        field: 'enabled',
+        name: 't(exts.lx-sync.form.enabled.name)',
+        description: 't(exts.lx-sync.form.enabled.description)',
+        type: 'boolean',
+        default: false,
+      },
+      {
         field: 'serverUrl',
         name: 't(exts.lx-sync.form.serverUrl.name)',
         description: 't(exts.lx-sync.form.serverUrl.description)',
         type: 'input',
         default: '',
+        disabledWhen: { field: 'enabled', value: true },
       },
       {
         field: 'authCode',
@@ -41,6 +50,7 @@ export const pkg: AnyListen.Extension.Manifest = {
         description: 't(exts.lx-sync.form.authCode.description)',
         type: 'input',
         default: '',
+        disabledWhen: { field: 'enabled', value: true },
       },
       {
         field: 'deviceName',
@@ -48,6 +58,7 @@ export const pkg: AnyListen.Extension.Manifest = {
         description: 't(exts.lx-sync.form.deviceName.description)',
         type: 'input',
         default: '',
+        disabledWhen: { field: 'enabled', value: true },
       },
       {
         field: 'syncMode',
@@ -55,6 +66,7 @@ export const pkg: AnyListen.Extension.Manifest = {
         description: 't(exts.lx-sync.form.syncMode.description)',
         type: 'selection',
         default: 'merge_local_remote',
+        disabledWhen: { field: 'enabled', value: true },
         enum: ['merge_local_remote', 'merge_remote_local', 'overwrite_local_remote', 'overwrite_remote_local'],
         enumName: [
           't(exts.lx-sync.form.syncMode.merge_local_remote)',
@@ -64,18 +76,12 @@ export const pkg: AnyListen.Extension.Manifest = {
         ],
       },
       {
-        field: 'autoSync',
-        name: 't(exts.lx-sync.form.autoSync.name)',
-        description: 't(exts.lx-sync.form.autoSync.description)',
-        type: 'boolean',
-        default: true,
-      },
-      {
         field: 'autoSyncInterval',
         name: 't(exts.lx-sync.form.autoSyncInterval.name)',
         description: 't(exts.lx-sync.form.autoSyncInterval.description)',
         type: 'input',
         default: '30',
+        disabledWhen: { field: 'enabled', value: true },
       },
     ],
     commands: [
@@ -94,11 +100,11 @@ export const pkg: AnyListen.Extension.Manifest = {
 }
 
 interface SyncConfig {
+  enabled: boolean
   serverUrl: string
   authCode: string
   deviceName: string
   syncMode: LxSyncMode
-  autoSync: boolean
   autoSyncInterval: number
 }
 
@@ -112,26 +118,37 @@ let uploading = false
 let syncedListData: LxListData | undefined
 /** Snapshot of the dislike rules that the sync server already knows about */
 let syncedDislikeRules: string | undefined
+/** Name of the connected sync server, used in the status messages */
+let serverName = ''
+/** Last reported client status, used to detect transitions worth notifying about */
+let lastStatus: SyncClientStatus = 'idle'
+/** Reason of the last reported error, avoids repeating the same dialog */
+let lastErrorReason = ''
 
 /** How often local list changes are pushed to the sync server */
 const LOCAL_UPLOAD_INTERVAL = 15_000
 
+/** Config fields that require a new connection when they change */
+const CONNECTION_FIELDS = ['serverUrl', 'authCode', 'deviceName', 'syncMode']
+
 const getConfig = async (): Promise<SyncConfig> => {
-  const configs = await hostContext.getConfigs<[string?, string?, string?, string?, boolean?, string?]>([
+  const configs = await hostContext.getConfigs<[boolean?, string?, string?, string?, string?, string?, boolean?]>([
+    'enabled',
     'serverUrl',
     'authCode',
     'deviceName',
     'syncMode',
-    'autoSync',
     'autoSyncInterval',
+    // Pre-0.0.2 switch, kept so existing installs do not silently reconnect differently
+    'autoSync',
   ])
-  const [serverUrl, authCode, deviceName, syncMode, autoSync, autoSyncInterval] = configs
+  const [enabled, serverUrl, authCode, deviceName, syncMode, autoSyncInterval, legacyAutoSync] = configs
   return {
+    enabled: enabled ?? legacyAutoSync ?? false,
     serverUrl: (serverUrl ?? '').trim(),
     authCode: (authCode ?? '').trim(),
     deviceName: (deviceName ?? '').trim() || DEFAULT_DEVICE_NAME,
     syncMode: (syncMode as LxSyncMode | undefined) ?? 'merge_local_remote',
-    autoSync: autoSync ?? true,
     autoSyncInterval: Math.max(0, Number.parseInt(autoSyncInterval ?? '30', 10) || 0),
   }
 }
@@ -217,6 +234,84 @@ const scheduleUpload = () => {
   uploadTimer.unref()
 }
 
+const t = (key: string, params?: Record<string, string>): string =>
+  // The host types the translation keys as a literal union of the built-in messages, the extension own keys are not part of it
+  (hostContext.i18n.t as unknown as (key: string, params?: Record<string, string>) => string)(`exts.lx-sync.${key}`, params)
+
+/**
+ * Collect the error codes of the whole cause chain.
+ * `fetch()` only reports a generic `TypeError: fetch failed`, the real reason (`ECONNREFUSED`,
+ * `ENOTFOUND`, ...) sits on `cause`, and a host with both IPv4 and IPv6 reports an `AggregateError`.
+ */
+const collectErrorCodes = (error: unknown): string[] => {
+  const codes: string[] = []
+  const pending: unknown[] = [error]
+  for (let depth = 0; pending.length && depth < 10; depth++) {
+    const current = pending.shift()
+    if (!current || typeof current != 'object') continue
+    const { code, cause, errors } = current as { code?: unknown; cause?: unknown; errors?: unknown }
+    if (typeof code == 'string' && !codes.includes(code)) codes.push(code)
+    if (cause) pending.push(cause)
+    if (Array.isArray(errors)) pending.push(...(errors as unknown[]))
+  }
+  return codes
+}
+
+/** Translate an unknown error into a message the user can act on */
+const describeError = (error: unknown): string => {
+  const message = error instanceof Error ? error.message : String(error)
+  const codes = collectErrorCodes(error)
+  if (codes.includes('ECONNREFUSED')) return t('err.refused')
+  if (codes.includes('ENOTFOUND') || codes.includes('EAI_AGAIN')) return t('err.dns')
+  if (codes.includes('ETIMEDOUT') || codes.includes('UND_ERR_CONNECT_TIMEOUT')) return t('err.timeout')
+  if (message.includes('Invalid server response')) return t('err.invalid_response', { detail: message })
+  if (message.includes('Failed to get server id')) return t('err.invalid_server_id')
+  if (message.includes('Unsupported server protocol')) return t('err.unsupported_protocol')
+  if (message.includes('This IP has been blocked')) return t('err.blocked_ip')
+  if (message.includes('Authentication failed')) return t('err.auth_failed')
+  if (message.includes('Connection code is required')) return t('err.auth_code_required')
+  if (message.includes('Please configure the sync server url')) return t('err.url_required')
+  if (message.includes('Websocket is not connected')) return t('err.connection_lost')
+  return t('err.unknown', { detail: message })
+}
+
+/** Show a dialog that stays open until the user closes it */
+const showDialog = async (type: 'info' | 'error', title: string, message: string) => {
+  try {
+    await hostContext.showMessage(message, {
+      type,
+      title,
+      modal: true,
+      buttons: [{ text: t('button.ok') }],
+    })
+  } catch (error) {
+    hostContext.logcat.warn('[lx-sync] failed to show the message dialog', error)
+  }
+}
+
+const handleStatusChange = (info: SyncClientStatusInfo) => {
+  const previous = lastStatus
+  lastStatus = info.status
+  hostContext.logcat.info(`[lx-sync] status: ${info.status}${info.message ? ` - ${info.message}` : ''}`)
+  if (info.status != 'connected') return
+  lastErrorReason = ''
+  // Every session goes connecting -> connected -> syncing -> connected, so only notify on a real (re)connect
+  if (previous != 'syncing') {
+    void showDialog('info', t('notify.connected.title'), t('notify.connected.message', { name: serverName || '-' }))
+  }
+}
+
+const handleClientError = (error: Error) => {
+  hostContext.logcat.error('[lx-sync]', error)
+  lastStatus = 'error'
+  const reason = describeError(error)
+  hostContext.logcat.warn(`[lx-sync] error reason: ${reason}`)
+  // While the client retries with a backoff, do not repeat the same dialog over and over
+  if (reason == lastErrorReason) return
+  lastErrorReason = reason
+  void showDialog('error', t('notify.failed.title'), t('notify.failed.message', { reason }))
+}
+
 const buildHandlers = (config: SyncConfig) => ({
   getEnabledFeatures(): LxEnabledFeatures {
     return { list: { skipSnapshot: false }, dislike: {} }
@@ -270,10 +365,10 @@ const buildHandlers = (config: SyncConfig) => ({
     await markDislikeSynced()
   },
   onStatusChange(info: SyncClientStatusInfo) {
-    hostContext.logcat.info(`[lx-sync] status: ${info.status}${info.message ? ` - ${info.message}` : ''}`)
+    handleStatusChange(info)
   },
   onError(error: Error) {
-    hostContext.logcat.error('[lx-sync]', error)
+    handleClientError(error)
   },
 })
 
@@ -293,12 +388,14 @@ const connect = async () => {
     }
   }
   if (!keyInfo) {
-    if (!config.authCode) throw new Error('Please configure the connection code first')
+    if (!config.authCode) throw new Error('Connection code is required for the first sync')
     const result = await auth(urlInfo, { deviceName: config.deviceName, authCode: config.authCode })
     keyInfo = result.keyInfo
     await saveKeyInfo(keyInfo)
     hostContext.logcat.info(`[lx-sync] authenticated with "${keyInfo.serverName}"`)
   }
+
+  serverName = keyInfo.serverName
 
   client?.stop()
   syncedListData = undefined
@@ -326,11 +423,11 @@ const syncNow = async (reason: string) => {
 const scheduleAutoSync = (config: SyncConfig) => {
   if (autoSyncTimer) clearInterval(autoSyncTimer)
   autoSyncTimer = undefined
-  if (!config.autoSync || config.autoSyncInterval <= 0) return
+  if (!config.enabled || config.autoSyncInterval <= 0) return
   autoSyncTimer = setInterval(
     () => {
       void syncNow('periodic').catch((error: unknown) => {
-        hostContext.logcat.warn('[lx-sync] periodic sync failed', error)
+        handleClientError(error instanceof Error ? error : new Error(String(error)))
       })
     },
     config.autoSyncInterval * 60 * 1000
@@ -338,30 +435,87 @@ const scheduleAutoSync = (config: SyncConfig) => {
   autoSyncTimer.unref()
 }
 
+/** Disconnect and stop every timer, keeping the local data untouched */
+const stopSync = (reason: string) => {
+  if (autoSyncTimer) clearInterval(autoSyncTimer)
+  autoSyncTimer = undefined
+  client?.stop()
+  client = undefined
+  syncedListData = undefined
+  syncedDislikeRules = undefined
+  lastStatus = 'idle'
+  lastErrorReason = ''
+  serverName = ''
+  hostContext.logcat.info(`[lx-sync] sync stopped (${reason})`)
+}
+
+/** Apply the settings the user just changed, without a restart */
+const applyConfigChange = async (keys: string[]) => {
+  const config = await getConfig()
+  if (!config.enabled) {
+    stopSync('disabled')
+    return
+  }
+  const needsReconnect = !client || keys.some((key) => CONNECTION_FIELDS.includes(key))
+  scheduleAutoSync(config)
+  if (!needsReconnect) return
+  lastErrorReason = ''
+  hostContext.logcat.info(`[lx-sync] settings changed (${keys.join(', ') || 'none'}), reconnecting`)
+  await syncNow('config changed').catch((error: unknown) => {
+    handleClientError(error instanceof Error ? error : new Error(String(error)))
+  })
+}
+
 export const setup = async (
   _extension: AnyListen.Extension.Extension,
   _hostContext: ExtensionHostContext
 ): Promise<ExtensionContext> => {
   hostContext = _hostContext
+  const [storedEnabled] = await hostContext.getConfigs<[boolean?]>(['enabled'])
   const config = await getConfig()
-  hostContext.logcat.info(`[lx-sync] extension loaded, server url: ${config.serverUrl || '(not set)'}`)
-  scheduleAutoSync(config)
+  // Installs created before the enable switch keep their state in the old `autoSync` flag,
+  // persist the migrated value so the settings page shows the switch in the right position
+  if (storedEnabled == undefined && config.enabled) {
+    // Written before the change listener is registered, so this does not trigger a reconnect
+    await hostContext.setConfigs({ enabled: true })
+  }
+  hostContext.logcat.info(
+    `[lx-sync] extension loaded, enabled: ${config.enabled}, server url: ${config.serverUrl || '(not set)'}`
+  )
   scheduleUpload()
 
-  if (config.autoSync && config.serverUrl) {
-    void connect().catch((error: unknown) => {
-      hostContext.logcat.warn('[lx-sync] initial connect failed', error)
+  // Settings are applied immediately, so enabling or disabling does not need a restart
+  extensionEvent.on('extenstionSettingUpdated', (id: string, keys: string[]) => {
+    if (id != pkg.id) return
+    void applyConfigChange(keys).catch((error: unknown) => {
+      hostContext.logcat.warn('[lx-sync] applying settings failed', error)
+    })
+  })
+
+  if (config.enabled) {
+    scheduleAutoSync(config)
+    void syncNow('startup').catch((error: unknown) => {
+      handleClientError(error instanceof Error ? error : new Error(String(error)))
     })
   }
 
   return {
     executeCommand: async (command) => {
       switch (command) {
-        case 'sync-now':
+        case 'sync-now': {
+          const currentConfig = await getConfig()
+          if (!currentConfig.enabled) return 'sync is disabled'
           await syncNow('command')
           return 'ok'
+        }
         case 'sync-status':
-          return client?.status ?? 'not connected'
+          return [
+            client?.status ?? 'not connected',
+            serverName ? `server: ${serverName}` : '',
+            lastErrorReason ? `last error: ${lastErrorReason}` : '',
+          ]
+            .filter(Boolean)
+            .join(' | ')
       }
     },
   }
