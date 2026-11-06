@@ -23,7 +23,7 @@
     "@swc/html": "1.16.2",
     "@types/postcss-pxtorem": "^6.1.0",
     "@types/sortablejs": "^1.15.9",
-    "eslint-plugin-svelte": "^3.23.1",
+    "eslint-plugin-svelte": "^3.24.0",
     "less": "^4.9.1",
     "postcss": "^8.5.32",
     "postcss-pxtorem": "^6.1.0",
@@ -33,9 +33,9 @@
     "stylelint-config-standard-less": "^4.1.0",
     "svelte": "^5.57.3",
     "svelte-check": "^4.7.8",
-    "svelte-eslint-parser": "^1.10.0",
+    "svelte-eslint-parser": "^1.10.1",
     "svelte-preprocess": "6.0.5",
-    "vite": "^8.3.5",
+    "vite": "^8.3.6",
     "vite-plugin-svg-icons": "^2.0.1"
   }
 }
