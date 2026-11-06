@@ -9,6 +9,7 @@ interface Range {
 }
 
 interface Options {
+  noCache?: boolean
   /**
    * expires time, in seconds
    */
@@ -41,11 +42,13 @@ const parseRange = (range: string, total: number): Range | null => {
   return { start, end, total }
 }
 
-const headRequest = (ctx: AnyListen.RequestContext, filepath: string, stats: fs.Stats) => {
+const headRequest = (ctx: AnyListen.RequestContext, filepath: string, stats: fs.Stats, options: Options) => {
   ctx.set('Content-Length', String(stats.size))
   ctx.set('Content-Type', getMimeType(filepath))
   ctx.set('Accept-Ranges', 'bytes')
-  ctx.set('Last-Modified', stats.mtime.toUTCString())
+  if (!options.noCache) {
+    ctx.set('Last-Modified', stats.mtime.toUTCString())
+  }
   ctx.status = 200
 }
 
@@ -60,13 +63,16 @@ const sendFile = (ctx: AnyListen.RequestContext, filepath: string, stats: fs.Sta
   ctx.set('Content-Length', String(stats.size))
   ctx.set('Accept-Ranges', 'bytes')
 
-  ctx.set('Last-Modified', stats.mtime.toUTCString())
-  const directives = [`max-age=${options.maxAge}`]
-  if (options.immutable) directives.push('immutable')
-  if (options.public) directives.push('public')
-  ctx.set('Cache-Control', directives.join(','))
-  ctx.set('Expires', new Date(Date.now() + options.maxAge * 1000).toUTCString())
-
+  if (options.noCache) {
+    ctx.set('Cache-Control', 'no-cache')
+  } else {
+    ctx.set('Last-Modified', stats.mtime.toUTCString())
+    const directives = [`max-age=${options.maxAge}`]
+    if (options.immutable) directives.push('immutable')
+    if (options.public) directives.push('public')
+    ctx.set('Cache-Control', directives.join(','))
+    ctx.set('Expires', new Date(Date.now() + options.maxAge * 1000).toUTCString())
+  }
   ctx.body = fs.createReadStream(filepath)
 }
 
@@ -81,13 +87,17 @@ const streamRange = (
   ctx.set('Content-Type', contentType)
   ctx.set('Content-Length', String(range.end - range.start + 1))
   ctx.set('Accept-Ranges', 'bytes')
-  ctx.set('Last-Modified', stats.mtime.toUTCString())
   ctx.set('Content-Range', `bytes ${range.start}-${range.end}/${range.total}`)
-  const directives = [`max-age=${options.maxAge}`]
-  if (options.immutable) directives.push('immutable')
-  if (options.public) directives.push('public')
-  ctx.set('Cache-Control', directives.join(','))
-  ctx.set('Expires', new Date(Date.now() + options.maxAge * 1000).toUTCString())
+  if (options.noCache) {
+    ctx.set('Cache-Control', 'no-cache')
+  } else {
+    ctx.set('Last-Modified', stats.mtime.toUTCString())
+    const directives = [`max-age=${options.maxAge}`]
+    if (options.immutable) directives.push('immutable')
+    if (options.public) directives.push('public')
+    ctx.set('Cache-Control', directives.join(','))
+    ctx.set('Expires', new Date(Date.now() + options.maxAge * 1000).toUTCString())
+  }
   // ctx.set('Cache-Control', 'no-cache')
   ctx.status = 206
   ctx.body = body
@@ -125,7 +135,7 @@ export const handleRequest = async (ctx: AnyListen.RequestContext, filepath: str
   if (!stat) return
 
   if (ctx.method == 'HEAD') {
-    headRequest(ctx, filepath, stat)
+    headRequest(ctx, filepath, stat, options)
     return
   }
 
@@ -151,5 +161,6 @@ export const sendFileStream = async (ctx: AnyListen.RequestContext, filepath: st
     immutable: options.immutable ?? false,
     public: options.public ?? false,
     maxAge: options.maxAge ?? 0,
+    noCache: options.noCache ?? false,
   })
 }

@@ -7,6 +7,7 @@
 ### Fixed
 
 - Fixed an issue where songs could not be read when local file names contained `?` ([#420](https://github.com/any-listen/any-listen/issues/420)).
+- Fixed an issue where frontend assets might not be updated on the first visit after an update.
 
 ---
 
@@ -19,3 +20,4 @@
 ### 修复
 
 - 修复本地文件名包含 `?` 时歌曲无法读取的问题（[#420](https://github.com/any-listen/any-listen/issues/420)）。
+- 修复更新后首次访问时前端资源可能未更新的问题。

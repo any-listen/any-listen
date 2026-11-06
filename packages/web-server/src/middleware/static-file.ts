@@ -29,12 +29,17 @@ export default async (ctx: AnyListen.RequestContext, next: AnyListen.Next): Prom
       if (path.endsWith('/')) path += 'index.html'
       const filePath = joinPath(publicDir, path)
       if (filePath.startsWith(publicDir)) {
-        return sendFileStream(ctx, filePath, {
-          hidden: false,
-          maxAge,
-          immutable: true,
-          public: true,
-        })
+        return sendFileStream(
+          ctx,
+          filePath,
+          path.endsWith('.html')
+            ? { noCache: true }
+            : {
+                maxAge,
+                immutable: true,
+                public: true,
+              }
+        )
       }
     }
   }
