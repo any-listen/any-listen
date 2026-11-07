@@ -32,6 +32,9 @@ const options = {
     buildResources: './resources',
     output: path.join(rootPath, 'build'),
   },
+  toolsets: {
+    appimage: '1.0.3',
+  },
   files: [
     '!node_modules/**/*',
     'node_modules/font-list',
