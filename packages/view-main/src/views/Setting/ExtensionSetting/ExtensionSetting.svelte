@@ -81,6 +81,11 @@
             : []
         }
       }
+
+      // The host recalculates the conditional `disabled` state of every item, reload it
+      void getAllExtensionSettings().then((settings) => {
+        extSettings = settings
+      })
     })
 
     return () => {

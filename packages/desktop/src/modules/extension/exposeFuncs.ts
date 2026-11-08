@@ -1,3 +1,4 @@
+import { getDislikeListInfo, sendDislikeAction } from '@any-listen/app/modules/dislikeList'
 import { logs } from '@any-listen/app/modules/logs'
 import { getAllUserLists, getListMusics, sendMusicListAction } from '@any-listen/app/modules/musicList'
 import { checkProxyCache, createProxy, writeProxyCache } from '@any-listen/app/modules/proxyServer'
@@ -48,6 +49,13 @@ export const exposedFuncs: AnyListen.IPCExtension.MainIPCActions = {
   },
   async musicListAction(action) {
     await sendMusicListAction(action)
+  },
+  async getDislikeRules() {
+    const dislikeInfo = await getDislikeListInfo()
+    return dislikeInfo.rules
+  },
+  async dislikeAction(action) {
+    await sendDislikeAction(action)
   },
 
   async createExtensionIconPublicPath(extDir, filePath) {

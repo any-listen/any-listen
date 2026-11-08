@@ -4,13 +4,14 @@ import { joinPath } from '@any-listen/nodejs'
 
 import { formatManifest } from '../../shared'
 import { extensionState } from '../../state'
+import * as lxSync from './lxSync'
 import type { ExtensionContext, ExtensionHostContext } from './type'
 import * as webdav from './webdav'
 
 export const extensions: Array<{
   setup: (extension: AnyListen.Extension.Extension, content: ExtensionHostContext) => Promise<ExtensionContext>
   pkg: AnyListen.Extension.Manifest
-}> = [webdav]
+}> = [webdav, lxSync]
 
 type Extension = (typeof extensions)[number]
 
@@ -38,6 +39,7 @@ const parseExtension = (ext: Extension): AnyListen.Extension.Extension => {
     author: manifest.author,
     homepage: manifest.homepage,
     license: manifest.license,
+    readme: manifest.readme,
     categories: manifest.categories!,
     tags: manifest.tags!,
     grant: manifest.grant!,
