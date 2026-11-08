@@ -402,6 +402,9 @@ export const updateResourceList = () => {
 }
 export const updateResourceListThrottle = throttle(updateResourceList, 500)
 
+const resolveItemDisabled = (item: AnyListen.Extension.FormItems, configs: Record<string, unknown>) =>
+  item.disabledWhen ? configs[item.disabledWhen.field] === item.disabledWhen.value : false
+
 export const buildExtensionSettings = async () => {
   if (extensionState.extensionSettings) return extensionState.extensionSettings
 
@@ -420,6 +423,7 @@ export const buildExtensionSettings = async () => {
         ...item,
         // @ts-expect-error
         value: configs[item.field] ?? item.default,
+        disabled: resolveItemDisabled(item, configs),
       }
       switch (item.type) {
         case 'configCheckbox':
@@ -506,6 +510,9 @@ export const updateExtensionSettings = async (id: string, config: Record<string,
           }
         }
       }
+    }
+    for (const item of targetSetting.settingItems) {
+      ;(item as { disabled?: boolean }).disabled = resolveItemDisabled(item, newConfig)
     }
   }
 }
