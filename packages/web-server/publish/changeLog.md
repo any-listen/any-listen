@@ -13,6 +13,7 @@
 - Fixed an issue where deleting the currently selected playlist could cause the UI to freeze ([#417](https://github.com/any-listen/any-listen/issues/417)).
 - Fixed an issue where songs could not be read when local file names contained `?` ([#420](https://github.com/any-listen/any-listen/issues/420)).
 - Fixed an issue where frontend assets might not be updated on the first visit after an update.
+- Fixed an issue where some lyric timestamp tags were parsed incorrectly.
 
 ---
 
@@ -31,3 +32,4 @@
 - 修复删除当前选中的列表时可能导致 UI 卡死的问题（[#417](https://github.com/any-listen/any-listen/issues/417)）。
 - 修复本地文件名包含 `?` 时歌曲无法读取的问题（[#420](https://github.com/any-listen/any-listen/issues/420)）。
 - 修复更新后首次访问时前端资源可能未更新的问题。
+- 修复某些歌词时间标签解析错误的问题。
