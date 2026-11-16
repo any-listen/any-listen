@@ -30,15 +30,22 @@ export const connectTools = {
         this.promise = this.promise
           ? Promise.any([this.promise, wrapCall(this.callback(socket))])
           : wrapCall(this.callback(socket))
-        void this.promise.then((result) => {
-          if (result === cancelError) {
-            this.promiseFn[1](new Error(CANCELED_ERROR_MSG))
-          } else {
-            this.promiseFn[0](result)
+        void this.promise.then(
+          (result) => {
+            if (result === cancelError) {
+              this.promiseFn[1](new Error(CANCELED_ERROR_MSG))
+            } else {
+              this.promiseFn[0](result)
+            }
+            this.callback = null
+            this.promiseFn = [() => {}, () => {}]
+          },
+          (err) => {
+            this.promiseFn[1](err)
+            this.callback = null
+            this.promiseFn = [() => {}, () => {}]
           }
-          this.callback = null
-          this.promiseFn = [() => {}, () => {}]
-        })
+        )
       }
     })
   },
@@ -50,15 +57,22 @@ export const connectTools = {
       const connectSockets = getConnectedClients()
       if (connectSockets.length) {
         this.promise = Promise.any(Array.from(connectSockets).map(async (socket) => wrapCall(callback(socket))))
-        void this.promise.then((result) => {
-          if (result === cancelError) {
-            reject(new Error(CANCELED_ERROR_MSG))
-          } else {
-            resolve(result as T)
+        void this.promise.then(
+          (result) => {
+            if (result === cancelError) {
+              reject(new Error(CANCELED_ERROR_MSG))
+            } else {
+              resolve(result as T)
+            }
+            this.callback = null
+            this.promiseFn = [() => {}, () => {}]
+          },
+          (err) => {
+            reject(err)
+            this.callback = null
+            this.promiseFn = [() => {}, () => {}]
           }
-          this.callback = null
-          this.promiseFn = [() => {}, () => {}]
-        })
+        )
       }
     }).finally(() => {
       this.promise = null
