@@ -94,8 +94,8 @@ export const authConnect = async (req: http.IncomingMessage) => {
   ip &&= getAvailableIP(ip)
   if (ip) {
     const query = querystring.parse(req.url!.split('?')[1])
-    // const i = query.i
-    const token = query.m
+    // prefer the header so the token does not end up in access logs
+    const token = typeof req.headers.m == 'string' && req.headers.m ? req.headers.m : query.m
     if (typeof token == 'string' && token && token.length < 4096) {
       const keyInfo = await verifyByKey(token, ip, req.headers['user-agent'] ?? '')
       if (keyInfo) return keyInfo
