@@ -27,6 +27,7 @@ import {
   setVolumeMute,
   skipNext,
   skipPrev,
+  stop,
   togglePlay,
 } from './playerActions'
 import { playerState } from './state'
