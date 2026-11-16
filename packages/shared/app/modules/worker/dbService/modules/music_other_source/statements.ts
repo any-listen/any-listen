@@ -17,7 +17,7 @@ export interface MusicInfoOtherSource {
  */
 export const createMusicInfoQueryStatement = () => {
   return dbPrepare<string, MusicInfoOtherSource>(`
-    SELECT "id", "name", "singer", "interval", "source", "meta", "time"
+    SELECT "id", "name", "singer", "interval", "meta", "time"
     FROM "main"."music_info_other_source"
     WHERE source_id=?
     ORDER BY "order" ASC
@@ -30,8 +30,8 @@ export const createMusicInfoQueryStatement = () => {
  */
 export const createMusicInfoInsertStatement = () => {
   return dbPrepare<MusicInfoOtherSource>(`
-    INSERT INTO "main"."music_info_other_source" ("id", "name", "singer", "interval", "source", "meta", "source_id", "time", "order")
-    VALUES (@id, @name, @singer, @interval, @source, @meta, @source_id, @time, @order)
+    INSERT INTO "main"."music_info_other_source" ("id", "name", "singer", "interval", "meta", "source_id", "time", "order")
+    VALUES (@id, @name, @singer, @interval, @meta, @source_id, @time, @order)
   `)
 }
 
