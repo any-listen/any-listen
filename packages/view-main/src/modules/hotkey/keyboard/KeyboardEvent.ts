@@ -40,8 +40,10 @@ export default class KeyboardEvent {
     return new Promise<boolean>((resolve) => {
       nextTick(() => {
         let targetListeners = this.listeners.get(eventName)
-        resolve(false)
-        if (!targetListeners) return
+        if (!targetListeners) {
+          resolve(false)
+          return
+        }
         let captures: Array<(event: KeyEvent) => unknown> = []
         let isStop = false
         for (const [listener, capture] of targetListeners) {
