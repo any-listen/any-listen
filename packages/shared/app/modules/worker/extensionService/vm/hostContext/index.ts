@@ -48,11 +48,15 @@ export const createContext = async (extension: AnyListen.Extension.Extension) =>
     __ext_host_call__set_timeout(...args) {
       set_timeout(id, ...args)
     },
-    __ext_host_call__clear_timeout: clear_timeout,
+    __ext_host_call__clear_timeout(...args) {
+      clear_timeout(id, ...args)
+    },
     __ext_host_call__set_interval(...args) {
       set_interval(id, ...args)
     },
-    __ext_host_call__clear_interval: clear_interval,
+    __ext_host_call__clear_interval(...args) {
+      clear_interval(id, ...args)
+    },
     __ext_host_call__utils_str2b64: utils_str2b64,
     __ext_host_call__utils_b642buf: utils_b642buf,
     __ext_host_call__utils_str2md5: utils_str2md5,
