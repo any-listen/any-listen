@@ -25,17 +25,23 @@ const parseRange = (range: string, total: number): Range | null => {
   const matches = /bytes=(\d*)-(\d*)/.exec(range)
   if (!matches) return null
   let start: number
+  let end: number
   if (matches[1]) {
     start = parseInt(matches[1], 10)
     if (isNaN(start) || start < 0) start = 0
+    end = total - 1
+    if (matches[2]) {
+      end = parseInt(matches[2], 10)
+      if (isNaN(end) || (start && end < start)) end = total - 1
+    }
+  } else if (matches[2]) {
+    // suffix range: bytes=-N means the last N bytes
+    const suffix = parseInt(matches[2], 10)
+    if (isNaN(suffix) || suffix <= 0) return null
+    start = Math.max(0, total - suffix)
+    end = total - 1
   } else {
     start = 0
-  }
-  let end: number
-  if (matches[2]) {
-    end = parseInt(matches[2], 10)
-    if (isNaN(end) || (start && end < start)) end = total - 1
-  } else {
     end = total - 1
   }
 
