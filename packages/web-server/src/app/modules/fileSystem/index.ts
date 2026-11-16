@@ -115,7 +115,7 @@ const rename = async (filePath: string, newPath: string) => {
 const createDir = async (filePath: string, name: string) => {
   checkAllowPathError(filePath)
   name = filterFileName(name)
-  if (!name) throw new Error('Invalid folder name')
+  if (!name || name == '.' || name == '..') throw new Error('Invalid folder name')
   const newPath = joinPath(filePath, name)
   await fs.mkdir(newPath)
   return newPath
