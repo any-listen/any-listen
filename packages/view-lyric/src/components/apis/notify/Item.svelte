@@ -33,14 +33,13 @@
         autoCloseTimer = null
         onhide()
       },
-      hideTime == 0 ? item.autoCloseTime * 1000 : hideTime
+      Math.max(2000, hideTime - performance.now())
     )
   }
   const clearAutoCloseTimer = () => {
     if (!autoCloseTimer) return
     clearTimeout(autoCloseTimer)
     autoCloseTimer = null
-    hideTime = 0
   }
 
   $effect(() => {
@@ -52,8 +51,8 @@
     }
   })
   onMount(() => {
-    addAutoCloseTimer()
     hideTime = performance.now() + item.autoCloseTime * 1000
+    addAutoCloseTimer()
     onmount(domContent?.clientHeight ?? 0)
   })
   onDestroy(() => {
@@ -74,7 +73,6 @@
     item.onafterleave?.()
   }}
   onmouseenter={() => {
-    hideTime = Math.max(2000, hideTime - performance.now())
     clearAutoCloseTimer()
   }}
   onmouseleave={() => {
