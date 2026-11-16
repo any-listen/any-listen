@@ -66,31 +66,35 @@ const throttleListChangeSync = throttle(async () => {
     return
   }
 
-  const musicMap = new Map<string, AnyListen.Player.PlayMusicInfo>()
-  const newList = playerState.playList.filter((m) => {
-    if (!m.playLater) musicMap.set(m.itemId, m)
-    return m.playLater
-  })
   const curSyncId = syncId
-  const targetMusicList = await getListMusics(targetListId)
-  if (curSyncId != syncId) return
-  const newTargetList = targetMusicList.map((m) => {
-    const newInfo = createPlayMusicInfo({
-      musicInfo: m,
-      listId: targetListId,
-      source: playerState.playInfo.source,
-      playLater: false,
-      linked: true,
+  try {
+    const musicMap = new Map<string, AnyListen.Player.PlayMusicInfo>()
+    const newList = playerState.playList.filter((m) => {
+      if (!m.playLater) musicMap.set(m.itemId, m)
+      return m.playLater
     })
-    const info = musicMap.get(newInfo.itemId)
-    if (info) newInfo.played = info.played
-    return newInfo
-  })
-  arrPush(newList, newTargetList)
-  // TODO diff update
-  console.log('throttleListSync setPlayListMusic')
-  await setPlayListMusic({ list: newList, listId: targetListId, source: playerState.playInfo.source, isSync: true })
-  if (curSyncId == syncId) syncId = ''
+    const targetMusicList = await getListMusics(targetListId)
+    if (curSyncId != syncId) return
+    const newTargetList = targetMusicList.map((m) => {
+      const newInfo = createPlayMusicInfo({
+        musicInfo: m,
+        listId: targetListId,
+        source: playerState.playInfo.source,
+        playLater: false,
+        linked: true,
+      })
+      const info = musicMap.get(newInfo.itemId)
+      if (info) newInfo.played = info.played
+      return newInfo
+    })
+    arrPush(newList, newTargetList)
+    // TODO diff update
+    console.log('throttleListSync setPlayListMusic')
+    await setPlayListMusic({ list: newList, listId: targetListId, source: playerState.playInfo.source, isSync: true })
+  } finally {
+    // a failed sync must not leave the marker behind, or the list stays permanently out of sync
+    if (curSyncId == syncId) syncId = ''
+  }
 }, 500)
 const handleListChangeSync = (listIds: string[]) => {
   for (const id of listIds) {
