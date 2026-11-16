@@ -190,7 +190,7 @@ const buildPlayerMusicInfo = (musicInfo: AnyListen.Music.MusicInfo | null): Part
     album: '',
   }
 }
-export const loadImageUrl = async (info: AnyListen.Player.PlayMusicInfo, refresh?: boolean) => {
+export const loadImageUrl = async (info: AnyListen.Player.PlayMusicInfo, refresh?: boolean, retryCount = 0) => {
   await getMusicPic({ musicInfo: info.musicInfo, listId: info.listId, source: info.source, isRefresh: refresh })
     .then(({ url }) => {
       if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
@@ -201,7 +201,8 @@ export const loadImageUrl = async (info: AnyListen.Player.PlayMusicInfo, refresh
       if (!url) return
       void checkPicUrl(url, settingState.setting['network.proxyAllResources'], appState.machineId).catch(() => {
         if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-        void loadImageUrl(info, true)
+        if (retryCount >= 2) return
+        void loadImageUrl(info, true, retryCount + 1)
       })
     })
     .catch(() => {
