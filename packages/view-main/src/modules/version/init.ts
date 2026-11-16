@@ -25,7 +25,9 @@ export const initVersion = () => {
       subscriptions.add(
         versionEvent.on('new_version_available', (newVersion, ignoreVersion) => {
           const latestVersion =
-            newVersion?.beta && settingState.setting['common.allowPreRelease'] ? newVersion.beta[0].version : newVersion?.version
+            newVersion?.beta?.length && settingState.setting['common.allowPreRelease']
+              ? newVersion.beta[0].version
+              : newVersion?.version
           if (latestVersion == ignoreVersion) return
           void showUpdateModal()
         })
