@@ -16,8 +16,9 @@ export const parseEnvParams = <T extends object>(): { cmdParams: T; deeplink: st
       // @ts-expect-error
       cmdParams[param] = true
     } else {
+      const value = param.substring(index + 1)
       // @ts-expect-error
-      cmdParams[param.substring(0, index)] = param.substring(index + 1)
+      cmdParams[param.substring(0, index)] = value === 'true' ? true : value === 'false' ? false : value
     }
   }
   return {
