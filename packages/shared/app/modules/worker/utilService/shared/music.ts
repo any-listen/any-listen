@@ -3,7 +3,6 @@ import { isLikelyGarbage } from '@any-listen/common/utils'
 import {
   checkFile,
   dirname,
-  extname,
   extnameRaw,
   getFileStats,
   joinPath,
@@ -223,7 +222,7 @@ export const getLocalMusicFilePic = async (path: string) => {
  */
 export const getLocalMusicFileLyric = async (path: string): Promise<string | null> => {
   // 尝试读取同目录下的同名lrc文件
-  const lrcPath = path.replace(new RegExp(`\\${extname(path)}$`), '.lrc')
+  const lrcPath = path.replace(new RegExp(`\\${extnameRaw(path)}$`), '.lrc')
   const stats = await getFileStats(lrcPath)
   // console.log(lrcPath, stats)
   if (stats && stats.size < 1024 * 1024 * 10) {
