@@ -16,47 +16,50 @@ export default class Store {
   private immediate: NodeJS.Immediate | null = null
   private data: string | Record<string, unknown> | Buffer | Uint8Array | null = null
   private running = false
+  private writePromise: Promise<void> = Promise.resolve()
 
-  private getFormatData() {
-    if (this.data) {
-      if (typeof this.data === 'object') return JSON.stringify(this.data, null, '\t')
-      return this.data
+  private getFormatData(data: string | Record<string, unknown> | Buffer | Uint8Array | null) {
+    if (data) {
+      if (typeof data === 'object') return JSON.stringify(data, null, '\t')
+      return data
     }
     return ''
   }
-  private async handleWriteFile() {
-    this.running = true
-    if (this.safeWrite) {
-      const tempPath = `${this.filePath}.${Math.random().toString().substring(2, 10)}.temp`
-      try {
-        await fs.writeFile(tempPath, this.getFormatData(), 'utf8')
-        this.data = null
-      } catch (err) {
-        if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
-          try {
-            await fs.mkdir(this.dirPath, { recursive: true })
-            await fs.writeFile(tempPath, this.getFormatData(), 'utf8')
-            this.data = null
-          } catch (err) {
-            this.data = null
-            throw err as Error
-          } finally {
-            this.running = false
-          }
-        } else {
-          this.data = null
-          throw err as Error
-        }
-      } finally {
-        this.running = false
+  private async handleWriteFile(data: string | Record<string, unknown> | Buffer | Uint8Array | null) {
+    try {
+      if (this.safeWrite) {
+        const tempPath = `${this.filePath}.${Math.random().toString().substring(2, 10)}.temp`
+        await fs.writeFile(tempPath, this.getFormatData(data), 'utf8')
+        await fs.rename(tempPath, this.filePath)
+      } else {
+        await fs.writeFile(this.filePath, this.getFormatData(data), 'utf8')
       }
-      await fs.rename(tempPath, this.filePath)
-    } else {
-      await fs.writeFile(this.filePath, this.getFormatData(), 'utf8').finally(() => {
-        this.running = false
-        this.data = null
-      })
+    } catch (err) {
+      if (this.safeWrite && (err as NodeJS.ErrnoException).code === 'ENOENT') {
+        await fs.mkdir(this.dirPath, { recursive: true })
+        const tempPath = `${this.filePath}.${Math.random().toString().substring(2, 10)}.temp`
+        await fs.writeFile(tempPath, this.getFormatData(data), 'utf8')
+        await fs.rename(tempPath, this.filePath)
+      } else {
+        throw err as Error
+      }
     }
+  }
+
+  private flush(): Promise<void> {
+    if (this.running) return this.writePromise.then(() => this.flush())
+    if (this.data == null) return this.writePromise
+    const data = this.data
+    this.data = null
+    this.running = true
+    this.writePromise = this.handleWriteFile(data)
+      .catch((err) => {
+        console.error('write file error:', err)
+      })
+      .finally(() => {
+        this.running = false
+      })
+    return this.writePromise
   }
 
   constructor(filePath: string, options: StoreOptions = {}) {
@@ -79,12 +82,11 @@ export default class Store {
   }
   writeFile(data: string | Record<string, unknown> | Buffer | Uint8Array) {
     this.data = data
-    if (this.running) return
     if (this.batch) {
       this.immediate ??= setImmediate(() => {
         this.immediate = null
-        void this.handleWriteFile()
+        void this.flush()
       })
-    } else void this.handleWriteFile()
+    } else void this.flush()
   }
 }
