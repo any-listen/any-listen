@@ -27,9 +27,9 @@ export const set_timeout = (extId: string, id: number, ms: number) => {
   ])
 }
 
-export const clear_timeout = (id: number) => {
+export const clear_timeout = (extId: string, id: number) => {
   const tiemout = timeouts.get(id)
-  if (!tiemout) return
+  if (!tiemout || tiemout[0] != extId) return
   clearTimeout(tiemout[2])
   timeouts.delete(id)
 }
@@ -39,9 +39,9 @@ export const set_interval = (extId: string, id: number, ms: number) => {
   return id
 }
 
-export const clear_interval = (id: number) => {
+export const clear_interval = (extId: string, id: number) => {
   const tiemout = timeouts.get(id)
-  if (!tiemout) return
+  if (!tiemout || tiemout[0] != extId) return
   clearInterval(tiemout[2])
   timeouts.delete(id)
 }
