@@ -37,7 +37,8 @@ export const getIP = (request: http.IncomingMessage) => {
   let ip: string | undefined
   if (global.anylisten.config['upstreamProxy.enabled']) {
     const proxyIp = request.headers[global.anylisten.config['upstreamProxy.header']]
-    if (typeof proxyIp == 'string') ip = proxyIp
+    // only the rightmost entry is set by the trusted upstream, anything to its left is client controlled
+    if (typeof proxyIp == 'string' && proxyIp) ip = proxyIp.split(',').pop()!.trim()
   }
   ip ||= request.socket.remoteAddress
 
