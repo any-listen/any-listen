@@ -93,14 +93,17 @@ export const initMediaSessionInfo = () => {
     navigator.mediaSession.playbackState = 'paused'
   }
   const handleSetPlayInfo = () => {
-    void emptyAudio.play().finally(() => {
-      updateMediaSessionInfo()
-      updatePositionState({
-        position: playerState.progress.nowPlayTime,
-        duration: playerState.progress.maxPlayTime,
+    void emptyAudio
+      .play()
+      .catch(() => {})
+      .finally(() => {
+        updateMediaSessionInfo()
+        updatePositionState({
+          position: playerState.progress.nowPlayTime,
+          duration: playerState.progress.maxPlayTime,
+        })
+        handlePause()
       })
-      handlePause()
-    })
   }
 
   onPlayerCreated(() => {
