@@ -84,6 +84,8 @@
   export const show = (_ext: AnyListen.Extension.Extension | AnyListen.IPCExtension.OnlineListItem) => {
     if ('internal' in _ext) {
       ext = _ext
+      extId = null
+      loadStats = { loading: false, error: false, errorMessage: '' }
     } else {
       ext = {
         ..._ext,
