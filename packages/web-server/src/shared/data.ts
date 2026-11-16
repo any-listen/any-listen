@@ -24,7 +24,20 @@ export const initServerData = () => {
   serverInfoFilePath = path.join(global.anylisten.dataPath, File.serverInfoJSON)
   clientInfoFilePath = path.join(global.anylisten.dataPath, File.clientInfoJSON)
   if (fs.existsSync(serverInfoFilePath)) {
-    serverInfo = JSON.parse(fs.readFileSync(serverInfoFilePath).toString()) as ServerInfo
+    try {
+      const data = JSON.parse(fs.readFileSync(serverInfoFilePath).toString()) as ServerInfo | null
+      if (!data || typeof data != 'object') throw new Error('invalid content')
+      serverInfo = data
+    } catch (err) {
+      console.error('failed to load server info, regenerating:', err)
+      fs.renameSync(serverInfoFilePath, `${serverInfoFilePath}.${Date.now()}.bak`)
+      serverInfo = {
+        serverId: randomUUID(),
+        tokenSecret: toSha512(randomBytes(128)),
+        version: 1,
+      }
+      saveServerInfoThrottle()
+    }
   } else {
     serverInfo = {
       serverId: randomUUID(),
@@ -34,7 +47,16 @@ export const initServerData = () => {
     saveServerInfoThrottle()
   }
   if (fs.existsSync(clientInfoFilePath)) {
-    clientInfos = JSON.parse(fs.readFileSync(clientInfoFilePath).toString()) as ClientInfo[]
+    try {
+      const data = JSON.parse(fs.readFileSync(clientInfoFilePath).toString()) as ClientInfo[]
+      if (!Array.isArray(data)) throw new Error('invalid content')
+      clientInfos = data
+    } catch (err) {
+      console.error('failed to load client info, resetting:', err)
+      fs.renameSync(clientInfoFilePath, `${clientInfoFilePath}.${Date.now()}.bak`)
+      clientInfos = []
+      saveClientInfoThrottle()
+    }
   } else {
     clientInfos = []
     saveClientInfoThrottle()
