@@ -1,4 +1,4 @@
-import { exec } from 'node:child_process'
+import { execFile } from 'node:child_process'
 import fs from 'node:fs'
 
 import { checkAndCreateDir, checkFile, joinPath } from './index'
@@ -26,12 +26,10 @@ export const createSimpleLogcat = async (path: string, name: string) => {
 export const readLastLines = async (filePath: string, lineCount = 100) => {
   if (!(await checkFile(filePath))) return ''
   return new Promise<string>((resolve, reject) => {
-    let command
-
     if (process.platform === 'win32') {
       // Windows 系统下使用 PowerShell 来获取文件的最后100行
-      command = `powershell -Command "chcp 65001; Get-Content '${filePath}' -Encoding UTF8 -Tail ${lineCount}"`
-      exec(command, { encoding: 'utf8' }, (error, stdout, stderr) => {
+      const script = `[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; Get-Content -LiteralPath '${filePath.replace(/'/g, "''")}' -Encoding UTF8 -Tail ${lineCount}`
+      execFile('powershell', ['-Command', script], { encoding: 'utf8' }, (error, stdout, stderr) => {
         if (error) {
           console.error('exec error:', error)
           reject(error)
@@ -42,15 +40,13 @@ export const readLastLines = async (filePath: string, lineCount = 100) => {
           reject(new Error(stderr))
           return
         }
-        // console.log(stdout)
-        // remove "Active code page: 65001" from stdout
-        resolve(stdout.substring(25))
+        resolve(stdout)
       })
     } else {
       // Linux/macOS 系统下使用 tail 命令
-      command = `tail -n ${lineCount} '${filePath}'`
-      exec(
-        command,
+      execFile(
+        'tail',
+        ['-n', String(lineCount), filePath],
         {
           encoding: 'utf8',
           env: {
