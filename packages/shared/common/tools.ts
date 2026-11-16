@@ -149,7 +149,7 @@ export const isValidLyric = (lrc?: string | null | number) => typeof lrc == 'str
 
 export const getLatestVersion = (info: AnyListen.UpdateInfo, allowPreRelease = false) => {
   const latest = { version: info.version, desc: info.desc, time: info.time }
-  if (!allowPreRelease || !info.beta) return latest
+  if (!allowPreRelease || !info.beta?.length) return latest
   return info.beta[0]
 }
 
