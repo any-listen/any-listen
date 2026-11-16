@@ -21,6 +21,7 @@ const init = async () => {
   const appInfo = await getAppInfo()
   setAppInfo(appInfo)
   if (import.meta.env.VITE_IS_WEB) {
+    systemThemeModeChangedUnregister?.()
     systemThemeModeChangedUnregister = onSystemThemeModeChanged((isDark) => {
       void setSystemThemeMode(isDark)
     })
