@@ -17,7 +17,11 @@ export const mouseCheckTools = {
 
   checkMousePosition() {
     const bounds = getBounds()
-    if (!bounds) return
+    if (!bounds) {
+      this.stop()
+      this.isMouseInWindow = false
+      return
+    }
     const point = screen.getCursorScreenPoint()
     const isInBounds =
       point.x >= bounds.x && point.x <= bounds.x + bounds.width && point.y >= bounds.y && point.y <= bounds.y + bounds.height
