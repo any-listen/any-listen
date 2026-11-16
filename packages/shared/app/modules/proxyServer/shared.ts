@@ -12,20 +12,25 @@ export const checkAllowedExt = (ext: string) => {
   return ALLOWED_EXT.includes(ext.toLowerCase())
 }
 
-const RANGE_REGEX = /bytes=(?:\d*)-(?:\d*)/
-export const parseRange = (range?: string) => {
+const RANGE_REGEX = /bytes=(\d*)-(\d*)/
+export const parseRange = (range?: string, total?: number) => {
   if (!range) return null
   const matches = RANGE_REGEX.exec(range)
   if (!matches) return null
   let start: number | undefined
+  let end: number | undefined
   if (matches[1]) {
     start = parseInt(matches[1], 10)
     if (isNaN(start) || start < 0) start = undefined
+  } else if (matches[2] && total != null) {
+    // suffix range: bytes=-N means the last N bytes
+    const suffix = parseInt(matches[2], 10)
+    if (!isNaN(suffix) && suffix > 0) start = Math.max(0, total - suffix)
+    return { start, end: undefined }
   }
-  let end: number | undefined
   if (matches[2]) {
     end = parseInt(matches[2], 10)
-    if (isNaN(end) || (start && end < start)) end = undefined
+    if (isNaN(end) || (start != null && end < start)) end = undefined
   }
 
   return { start, end }
