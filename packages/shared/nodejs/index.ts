@@ -164,9 +164,7 @@ export const gunzipData = async (buf: Buffer): Promise<string> => {
  */
 export const saveAnyListenConfigFile = async (path: string, data: unknown) => {
   if (!path.endsWith(CONFIG_FILE_EXT)) path += CONFIG_FILE_EXT
-  fs.writeFile(path, await gzipData(JSON.stringify(data)), 'binary', (err) => {
-    console.log(err)
-  })
+  await fs.promises.writeFile(path, await gzipData(JSON.stringify(data)))
 }
 
 /**
