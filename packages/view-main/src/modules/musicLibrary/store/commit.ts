@@ -176,8 +176,9 @@ export const userListsRemove = (ids: string[]) => {
     if (index < 0) continue
     const info = musicLibraryState.userLists.splice(index, 1)[0]
     musicLibraryState.userListsMap.delete(id)
-    const list = musicLibraryState.userListsMap.get(info.parentId)!
-    list.splice(list.indexOf(info), 1)
+    const list = musicLibraryState.userListsMap.get(info.parentId)
+    // the parent bucket is already gone when its own removal was processed
+    if (list) list.splice(list.indexOf(info), 1)
     changedSubListIds.add(info.parentId)
     changedSubListIds.add(id)
     changedListIds.push(id)
