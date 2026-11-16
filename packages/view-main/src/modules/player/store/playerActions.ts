@@ -250,11 +250,13 @@ export const setPlayMusicInfo = (info: AnyListen.Player.PlayMusicInfo | null, in
   if (info) {
     commit.setPlayMusicInfo(info)
     commit.setMusicInfo(buildPlayerMusicInfo(info.musicInfo))
-    void checkCollectMusic(info.musicInfo.id).then((isCollect) => {
-      if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
-      commit.setMusicInfo({ collect: isCollect })
-    })
-    void setMetadata(info)
+    void checkCollectMusic(info.musicInfo.id)
+      .then((isCollect) => {
+        if (info.musicInfo.id != playerState.playMusicInfo?.musicInfo.id) return
+        commit.setMusicInfo({ collect: isCollect })
+      })
+      .catch(() => {})
+    void setMetadata(info).catch(() => {})
     playerEvent.setProgress(0, parseInterval(info.musicInfo.interval))
     const idx = index == null ? playerState.playList.findIndex((m) => m.itemId == info.itemId) : index
     historyListIndex =
