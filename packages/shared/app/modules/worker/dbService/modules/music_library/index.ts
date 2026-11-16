@@ -478,6 +478,9 @@ export const musicsMove = (
   musicInfos: AnyListen.Music.MusicInfo[],
   addMusicLocationType: AnyListen.AddMusicLocationType
 ) => {
+  // moving within the same list is not a move, and the dedup below would strip
+  // the entries while the removal still runs, deleting them instead
+  if (fromId == toId) return
   let fromList = getListMusics(fromId)
   let toList = getListMusics(toId)
 
