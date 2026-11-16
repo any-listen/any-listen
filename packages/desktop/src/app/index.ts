@@ -29,9 +29,10 @@ export const initState = () => {
     cmdParams: envParams.cmdParams,
   }
   if (typeof appState.envParams.cmdParams['proxy-server'] == 'string') {
-    const [host, port = ''] = appState.envParams.cmdParams['proxy-server'].split(':')
-    appState.proxy.host = host
-    appState.proxy.port = port
+    // split on the last colon so bracketed ipv6 hosts survive the port separation
+    const sep = appState.envParams.cmdParams['proxy-server'].lastIndexOf(':')
+    appState.proxy.host = appState.envParams.cmdParams['proxy-server'].substring(0, sep)
+    appState.proxy.port = appState.envParams.cmdParams['proxy-server'].substring(sep + 1)
   }
 
   appState.shouldUseDarkColors = nativeTheme.shouldUseDarkColors
@@ -213,9 +214,11 @@ const listenerAppEvent = () => {
       host = appState.appSetting['network.proxy.host']
       port = appState.appSetting['network.proxy.port'] || '80'
     } else if (typeof appState.envParams.cmdParams['proxy-server'] == 'string') {
-      const [_host, _port] = appState.envParams.cmdParams['proxy-server'].split(':')
-      host = _host
-      port = _port || '80'
+      const param = appState.envParams.cmdParams['proxy-server']
+      // split on the last colon so bracketed ipv6 hosts survive the port separation
+      const sep = param.lastIndexOf(':')
+      host = param.substring(0, sep)
+      port = param.substring(sep + 1) || '80'
     } else {
       host = ''
       port = ''
