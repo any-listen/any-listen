@@ -77,8 +77,12 @@ const margeConfig = (p: string) => {
   const newConfig = { ...global.anylisten.config }
   for (const key of Object.keys(defaultConfig) as Array<keyof AnyListen.Config>) {
     // @ts-expect-error
-
-    if (config[key] !== undefined) newConfig[key] = config[key]
+    const value = config[key]
+    // ignore missing entries and anything that does not match the default's type,
+    // e.g. a null would crash the consumers below
+    if (value === undefined || value === null || typeof value !== typeof defaultConfig[key]) continue
+    // @ts-expect-error
+    newConfig[key] = value
   }
 
   console.log(`Load config: ${p}`)
