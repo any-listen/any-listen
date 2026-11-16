@@ -86,6 +86,14 @@ const fixPath = (path?: string): string => {
   return path
 }
 
+const safeDecodeURIComponent = (path: string): string => {
+  try {
+    return decodeURIComponent(path)
+  } catch {
+    return path
+  }
+}
+
 type RequestOptions = Omit<Options, 'method'> & { path?: string; needHeader?: boolean }
 
 export class WebDAVClient {
@@ -226,7 +234,7 @@ export class WebDAVClient {
       const isDir = item.prop.resourcetype?.collection === ''
       if (!isDir) return true
       const href = item.href.endsWith('/') ? item.href.slice(0, -1) : item.href
-      return !currentFullPath.endsWith(href)
+      return !currentFullPath.endsWith(safeDecodeURIComponent(href))
     })
     return buildFileItems(responses, path == '/' ? '' : path)
   }
