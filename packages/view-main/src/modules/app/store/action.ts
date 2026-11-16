@@ -96,8 +96,12 @@ export { getLoginDevices, getAppInfo, getSetting, removeLoginDevice, sendInitedE
 // name: i18n.t('command.run')
 let lastUsedCommands: string[]
 export const getLastUsedCommands = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  lastUsedCommands ??= JSON.parse(getItem(LOCAL_STORE_KEYS.lastUsedCommands) || '[]')
+  if (lastUsedCommands) return lastUsedCommands
+  try {
+    lastUsedCommands = JSON.parse(getItem(LOCAL_STORE_KEYS.lastUsedCommands) || '[]') as string[]
+  } catch {
+    lastUsedCommands = []
+  }
   return lastUsedCommands
 }
 export const setLastUsedCommand = (command: string) => {
