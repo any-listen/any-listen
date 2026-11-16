@@ -69,7 +69,8 @@ const connect = async (
   host: string,
   authCode: string,
   winType: AnyListen.IPC.WinType,
-  onFailed: (message: string) => void
+  onFailed: (message: string) => void,
+  retryCount = 0
 ) => {
   const result = await handleConnect(exposeObj, host, authCode, winType).catch((err: Error) => {
     console.log(err)
@@ -86,9 +87,9 @@ const connect = async (
   if (result === false) return false
   if (result === null) {
     await new Promise((resolve) => {
-      setTimeout(resolve, 1000)
+      setTimeout(resolve, Math.min(30_000, 1000 * 2 ** retryCount))
     })
-    void connect(exposeObj, host, authCode, winType, onFailed)
+    void connect(exposeObj, host, authCode, winType, onFailed, retryCount + 1)
   }
 }
 
