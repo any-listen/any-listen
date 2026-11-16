@@ -190,6 +190,7 @@ export const topSongsDetailAll = async (
     .then(async (result) => {
       if (result.total <= result.limit) return result.list
       limit = result.limit
+      if (!limit) return result.list
 
       const list = [...result.list]
       const maxPage = Math.ceil(result.total / limit)
