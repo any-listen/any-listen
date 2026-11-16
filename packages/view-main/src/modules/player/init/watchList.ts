@@ -44,12 +44,14 @@ const checkLinkedAndSync = async () => {
 }
 const checkLinkedAndApply = () => {
   if (!playerState.inited || syncId) return
-  void checkListSync().then((isSynced) => {
-    if (syncId) return
-    // console.log('isSynced', isSynced)
-    if (!isSynced) console.warn('list is not linked: ', isSynced)
-    setIsLinkedList(isSynced)
-  })
+  void checkListSync()
+    .then((isSynced) => {
+      if (syncId) return
+      // console.log('isSynced', isSynced)
+      if (!isSynced) console.warn('list is not linked: ', isSynced)
+      setIsLinkedList(isSynced)
+    })
+    .catch(() => {})
 }
 const changedListIds = new Set<string | null>()
 const throttleListChangeSync = throttle(async () => {
