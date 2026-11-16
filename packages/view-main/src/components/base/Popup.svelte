@@ -96,7 +96,9 @@
     if (visible) {
       render = true
       let unsub: (() => void) | null = null
+      let cancelled = false
       void tick().then(() => {
+        if (cancelled) return
         // cmpStyle()
         anim = true
         prevFocusedNode = document.activeElement as HTMLElement
@@ -112,7 +114,9 @@
         })
       })
       return () => {
+        cancelled = true
         unsub?.()
+        if (!anim) render = false
       }
     }
     anim = false
