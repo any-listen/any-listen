@@ -157,7 +157,7 @@ export const setProgress = (currentTime: number, totalTime: number) => {
   playerState.progress.nowPlayTimeStr = formatPlayTime2(currentTime)
   playerState.progress.maxPlayTime = totalTime
   playerState.progress.maxPlayTimeStr = formatPlayTime2(totalTime)
-  playerState.progress.progress = totalTime ? playerState.progress.nowPlayTime / currentTime : 0
+  playerState.progress.progress = totalTime ? playerState.progress.nowPlayTime / totalTime : 0
 
   playerEvent.durationChanged({ ...playerState.progress })
   playerEvent.progressChanged({ ...playerState.progress }, oldProgress)
