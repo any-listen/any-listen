@@ -408,20 +408,25 @@ const loadPitchShifterNode = () => {
   pitchShifterNodeLoadStatus = 'loading'
   initAdvancedAudioFeatures()
   // source -> analyser -> biquadFilter -> audioWorklet(pitch shifter) -> [(convolver & convolverSource)->convolverDynamicsCompressor] -> panner -> gain
-  void import('./pitch-shifter/phase-vocoder?worker&url').then(({ default: url }) => {
-    void audioContext!.audioWorklet?.addModule(url).then(() => {
-      console.log('pitch shifter audio worklet loaded')
-      // https://github.com/olvb/phaze/issues/26#issuecomment-1574629971
-      pitchShifterNode = new AudioWorkletNode(audioContext!, 'phase-vocoder-processor', { outputChannelCount: [2] })
-      let pitchFactorParam = pitchShifterNode.parameters.get('pitchFactor')
-      if (!pitchFactorParam) return
-      pitchShifterNodePitchFactor = pitchFactorParam
-      pitchShifterNodeLoadStatus = 'unconnect'
-      if (pitchShifterNodeTempValue == 1) return
+  void import('./pitch-shifter/phase-vocoder?worker&url')
+    .then(({ default: url }) => {
+      return audioContext!.audioWorklet?.addModule(url).then(() => {
+        console.log('pitch shifter audio worklet loaded')
+        // https://github.com/olvb/phaze/issues/26#issuecomment-1574629971
+        pitchShifterNode = new AudioWorkletNode(audioContext!, 'phase-vocoder-processor', { outputChannelCount: [2] })
+        let pitchFactorParam = pitchShifterNode.parameters.get('pitchFactor')
+        if (!pitchFactorParam) return
+        pitchShifterNodePitchFactor = pitchFactorParam
+        pitchShifterNodeLoadStatus = 'unconnect'
+        if (pitchShifterNodeTempValue == 1) return
 
-      connectPitchShifterNode()
+        connectPitchShifterNode()
+      })
     })
-  })
+    .catch((err) => {
+      console.error('load pitch shifter node error:', err)
+      pitchShifterNodeLoadStatus = 'none'
+    })
 }
 
 export const setPitchShifter = (val: number) => {
