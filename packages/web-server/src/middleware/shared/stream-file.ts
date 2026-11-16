@@ -157,7 +157,9 @@ export const handleRequest = async (ctx: AnyListen.RequestContext, filepath: str
 }
 
 export const sendFileStream = async (ctx: AnyListen.RequestContext, filepath: string, options: Partial<Options>) => {
-  if (!options.hidden && isHidden(filepath)) return
+  // check the requested url, not the disk path - the latter may legitimately
+  // sit inside a dot directory like ~/.config/<app>
+  if (!options.hidden && isHidden(ctx.path)) return
   return handleRequest(ctx, filepath, {
     hidden: options.hidden ?? false,
     immutable: options.immutable ?? false,
