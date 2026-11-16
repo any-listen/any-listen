@@ -24,11 +24,7 @@ export const crypto: AnyListen_API.Crypto = {
     return hostContext.hostFuncs.rsaDecrypt(mode, data, key, encoding)
   },
   async randomBytes(size: number) {
-    const byteArray = new Uint8Array(size)
-    for (let i = 0; i < size; i++) {
-      byteArray[i] = Math.floor(Math.random() * 256) // 随机生成一个字节的值（0-255）
-    }
-    return byteArray
+    return hostContext.hostFuncs.randomBytes(size)
   },
   async md5(data) {
     if (typeof data != 'string') data = new Uint8Array(data)
