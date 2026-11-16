@@ -12,7 +12,11 @@ html {
       }
       #root {
         border-radius: @radius-border;
-        box-shadow: 0 0 @shadow-app rgb(0 0 0 / 50%);
+        // The blur fades to transparent at the window edge, so add an opaque
+        // theme-colored base underneath it to keep the desktop from showing through.
+        box-shadow:
+          0 0 @shadow-app rgb(0 0 0 / 50%),
+          0 0 0 @shadow-app var(--color-content-background);
       }
     }
     &.disable-transparent {
