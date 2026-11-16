@@ -16,17 +16,27 @@ export const getHotKeyConfig = async (): Promise<AnyListen.HotKey.HotKeyConfigAl
   let localConfig = storeHotKey.get<AnyListen.HotKey.HotKeyConfig>('local')
   let globalConfig = storeHotKey.get<AnyListen.HotKey.HotKeyConfig>('global')
 
-  if (!globalConfig || version == null) {
+  if (version == null) {
     localConfig = cloneData(defaultHotKey.local)
     globalConfig = cloneData(defaultHotKey.global)
 
     storeHotKey.set('version', 1)
     storeHotKey.set('local', localConfig)
     storeHotKey.set('global', globalConfig)
+  } else {
+    // only fall back to defaults for the parts that are actually missing
+    if (!localConfig) {
+      localConfig = cloneData(defaultHotKey.local)
+      storeHotKey.set('local', localConfig)
+    }
+    if (!globalConfig) {
+      globalConfig = cloneData(defaultHotKey.global)
+      storeHotKey.set('global', globalConfig)
+    }
   }
 
   return {
-    local: localConfig!,
+    local: localConfig,
     global: globalConfig,
   }
 }
