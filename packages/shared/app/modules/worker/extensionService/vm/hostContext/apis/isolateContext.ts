@@ -48,8 +48,7 @@ const handleCreateIsolateFuncs = (extension: AnyListen.Extension.Extension) => {
     contextTimeouts.clear()
   }
   const onExtensionDestroyed = () => {
-    const contexts = isolateContexts.get(extension.id)
-    if (contexts) isolateContexts.clear()
+    isolateContexts.clear()
     if (timeouts.size) {
       for (const id of timeouts.keys()) clearContextTimeouts(id)
       timeouts.clear()
@@ -76,7 +75,7 @@ const handleCreateIsolateFuncs = (extension: AnyListen.Extension.Extension) => {
               if (typeof message !== 'string') throw new Error('Illegal message type')
               sendIsolateContextMessage(extension.id, id, message)
             },
-            runTimeout(id: string, type: 'timeout' | 'interval', delay: number) {
+            runTimeout(timerId: string, type: 'timeout' | 'interval', delay: number) {
               if (delay < 0) delay = 0
               if (delay > 0x7fffffff) delay = 0x7fffffff
               let contextTimeouts = timeouts.get(id)
@@ -91,27 +90,27 @@ const handleCreateIsolateFuncs = (extension: AnyListen.Extension.Extension) => {
               switch (type) {
                 case 'timeout':
                   timeout = setTimeout(() => {
-                    contextTimeouts.delete(id)
+                    contextTimeouts.delete(timerId)
                     const contextInfo = isolateContexts.get(id)
                     if (!contextInfo) return
-                    contextInfo.contextObj.tiggerTimeout(id, 'timeout')
+                    contextInfo.contextObj.tiggerTimeout(timerId, 'timeout')
                   }, delay)
-                  contextTimeouts.set(id, ['timeout', timeout])
+                  contextTimeouts.set(timerId, ['timeout', timeout])
                   break
                 case 'interval':
                   timeout = setInterval(() => {
                     const contextInfo = isolateContexts.get(id)
                     if (!contextInfo) return
-                    contextInfo.contextObj.tiggerTimeout(id, 'interval')
+                    contextInfo.contextObj.tiggerTimeout(timerId, 'interval')
                   }, delay)
-                  contextTimeouts.set(id, ['interval', timeout])
+                  contextTimeouts.set(timerId, ['interval', timeout])
                   break
               }
             },
-            clearTimeout(id: string) {
+            clearTimeout(timerId: string) {
               const contextTimeouts = timeouts.get(id)
               if (!contextTimeouts) return
-              const timeout = contextTimeouts.get(id)
+              const timeout = contextTimeouts.get(timerId)
               if (!timeout) return
               switch (timeout[0]) {
                 case 'timeout':
@@ -121,7 +120,7 @@ const handleCreateIsolateFuncs = (extension: AnyListen.Extension.Extension) => {
                   clearInterval(timeout[1])
                   break
               }
-              contextTimeouts.delete(id)
+              contextTimeouts.delete(timerId)
             },
           },
         },
