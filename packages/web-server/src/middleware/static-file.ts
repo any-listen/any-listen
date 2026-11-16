@@ -7,6 +7,9 @@ import { PUBLIC_RESOURCE_PATH as _PUBLIC_RESOURCE_PATH } from '@/shared/constant
 import { sendFileStream } from './shared/stream-file'
 
 const maxAge = 60 * 86400
+// public static paths are keyed by file path, not content, so the cache must
+// stay short enough to pick up replaced local files
+const publicResourceMaxAge = 1 * 86400
 const PUBLIC_RESOURCE_PATH = `${_PUBLIC_RESOURCE_PATH}/`
 
 let publicDir = joinPath(__dirname, '../public')
@@ -20,8 +23,8 @@ export default async (ctx: AnyListen.RequestContext, next: AnyListen.Next): Prom
       if (rawPath) {
         return sendFileStream(ctx, rawPath, {
           hidden: false,
-          maxAge,
-          immutable: true,
+          maxAge: publicResourceMaxAge,
+          immutable: false,
           public: true,
         })
       }
