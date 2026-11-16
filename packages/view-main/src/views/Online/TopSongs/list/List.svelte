@@ -47,5 +47,5 @@
 </script>
 
 {#if source}
-  <Songlist sId={source.sId} {list} {listInfo} />
+  <Songlist sId={source.sId} {list} {listInfo} onreload={() => handleSearch()} />
 {/if}

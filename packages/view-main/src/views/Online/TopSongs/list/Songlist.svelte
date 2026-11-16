@@ -8,6 +8,7 @@
     list,
     listInfo,
     sId,
+    onreload,
   }: {
     list: AnyListen.Resource.TopSongsItem[]
     listInfo: {
@@ -15,6 +16,7 @@
       error: boolean
     }
     sId: string
+    onreload?: () => void
   } = $props()
 </script>
 
@@ -29,7 +31,7 @@
   {#if !list.length && !listInfo.loading && !listInfo.error}
     <Empty />
   {/if}
-  <Loading loading={listInfo.loading} error={listInfo.error} />
+  <Loading loading={listInfo.loading} error={listInfo.error} {onreload} />
 </div>
 
 <style lang="less">

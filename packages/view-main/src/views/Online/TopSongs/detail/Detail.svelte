@@ -106,6 +106,9 @@
       {list}
       loading={listInfo.loading}
       error={listInfo.error}
+      onreload={() => {
+        handleFetch(listInfo.page, searchInfo.id, searchInfo.date)
+      }}
       source="topSongs"
       listinfo={{
         id: searchInfo.id,
