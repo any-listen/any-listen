@@ -22,7 +22,6 @@ const init = async (isInited: boolean) => {
   sendCreatedEvent()
   initPlayerModules()
   const info = await getPlayerInfo()
-  console.log(info)
   setMusicInfo(info.musicInfo)
   setPlayerPlaying(info.playerPlaying)
   setPlaying(info.playing)

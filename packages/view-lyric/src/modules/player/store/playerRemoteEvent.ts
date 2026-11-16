@@ -14,17 +14,14 @@ export const registerPlayerRemoteEvent = () => {
           preStatus = action.data[0]
           switch (preStatus) {
             case 'playing':
-              console.log('onPlaying')
               playerEvent.playerPlaying()
               playerEvent.play()
               break
             case 'paused':
-              console.log('onPause')
               playerEvent.playerPause()
               playerEvent.pause()
               break
             case 'ended':
-              console.log('onEnded')
               playerEvent.playerEnded()
               break
             case 'error':
@@ -39,7 +36,6 @@ export const registerPlayerRemoteEvent = () => {
               playerEvent.playerLoadstart()
               break
             case 'buffering':
-              console.log('onWaiting')
               playerEvent.playerWaiting()
               playerEvent.pause()
               break
