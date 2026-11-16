@@ -65,7 +65,9 @@
 
   $effect(() => {
     if (!source) return
+    const sId = source.sId
     void getData(source.extensionId, source.id, $query.id).then((_dates) => {
+      if (source.sId != sId) return
       list = _dates
     })
   })
