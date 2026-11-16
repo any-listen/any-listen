@@ -54,7 +54,9 @@
         list = []
       })
       .finally(() => {
-        listInfo.loading = false
+        if (searchId == buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.text)) {
+          listInfo.loading = false
+        }
       })
   }
 
