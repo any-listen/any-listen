@@ -58,9 +58,17 @@
   }
   let parentNode: HTMLElement | null = null
   let prevFocusedNode: HTMLElement | null = null
+  const modalCounts = new WeakMap<HTMLElement, number>()
   const removeClass = () => {
-    if (!isAddedClass) return
-    parentNode?.classList.remove(MODAL_CLASSNAMES.modal)
+    if (!isAddedClass || !parentNode) return
+    const count = (modalCounts.get(parentNode) ?? 0) - 1
+    if (count <= 0) {
+      modalCounts.delete(parentNode)
+      parentNode.classList.remove(MODAL_CLASSNAMES.modal)
+    } else {
+      modalCounts.set(parentNode, count)
+    }
+    isAddedClass = false
   }
   const handleShowChange = async (val: boolean) => {
     // console.log(val)
@@ -69,10 +77,9 @@
       if (!domContainer) return
       modalCount++
       parentNode = domContainer.parentNode as HTMLElement
-      if (!parentNode.classList.contains(MODAL_CLASSNAMES.modal)) {
-        parentNode.classList.add(MODAL_CLASSNAMES.modal)
-        isAddedClass = true
-      }
+      parentNode.classList.add(MODAL_CLASSNAMES.modal)
+      modalCounts.set(parentNode, (modalCounts.get(parentNode) ?? 0) + 1)
+      isAddedClass = true
       prevFocusedNode = document.activeElement as HTMLElement
       ;(domContainer.querySelector('.content') as HTMLDivElement).focus()
       // showContent = true
