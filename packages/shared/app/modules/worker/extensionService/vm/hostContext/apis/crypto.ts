@@ -1,4 +1,4 @@
-import { toMD5, toSha1, toSha256, toSha512 } from '@any-listen/nodejs'
+import { randomBytes as getRandomBytes, toMD5, toSha1, toSha256, toSha512 } from '@any-listen/nodejs'
 
 import { utils_aes_decrypt, utils_aes_encrypt, utils_rsa_decrypt, utils_rsa_encrypt } from '../hostFuncs'
 
@@ -55,6 +55,9 @@ export const createCrypto = (extension: AnyListen.Extension.Extension) => {
     async sha512(data: Uint8Array | string) {
       if (typeof data != 'string') data = new Uint8Array(data)
       return toSha512(data)
+    },
+    async randomBytes(size: number) {
+      return new Uint8Array(getRandomBytes(size))
     },
   } as const
 }

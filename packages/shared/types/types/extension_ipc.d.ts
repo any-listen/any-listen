@@ -471,6 +471,7 @@ declare namespace AnyListen {
       sha1: (text: string | Uint8Array) => Promise<string>
       sha256: (text: string | Uint8Array) => Promise<string>
       sha512: (text: string | Uint8Array) => Promise<string>
+      randomBytes: (size: number) => Promise<Uint8Array>
       dataConverterBinary: <R extends ExtensionVM.ConverterBinaryFormatTo = 'utf-8'>(
         input: Uint8Array,
         toEncoding: R
