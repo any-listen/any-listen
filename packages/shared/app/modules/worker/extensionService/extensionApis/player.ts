@@ -17,6 +17,6 @@ export const createPlayer = (extension: AnyListen.Extension.Extension) => {
       await extensionState.remoteFuncs.playerAction(cloneData(action))
     },
   } as const
-  if (!extension.grant.includes('player')) return player
+  if (extension.grant.includes('player')) return player
   return {} as unknown as typeof player
 }
