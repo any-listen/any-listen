@@ -176,7 +176,6 @@ export default (onMsDown: (isDown: boolean) => void) => {
     }
 
     const handleWheel = (event: WheelEvent) => {
-      console.log(event.deltaY)
       if (cancelScrollFn) {
         cancelScrollFn()
         cancelScrollFn = null

@@ -16,7 +16,6 @@ export const connectIPC = (onConnected: () => void, onDisconnected: () => void, 
     clientCall: exposeFuncs,
     onConnected: (_ipc) => {
       ipc = _ipc
-      window.testData = ipc
       onConnected()
     },
     onDisconnected,

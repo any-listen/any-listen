@@ -20,21 +20,17 @@ export const registerModules = () => {
 export const connectIPC = (pwd?: string) => {
   _connectIPC(
     () => {
-      console.log('connected')
       // if (appState.showLogin) setShowLogin(false)
       sendConnected()
       // setInited(true)
     },
     () => {
       sendDesconnected()
-      console.log('disconnected')
     },
     (message) => {
       sendConnectFailed(message)
       // setInited(false)
       // setShowLogin(true)
-      console.log('failed')
-      console.log(message)
     }
   )
 }

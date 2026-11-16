@@ -37,7 +37,6 @@ const heartbeatTools = {
   },
   stop() {
     if (!msg2call) return
-    console.log('stop')
     msg2call.destroy()
     msg2call = null
     this.clearTimeout()
@@ -74,7 +73,6 @@ const handleInitIpc = (port: MessagePort) => {
 
 export const initIpcWinMain = () => {
   window.onmessage = (event) => {
-    console.log('window message', event.data, event.origin, IPC_CHANNEL_NAMES.WIN_MAIN_CHANNEL_PORT)
     if (event.data !== IPC_CHANNEL_NAMES.WIN_MAIN_CHANNEL_PORT) return
     if (!import.meta.env.DEV && import.meta.env.VITE_IS_WEB) {
       if (event.origin !== location.origin) return
