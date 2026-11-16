@@ -1,4 +1,4 @@
-import { _locale, i18n } from './i18n'
+import { _locale as locale, i18n } from './i18n'
 
 // const tack = (val: any) => {
 //   return val
@@ -18,10 +18,7 @@ const tack = (val: any) => {
   return val
 }
 export const useI18n = () => {
-  let val = $state(i18n.locale)
-  _locale.subscribe((v) => {
-    val = v
-  })
+  let val = $derived($locale)
   return {
     get t() {
       tack(val)
