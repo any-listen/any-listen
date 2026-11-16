@@ -478,7 +478,8 @@ export const getNextPlayMusicInfo = async (): Promise<AnyListen.Player.PlayMusic
     return null
   }
 
-  let nextIndex = playerState.playInfo.index
+  // playInfo.index points at the full list (with play later & disliked entries), the list here is filtered
+  let nextIndex = playList.findIndex((m) => m.itemId == playerState.playMusicInfo?.itemId)
 
   let togglePlayMethod = settingState.setting['player.togglePlayMethod']
   if (togglePlayMethod == 'random') {
@@ -623,7 +624,8 @@ export const skipNext = async (isAutoSktp = false): Promise<void> => {
   if (playerState.playInfo.lastTrackId) {
     nextIndex = playList.findIndex((m) => m.musicInfo.id == playerState.playInfo.lastTrackId)
     if (nextIndex < 0) {
-      nextIndex = playerState.playInfo.index
+      // playInfo.index points at the full list (with play later & disliked entries), the list here is filtered
+      nextIndex = playList.findIndex((m) => m.itemId == playerState.playMusicInfo?.itemId)
       if (togglePlayMethod == 'listLoop' || togglePlayMethod == 'list') nextIndex -= 1
     }
   } else nextIndex = -1
