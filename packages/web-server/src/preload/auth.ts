@@ -26,7 +26,9 @@ import type { KeyInfo, UrlInfo } from './ws'
 //   })
 
 export const initProxyUrlToken = async (urlInfo: UrlInfo, keyInfo: KeyInfo) => {
-  await request(buildUrlPath(urlInfo, `/proxyUrlToken?m=${keyInfo.token}`))
+  await request(buildUrlPath(urlInfo, '/proxyUrlToken'), {
+    headers: { m: keyInfo.token },
+  })
 }
 
 const getServerId = async (urlInfo: UrlInfo) =>
