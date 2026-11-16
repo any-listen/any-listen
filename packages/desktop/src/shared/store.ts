@@ -32,12 +32,15 @@ export const getStore = (name: string, isIgnoredError = true, isShowErrorAlert =
     const backupPath = `${storePath}.bak`
     fs.renameSync(storePath, backupPath)
     if (isShowErrorAlert) {
-      dialog.showMessageBoxSync({
-        type: 'error',
-        message: `${name} data load error`,
-        detail: `We have helped you back up the old ${name} file to: ${backupPath}\nYou can try to repair and restore it manually\n\nError detail: ${error.message}`,
+      // dialogs can only be shown after the app is ready, which may not be the case yet
+      void app.whenReady().then(() => {
+        dialog.showMessageBoxSync({
+          type: 'error',
+          message: `${name} data load error`,
+          detail: `We have helped you back up the old ${name} file to: ${backupPath}\nYou can try to repair and restore it manually\n\nError detail: ${error.message}`,
+        })
+        shell.showItemInFolder(backupPath)
       })
-      shell.showItemInFolder(backupPath)
     }
 
     store = new Store(storePath, true)
