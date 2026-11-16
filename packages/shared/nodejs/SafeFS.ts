@@ -49,7 +49,11 @@ export default class Store {
     if (this.batch) {
       this.immediate ??= setImmediate(() => {
         this.immediate = null
-        this.handleWriteFile()
+        try {
+          this.handleWriteFile()
+        } catch (err) {
+          console.error('write file error:', err)
+        }
       })
     } else this.handleWriteFile()
   }
