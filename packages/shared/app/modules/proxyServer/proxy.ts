@@ -34,8 +34,8 @@ const getCachedFile = async (id: string, rangeHeader?: string): Promise<Result |
   const filePath = joinPath(proxyServerState.cacheDir, id)
   const stat = await getFileStats(filePath)
   if (!stat) return null
-  const range = parseRange(rangeHeader)
   const size = stat.size
+  const range = parseRange(rangeHeader, size)
   let finalStart = 0
   let finalEnd = size - 1
   if (range) {
