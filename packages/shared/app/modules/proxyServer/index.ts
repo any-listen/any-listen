@@ -5,7 +5,7 @@ import { checkAndCreateDir, checkFile, extname, joinPath, randomBytes, toMD5, to
 import { verifyResource, type Options } from '@any-listen/nodejs/request'
 
 // import { logs } from '../logs'
-import { checkAllowedExt } from './shared'
+import { checkAllowedExt, TEMP_FILE_EXT } from './shared'
 import { proxyServerState } from './state'
 
 export const generateName = (url: string) => {
@@ -48,6 +48,12 @@ export const initProxyServer = async (proxyHost: string, proxyBaseUrl: string, c
   proxyServerState.proxyBaseUrl = proxyBaseUrl
   proxyServerState.cacheDir = `${cacheDir}/proxy`
   await checkAndCreateDir(proxyServerState.cacheDir)
+  // remove leftovers from interrupted cache writes, they are skipped by cache stats and clearing otherwise
+  const files = await fs.readdir(proxyServerState.cacheDir).catch(() => [])
+  for (const file of files) {
+    if (!file.endsWith(TEMP_FILE_EXT)) continue
+    await fs.unlink(joinPath(proxyServerState.cacheDir, file)).catch(() => {})
+  }
 }
 
 export const getProxyUrlKey = async () => {
