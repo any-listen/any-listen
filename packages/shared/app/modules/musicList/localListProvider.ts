@@ -518,7 +518,7 @@ export const sortLocalListMusics = async (
         ignorePermissionErrors: info.meta.ignorePermissionErrors,
       })
       .then((id) => {
-        watcherMap.set(info.id, [
+        sortWatcherMap.set(info.id, [
           info.meta.path,
           async () => {
             await workers.utilService.removeMusicDirWatcher(id)
