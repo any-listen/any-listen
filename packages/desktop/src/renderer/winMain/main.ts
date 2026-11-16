@@ -283,7 +283,7 @@ export const setFullScreen = (isFullscreen: boolean): boolean => {
       browserWindow.setFullScreen(isFullscreen)
     } else {
       browserWindow.setFullScreen(isFullscreen)
-      // windows/linux need to set resizable to true after exiting full screen
+      // restore the non resizable window state after exiting full screen
       if (!import.meta.env.VITE_IS_MAC) browserWindow.setResizable(isFullscreen)
     }
   } else {
