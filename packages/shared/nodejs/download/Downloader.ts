@@ -76,7 +76,11 @@ class Task extends EventEmitter {
     this.closeWaiting = false
     this.__clearTimeout()
     this.__startTimeout()
-    if (startByte) this.requestOptions.headers!.range = `bytes=${startByte}-${endByte}`
+    if (startByte) {
+      this.requestOptions.headers!.range = `bytes=${startByte}-${endByte}`
+    } else {
+      delete this.requestOptions.headers.range
+    }
 
     if (!savePath) return
     return new Promise<void>((resolve, reject) => {
