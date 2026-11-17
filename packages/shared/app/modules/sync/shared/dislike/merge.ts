@@ -11,10 +11,10 @@ const handleMergeListData = async (
   getListMergeMode: () => Promise<AnyListen.Dislike.MergeMode>,
   getLocalListData: () => Promise<string>
 ): Promise<[string, boolean, boolean]> => {
-  let now = performance.now()
+  // 合并弹窗是用户交互，等多久都合法；原 120s 检查只在用户答复后才会执行，
+  // 没人答复时 await 挂起它反而不会触发，只会把用户刚选好的模式整个作废
   const mode = await getListMergeMode()
   if (mode == 'cancel') throw new Error(CANCELED_ERROR_MSG)
-  if (performance.now() - now > 120_000) throw new Error('getListMergeMode timeout')
   let listData: string
   let requiredUpdateLocalListData = true
   let requiredUpdateRemoteListData = true
