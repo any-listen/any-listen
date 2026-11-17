@@ -1,4 +1,4 @@
-const minor = ['@types/node', 'undici', 'typescript', 'electron', 'electron-debug', 'stylelint']
+const minor = ['@types/node', 'undici', 'typescript', 'electron', 'electron-debug', 'stylelint', 'stylelint-config-standard-less']
 const newest = ['oxfmt']
 const patch = []
 const ignore = ['@types/ws', '@swc/html']
