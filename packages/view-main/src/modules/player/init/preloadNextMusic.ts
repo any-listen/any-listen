@@ -81,7 +81,8 @@ const preloadNextMusicUrl = async (curTime: number) => {
       const result = await checkMusicUrl(url)
       if (!result) {
         const { url } = await getMusicUrl({ musicInfo: info.musicInfo, isRefresh: true }).catch(() => ({ url: '' }))
-        void checkMusicUrl(url)
+        // 空地址不进检查：audio.src 置空不会触发任何事件，checkMusicUrl 会永远挂起并泄漏监听器
+        if (url) void checkMusicUrl(url)
         console.log('preload url refresh', url)
       }
     }
