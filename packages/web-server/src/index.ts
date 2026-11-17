@@ -119,7 +119,19 @@ if (envParams.HTTP_PROXY) {
 global.anylisten.config.httpProxy = global.anylisten.config.httpProxy.replace(/https?:\/\//, '')
 
 console.log(`Allowed Public Paths:
-  ${global.anylisten.config.allowPublicDir.join('\n  ') || '  No Paths'}
+  ${
+    [...global.anylisten.config.allowPublicDir]
+      .map((p) => {
+        if (fs.existsSync(p)) {
+          let realPath = fs.realpathSync(p)
+          if (!realPath.endsWith(path.sep)) return realPath + path.sep
+          return `${p}${p == realPath ? '' : ` -> ${realPath}`}`
+        }
+        global.anylisten.config.allowPublicDir = global.anylisten.config.allowPublicDir.filter((dir) => dir !== p)
+        return `[Not exists, excluded] ${p}`
+      })
+      .join('\n  ') || '  No Paths'
+  }
 `)
 console.log(`Login Password: ${global.anylisten.config.password || 'No Password'}
 `)

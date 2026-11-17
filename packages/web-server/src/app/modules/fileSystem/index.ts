@@ -1,4 +1,3 @@
-import { realpathSync } from 'node:fs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
@@ -12,25 +11,11 @@ import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
 
 // const devHost = 'http://localhost:9500'
 
-const resolveRealPath = (p: string): string => {
-  try {
-    return realpathSync(p)
-  } catch {
-    // path does not exist (yet): fall back to the lexical path
-    return p
-  }
-}
-
 export const checkAllowPath = (filePath: string, allowedDirs = global.anylisten.config.allowPublicDir) => {
   if (!filePath.length || filePath.length > 1024) return false
+  filePath = normalizePath(filePath)
   if (!filePath.endsWith(path.sep)) filePath += path.sep
-  // resolve symlinks so a link inside an allowed dir cannot point outside it
-  filePath = resolveRealPath(normalizePath(filePath))
-  if (!filePath.endsWith(path.sep)) filePath += path.sep
-  return allowedDirs.some((dir) => {
-    const realDir = resolveRealPath(dir)
-    return filePath.startsWith(realDir.endsWith(path.sep) ? realDir : realDir + path.sep)
-  })
+  return allowedDirs.some((p) => filePath.startsWith(p))
 }
 export const checkAllowPathError = (filePath: string) => {
   if (checkAllowPath(filePath)) return
