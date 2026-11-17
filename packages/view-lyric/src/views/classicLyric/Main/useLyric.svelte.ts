@@ -23,7 +23,11 @@ export default (domLyricContent: HTMLElement) => {
   }
 
   const setSlotLine = (slot: 0 | 1, line: number) => {
-    if (!lines[line]) return
+    if (!lines[line]) {
+      lineIndexes[slot] = -1
+      lineEls[slot].replaceChildren()
+      return
+    }
     lineIndexes[slot] = line
     lineEls[slot].replaceChildren(lines[line].dom_line)
   }
