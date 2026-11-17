@@ -9,6 +9,9 @@ import { workers } from '@/app/worker'
 
 import { getCachedLyricInfo } from './shared'
 
+// 与 getMusicUrl 的媒体分支同一边界：DEV 下不限制，生产环境只放行 allowPublicDir
+const canServeLocalFile = (filePath: string) => import.meta.env.DEV || checkAllowPath(filePath)
+
 export const getMusicUrl = async ({
   musicInfo,
   quality,
@@ -23,14 +26,16 @@ export const getMusicUrl = async ({
     let filePath = await getLocalFilePath(musicInfo)
     if (filePath) {
       if (filePath.endsWith('.strm')) {
-        const strmUrl = await workers.utilService.getStrmFileUrl(filePath)
-        if (!strmUrl) return null
-        return {
-          url: strmUrl,
-          // toggleSource: false,
-          quality: '128k',
-          // quality: (musicInfo.meta.bitrateLabel as AnyListen.Music.Quality | null) ?? '128k',
-          isFromCache: false,
+        if (canServeLocalFile(filePath)) {
+          const strmUrl = await workers.utilService.getStrmFileUrl(filePath)
+          if (!strmUrl) return null
+          return {
+            url: strmUrl,
+            // toggleSource: false,
+            quality: '128k',
+            // quality: (musicInfo.meta.bitrateLabel as AnyListen.Music.Quality | null) ?? '128k',
+            isFromCache: false,
+          }
         }
       }
       if (import.meta.env.DEV) {
@@ -72,29 +77,31 @@ export const getMusicPicUrl = async ({
     isRefresh = false
   }
   if (!isRefresh) {
-    const pic = await workers.utilService.getMusicFilePic(musicInfo.meta.filePath)
-    if (pic) {
-      if (typeof pic == 'string') {
-        if (isUrl(pic)) {
-          return {
-            url: pic,
-            isFromCache: true,
-            // toggleSource: false,
+    if (canServeLocalFile(musicInfo.meta.filePath)) {
+      const pic = await workers.utilService.getMusicFilePic(musicInfo.meta.filePath)
+      if (pic) {
+        if (typeof pic == 'string') {
+          if (isUrl(pic)) {
+            return {
+              url: pic,
+              isFromCache: true,
+              // toggleSource: false,
+            }
           }
-        }
 
-        let url = await createPicPublicPath(musicInfo.meta.filePath, pic)
-        if (url) {
-          return {
-            url,
-            isFromCache: false,
-            // toggleSource: false,
+          let url = await createPicPublicPath(musicInfo.meta.filePath, pic)
+          if (url) {
+            return {
+              url,
+              isFromCache: false,
+              // toggleSource: false,
+            }
           }
-        }
-      } else {
-        return {
-          url: await writeProxyCache(`${musicInfo.meta.filePath}.${pic.format}`, pic.data),
-          isFromCache: false,
+        } else {
+          return {
+            url: await writeProxyCache(`${musicInfo.meta.filePath}.${pic.format}`, pic.data),
+            isFromCache: false,
+          }
         }
       }
     }
@@ -121,7 +128,7 @@ export const getLyricInfo = async ({
   if (!isRefresh) {
     const [lyricInfo, fileLyricInfo] = await Promise.all([
       getCachedLyricInfo(musicInfo),
-      appState.appSetting['player.ignoreLocalLyrics']
+      appState.appSetting['player.ignoreLocalLyrics'] || !canServeLocalFile(musicInfo.meta.filePath)
         ? Promise.resolve(null)
         : workers.utilService.getMusicFileLyric(musicInfo.meta.filePath),
     ])

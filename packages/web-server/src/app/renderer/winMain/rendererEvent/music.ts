@@ -1,4 +1,5 @@
 import { appState } from '@/app/app'
+import { checkAllowPath } from '@/app/modules/fileSystem'
 import { getLyricInfo, getMusicPic, getMusicUrl } from '@/app/modules/music'
 import { workers } from '@/app/worker'
 
@@ -37,7 +38,12 @@ export const createExposeMusic = () => {
       return workers.dbService.rawLyricClear()
     },
     async createLocalMusicInfos(event, paths) {
-      return workers.utilService.createLocalMusicInfos(paths, appState.machineId, true)
+      // 客户端路径来自受控的文件浏览，这里再过滤一次，避免直接传任意路径探测文件
+      return workers.utilService.createLocalMusicInfos(
+        paths.filter((p) => import.meta.env.DEV || checkAllowPath(p)),
+        appState.machineId,
+        true
+      )
     },
   } satisfies Partial<ExposeClientFunctions>
 }
