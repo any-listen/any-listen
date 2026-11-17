@@ -222,9 +222,10 @@ export default class LinePlayer {
     this._performanceTime = getNow()
     this._startTime = curTime
 
-    this.curLineNum = this._findCurLineNum(this._currentTime()) - 1
+    const currentTime = this._currentTime()
+    this.curLineNum = this._findCurLineNum(currentTime) - 1
 
-    this.onPlay(this.curLineNum, this.lines[this.curLineNum]?.text ?? '', curTime)
+    this.onPlay(this.curLineNum, this.lines[this.curLineNum]?.text ?? '', currentTime)
   }
 
   pause() {
