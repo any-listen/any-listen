@@ -13,8 +13,8 @@ import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
 
 export const checkAllowPath = (filePath: string, allowedDirs = global.anylisten.config.allowPublicDir) => {
   if (!filePath.length || filePath.length > 1024) return false
-  if (!filePath.endsWith(path.sep)) filePath += path.sep
   filePath = normalizePath(filePath)
+  if (!filePath.endsWith(path.sep)) filePath += path.sep
   return allowedDirs.some((p) => filePath.startsWith(p))
 }
 export const checkAllowPathError = (filePath: string) => {
