@@ -108,6 +108,8 @@ export const PIC_FILE_TYPES = ['jpg', 'jpeg', 'gif', 'png', 'webp'] as const
 // https://developer.mozilla.org/zh-CN/docs/Web/API/CloseEvent#status_codes
 export const IPC_CLOSE_CODE = {
   normal: 1000,
+  // 心跳超时（连接已死），客户端收到后应走重连
+  heartbeat: 4002,
   logout: 4001,
   failed: 4100,
 } as const

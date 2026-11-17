@@ -86,7 +86,9 @@ const heartbeatTools = {
     // Delay should be equal to the interval at which your server
     // sends out pings plus a conservative assumption of the latency.
     this.pingTimeout = setTimeout(() => {
-      client?.close()
+      // 心跳超时说明连接已死，要用专门的 code 走重连分支，
+      // 裸 close() 是 1000(normal) 会被当成用户断开而不重连
+      client?.close(IPC_CLOSE_CODE.heartbeat)
     }, 46_000)
   },
   async reConnnect() {
