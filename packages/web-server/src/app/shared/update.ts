@@ -31,7 +31,7 @@ class UpdateEvent {
     if (!targetListeners) this.listeners.set(eventName, (targetListeners = []))
     targetListeners.push(listener as Listener)
     return () => {
-      this.off(eventName, listener as Listener)
+      this.off(eventName, listener)
     }
   }
   emit<T extends keyof EventTypes>(eventName: T, ...[event]: EventTypes[T] extends never ? [] : [event: EventTypes[T]]) {

@@ -62,7 +62,7 @@ export default class KeyboardEvent {
           captures.push(listener)
         }
         if (captures.length) {
-          for (const listener of captures) {
+          for (const listener of Array.from(captures)) {
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (isStop) return
             listener({
@@ -106,7 +106,7 @@ export default class KeyboardEvent {
 
   emitAnyKey(event: AnyListen.KeyDownEevent) {
     nextTick(() => {
-      for (const listener of this.anyKeyListeners) {
+      for (const listener of Array.from(this.anyKeyListeners)) {
         listener(event)
       }
     })

@@ -30,7 +30,7 @@ export default class SingleEvent<Args extends any[] = unknown[]> {
 
   emit(...args: Args) {
     setImmediate(() => {
-      for (const listener of this.listeners) {
+      for (const listener of Array.from(this.listeners)) {
         listener(...args)
       }
     })
