@@ -1,3 +1,4 @@
+import { realpathSync } from 'node:fs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
@@ -11,11 +12,27 @@ import { PUBLIC_RESOURCE_PATH } from '@/shared/constants'
 
 // const devHost = 'http://localhost:9500'
 
+const withTrailingSep = (p: string) => (p.endsWith(path.sep) ? p : p + path.sep)
+
+// 校验必须比较真实位置：允许目录内的软链不能成为越界入口；
+// 目标尚不存在时（如 create_dir）回退到已存在的父目录再拼接
+const resolveRealPath = (p: string) => {
+  try {
+    return realpathSync(p)
+  } catch {
+    try {
+      return path.join(realpathSync(path.dirname(p)), path.basename(p))
+    } catch {
+      return p
+    }
+  }
+}
+
 export const checkAllowPath = (filePath: string, allowedDirs = global.anylisten.config.allowPublicDir) => {
   if (!filePath.length || filePath.length > 1024) return false
   filePath = normalizePath(filePath)
-  if (!filePath.endsWith(path.sep)) filePath += path.sep
-  return allowedDirs.some((p) => filePath.startsWith(p))
+  const realFilePath = withTrailingSep(resolveRealPath(filePath))
+  return allowedDirs.some((p) => realFilePath.startsWith(withTrailingSep(resolveRealPath(p))))
 }
 export const checkAllowPathError = (filePath: string) => {
   if (checkAllowPath(filePath)) return
