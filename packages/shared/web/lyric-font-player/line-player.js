@@ -2,7 +2,6 @@ import { getNow, TimeoutTools } from './utils'
 
 const timeFieldExp = /^(?:\[[\d:.]+\])+/g
 const timeExp = /\d{1,3}(:\d{1,3}){0,2}(?:\.\d{1,3})/g
-const msTimeRxp = /\[\d{1,3}(:\d{1,3}){0,2}\.\d{3}]/
 const tagRegMap = {
   title: 'ti',
   artist: 'ar',
@@ -84,7 +83,6 @@ export default class LinePlayer {
 
   _initLines() {
     this.lines = []
-    const isMsTime = msTimeRxp.test(this.lyric)
     const lines = this.lyric.split(/\r\n|\r|\n/)
     const linesMap = {}
     for (let i = 0; i < lines.length; i++) {
@@ -103,15 +101,13 @@ export default class LinePlayer {
               linesMap[timeStr].extendedLyrics.push(text)
               continue
             }
-            const timeArr = timeStr.split(':')
+            // 数值从原始时间串解析：格式化标签会剥掉小数点后的前导零，拿它算值会差 10 倍
+            const timeArr = time.split(':')
             if (timeArr.length > 3) continue
             else if (timeArr.length < 3) for (let i = 3 - timeArr.length; i--;) timeArr.unshift('0')
             if (timeArr[2].indexOf('.') > -1) timeArr.splice(2, 1, ...timeArr[2].split('.'))
-            let msTime = timeArr[3] || '0'
-            if (!isMsTime) {
-              if (msTime.length == 1) msTime = `0${msTime}`
-              msTime = `${msTime}0`
-            }
+            // 毫秒位按行补齐：.5→500ms、.12→120ms、.123→123ms、.05→50ms，混合精度互不影响
+            const msTime = (timeArr[3] || '0').padEnd(3, '0')
 
             linesMap[timeStr] = {
               time:
