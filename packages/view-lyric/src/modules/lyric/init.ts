@@ -112,6 +112,13 @@ export const initLyric = () => {
           }
         })
       )
+      subscriptions.add(
+        playerEvent.on('progressChanged', (progress, oldProgress) => {
+          // 播放中 seek（缓冲区内）不会触发 pause/play，进度跳变时重新对齐歌词
+          if (!playerState.playerPlaying) return
+          if (Math.abs(progress.nowPlayTime - oldProgress.nowPlayTime) > 1000) setTimeout(setTime)
+        })
+      )
       subscriptions.add(playerEvent.on('musicChanged', stop))
       subscriptions.add(playerEvent.on('play', play))
       subscriptions.add(playerEvent.on('pause', pause))
