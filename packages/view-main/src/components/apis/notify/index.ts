@@ -39,6 +39,8 @@ export const showNotifyBox = async (extId: string, key: string, options: AnyList
     release()
   })
   const id = app.show(options.detail, 3, options.textSelect, extId, () => {
+    unsub()
+    unsub2()
     onHide(0)
   })
   let onHide: (value: number) => void
