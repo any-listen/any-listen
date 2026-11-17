@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { buildSourceKey, getData } from '@/modules/resource/topSongs/list/actions'
+  import { getData } from '@/modules/resource/topSongs/list/actions'
   import type { SourceType } from '../../shared.svelte'
   import { untrack } from 'svelte'
   import Songlist from './Songlist.svelte'
@@ -10,31 +10,28 @@
     loading: boolean
     error: boolean
   }>({ loading: false, error: false })
+  let searchSeq = 0
 
   const handleSearch = () => {
     let extId = source!.extensionId
     let sourceId = source!.id
-    const searchId = buildSourceKey(extId, sourceId)
+    const seq = ++searchSeq
     listInfo.loading = true
     void getData(extId, sourceId)
       .then((_list) => {
-        if (searchId != buildSourceKey(extId, sourceId)) {
-          return
-        }
+        if (seq != searchSeq) return
         listInfo.error = false
         list = _list
         console.log(_list)
       })
       .catch((err) => {
         console.log(err)
-        if (searchId != buildSourceKey(extId, sourceId)) {
-          return
-        }
+        if (seq != searchSeq) return
         listInfo.error = true
         list = []
       })
       .finally(() => {
-        listInfo.loading = false
+        if (seq == searchSeq) listInfo.loading = false
       })
   }
 
