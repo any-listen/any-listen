@@ -44,7 +44,8 @@ const getCachedFile = async (id: string, rangeHeader?: string): Promise<Result |
       finalStart = range.start
     }
     if (range.end != null) {
-      if (range.end >= size) return RANGE_NOT_SATISFIABLE_RESULT
+      // end 超出文件长度按 RFC 7233 截断到末尾并返回 206，只有 start 越界才 416
+      if (range.end >= size) range.end = size - 1
       finalEnd = range.end
     }
   }
