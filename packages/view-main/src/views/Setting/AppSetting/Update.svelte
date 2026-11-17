@@ -36,7 +36,7 @@
   )
 
   const latestVersion = $derived(
-    versionInfo.val.newVersion?.beta && allowPreRelease.val
+    versionInfo.val.newVersion?.beta?.length && allowPreRelease.val
       ? versionInfo.val.newVersion.beta[0].version
       : versionInfo.val.newVersion?.version
   )
