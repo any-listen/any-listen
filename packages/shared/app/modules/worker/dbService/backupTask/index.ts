@@ -72,10 +72,9 @@ const backup = async (db: Database.Database, trigger: BackupTrigger): Promise<bo
 }
 
 export const breakChangeBackup = async (db: Database.Database) => {
-  if (currentBackupTask) {
-    await currentBackupTask
-    return
-  }
+  // 在途备份的快照不含其后到本次破坏性操作之间的数据，等它结束后必须再拍一次自己的快照；
+  // 内容相同会走 hash 去重，不会产生多余文件
+  if (currentBackupTask) await currentBackupTask
   await backup(db, 'event')
 }
 
