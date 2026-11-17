@@ -37,7 +37,7 @@ export const getStore = (name: string, isIgnoredError = true, isShowErrorAlert =
       )
     }
 
-    store = new Store(storePath, true)
+    stores.set(name, (store = new Store(storePath, true)))
   }
   return store
 }
