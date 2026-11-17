@@ -13,6 +13,7 @@ export const showUpdateModal = async () => {
       onafterleave() {
         void unmount(app, { outro: true })
         isShowModal = false
+        unsub()
       },
     },
   })
