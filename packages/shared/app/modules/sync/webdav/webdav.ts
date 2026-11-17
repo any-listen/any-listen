@@ -93,32 +93,34 @@ export class WebDAV {
     let cancelled = false
     let timer: NodeJS.Timeout | null = null
     const lock = async () => {
-      const locked = await this.checkLocked().catch((err: Error) => {
-        logs.WebdavSync.logcat.error(err)
-        onEnd(false, err)
-        throw err
-      })
-      if (!locked) {
-        if (cancelled) {
-          onEnd(false)
-          return
-        }
-        const locked = await this.handleLock().catch((err: Error) => {
-          logs.WebdavSync.logcat.error(err)
-          onEnd(false, err)
-          throw err
-        })
-        if (locked) {
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      try {
+        const locked = await this.checkLocked()
+        if (!locked) {
           if (cancelled) {
-            await this.unlock().catch(() => {})
             onEnd(false)
             return
           }
-          onEnd(true)
+          const ownLocked = await this.handleLock()
+          if (ownLocked) {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            if (cancelled) {
+              await this.unlock().catch(() => {})
+              onEnd(false)
+              return
+            }
+            onEnd(true)
+            return
+          }
+          // 竞争失败说明另一台设备已拿到锁并会完成同步，
+          // 结束回调已把任务置为 idle，这里不能继续重试，否则
+          // 循环会在对方锁过期后凭空赢锁触发一次同步
+          onEnd(false)
           return
         }
-        onEnd(false)
+      } catch (err) {
+        logs.WebdavSync.logcat.error(err as Error)
+        onEnd(false, err as Error)
+        return
       }
       logs.WebdavSync.logcat.info('Other locks detected, retrying in 2 seconds...')
       timer = setTimeout(() => {
