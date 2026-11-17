@@ -339,7 +339,9 @@ export const updateUserListsPosition = (position: number, ids: string[]) => {
     if (ids.includes(targetList[i].id)) {
       const list = targetList.splice(i, 1)[0]
       list.meta.posTime = now + i * step
-      updateLists.push(list)
+      // 倒序遍历避免 splice 错位，unshift 让收集结果保持 ids 的升序，
+      // 块插入和持久化的 position 都按数组下标生成，顺序不能反
+      updateLists.unshift(list)
     }
   }
   position = Math.min(targetList.length, position)
