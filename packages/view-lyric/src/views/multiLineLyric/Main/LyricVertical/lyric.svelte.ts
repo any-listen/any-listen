@@ -173,6 +173,7 @@ export default (onMsDown: (isDown: boolean) => void) => {
     let cancelScrollFn: (() => void) | null = null
     let domLines: NodeListOf<HTMLElement>
     let lineWidths: number[]
+    let prevActiveLine = -1
     let isSetedLines = false
 
     const handleMsDown = (isDown: boolean) => {
@@ -198,6 +199,12 @@ export default (onMsDown: (isDown: boolean) => void) => {
             padding = Math.trunc(settingState.setting['desktopLyric.multiLine.style.fontSize']) * 1.1 * 2
             lineWidth += padding
             lineWidth *= 1.14
+            // 上一列的激活 padding 正在收缩，其后各列会随之左移，按差值补偿目标列的当前位置
+            if (prevActiveLine < line) {
+              const preDomP = domLines[prevActiveLine] as HTMLElement | null
+              const preWidth = lineWidths[prevActiveLine] ?? 0
+              if (preDomP && preDomP !== domP) offsetLeft -= preDomP.clientWidth - preWidth
+            }
           }
         } else {
           padding = 0
@@ -208,6 +215,7 @@ export default (onMsDown: (isDown: boolean) => void) => {
       } else {
         cancelScrollFn = handleScrollX(domLyric, 0, duration)
       }
+      prevActiveLine = lyricState.line
     }
 
     const clearLyricScrollTimeout = () => {
