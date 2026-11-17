@@ -6,14 +6,20 @@ import { extensionState } from './state'
 
 const initState = async () => {
   extensionState.resources = await workers.extensionService.getResourceList()
-  extensionEvent.on('extensionEvent', (event) => {
-    if (event.action != 'resourceUpdated') return
-    extensionState.resources = event.data
-  })
 }
+
+let inited = false
+
 export const initExtensionModule = async () => {
-  await initRemoteListProvider()
-  await initOnlineListProvider()
+  if (!inited) {
+    inited = true
+    await initRemoteListProvider()
+    await initOnlineListProvider()
+    extensionEvent.on('extensionEvent', (event) => {
+      if (event.action != 'resourceUpdated') return
+      extensionState.resources = event.data
+    })
+  }
   await initState()
 }
 
