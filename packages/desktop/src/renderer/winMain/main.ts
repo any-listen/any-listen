@@ -150,6 +150,10 @@ export const createWindow = () => {
     options.fullscreen = true
     winMainState.isFullScreen = true
     if (import.meta.env.VITE_IS_LINUX) options.resizable = true
+  } else {
+    // 窗口重建时上一个窗口可能是在全屏状态下关闭的，新窗口按创建参数复位状态，
+    // 否则全屏切换的方向会反
+    winMainState.isFullScreen = false
   }
   browserWindow = new BrowserWindow(options)
 
