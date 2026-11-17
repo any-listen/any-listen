@@ -96,7 +96,9 @@ const handleListChangeSync = (listIds: string[]) => {
   for (const id of listIds) {
     changedListIds.add(id)
   }
-  syncId = generateId()
+  // 标记用于让在途的队列同步失效，编辑的不是当前播放列表时不该动它，
+  // 否则在途同步会在 fetch 后中止且不会被重试
+  if (listIds.includes(playerState.playInfo.listId)) syncId = generateId()
   throttleListChangeSync()
 }
 
