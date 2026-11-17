@@ -86,6 +86,7 @@ export const initAppLog = async (dataPath: string) => {
   await checkAndCreateDir(logPath)
   await logs.App.init(logPath, LOG_NAMES.APP)
   await logs.ExtensionService.init(logPath, LOG_NAMES.EXTENSION_SERVICE)
+  await logs.ProxyService.init(logPath, LOG_NAMES.PROXY)
   await logs.WebdavSync.init(logPath, LOG_NAMES.WEBDAV_SYNC)
 }
 

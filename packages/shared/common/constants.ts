@@ -238,5 +238,6 @@ export const LOG_NAMES = {
   LOG_DIR: 'logs',
   APP: 'app.log',
   EXTENSION_SERVICE: 'extensionService.log',
+  PROXY: 'proxyService.log',
   WEBDAV_SYNC: 'webdavSync.log',
 } as const
