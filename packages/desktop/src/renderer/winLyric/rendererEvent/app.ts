@@ -11,7 +11,9 @@ export const createExposeApp = (ipc: AnyListen.IPC_Lyric.ClientIPC) => {
       winLyricEvent.inited()
     },
     async setWinBounds(event, bounds) {
-      setBounds(getLyricWindowBounds(getBounds()!, bounds))
+      const currentBounds = getBounds()
+      if (!currentBounds) return
+      setBounds(getLyricWindowBounds(currentBounds, bounds))
     },
     async mouseEnterLeave(event, isEnter) {
       if (isEnter) {
