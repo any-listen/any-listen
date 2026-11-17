@@ -69,15 +69,19 @@
   }
 
   let extId: string | null = null
+  let loadSeq = 0
   const loadExtensionDetail = async () => {
     if (!extId) return
+    const seq = ++loadSeq
     loadStats = { loading: true, error: false, errorMessage: '' }
     try {
       const detail = await getOnlineExtensionDetail(extId)
+      if (seq != loadSeq) return
       ext = detail
       loadStats.loading = false
     } catch (err) {
       console.log(err)
+      if (seq != loadSeq) return
       loadStats = { loading: false, error: true, errorMessage: (err as Error).message }
     }
   }
