@@ -110,19 +110,17 @@ export class Update extends UpdateEvent {
     if (!this.info) return false
     const latest = getLatestVersion(this.info, appState.appSetting['common.allowPreRelease'])
     if (compareVersions(appState.version.version, latest.version) < 0) {
-      await checkUpdate(appState.appSetting['common.allowPreRelease'])
-        .then(() => {
-          if (isAutoUpdate) {
-            setImmediate(() => {
-              void downloadUpdate()
-            })
-          }
+      try {
+        await checkUpdate(appState.appSetting['common.allowPreRelease'])
+      } catch (error) {
+        this.emit('error', error as Error)
+        return false
+      }
+      if (isAutoUpdate) {
+        setImmediate(() => {
+          void downloadUpdate()
         })
-        .catch((error) => {
-          setImmediate(() => {
-            this.emit('error', error as Error)
-          })
-        })
+      }
       this.emit('update_available', this.info)
       return true
     }
