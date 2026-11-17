@@ -97,6 +97,11 @@ export const init = () => {
     socket.onMessage = (message) => {
       msg2call.message(message)
     }
+    // 冲刷 onMessage 注册前缓冲的客户端消息
+    if (socket.pendingMessages?.length) {
+      for (const message of socket.pendingMessages) socket.onMessage(message as string)
+      socket.pendingMessages = []
+    }
     socket.onClose(() => {
       msg2call.destroy()
     })

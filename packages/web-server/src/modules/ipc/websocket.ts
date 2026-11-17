@@ -34,6 +34,8 @@ interface ServerSocketBase extends WS.WebSocket {
 
   sendMessage: (message: unknown) => void
   onMessage?: (message: string) => void
+  // initApp 注册 onMessage 前接入的客户端，消息先缓冲在这里
+  pendingMessages?: unknown[]
   onClose: (handler: (err: Error) => void | Promise<void>) => () => void
   broadcast: (handler: (client: ServerSocket) => void) => void
 
@@ -141,7 +143,9 @@ wss.on('connection', (socket, request) => {
           return
         }
         // socketEvent.message(socket, syncData)
-        socket.onMessage?.(syncData as string)
+        // onMessage 是 initApp 注册的，先接入的客户端没被注册时先缓冲，避免静默丢消息
+        if (socket.onMessage) socket.onMessage(syncData as string)
+        else (socket.pendingMessages ??= []).push(syncData)
         // msg2call.message(syncData)
       })
       .catch((err: Error) => {
