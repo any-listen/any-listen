@@ -219,48 +219,37 @@ export default class Lyric {
     this._init()
   }
 
-  setPlaybackRate(rate) {
-    this.rate = rate
-    this.linePlayer.setPlaybackRate(rate)
+  _initLinesAndRestore() {
+    const num = this.playingLineNum
     this._initLines(this.initInfo.lines, this.initInfo.offset, true)
     if (this.linePlayer.isPlay) {
-      const num = this.playingLineNum
       this.playingLineNum = 0
       this._handleLinePlayerOnPlay(num, '', this.linePlayer._currentTime())
     } else this.playingLineNum = 0
+  }
+
+  setPlaybackRate(rate) {
+    this.rate = rate
+    this.linePlayer.setPlaybackRate(rate)
+    this._initLinesAndRestore()
   }
 
   setVertical(isVertical) {
     if (this.isVertical === isVertical) return
     this.isVertical = isVertical
-    this._initLines(this.initInfo.lines, this.initInfo.offset, true)
-    if (this.linePlayer.isPlay) {
-      const num = this.playingLineNum
-      this.playingLineNum = 0
-      this._handleLinePlayerOnPlay(num, '', this.linePlayer._currentTime())
-    } else this.playingLineNum = 0
+    this._initLinesAndRestore()
   }
 
   setMergeExtendedLyrics(merge) {
     if (this.mergeExtendedLyrics === merge) return
     this.mergeExtendedLyrics = merge
-    this._initLines(this.initInfo.lines, this.initInfo.offset, true)
-    if (this.linePlayer.isPlay) {
-      const num = this.playingLineNum
-      this.playingLineNum = 0
-      this._handleLinePlayerOnPlay(num, '', this.linePlayer._currentTime())
-    } else this.playingLineNum = 0
+    this._initLinesAndRestore()
   }
 
   setShowExtendedLyrics(show) {
     if (this.showExtendedLyrics === show) return
     this.showExtendedLyrics = show
-    this._initLines(this.initInfo.lines, this.initInfo.offset, true)
-    if (this.linePlayer.isPlay) {
-      const num = this.playingLineNum
-      this.playingLineNum = 0
-      this._handleLinePlayerOnPlay(num, '', this.linePlayer._currentTime())
-    } else this.playingLineNum = 0
+    this._initLinesAndRestore()
   }
 
   setTimeoutTools(tools) {
@@ -282,7 +271,7 @@ export default class Lyric {
       updated ||= true
     }
     if (updated) {
-      this._initLines(this.initInfo.lines, this.initInfo.offset, true)
+      this._initLinesAndRestore()
     }
   }
 }
