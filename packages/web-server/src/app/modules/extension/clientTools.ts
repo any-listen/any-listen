@@ -100,6 +100,9 @@ export const boxTools = {
   },
   async showBox<T>(key: string, extId: string, sync: boolean, run: (socket: ServerSocketWinMain) => Promise<T>): Promise<T> {
     this.init()
+    // 队列以 key 为唯一键：重复 key 会覆盖 datas 里前一个注册的回调并让队列出现重复项，
+    // 第一个调用者的 promise 永远不会 settle，后续弹窗全部跟着挂起
+    if (this.datas.has(key)) throw new Error(`Duplicated message box key: ${key}`)
     // TODO async message box
     return new Promise<T>((resolve, reject) => {
       this.queue.push(key)
