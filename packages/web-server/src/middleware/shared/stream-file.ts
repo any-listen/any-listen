@@ -146,10 +146,12 @@ export const handleRequest = async (ctx: AnyListen.RequestContext, filepath: str
 
   const range = parseRange(ctx.headers.range, stat.size)
 
-  if (!range || range.start >= stat.size || range.end >= stat.size) {
+  if (!range || range.start >= stat.size) {
     endRequest(ctx, stat.size)
     return
   }
+  // RFC 7233: a last-byte-pos past the end of the file is clamped to size - 1
+  if (range.end >= stat.size) range.end = stat.size - 1
 
   handleFileStream(ctx, range, filepath, stat, options)
 }
