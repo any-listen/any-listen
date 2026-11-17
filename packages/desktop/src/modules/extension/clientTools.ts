@@ -26,6 +26,8 @@ export const boxTools = {
     })
   },
   async showBox<T>(key: string, extId: string, run: () => Promise<T>): Promise<T> {
+    // init 注册“扩展停止时清理其弹窗”的监听，不调用它扩展停止后弹窗与调用方都会挂起
+    this.init()
     return new Promise<T>((resolve, reject) => {
       this.queue.push(key)
       this.datas.set(key, [extId, run, resolve as (result: unknown) => void, reject])
