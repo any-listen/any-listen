@@ -231,7 +231,7 @@ export const connect = async (
   keyInfo: KeyInfo,
   winType: AnyListen.IPC.WinType
 ) => {
-  let pending = true
+  // let pending = true
   return new Promise<void>((resolve, reject) => {
     client = new WebSocket(
       buildIPCUrlPath(urlInfo, `/socket?m=${encodeURIComponent(keyInfo.token)}&t=${winType}`, true)
@@ -320,7 +320,7 @@ export const connect = async (
 
     const initMessage = 'Wait syncing...'
     client.addEventListener('open', () => {
-      pending = false
+      // pending = false
       resolve()
       log.info('connect')
       // const store = getStore()
@@ -376,12 +376,12 @@ export const connect = async (
             status: false,
             message: 'Abnormal disconnection',
           })
-          if (pending) {
-            reject(new Error(IPC_CODE.abnormalDisconnection))
-            pending = false
-            client = null
-            heartbeatTools.disconnect()
-          }
+          // if (pending) {
+          //   reject(new Error(IPC_CODE.abnormalDisconnection))
+          //   pending = false
+          //   client = null
+          //   heartbeatTools.disconnect()
+          // }
           break
       }
       wsEvent.disconnected()

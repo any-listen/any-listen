@@ -211,16 +211,22 @@ server.on('listening', async () => {
         await envPrepare()
       })
       .catch((err) => {
-        console.log(err)
+        console.log('Failed to prepare environment:', err)
         process.exit()
       })
   }
   void import('./app').then(({ initApp }) => {
     void initApp()
+      .then(() => {
+        server.on('upgrade', onUpgrade)
+        startupLog.info('App initialized successfully')
+      })
+      .catch((err) => {
+        startupLog.error('Failed to initialize app:', err)
+        process.exit(1)
+      })
   })
 })
-
-server.on('upgrade', onUpgrade)
 
 /**
  * Listen on provided port, on all network interfaces.
