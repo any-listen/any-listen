@@ -345,8 +345,8 @@ export const updateUserListsPosition = (position: number, ids: string[]) => {
     map.delete(id)
   }
 
-  position = Math.min(targetLists.length, position)
   targetLists = targetLists.filter((l) => map.has(l.id))
+  position = Math.min(targetLists.length, position)
 
   arrPushByPosition(targetLists, updateLists, position)
   inertUserLists(targetInfo.parentId, toDBListInfo(targetLists), true)
