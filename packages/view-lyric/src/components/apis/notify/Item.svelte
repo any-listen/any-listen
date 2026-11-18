@@ -25,16 +25,14 @@
   let transform = $derived(`translateX(-50%) translateY(${-offset}px)`)
 
   let hideTime = 0
+  let nextHideTime = 0
   let onoutroendCalled = false
   const addAutoCloseTimer = () => {
     clearAutoCloseTimer()
-    autoCloseTimer = setTimeout(
-      () => {
-        autoCloseTimer = null
-        onhide()
-      },
-      Math.max(2000, hideTime - performance.now())
-    )
+    autoCloseTimer = setTimeout(() => {
+      autoCloseTimer = null
+      onhide()
+    }, hideTime - performance.now())
   }
   const clearAutoCloseTimer = () => {
     if (!autoCloseTimer) return
@@ -73,9 +71,11 @@
     item.onafterleave?.()
   }}
   onmouseenter={() => {
+    nextHideTime = Math.max(2000, hideTime - performance.now())
     clearAutoCloseTimer()
   }}
   onmouseleave={() => {
+    hideTime = performance.now() + nextHideTime
     addAutoCloseTimer()
   }}
 >
