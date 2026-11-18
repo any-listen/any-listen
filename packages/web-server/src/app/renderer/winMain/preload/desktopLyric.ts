@@ -2,6 +2,10 @@ import { IPC_CHANNEL_NAMES, DEV_SERVER_PORTS } from '@any-listen/common/constant
 
 import type { IPCSocket } from '@/preload/ws'
 
+// 端口转发监听全页只注册一次：闭包读的是外层 lyricWindow，重复注册只会让同一次
+// 端口请求建出多条 MessageChannel，两端各挂上多余的 IPC 通道
+let portListenerInited = false
+
 // 暴露给前端的方法
 export const createClientDesktopLyric = (ipcSocket: IPCSocket) => {
   let lyricWindow: Window | null = null
@@ -29,23 +33,26 @@ export const createClientDesktopLyric = (ipcSocket: IPCSocket) => {
       if (!lyricWindow) {
         throw new Error('Failed to open desktop lyric window')
       }
-      window.addEventListener('message', (event) => {
-        if (import.meta.env.DEV) {
-          if (event.data !== IPC_CHANNEL_NAMES.WIN_CHANNEL_PORT_REQUEST) return
-        } else if (event.origin !== location.origin || event.data !== IPC_CHANNEL_NAMES.WIN_CHANNEL_PORT_REQUEST) return
+      if (!portListenerInited) {
+        portListenerInited = true
+        window.addEventListener('message', (event) => {
+          if (import.meta.env.DEV) {
+            if (event.data !== IPC_CHANNEL_NAMES.WIN_CHANNEL_PORT_REQUEST) return
+          } else if (event.origin !== location.origin || event.data !== IPC_CHANNEL_NAMES.WIN_CHANNEL_PORT_REQUEST) return
 
-        if (!lyricWindow) return
-        console.log('postMessage to lyricWindow')
-        // if (import.meta.env.DEV) {
-        const channel = new MessageChannel()
-        lyricWindow.postMessage(
-          IPC_CHANNEL_NAMES.WIN_MAIN_CHANNEL_PORT,
-          '*',
-          [channel.port2] // 转移 port2
-        )
-        window.postMessage(IPC_CHANNEL_NAMES.WIN_LYRIC_CHANNEL_PORT, '*', [channel.port1])
-        // }
-      })
+          if (!lyricWindow) return
+          console.log('postMessage to lyricWindow')
+          // if (import.meta.env.DEV) {
+          const channel = new MessageChannel()
+          lyricWindow.postMessage(
+            IPC_CHANNEL_NAMES.WIN_MAIN_CHANNEL_PORT,
+            '*',
+            [channel.port2] // 转移 port2
+          )
+          window.postMessage(IPC_CHANNEL_NAMES.WIN_LYRIC_CHANNEL_PORT, '*', [channel.port1])
+          // }
+        })
+      }
       // const checkReady = () => {
       //   if (!lyricWindow) return
       //   if (lyricWindow.closed) {
