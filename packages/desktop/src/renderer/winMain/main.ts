@@ -108,7 +108,8 @@ export const createWindow = () => {
     })
   }
 
-  const preloadUrl = path.join(encodePath(__dirname), './view-main.preload.js')
+  // webPreferences.preload 是文件系统路径，不能做 URL 编码（file:// 的 winURL 才需要）
+  const preloadUrl = path.join(__dirname, './view-main.preload.js')
 
   /**
    * Initial window options
