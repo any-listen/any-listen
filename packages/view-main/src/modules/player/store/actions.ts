@@ -88,7 +88,7 @@ export const addPlayLaterMusic = async (
     source,
     playLater: true,
   })
-  return new Promise<void>((resolve) => {
+  return new Promise<void>((resolve, reject) => {
     const unsub = playerEvent.on('playListMusicAdded', (pos, _list) => {
       if (_list.every((m, i) => list[i].itemId === m.itemId)) {
         resolve()
@@ -101,7 +101,10 @@ export const addPlayLaterMusic = async (
       const lastIndex = playerState.playList.findIndex((m) => !m.playLater)
       pos = lastIndex === -1 ? playerState.playList.length : lastIndex
     }
-    void addPlayListMusic({ musics: list, pos })
+    void addPlayListMusic({ musics: list, pos }).catch((err: Error) => {
+      unsub()
+      reject(err)
+    })
   })
 }
 
