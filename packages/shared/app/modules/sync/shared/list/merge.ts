@@ -171,11 +171,17 @@ const handleMergeListData = async (
   getListMergeMode: () => Promise<AnyListen.List.MergeMode>,
   getLocalListData: () => Promise<AnyListen.List.ListDataFull>
 ): Promise<[AnyListen.List.ListDataFull, boolean, boolean]> => {
-  let now = performance.now()
-  const mode = await getListMergeMode()
+  const mode = await new Promise<AnyListen.List.MergeMode>((resolve, reject) => {
+    getListMergeMode()
+      .then(resolve)
+      .catch(reject)
+      .finally(() => {
+        clearTimeout(timeout)
+      })
+    let timeout = setTimeout(() => reject(new Error('getListMergeMode timeout')), 120_000)
+  })
 
   if (mode == 'cancel') throw new Error(CANCELED_ERROR_MSG)
-  if (performance.now() - now > 120_000) throw new Error('getListMergeMode timeout')
   console.log('handleMergeListData', 'remoteListData, localListData')
   let listData: AnyListen.List.ListDataFull
   let requiredUpdateLocalListData = true
