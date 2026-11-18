@@ -329,26 +329,28 @@ export const updateUserListsPosition = (position: number, ids: string[]) => {
   const id = ids[0]
   const targetInfo = userLists.find((l) => l.id == id)
   if (!targetInfo) throw new Error(`${id} not found`)
-  const targetList = filterUserLists(targetInfo.parentId)
-
+  let targetLists = filterUserLists(targetInfo.parentId)
+  const map = new Map<string, AnyListen.List.UserListInfo>()
+  for (const item of targetLists) map.set(item.id, item)
   const updateLists: AnyListen.List.UserListInfo[] = []
 
   const now = Date.now()
-  let step = 1 / targetList.length
-  for (let i = targetList.length - 1; i >= 0; i--) {
-    if (ids.includes(targetList[i].id)) {
-      const list = targetList.splice(i, 1)[0]
-      list.meta.posTime = now + i * step
-      // 倒序遍历避免 splice 错位，unshift 让收集结果保持 ids 的升序，
-      // 块插入和持久化的 position 都按数组下标生成，顺序不能反
-      updateLists.unshift(list)
-    }
+  let i = 0
+  let step = 1 / ids.length
+  for (const id of ids) {
+    const target = map.get(id)
+    if (!target) continue
+    target.meta.posTime = now + i++ * step
+    updateLists.push(target)
+    map.delete(id)
   }
-  position = Math.min(targetList.length, position)
 
-  arrPushByPosition(targetList, updateLists, position)
-  inertUserLists(targetInfo.parentId, toDBListInfo(targetList), true)
-  overwriteUserList(targetInfo.parentId, targetList)
+  position = Math.min(targetLists.length, position)
+  targetLists = targetLists.filter((l) => map.has(l.id))
+
+  arrPushByPosition(targetLists, updateLists, position)
+  inertUserLists(targetInfo.parentId, toDBListInfo(targetLists), true)
+  overwriteUserList(targetInfo.parentId, targetLists)
 }
 
 /**
