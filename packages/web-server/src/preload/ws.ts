@@ -151,7 +151,7 @@ const heartbeatTools = {
       heartbeatTools.connectTimeout = null
     }
     console.log('open')
-    // heartbeatTools.failedNum = 0
+    heartbeatTools.failedNum = 0
     heartbeatTools.heartbeat()
   },
   handleMessage({ data }: MessageEvent<unknown>) {
