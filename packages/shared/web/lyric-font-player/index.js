@@ -196,6 +196,8 @@ export default class Lyric {
   setTime(curTime) {
     if (!this.linePlayer) return
     this.linePlayer.setTime(curTime)
+    // setTime 内部会停表并触发 onPlay 启动目标行的逐字动画，暂停状态下要把它停住
+    if (!this.linePlayer.isPlay && this.playingLineNum > -1) this._lineFonts[this.playingLineNum]?.pause()
   }
 
   play(curTime) {
