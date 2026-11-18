@@ -14,19 +14,16 @@ export const addExtension = (ext: AnyListen.Extension.Extension) => {
 }
 
 export const removeExtension = (id: string) => {
-  extensionState.extensionList.splice(
-    extensionState.extensionList.findIndex((ext) => ext.id == id),
-    1
-  )
+  const index = extensionState.extensionList.findIndex((ext) => ext.id == id)
+  if (index < 0) return
+  extensionState.extensionList.splice(index, 1)
   extensionEvent.listChanged(true)
 }
 
 export const updateExtension = (ext: AnyListen.Extension.Extension) => {
-  extensionState.extensionList.splice(
-    extensionState.extensionList.findIndex((e) => e.id == ext.id),
-    1,
-    ext
-  )
+  const index = extensionState.extensionList.findIndex((e) => e.id == ext.id)
+  if (index < 0) return
+  extensionState.extensionList.splice(index, 1, ext)
   extensionEvent.listChanged(true)
 }
 
