@@ -2,7 +2,7 @@
   import { i18n, t } from '@/plugins/i18n'
   import Btn from '@/components/base/Btn.svelte'
   import ListItem from './ListItem.svelte'
-  import type { ComponentExports } from 'svelte'
+  import { onMount, type ComponentExports } from 'svelte'
   import { buildFilesPath, type File, type FileSaveOptions } from './shared'
   import { createClickHandle } from '@any-listen/web'
   import FileListModal from './FileListModal.svelte'
@@ -10,6 +10,7 @@
   import { showSimpleConfirmModal } from '@/components/apis/dialog'
   import { filterFileName } from '@/shared'
   import { showInputBox } from '@/components/apis/inputModal/inputBox'
+  import { closeMessageBoxEvent } from '@/shared/ipc/app/event'
 
   let {
     onafterleave,
@@ -24,6 +25,7 @@
   let extension = $state('')
   let confirmText = $state<string | undefined>()
 
+  let key: string | undefined
   let currentDir = $state('')
   let list = $state.raw<File[]>([])
   let errorMessage = $state('')
@@ -99,6 +101,7 @@
       fileName = ''
       extension = ''
     }
+    key = opts.key
     confirmText = opts.confirmText
     createDir = opts.onCreateDir
     selectFolder = opts.selectFolder || false
@@ -110,6 +113,11 @@
       onReadRootDir: opts.onReadRootDir,
     })
   }
+  onMount(() => {
+    return closeMessageBoxEvent.on((k) => {
+      if (k == key) closeModal()
+    })
+  })
 </script>
 
 <FileListModal

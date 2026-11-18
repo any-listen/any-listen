@@ -409,7 +409,7 @@ const loadPitchShifterNode = () => {
   initAdvancedAudioFeatures()
   // source -> analyser -> biquadFilter -> audioWorklet(pitch shifter) -> [(convolver & convolverSource)->convolverDynamicsCompressor] -> panner -> gain
   void import('./pitch-shifter/phase-vocoder?worker&url')
-    .then(({ default: url }) => {
+    .then(async ({ default: url }) => {
       return audioContext!.audioWorklet?.addModule(url).then(() => {
         console.log('pitch shifter audio worklet loaded')
         // https://github.com/olvb/phaze/issues/26#issuecomment-1574629971

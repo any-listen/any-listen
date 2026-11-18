@@ -2,10 +2,14 @@ import { showFileExplorerModal, showFileSaveModal as showFileSaveModalApi } from
 
 import { createDir, readDir, readRootDir } from './fs'
 
-export const showFileSelectModal: AnyListen.IPC.ServerIPC['showOpenDialog'] = async (options) => {
+export const showFileSelectModal = async (
+  options: AnyListen.OpenDialogOptions,
+  key?: string
+): Promise<AnyListen.OpenDialogResult> => {
   const filters = options.filters?.map((f) => f.extensions).flat()
   const openDir = options.properties?.includes('openDirectory')
   return showFileExplorerModal({
+    key,
     modalTitle: options.modalTitle,
     title: options.title,
     defaultPath: options.defaultPath,
@@ -23,9 +27,13 @@ export const showFileSelectModal: AnyListen.IPC.ServerIPC['showOpenDialog'] = as
   })
 }
 
-export const showFileSaveModal: AnyListen.IPC.ServerIPC['showSaveDialog'] = async (options) => {
+export const showFileSaveModal = async (
+  options: AnyListen.SaveDialogOptions,
+  key?: string
+): Promise<AnyListen.SaveDialogResult> => {
   const filters = options.filters?.map((f) => f.extensions).flat()
   return showFileSaveModalApi({
+    key,
     modalTitle: options.modalTitle,
     title: options.title,
     defaultPath: options.defaultPath,

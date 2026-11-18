@@ -8,6 +8,7 @@
   import { useHotkey } from './useHotkey.svelte'
   import { createClickHandle } from '@any-listen/web'
   import FileListModal from './FileListModal.svelte'
+  import { closeMessageBoxEvent } from '@/shared/ipc/app/event'
 
   let {
     onafterleave,
@@ -50,6 +51,11 @@
     const len = list.length
     if (select.selectIndex < len) return
     select.setSelectIndex(len ? len - 1 : 0)
+  })
+  onMount(() => {
+    return closeMessageBoxEvent.on((key) => {
+      if (key == options.key) closeModal()
+    })
   })
 
   let options = $state.raw<FileExplorerOptions>({

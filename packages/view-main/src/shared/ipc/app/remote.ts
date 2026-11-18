@@ -63,13 +63,16 @@ export default {
       : undefined
     let result: AnyListen.OpenDialogResult = { canceled: true, filePaths: [] }
     if (import.meta.env.VITE_IS_WEB) {
-      result = await showFileSelectModal({
-        modalTitle: extName,
-        title: options.title,
-        filters,
-        properties,
-        buttonLabel: options.openLabel,
-      })
+      result = await showFileSelectModal(
+        {
+          modalTitle: extName,
+          title: options.title,
+          filters,
+          properties,
+          buttonLabel: options.openLabel,
+        },
+        key
+      )
     }
     if (import.meta.env.VITE_IS_DESKTOP) {
       result = await showOpenDialog({
@@ -93,14 +96,17 @@ export default {
         }))
       : undefined
     if (import.meta.env.VITE_IS_WEB) {
-      result = await showFileSaveModal({
-        modalTitle: extName,
-        title: options.title,
-        buttonLabel: options.saveLabel,
-        defaultFileName: options.defaultFileName,
-        selectFolder: options.canSelectFolder,
-        filters,
-      })
+      result = await showFileSaveModal(
+        {
+          modalTitle: extName,
+          title: options.title,
+          buttonLabel: options.saveLabel,
+          defaultFileName: options.defaultFileName,
+          selectFolder: options.canSelectFolder,
+          filters,
+        },
+        key
+      )
     }
     if (import.meta.env.VITE_IS_DESKTOP) {
       result = await showSaveDialog({

@@ -3,6 +3,7 @@ export interface File extends AnyListen.FileSystem.File {
   musicFile: boolean
 }
 export interface FileExplorerOptions {
+  key?: string
   modalTitle?: string
   title: string
   defaultPath?: string
@@ -15,6 +16,7 @@ export interface FileExplorerOptions {
   onReadDir: (path: string, refresh?: boolean) => Promise<AnyListen.FileSystem.File[]>
 }
 export interface FileSaveOptions {
+  key?: string
   modalTitle?: string
   title: string
   defaultPath?: string
