@@ -7,6 +7,8 @@ import { toSha512 } from '@any-listen/nodejs'
 
 import { File } from '@/shared/constants'
 
+import { startupLog } from './log4js'
+
 interface ServerInfo {
   serverId: string
   tokenSecret: string
@@ -20,21 +22,39 @@ const saveServerInfoThrottle = throttle(() => {
     if (err) console.error(err)
   })
 })
+const initServerInfo = () => {
+  serverInfo = {
+    serverId: randomUUID(),
+    tokenSecret: toSha512(randomBytes(128)),
+    version: 1,
+  }
+  saveServerInfoThrottle()
+}
 export const initServerData = () => {
   serverInfoFilePath = path.join(global.anylisten.dataPath, File.serverInfoJSON)
   clientInfoFilePath = path.join(global.anylisten.dataPath, File.clientInfoJSON)
   if (fs.existsSync(serverInfoFilePath)) {
-    serverInfo = JSON.parse(fs.readFileSync(serverInfoFilePath).toString()) as ServerInfo
-  } else {
-    serverInfo = {
-      serverId: randomUUID(),
-      tokenSecret: toSha512(randomBytes(128)),
-      version: 1,
+    try {
+      const data = JSON.parse(fs.readFileSync(serverInfoFilePath).toString()) as ServerInfo | null
+      if (!data || typeof data != 'object') throw new Error('invalid content')
+      serverInfo = data
+    } catch (err) {
+      startupLog.error(`failed to load server info (${serverInfoFilePath}), regenerating:`, err)
+      fs.renameSync(serverInfoFilePath, `${serverInfoFilePath}.${Date.now()}.bak`)
+      initServerInfo()
     }
-    saveServerInfoThrottle()
-  }
+  } else initServerInfo()
   if (fs.existsSync(clientInfoFilePath)) {
-    clientInfos = JSON.parse(fs.readFileSync(clientInfoFilePath).toString()) as ClientInfo[]
+    try {
+      const data = JSON.parse(fs.readFileSync(clientInfoFilePath).toString()) as ClientInfo[]
+      if (!Array.isArray(data)) throw new Error('invalid content')
+      clientInfos = data
+    } catch (err) {
+      startupLog.error(`failed to load client info (${clientInfoFilePath}), resetting:`, err)
+      fs.renameSync(clientInfoFilePath, `${clientInfoFilePath}.${Date.now()}.bak`)
+      clientInfos = []
+      saveClientInfoThrottle()
+    }
   } else {
     clientInfos = []
     saveClientInfoThrottle()
