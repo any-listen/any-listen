@@ -11,7 +11,7 @@ import { playerEvent } from '../player/store/event'
 import { playerState } from '../player/store/state'
 import { settingEvent } from '../setting/store/event'
 import { settingState } from '../setting/store/state'
-import { onConnected, onRelease } from './shared'
+import { onConnected, onDesconnected, onRelease } from './shared'
 import { getAppInfo, sendInitedEvent, setFullScreen, setAppInfo, setWorkerInitPromise } from './store/action'
 import { appEvent } from './store/event'
 import { appState } from './store/state'
@@ -21,8 +21,7 @@ const init = async () => {
   const appInfo = await getAppInfo()
   setAppInfo(appInfo)
   if (import.meta.env.VITE_IS_WEB) {
-    systemThemeModeChangedUnregister?.()
-    systemThemeModeChangedUnregister = onSystemThemeModeChanged((isDark) => {
+    systemThemeModeChangedUnregister ||= onSystemThemeModeChanged((isDark) => {
       void setSystemThemeMode(isDark)
     })
     initWindowInfo()
@@ -126,10 +125,12 @@ export const initApp = () => {
   if (import.meta.env.VITE_IS_WEB) {
     onRelease(() => {
       handleRelease()
-      systemThemeModeChangedUnregister?.()
-      systemThemeModeChangedUnregister = null
       document.documentElement.style.fontSize = '16px'
       document.body.classList.remove('no-animation')
+    })
+    onDesconnected(() => {
+      systemThemeModeChangedUnregister?.()
+      systemThemeModeChangedUnregister = null
     })
   }
 }
