@@ -56,7 +56,7 @@ export const tooltip = ({ delay = 0 }: { delay?: number } = {}) => {
       if (isDraging) return
       let msg: string
       if (!prevTips || update) {
-        let msg = getTips()?.trim()
+        msg = getTips()?.trim() ?? ''
         if (!msg) return
         prevTips = msg
       } else msg = prevTips
