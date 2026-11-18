@@ -218,7 +218,7 @@ const heartbeatTools = {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     this.socket?.removeEventListener('close', this.handleClose)
     // eslint-disable-next-line @typescript-eslint/unbound-method
-    this.socket?.addEventListener('error', this.handleError)
+    this.socket?.removeEventListener('error', this.handleError)
     this.socket = null
     this.isError = false
   },
