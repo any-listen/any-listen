@@ -175,6 +175,8 @@ const buildPlayerMusicInfo = (musicInfo: AnyListen.Music.MusicInfo | null): Part
       rlrc: null,
       awlrc: null,
       rawlrc: null,
+      // 收藏状态异步校正前先复位，避免切歌瞬间显示上一曲的收藏状态
+      collect: false,
     }
   }
   return {
@@ -188,6 +190,7 @@ const buildPlayerMusicInfo = (musicInfo: AnyListen.Music.MusicInfo | null): Part
     name: '',
     singer: '',
     album: '',
+    collect: false,
   }
 }
 export const loadImageUrl = async (info: AnyListen.Player.PlayMusicInfo, refresh?: boolean) => {
