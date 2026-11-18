@@ -440,7 +440,10 @@ export const createSortedList = (list: AnyListen.Music.MusicInfo[], position: nu
   const map = new Map<string, AnyListen.Music.MusicInfo>()
   for (const item of list) map.set(item.id, item)
   for (const id of ids) {
-    infos.push(map.get(id)!)
+    // ids 来自 UI 快照，歌曲可能已被删除，失效 id 不能把 undefined 带进列表
+    const info = map.get(id)
+    if (!info) continue
+    infos.push(info)
     map.delete(id)
   }
   list = list.filter((mInfo) => map.has(mInfo.id))
