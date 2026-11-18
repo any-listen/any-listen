@@ -5,16 +5,15 @@ import AsyncFS from '@any-listen/nodejs/AsyncFS'
 
 let time = 0
 let asyncFS: AsyncFS
-let initState = 0
+let inited = false
+let initPromise: Promise<void> | null = null
 let dataPath: string
 
 export const initPlayTimeStore = (_dataPath: string) => {
   dataPath = _dataPath
 }
 
-const init = async () => {
-  if (initState != 0) return
-  initState = 1
+const handleInit = async () => {
   if (!dataPath) throw new Error('Data path is not set')
   asyncFS = new AsyncFS(path.join(dataPath, STORE_NAMES.PLAY_TIME), { safeWrite: false })
   const data = await asyncFS.readFile()
@@ -22,8 +21,18 @@ const init = async () => {
     time = parseInt(data.toString())
     if (Number.isNaN(time)) time = 0
   }
-  // eslint-disable-next-line require-atomic-updates
-  initState = 2
+}
+const init = async () => {
+  if (inited) return
+  if (initPromise) return initPromise
+  initPromise = handleInit()
+    .then(() => {
+      inited = true
+    })
+    .finally(() => {
+      initPromise = null
+    })
+  return initPromise
 }
 
 export const getPlayTime = async () => {
@@ -34,6 +43,5 @@ export const getPlayTime = async () => {
 export const savePlayTime = async (_time: number) => {
   await init()
   time = _time
-  if (initState == 1) return
   asyncFS.writeFile(time.toString())
 }
