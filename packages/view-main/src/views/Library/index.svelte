@@ -106,6 +106,8 @@
         const musicId = $query.mid
         if (!id) return
         void Promise.all([getListMusics(id), getListScrollPosition(id)]).then(([_list, pos]) => {
+          // a slow response for a previous list must not overwrite the current view
+          if (id != currentId) return
           list = _list
           void tick().then(() => {
             let idx = -1
