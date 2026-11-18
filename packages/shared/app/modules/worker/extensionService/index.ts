@@ -216,5 +216,5 @@ void exposeWorker<
   void initOnlineList()
 })
 
-console.log('extension host running')
+// console.log('extension host running')
 export type workerExtensionSeriveTypes = typeof extension

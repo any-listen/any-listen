@@ -80,7 +80,7 @@ export const init = async (
   // db.exec('VACUUM "main"')
 
   process.on('exit', () => db.close())
-  console.log('db inited')
+  // console.log('db inited')
   // require('./test')
   return dbFileExists
 }
