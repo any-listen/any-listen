@@ -231,7 +231,7 @@ export default class FontPlayer {
       this.isPlay = false
       this.pause()
     } else {
-      this._handlePlayFont(curFont, driftTime)
+      this._handlePlayFont(curFont, driftTime / this._rate)
     }
   }
 
@@ -290,7 +290,7 @@ export default class FontPlayer {
             this._refresh()
           }, delay)
         }
-        this._handlePlayFont(curFont, driftTime)
+        this._handlePlayFont(curFont, driftTime / this._rate)
         return
       }
       let newCurLineNum = this._findcurFontNum(currentTime, this.curFontNum + 1)
