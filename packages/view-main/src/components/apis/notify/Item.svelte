@@ -32,22 +32,19 @@
   let transform = $derived(`translateX(-50%) translateY(${-offset}px)`)
 
   let hideTime = 0
+  let nextHideTime = 0
   let onoutroendCalled = false
   const addAutoCloseTimer = () => {
     clearAutoCloseTimer()
-    autoCloseTimer = setTimeout(
-      () => {
-        autoCloseTimer = null
-        onhide()
-      },
-      hideTime == 0 ? item.autoCloseTime * 1000 : hideTime
-    )
+    autoCloseTimer = setTimeout(() => {
+      autoCloseTimer = null
+      onhide()
+    }, hideTime - performance.now())
   }
   const clearAutoCloseTimer = () => {
     if (!autoCloseTimer) return
     clearTimeout(autoCloseTimer)
     autoCloseTimer = null
-    hideTime = 0
   }
 
   $effect(() => {
@@ -59,8 +56,8 @@
     }
   })
   onMount(() => {
-    addAutoCloseTimer()
     hideTime = performance.now() + item.autoCloseTime * 1000
+    addAutoCloseTimer()
     onmount(domContent?.clientHeight ?? 0)
   })
   onDestroy(() => {
@@ -81,10 +78,11 @@
     item.onafterleave?.()
   }}
   onmouseenter={() => {
-    hideTime = Math.max(2000, hideTime - performance.now())
+    nextHideTime = Math.max(2000, hideTime - performance.now())
     clearAutoCloseTimer()
   }}
   onmouseleave={() => {
+    hideTime = performance.now() + nextHideTime
     addAutoCloseTimer()
   }}
 >
