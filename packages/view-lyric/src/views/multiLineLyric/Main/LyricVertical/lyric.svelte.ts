@@ -333,6 +333,11 @@ export default (onMsDown: (isDown: boolean) => void) => {
 
     let oldLines = 0
     const initLrc = (lines: Line[]) => {
+      if (isStopScroll) {
+        // 换歌后必须恢复自动滚动，否则旧的 3 秒停止期内歌词不会跟随新歌
+        isStopScroll = false
+        clearLyricScrollTimeout()
+      }
       isSetedLines = true
       clearDelayScrollTimeout()
       if (oldLines) {
