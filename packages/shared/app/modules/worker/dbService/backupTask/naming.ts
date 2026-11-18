@@ -44,13 +44,16 @@ export const initBackupPath = (defaultPath: string, path: string) => {
 export const setBackupPath = async (path: string) => {
   path ||= defaultBackupPath
   if (backupPath === path) return
-  let oldPath = backupPath
+  const oldPath = backupPath
   backupPath = path
   try {
     await copyFile(oldPath, path)
     await removePath(oldPath)
   } catch (err) {
+    // 迁移失败要回滚：新路径下没有任何备份文件，设置却已指向它，备份历史会分裂
     console.error('Failed to move backup path:', err)
+    backupPath = oldPath
+    throw err
   }
 }
 
