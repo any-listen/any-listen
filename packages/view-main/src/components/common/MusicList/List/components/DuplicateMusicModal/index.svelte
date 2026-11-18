@@ -10,6 +10,8 @@
   import Empty from '@/components/material/Empty.svelte'
   import type { DuplicateMusicItem } from '@/worker/main/list'
   import { appState } from '@/modules/app/store/state'
+  import { showNotify } from '@/components/apis/notify'
+  import { i18n } from '@/plugins/i18n'
   let {
     visible = $bindable(),
     listinfo,
@@ -53,6 +55,7 @@
     try {
       await removeMusic(listinfo.id, curItem.musicInfo, [])
     } catch (error) {
+      showNotify(i18n.t('remove_duplicate_module.remove_music_failed', { msg: (error as Error).message }))
       console.error('remove duplicate music failed:', error)
       return
     }

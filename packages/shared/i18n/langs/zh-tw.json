@@ -437,6 +437,7 @@
   "playlist__queue": "播放隊列",
   "quality.master": "母帶",
   "quit": "退出",
+  "remove_duplicate_module.remove_music_failed": "歌曲移除失敗：{msg}",
   "save_as_local_list": "收藏為普通列表",
   "save_list": "收藏列表",
   "search.placeholder": "搜點什麼...",

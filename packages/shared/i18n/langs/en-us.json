@@ -437,6 +437,7 @@
   "playlist__queue": "Play queue",
   "quality.master": "master tape",
   "quit": "Quit",
+  "remove_duplicate_module.remove_music_failed": "Song removal failed: {msg}",
   "save_as_local_list": "Save as normal list",
   "save_list": "favorite list",
   "search.placeholder": "Search something...",
