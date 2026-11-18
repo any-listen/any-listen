@@ -125,7 +125,23 @@ export const removeExtensions = async (extensions: AnyListen.Extension.Extension
   }
 }
 
+// 同一扩展的加载必须串行：loaded 要到加载结束才置位，
+// 并发的 enable/start 会各自走一遍加载，产生双 VM 上下文并泄漏第一个的事件订阅
+const loadingExtensions = new Map<string, Promise<void>>()
+
 export const loadExtension = async (extension: AnyListen.Extension.Extension) => {
+  const loading = loadingExtensions.get(extension.id)
+  if (loading) return loading
+  const task = loadExtensionInner(extension)
+  loadingExtensions.set(extension.id, task)
+  try {
+    await task
+  } finally {
+    loadingExtensions.delete(extension.id)
+  }
+}
+
+const loadExtensionInner = async (extension: AnyListen.Extension.Extension) => {
   extensionEvent.loading(extension.id)
   extension.errorMessage = ''
   extension.loaded = false
