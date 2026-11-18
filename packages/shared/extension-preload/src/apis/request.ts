@@ -4,10 +4,10 @@ import { generateId } from '@/utils'
 
 const requestQueue = new Map<string, (err: Error) => void>()
 
-export const request: AnyListen_API.API['request'] = async (url, { signal, requestKey: callerKey, ...options } = {}) => {
+export const request: AnyListen_API.API['request'] = async (url, { signal, ...options } = {}) => {
+  // 丢弃调用方自带的 requestKey，防止跨扩展干扰 host 端的取消登记
+  if ('requestKey' in options) delete options.requestKey
   if (signal) {
-    // key 由 preload 生成并随请求带给 host（host 端按它登记 AbortController）；
-    // 丢弃调用方自带的 requestKey，防止跨扩展干扰 host 端的取消登记
     const requestKey = generateId()
     return new Promise((resolve, reject) => {
       requestQueue.set(requestKey, reject)
@@ -18,9 +18,9 @@ export const request: AnyListen_API.API['request'] = async (url, { signal, reque
         requestQueue.delete(requestKey)
         void hostContext.hostFuncs.cancelRequest(requestKey)
       })
-      // @ts-expect-error
       void hostContext.hostFuncs
         .request(url, { ...options, requestKey })
+        // @ts-expect-error
         .then(resolve)
         .catch(reject)
         .finally(() => {
