@@ -60,3 +60,11 @@ export const clearCache = async () => {
     }
   }
 }
+
+export const clearTempFiles = async () => {
+  const files = await fs.readdir(proxyServerState.cacheDir).catch(() => [])
+  for (const file of files) {
+    if (!file.endsWith(TEMP_FILE_EXT)) continue
+    await fs.unlink(joinPath(proxyServerState.cacheDir, file)).catch(() => {})
+  }
+}

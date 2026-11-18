@@ -174,7 +174,7 @@ export const proxyRequest = async (name: string, rawHeaders?: IncomingHttpHeader
       console.log('resp body error', err)
       logs.ProxyService.logcat.error(`resp body error, name: ${name}`, err)
       writeStream.destroy()
-      void removeFileIgnoreError(filePath)
+      void removeFileIgnoreError(tempPath)
     })
     writeStream.on('finish', () => {
       fs.rename(tempPath, filePath, (err) => {
@@ -183,7 +183,7 @@ export const proxyRequest = async (name: string, rawHeaders?: IncomingHttpHeader
     })
     writeStream.on('error', (err) => {
       logs.ProxyService.logcat.error(`writeStream error, name: ${name}`, err)
-      fs.unlink(filePath, () => {})
+      fs.unlink(tempPath, () => {})
     })
     writeStream.on('close', () => {
       proxyServerState.activeWriteStreams.delete(name)
