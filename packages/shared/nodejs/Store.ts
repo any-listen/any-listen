@@ -24,7 +24,8 @@ export default class Store {
       }
     } else store = this.readStore()
 
-    if (typeof store != 'object') {
+    // 文件内容是字面 null 时 JSON.parse 得到 null，typeof 判不出来，放过去首次 get 就 TypeError
+    if (store == null || typeof store != 'object') {
       if (clearInvalidConfig) store = {}
       else throw new Error(`parse data error: ${String(store)}`)
     }
