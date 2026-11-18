@@ -49,8 +49,14 @@
 
   const handleRemove = async (index: number) => {
     let curItem = duplicateList[index]
+    // 先删库再改视图：删除失败时保持视图一致，也不能把失败变成未处理的 promise 拒绝
+    try {
+      await removeMusic(listinfo.id, curItem.musicInfo, [])
+    } catch (error) {
+      console.error('remove duplicate music failed:', error)
+      return
+    }
     handleRemoveList(duplicateList, index)
-    await removeMusic(listinfo.id, curItem.musicInfo, [])
     duplicateList = [...duplicateList]
   }
 
