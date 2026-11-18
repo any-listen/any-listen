@@ -44,7 +44,8 @@ export default class KeyboardEvent {
         if (!targetListeners) return
         let captures: Array<(event: KeyEvent) => unknown> = []
         let isStop = false
-        for (const [listener, capture] of targetListeners) {
+        // 监听器可能在回调里 off() 当前事件，直接遍历原数组会跳过相邻监听器
+        for (const [listener, capture] of Array.from(targetListeners)) {
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           if (isStop) return
           if (capture) {
@@ -62,7 +63,7 @@ export default class KeyboardEvent {
           captures.push(listener)
         }
         if (captures.length) {
-          for (const listener of Array.from(captures)) {
+          for (const listener of captures) {
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             if (isStop) return
             listener({
