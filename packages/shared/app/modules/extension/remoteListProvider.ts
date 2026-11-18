@@ -185,27 +185,28 @@ export const syncList = async (list: AnyListen.List.RemoteListInfo) => {
     }
     if (list.meta.lazzyParseMeta !== true) {
       const unparsedMusics = musics.filter((m) => m.meta.unparsed) as AnyListen.Music.MusicInfoOnline[]
-      if (!unparsedMusics.length) return
-      await handleMusicsParseBatch(list.meta.extensionId, list.meta.source, list.id, unparsedMusics)
-      updated ||= true
+      if (unparsedMusics.length) {
+        await handleMusicsParseBatch(list.meta.extensionId, list.meta.source, list.id, unparsedMusics)
+        updated ||= true
+      }
     }
-    if (updated) {
-      await sendMusicListAction({
-        action: 'list_update',
-        data: {
-          lists: [
-            {
-              ...list,
-              meta: {
-                ...list.meta,
-                syncTime: Date.now(),
-              },
+    // 同步成功就要刷新 syncTime：内容没变或没有待解析项时同样算一次同步，
+    // 否则界面上的上次同步时间会一直停在旧值
+    await sendMusicListAction({
+      action: 'list_update',
+      data: {
+        lists: [
+          {
+            ...list,
+            meta: {
+              ...list.meta,
+              syncTime: Date.now(),
             },
-          ],
-          sync: true,
-        },
-      })
-    }
+          },
+        ],
+        sync: true,
+      },
+    })
   } catch (err) {
     logs.App.logcat.error(`[Remote List]Sync error: ${list.name} (${list.id})`, err)
     throw err
