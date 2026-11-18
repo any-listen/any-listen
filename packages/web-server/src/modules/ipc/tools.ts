@@ -145,7 +145,7 @@ export const createToken = async (keyInfo: KeyInfo, key: string) =>
       keyInfo,
       key,
       {
-        // expiresIn: Date.now() + 86400 * 90,
+        expiresIn: '3y',
       },
       (err, result) => {
         if (err) reject(err)
