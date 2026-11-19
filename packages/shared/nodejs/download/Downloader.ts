@@ -121,6 +121,12 @@ class Task extends EventEmitter {
             })
           })
           return
+        } else if (stats.size > 0) {
+          // partial file smaller than the resume chunk, remove it and start over
+          fs.unlink(savePath, () => {
+            resolve()
+          })
+          return
         }
         resolve()
       })
