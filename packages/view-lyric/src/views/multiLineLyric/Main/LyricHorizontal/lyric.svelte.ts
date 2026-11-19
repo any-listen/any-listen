@@ -4,7 +4,9 @@ import { handleScroll } from '@/components/base/utils'
 import { lyricEvent } from '@/modules/lyric/store/event'
 import { lyricState, type Line } from '@/modules/lyric/store/state'
 import { playerState } from '@/modules/player/store/state'
+import { settingEvent } from '@/modules/setting/store/event'
 import { settingState } from '@/modules/setting/store/state'
+import { debounce } from '@/shared'
 import { setWinBounds } from '@/shared/ipc/app'
 
 const getOffsetTop = (contentHeight: number, lineHeight: number, padding: number) => {
@@ -184,6 +186,15 @@ export default (onMsDown: (isDown: boolean) => void) => {
       startLyricScrollTimeout()
     }
 
+    const measureLines = () => {
+      void tick().then(() => {
+        domLines = domLyric.querySelectorAll('.line-content')
+        lineHeights = Array.from(domLines).map((l) => l.clientHeight)
+        handleScrollLrc()
+      })
+    }
+    const measureLinesDebounced = debounce(measureLines)
+
     const setLyric = (lines: Line[]) => {
       const domLineContent = document.createDocumentFragment()
       for (const line of lines) {
@@ -191,11 +202,7 @@ export default (onMsDown: (isDown: boolean) => void) => {
       }
       domLyricText.textContent = ''
       domLyricText.appendChild(domLineContent)
-      void tick().then(() => {
-        domLines = domLyric.querySelectorAll('.line-content')
-        lineHeights = Array.from(domLines).map((l) => l.clientHeight)
-        handleScrollLrc()
-      })
+      measureLines()
     }
 
     let oldLines = 0
@@ -274,6 +281,22 @@ export default (onMsDown: (isDown: boolean) => void) => {
         preLine = line
         scrollLine(line)
       })
+      const unsub3 = settingEvent.on('updated', (keys) => {
+        if (!domLines?.length) return
+        for (const key of keys) {
+          if (
+            key === 'desktopLyric.multiLine.style.fontSize' ||
+            key === 'desktopLyric.multiLine.style.font' ||
+            key === 'desktopLyric.multiLine.style.lineGap' ||
+            key === 'desktopLyric.multiLine.style.isFontWeightFont' ||
+            key === 'desktopLyric.multiLine.style.isFontWeightLine' ||
+            key === 'desktopLyric.multiLine.style.isFontWeightExtended'
+          ) {
+            measureLinesDebounced()
+            break
+          }
+        }
+      })
 
       document.addEventListener('mousemove', handleMouseMsMove)
       document.addEventListener('mouseup', handleMouseMsUp)
@@ -288,6 +311,7 @@ export default (onMsDown: (isDown: boolean) => void) => {
       return () => {
         unsub1()
         unsub2()
+        unsub3()
         domLyric.removeEventListener('wheel', handleWheel)
         domLyric.removeEventListener('mousedown', handleLyricMouseDown)
         domLyric.removeEventListener('touchstart', handleLyricTouchStart)
