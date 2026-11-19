@@ -279,6 +279,7 @@ export const removePlayHistoryList = (idxs: number[]) => {
   idxs.sort((a, b) => b - a)
   const newList = [...playerState.playHistoryList]
   for (const idx of idxs) newList.splice(idx, 1)
+  playerState.playHistoryList = newList
   playerEvent.playHistoryListRemoved(idxs)
   playerEvent.playHistoryListChanged(newList)
 }
