@@ -9,6 +9,8 @@ import { workers } from '@/app/worker'
 
 import { getCachedLyricInfo } from './shared'
 
+const canServeLocalFile = (filePath: string) => import.meta.env.DEV || checkAllowPath(filePath)
+
 export const getMusicUrl = async ({
   musicInfo,
   quality,
@@ -21,7 +23,7 @@ export const getMusicUrl = async ({
   if (musicInfo.meta.deviceId !== appState.machineId) return null
   if (!isRefresh) {
     let filePath = await getLocalFilePath(musicInfo)
-    if (filePath) {
+    if (filePath && canServeLocalFile(filePath)) {
       if (filePath.endsWith('.strm')) {
         const strmUrl = await workers.utilService.getStrmFileUrl(filePath)
         if (!strmUrl) return null
@@ -33,26 +35,14 @@ export const getMusicUrl = async ({
           isFromCache: false,
         }
       }
-      if (import.meta.env.DEV) {
-        const url = await createMediaPublicPath(filePath)
-        if (url) {
-          return {
-            url,
-            // toggleSource: false,
-            quality: '128k',
-            isFromCache: false,
-          }
-        }
-      } else if (checkAllowPath(filePath)) {
-        const url = await createMediaPublicPath(filePath)
-        if (url) {
-          return {
-            url,
-            // toggleSource: false,
-            quality: '128k',
-            // quality: (musicInfo.meta.bitrateLabel as AnyListen.Music.Quality | null) ?? '128k',
-            isFromCache: false,
-          }
+      const url = await createMediaPublicPath(filePath)
+      if (url) {
+        return {
+          url,
+          // toggleSource: false,
+          quality: '128k',
+          // quality: (musicInfo.meta.bitrateLabel as AnyListen.Music.Quality | null) ?? '128k',
+          isFromCache: false,
         }
       }
     }
@@ -67,7 +57,7 @@ export const getMusicPicUrl = async ({
   musicInfo: AnyListen.Music.MusicInfoLocal
   isRefresh?: boolean
 }): Promise<AnyListen.IPCMusic.MusicPicInfo | null> => {
-  if (musicInfo.meta.deviceId !== appState.machineId) return null
+  if (musicInfo.meta.deviceId !== appState.machineId || !canServeLocalFile(musicInfo.meta.filePath)) return null
   if (isRefresh && (!musicInfo.meta.picUrl || !(await verifyResourceBoolean(musicInfo.meta.picUrl)))) {
     isRefresh = false
   }
@@ -117,7 +107,7 @@ export const getLyricInfo = async ({
   musicInfo: AnyListen.Music.MusicInfoLocal
   isRefresh?: boolean
 }): Promise<AnyListen.IPCMusic.MusicLyricInfo | null> => {
-  if (musicInfo.meta.deviceId !== appState.machineId) return null
+  if (musicInfo.meta.deviceId !== appState.machineId || !canServeLocalFile(musicInfo.meta.filePath)) return null
   if (!isRefresh) {
     const [lyricInfo, fileLyricInfo] = await Promise.all([
       getCachedLyricInfo(musicInfo),
