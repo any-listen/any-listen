@@ -5,6 +5,7 @@ import { lyricState, type Line } from '@/modules/lyric/store/state'
 import { playerState } from '@/modules/player/store/state'
 import { settingEvent } from '@/modules/setting/store/event'
 import { settingState } from '@/modules/setting/store/state'
+import { debounce } from '@/shared'
 import { setWinBounds } from '@/shared/ipc/app'
 
 const easeInOutQuad = (t: number, b: number, c: number, d: number): number => {
@@ -325,6 +326,7 @@ export default (onMsDown: (isDown: boolean) => void) => {
         handleScrollLrc()
       })
     }
+    const measureLinesDebounced = debounce(measureLines)
 
     const setLyric = (lines: Line[]) => {
       const domLineContent = document.createDocumentFragment()
@@ -413,7 +415,7 @@ export default (onMsDown: (isDown: boolean) => void) => {
             key === 'desktopLyric.multiLine.style.isFontWeightLine' ||
             key === 'desktopLyric.multiLine.style.isFontWeightExtended'
           ) {
-            measureLines()
+            measureLinesDebounced()
             break
           }
         }
