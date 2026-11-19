@@ -57,7 +57,7 @@
     value = newValue
   }
   const handleKeyup = (event: KeyboardEvent) => {
-    if (event.key != 'enter') return
+    if (event.key != 'Enter') return
     onsubmit(domInput.value.trim())
   }
   export const focus = () => {
