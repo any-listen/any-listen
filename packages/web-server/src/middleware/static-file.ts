@@ -1,6 +1,5 @@
 import { API_PREFIX } from '@any-listen/common/constants'
-import { joinPath } from '@any-listen/nodejs'
-import { sep } from 'node:path'
+import { joinPath, sep } from '@any-listen/nodejs'
 
 import { PUBLIC_RESOURCE_PATH as _PUBLIC_RESOURCE_PATH } from '@/shared/constants'
 
@@ -11,6 +10,7 @@ const PUBLIC_RESOURCE_PATH = `${_PUBLIC_RESOURCE_PATH}/`
 
 let publicDir = joinPath(__dirname, '../public')
 if (import.meta.env.DEV) publicDir = joinPath(__dirname, 'public')
+publicDir += sep
 
 export default async (ctx: AnyListen.RequestContext, next: AnyListen.Next): Promise<unknown> => {
   if (ctx.method == 'HEAD' || ctx.method == 'GET') {
@@ -29,7 +29,7 @@ export default async (ctx: AnyListen.RequestContext, next: AnyListen.Next): Prom
       let path = ctx.path
       if (path.endsWith('/')) path += 'index.html'
       const filePath = joinPath(publicDir, path)
-      if (filePath.startsWith(publicDir + sep)) {
+      if (filePath.startsWith(publicDir)) {
         return sendFileStream(
           ctx,
           filePath,
