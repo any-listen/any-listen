@@ -457,6 +457,7 @@ export const resetRandomNextMusicInfo = () => {
 }
 
 export const getNextPlayMusicInfo = async (): Promise<AnyListen.Player.PlayMusicInfo | null> => {
+  if (playerState.isPlayedStop) return null
   const [playLaterList, playList] = parsePlayList()
   // 如果稍后播放列表存在歌曲则直接播放该列表的歌曲
   if (playerState.playMusicInfo?.playLater) {
@@ -481,8 +482,6 @@ export const getNextPlayMusicInfo = async (): Promise<AnyListen.Player.PlayMusic
   ) {
     return null
   }
-
-  let nextIndex = playerState.playInfo.index
 
   let togglePlayMethod = settingState.setting['player.togglePlayMethod']
   if (togglePlayMethod == 'random') {
@@ -516,6 +515,16 @@ export const getNextPlayMusicInfo = async (): Promise<AnyListen.Player.PlayMusic
     randomNextMusicInfo.historyListIndex = -1
     return nextPlayMusicInfo
   }
+
+  let nextIndex: number
+  if (playerState.playInfo.lastTrackId) {
+    nextIndex = playList.findIndex((m) => m.musicInfo.id == playerState.playInfo.lastTrackId)
+    if (nextIndex < 0) {
+       // playInfo.index points at the full list (with play later & disliked entries), the list here is filtered
+      nextIndex = playList.findIndex((m) => m.itemId == playerState.playMusicInfo?.itemId)
+      if (togglePlayMethod == 'listLoop' || togglePlayMethod == 'list') nextIndex -= 1
+    }
+  } else nextIndex = -1
   switch (togglePlayMethod) {
     case 'listLoop':
       nextIndex = nextIndex == playList.length - 1 ? 0 : nextIndex + 1
@@ -627,7 +636,8 @@ export const skipNext = async (isAutoSktp = false): Promise<void> => {
   if (playerState.playInfo.lastTrackId) {
     nextIndex = playList.findIndex((m) => m.musicInfo.id == playerState.playInfo.lastTrackId)
     if (nextIndex < 0) {
-      nextIndex = playerState.playInfo.index
+      // playInfo.index points at the full list (with play later & disliked entries), the list here is filtered
+      nextIndex = playList.findIndex((m) => m.itemId == playerState.playMusicInfo?.itemId)
       if (togglePlayMethod == 'listLoop' || togglePlayMethod == 'list') nextIndex -= 1
     }
   } else nextIndex = -1
