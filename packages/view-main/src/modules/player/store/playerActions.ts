@@ -445,11 +445,10 @@ const randomNextMusicInfo = {
   isEnd: false,
 }
 export const resetRandomNextMusicInfo = () => {
-  if (randomNextMusicInfo.info) {
-    randomNextMusicInfo.info = null
-    randomNextMusicInfo.historyListIndex = -1
-    randomNextMusicInfo.isEnd = false
-  }
+  if (!randomNextMusicInfo.info) return
+  randomNextMusicInfo.info = null
+  randomNextMusicInfo.historyListIndex = -1
+  randomNextMusicInfo.isEnd = false
 }
 
 export const getNextPlayMusicInfo = async (): Promise<AnyListen.Player.PlayMusicInfo | null> => {
@@ -585,15 +584,12 @@ export const skipNext = async (isAutoSktp = false): Promise<void> => {
       const isEnd = randomNextMusicInfo.isEnd
       const nextInfo = randomNextMusicInfo.info
       // 预选结果是在上一首歌临近结束时缓存的，期间队列可能被删除或标记不喜欢，播放前需再校验
-      if (
-        playerState.playList.some((m) => m.itemId === nextInfo.itemId) &&
-        !playerState.dislikeIds.has(nextInfo.itemId)
-      ) {
+      if (playerState.playList.some((m) => m.itemId === nextInfo.itemId) && !playerState.dislikeIds.has(nextInfo.itemId)) {
         handlePlayMusicInfo(nextInfo, randomNextMusicInfo.historyListIndex)
         if (isEnd) void setPlayListMusicUnplayedAll()
         return
       }
-      randomNextMusicInfo.info = null
+      resetRandomNextMusicInfo()
     }
     if (playerState.playInfo.historyIndex >= 0) {
       let idx = playerState.playInfo.historyIndex + 1
