@@ -40,8 +40,10 @@ export default class KeyboardEvent {
     return new Promise<boolean>((resolve) => {
       nextTick(() => {
         let targetListeners = this.listeners.get(eventName)
-        resolve(false)
-        if (!targetListeners) return
+        if (!targetListeners) {
+          resolve(false)
+          return
+        }
         let captures: Array<(event: KeyEvent) => unknown> = []
         let isStop = false
         // 监听器可能在回调里 off() 当前事件，直接遍历原数组会跳过相邻监听器
