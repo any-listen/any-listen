@@ -77,31 +77,29 @@ const createProxyServer = async () => {
   })
 }
 
+const handleCreateProxyServer = async (retry = 0): Promise<string> => {
+  return createProxyServer().catch(async (err) => {
+    console.error(`Failed to start proxy server on ${DEFAULT_PORT} port`, err)
+    DEFAULT_PORT++
+    retry++
+    if (retry > 10) {
+      logs.ProxyService.logcat.error(`Failed to start proxy server after 10 retries`, err)
+      throw new Error('Failed to start proxy server after 10 retries')
+    }
+    return handleCreateProxyServer(retry)
+  })
+}
+
 export const initProxyServer = async () => {
   // Set the default DNS result order to prioritize IPv4 addresses before starting the proxy server
   // https://nodejs.org/docs/latest/api/dns.html#dnssetdefaultresultorderorder
   // https://github.com/any-listen/any-listen/issues/290
   const defaultResultOrder = dns.getDefaultResultOrder()
   dns.setDefaultResultOrder('ipv4first')
-  let proxyHost: string | null = null
-  try {
-    for (let i = 0; i <= 10; i++) {
-      try {
-        proxyHost = await createProxyServer()
-        break
-      } catch (err) {
-        console.error(`Failed to start proxy server on ${DEFAULT_PORT} port`, err)
-        DEFAULT_PORT++
-        if (i == 10) {
-          logs.ProxyService.logcat.error(`Failed to start proxy server after 10 retries`, err)
-          throw new Error('Failed to start proxy server after 10 retries')
-        }
-      }
-    }
-  } finally {
+  const proxyHost = await handleCreateProxyServer().finally(() => {
     // Restore the default DNS result order after attempting to start the proxy server
     dns.setDefaultResultOrder(defaultResultOrder)
-  }
+  })
   console.log('Proxy server running at', proxyHost)
-  void initProxyServerState(proxyHost!, PROXY_SERVER_PATH, appState.cacheDataPath)
+  void initProxyServerState(proxyHost, PROXY_SERVER_PATH, appState.cacheDataPath)
 }
