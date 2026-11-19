@@ -51,7 +51,7 @@ const getFileMetadata = async (path: string) => {
 }
 
 export const getFilePic = async (path: string) => {
-  if (path.endsWith('.strm')) return getStrmFilePic(path)
+  if (path.toLowerCase().endsWith('.strm')) return getStrmFilePic(path)
   // 尝试读取文件内图片
   const metadata = await getFileMetadata(path)
   if (!metadata) return null
@@ -61,7 +61,7 @@ export const getFilePic = async (path: string) => {
 }
 
 export const getFileLyric = async (path: string) => {
-  if (path.endsWith('.strm')) return getStrmFileLyric(path)
+  if (path.toLowerCase().endsWith('.strm')) return getStrmFileLyric(path)
 
   const metadata = await getFileMetadata(path)
   const lyric = getMetadataLyric(metadata)
