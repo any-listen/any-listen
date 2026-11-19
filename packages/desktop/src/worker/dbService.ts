@@ -2,7 +2,7 @@ import path from 'node:path'
 
 import { startDBServiceWorker as _startDBServiceWorker, workers } from '@any-listen/app/modules/worker'
 import { DB_NAME } from '@any-listen/common/constants'
-import { dialog } from 'electron'
+import { app, dialog } from 'electron'
 
 import { appState } from '@/app'
 // import { log } from '@/shared/log'
@@ -21,6 +21,8 @@ const initServices = async (dataPath: string) => {
   )
   if (dbFileExists === null) {
     const backupPath = path.join(dataPath, `${DB_NAME}.${Date.now()}.bak`)
+    // dialogs can only be shown after the app is ready, which may not be the case yet
+    await app.whenReady()
     dialog.showMessageBoxSync({
       type: 'warning',
       message: i18n.t('database_verify_failed'),
