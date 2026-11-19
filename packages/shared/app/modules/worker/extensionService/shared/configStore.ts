@@ -12,7 +12,7 @@ const getStore = (extension: AnyListen.Extension.Extension) => {
     store = new Store(joinPath(extension.dataDirectory, 'configuration.json'), false, true)
   } catch (err) {
     extensionEvent.error(`init config store error: ${(err as Error).stack ?? (err as Error).message}`)
-    store = new Store(extension.dataDirectory, true, true)
+    store = new Store(joinPath(extension.dataDirectory, 'configuration.json'), true, true)
   }
   stores.set(extension.id, store)
   return store
