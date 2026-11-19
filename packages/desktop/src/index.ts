@@ -1,4 +1,4 @@
-import { app } from 'electron'
+import { app, dialog } from 'electron'
 
 import { appState, initAppEnv, sendInitedEvent } from '@/app'
 
@@ -23,7 +23,19 @@ const init = async () => {
   await initI18n()
   await startCommonWorkers(appState.dataPath)
   void startExtensionServiceWorker()
-  void initModules().finally(handleInited)
+  void initModules()
+    .then(handleInited)
+    .catch((err: Error) => {
+      void app.whenReady().then(() => {
+        dialog.showMessageBoxSync({
+          type: 'error',
+          title: 'Module Initialization Failed',
+          message: 'An error occurred while initializing modules.',
+          detail: err.message,
+        })
+        app.quit()
+      })
+    })
   await initRenderers()
 
   // registerModules()
