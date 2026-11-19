@@ -93,32 +93,33 @@ export class WebDAV {
     let cancelled = false
     let timer: NodeJS.Timeout | null = null
     const lock = async () => {
-      const locked = await this.checkLocked().catch((err: Error) => {
-        logs.WebdavSync.logcat.error(err)
-        onEnd(false, err)
-        throw err
-      })
-      if (!locked) {
+      try {
+        const locked = await this.checkLocked()
         if (cancelled) {
           onEnd(false)
           return
         }
-        const locked = await this.handleLock().catch((err: Error) => {
-          logs.WebdavSync.logcat.error(err)
-          onEnd(false, err)
-          throw err
-        })
-        if (locked) {
+        if (!locked) {
+          const ownLocked = await this.handleLock()
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           if (cancelled) {
-            await this.unlock().catch(() => {})
+            if (ownLocked) await this.unlock().catch(() => {})
             onEnd(false)
             return
           }
-          onEnd(true)
+          if (ownLocked) {
+            onEnd(true)
+            return
+          }
+        }
+      } catch (err) {
+        if (cancelled) {
+          onEnd(false)
           return
         }
-        onEnd(false)
+        logs.WebdavSync.logcat.error(err)
+        onEnd(false, err as Error)
+        return
       }
       logs.WebdavSync.logcat.info('Other locks detected, retrying in 2 seconds...')
       timer = setTimeout(() => {
