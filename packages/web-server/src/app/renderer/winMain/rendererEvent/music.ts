@@ -38,12 +38,13 @@ export const createExposeMusic = () => {
       return workers.dbService.rawLyricClear()
     },
     async createLocalMusicInfos(event, paths) {
-      // 客户端路径来自受控的文件浏览，这里再过滤一次，避免直接传任意路径探测文件
-      return workers.utilService.createLocalMusicInfos(
-        paths.filter((p) => import.meta.env.DEV || checkAllowPath(p)),
-        appState.machineId,
-        true
-      )
+      if (!import.meta.env.DEV) {
+        // 客户端路径来自受控的文件浏览，这里再检查一次，避免直接传任意路径探测文件
+        if (paths.some((p) => !checkAllowPath(p))) {
+          throw new Error('One or more paths are not allowed')
+        }
+      }
+      return workers.utilService.createLocalMusicInfos(paths, appState.machineId, true)
     },
   } satisfies Partial<ExposeClientFunctions>
 }
