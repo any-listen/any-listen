@@ -38,6 +38,8 @@ const handleEvent = (type: KeyActionType, event: KeyboardEvent, keys: Keys, isEd
 }
 
 // 修饰键处理
+const modifierOrder = ['ctrl', 'shift', 'alt', 'meta']
+
 const eventModifiers = (event: KeyboardEvent): string[] => {
   let modifiers: string[] = []
   if (event.ctrlKey) modifiers.push('ctrl')
@@ -92,7 +94,13 @@ const handleKeyUp = (event: KeyboardEvent) => {
   let keys = eventModifiers(event)
   switch (event.key) {
     case 'Control':
-      keys.push('ctrl')
+    case 'Shift':
+    case 'Alt':
+    case 'Meta':
+      // 修饰键自身的 keyup 不再出现在 eventModifiers 里，补回后需按规范序排列，
+      // 让 up 事件的键名与按下时一致（如 ctrl+shift 期间松开 ctrl 不能变成 shift+mod）
+      keys.push(event.key == 'Control' ? 'ctrl' : event.key.toLowerCase())
+      keys.sort((a, b) => modifierOrder.indexOf(a) - modifierOrder.indexOf(b))
       break
     case ' ':
       keys.push('space')
