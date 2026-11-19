@@ -74,8 +74,8 @@ export const downloadInfoSave = (
     arrUnshift(newList, downloadInfos)
     inertDownloadList(
       toDBDownloadInfo(downloadInfos),
-      newList.slice(downloadInfos.length - 1).map((info, index) => {
-        return { id: info.id, position: index }
+      newList.slice(downloadInfos.length).map((info, index) => {
+        return { id: info.id, position: downloadInfos.length + index }
       })
     )
     list = newList
