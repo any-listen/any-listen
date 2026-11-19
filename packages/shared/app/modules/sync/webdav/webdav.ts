@@ -95,30 +95,29 @@ export class WebDAV {
     const lock = async () => {
       try {
         const locked = await this.checkLocked()
-        if (!locked) {
-          if (cancelled) {
-            onEnd(false)
-            return
-          }
-          const ownLocked = await this.handleLock()
-          if (ownLocked) {
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            if (cancelled) {
-              await this.unlock().catch(() => {})
-              onEnd(false)
-              return
-            }
-            onEnd(true)
-            return
-          }
-          // 竞争失败说明另一台设备已拿到锁并会完成同步，
-          // 结束回调已把任务置为 idle，这里不能继续重试，否则
-          // 循环会在对方锁过期后凭空赢锁触发一次同步
+        if (cancelled) {
           onEnd(false)
           return
         }
+        if (!locked) {
+          const ownLocked = await this.handleLock()
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          if (cancelled) {
+            if (ownLocked) await this.unlock().catch(() => {})
+            onEnd(false)
+            return
+          }
+          if (ownLocked) {
+            onEnd(true)
+            return
+          }
+        }
       } catch (err) {
-        logs.WebdavSync.logcat.error(err as Error)
+        if (cancelled) {
+          onEnd(false)
+          return
+        }
+        logs.WebdavSync.logcat.error(err)
         onEnd(false, err as Error)
         return
       }
