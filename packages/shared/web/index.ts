@@ -1,3 +1,4 @@
+import { throttle } from '@any-listen/common/common'
 import { API_PREFIX, PROXY_URL_PATH } from '@any-listen/common/constants'
 import { buildRealPublicPath } from '@any-listen/common/tools'
 import { isUrl } from '@any-listen/common/utils'
@@ -24,12 +25,12 @@ export const onDomSizeChanged = (dom: HTMLElement, onChanged: (width: number, he
 export const onDomScrollSizeChanged = (dom: HTMLElement, onChanged: (scrollheight: number) => void) => {
   // 使用 ResizeObserver 监听大小变化
   let lastScrollHeight = dom.scrollHeight
-  const observer = new MutationObserver(() => {
-    if (dom.scrollHeight !== lastScrollHeight) {
-      lastScrollHeight = dom.scrollHeight
-      onChanged(lastScrollHeight)
-    }
-  })
+  const handleHeightChange = throttle(() => {
+    if (dom.scrollHeight === lastScrollHeight) return
+    lastScrollHeight = dom.scrollHeight
+    onChanged(lastScrollHeight)
+  }, 100)
+  const observer = new MutationObserver(handleHeightChange)
 
   observer.observe(dom, {
     childList: true, // 监听子元素的变化
@@ -39,8 +40,17 @@ export const onDomScrollSizeChanged = (dom: HTMLElement, onChanged: (scrollheigh
 
   onChanged(lastScrollHeight)
 
+  const handleImageLoad = (event: Event) => {
+    if (event.target instanceof HTMLImageElement) handleHeightChange()
+  }
+
+  dom.addEventListener('load', handleImageLoad, true)
+  dom.addEventListener('error', handleImageLoad, true)
+
   return () => {
     observer.disconnect()
+    dom.removeEventListener('load', handleImageLoad, true)
+    dom.removeEventListener('error', handleImageLoad, true)
   }
 }
 

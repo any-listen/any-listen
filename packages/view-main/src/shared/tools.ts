@@ -1,12 +1,31 @@
+import { buildUrl } from '@any-listen/web'
 import type { DOMPurify } from 'dompurify'
 
+import { appState } from '@/modules/app/store/state'
+import { settingState } from '@/modules/setting/store/state'
 import { workers } from '@/worker'
 
+import { isUrl } from '.'
 import { runTimeout, stopTimeout } from './browser/tools'
 
+const handleHtmlAttributes = (node: Element) => {
+  if (node.tagName === 'A') {
+    node.setAttribute('rel', 'noopener noreferrer')
+  } else if (node.tagName === 'IMG') {
+    node.setAttribute('loading', 'lazy')
+    node.setAttribute('decoding', 'async')
+    node.setAttribute('referrerpolicy', 'no-referrer')
+    node.setAttribute('crossorigin', 'anonymous')
+    let src = node.getAttribute('src')
+    if (src && isUrl(src)) {
+      node.setAttribute('src', buildUrl(src, settingState.setting['network.proxyAllResources'], appState.proxyServerHost))
+    }
+  }
+}
 export const sanitizeHtml = (DOMPurify: DOMPurify, str?: string) => {
   if (!str || typeof str !== 'string') return ''
-  return DOMPurify.sanitize(str, {
+  DOMPurify.addHook('afterSanitizeAttributes', handleHtmlAttributes)
+  let html = DOMPurify.sanitize(str, {
     ALLOWED_TAGS: [
       'b',
       'q',
@@ -41,6 +60,8 @@ export const sanitizeHtml = (DOMPurify: DOMPurify, str?: string) => {
     ALLOW_ARIA_ATTR: false,
     ALLOWED_URI_REGEXP: /^https?:\/\/[^\s]+$/i,
   })
+  DOMPurify.removeHook('afterSanitizeAttributes', handleHtmlAttributes)
+  return html
 }
 
 export const parseMarkdown = async (content: string) => {

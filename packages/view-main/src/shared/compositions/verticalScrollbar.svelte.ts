@@ -59,7 +59,7 @@ export const verticalScrollbar = ({
           scrollbarThumbHide = false
         }
         scrollbarVisible ||= true
-        scrollbarHeight = Math.max(containerHeight * (containerHeight / contentHeight), 30)
+        scrollbarHeight = Math.ceil(Math.max(containerHeight * (containerHeight / contentHeight), 30))
         scrollbarThumb.style.height = `${scrollbarHeight}px`
         updateThumbPosition()
         if (isMouseEnter) showScrollbar()
