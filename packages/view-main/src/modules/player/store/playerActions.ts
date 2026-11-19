@@ -175,8 +175,6 @@ const buildPlayerMusicInfo = (musicInfo: AnyListen.Music.MusicInfo | null): Part
       rlrc: null,
       awlrc: null,
       rawlrc: null,
-      // 收藏状态异步校正前先复位，避免切歌瞬间显示上一曲的收藏状态
-      collect: false,
     }
   }
   return {
@@ -190,7 +188,6 @@ const buildPlayerMusicInfo = (musicInfo: AnyListen.Music.MusicInfo | null): Part
     name: '',
     singer: '',
     album: '',
-    collect: false,
   }
 }
 export const loadImageUrl = async (info: AnyListen.Player.PlayMusicInfo, refresh?: boolean) => {
@@ -519,11 +516,11 @@ export const getNextPlayMusicInfo = async (): Promise<AnyListen.Player.PlayMusic
   if (playerState.playInfo.lastTrackId) {
     nextIndex = playList.findIndex((m) => m.musicInfo.id == playerState.playInfo.lastTrackId)
     if (nextIndex < 0) {
-      nextIndex = playerState.playInfo.index
+       // playInfo.index points at the full list (with play later & disliked entries), the list here is filtered
+      nextIndex = playList.findIndex((m) => m.itemId == playerState.playMusicInfo?.itemId)
       if (togglePlayMethod == 'listLoop' || togglePlayMethod == 'list') nextIndex -= 1
     }
   } else nextIndex = -1
-  console.log('nextIndex before switch:', nextIndex)
   switch (togglePlayMethod) {
     case 'listLoop':
       nextIndex = nextIndex == playList.length - 1 ? 0 : nextIndex + 1
@@ -538,7 +535,6 @@ export const getNextPlayMusicInfo = async (): Promise<AnyListen.Player.PlayMusic
       break
   }
   if (nextIndex < 0) return null
-  console.log('nextIndex after switch:', playList[nextIndex].musicInfo.name)
   return playList[nextIndex]
 }
 
@@ -636,7 +632,8 @@ export const skipNext = async (isAutoSktp = false): Promise<void> => {
   if (playerState.playInfo.lastTrackId) {
     nextIndex = playList.findIndex((m) => m.musicInfo.id == playerState.playInfo.lastTrackId)
     if (nextIndex < 0) {
-      nextIndex = playerState.playInfo.index
+      // playInfo.index points at the full list (with play later & disliked entries), the list here is filtered
+      nextIndex = playList.findIndex((m) => m.itemId == playerState.playMusicInfo?.itemId)
       if (togglePlayMethod == 'listLoop' || togglePlayMethod == 'list') nextIndex -= 1
     }
   } else nextIndex = -1
