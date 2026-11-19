@@ -72,25 +72,29 @@ const throttleListChangeSync = throttle(async () => {
     return m.playLater
   })
   const curSyncId = syncId
-  const targetMusicList = await getListMusics(targetListId)
-  if (curSyncId != syncId) return
-  const newTargetList = targetMusicList.map((m) => {
-    const newInfo = createPlayMusicInfo({
-      musicInfo: m,
-      listId: targetListId,
-      source: playerState.playInfo.source,
-      playLater: false,
-      linked: true,
+  try {
+    const targetMusicList = await getListMusics(targetListId)
+    if (curSyncId != syncId) return
+    const newTargetList = targetMusicList.map((m) => {
+      const newInfo = createPlayMusicInfo({
+        musicInfo: m,
+        listId: targetListId,
+        source: playerState.playInfo.source,
+        playLater: false,
+        linked: true,
+      })
+      const info = musicMap.get(newInfo.itemId)
+      if (info) newInfo.played = info.played
+      return newInfo
     })
-    const info = musicMap.get(newInfo.itemId)
-    if (info) newInfo.played = info.played
-    return newInfo
-  })
-  arrPush(newList, newTargetList)
-  // TODO diff update
-  console.log('throttleListSync setPlayListMusic')
-  await setPlayListMusic({ list: newList, listId: targetListId, source: playerState.playInfo.source, isSync: true })
-  if (curSyncId == syncId) syncId = ''
+    arrPush(newList, newTargetList)
+    // TODO diff update
+    console.log('throttleListSync setPlayListMusic')
+    await setPlayListMusic({ list: newList, listId: targetListId, source: playerState.playInfo.source, isSync: true })
+  } finally {
+    // 同步失败也不能留下标记，否则队列联动从此永久失效
+    if (curSyncId == syncId) syncId = ''
+  }
 }, 500)
 const handleListChangeSync = (listIds: string[]) => {
   for (const id of listIds) {
