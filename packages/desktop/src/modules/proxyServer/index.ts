@@ -8,7 +8,6 @@ import { PROXY_SERVER_PATH } from '@any-listen/common/constants'
 import { appState } from '@/app'
 
 let DEFAULT_PORT = 19500
-let retryCount = 0
 const PROXY_PATH_PREFIX = `${PROXY_SERVER_PATH}/`
 const createProxyServer = async () => {
   const server = http.createServer(async (req, res) => {
@@ -78,27 +77,29 @@ const createProxyServer = async () => {
   })
 }
 
+const handleCreateProxyServer = async (retry = 0): Promise<string> => {
+  return createProxyServer().catch(async (err) => {
+    console.error(`Failed to start proxy server on ${DEFAULT_PORT} port`, err)
+    DEFAULT_PORT++
+    retry++
+    if (retry > 10) {
+      logs.ProxyService.logcat.error(`Failed to start proxy server after 10 retries`, err)
+      throw new Error('Failed to start proxy server after 10 retries')
+    }
+    return handleCreateProxyServer(retry)
+  })
+}
+
 export const initProxyServer = async () => {
   // Set the default DNS result order to prioritize IPv4 addresses before starting the proxy server
   // https://nodejs.org/docs/latest/api/dns.html#dnssetdefaultresultorderorder
   // https://github.com/any-listen/any-listen/issues/290
   const defaultResultOrder = dns.getDefaultResultOrder()
   dns.setDefaultResultOrder('ipv4first')
-  const proxyHost = await createProxyServer()
-    .catch(async (err) => {
-      console.error(`Failed to start proxy server on ${DEFAULT_PORT} port`, err)
-      DEFAULT_PORT++
-      retryCount++
-      if (retryCount > 10) {
-        logs.ProxyService.logcat.error(`Failed to start proxy server after 10 retries`, err)
-        throw new Error('Failed to start proxy server after 10 retries')
-      }
-      return createProxyServer()
-    })
-    .finally(() => {
-      // Restore the default DNS result order after attempting to start the proxy server
-      dns.setDefaultResultOrder(defaultResultOrder)
-    })
+  const proxyHost = await handleCreateProxyServer().finally(() => {
+    // Restore the default DNS result order after attempting to start the proxy server
+    dns.setDefaultResultOrder(defaultResultOrder)
+  })
   console.log('Proxy server running at', proxyHost)
   void initProxyServerState(proxyHost, PROXY_SERVER_PATH, appState.cacheDataPath)
 }
