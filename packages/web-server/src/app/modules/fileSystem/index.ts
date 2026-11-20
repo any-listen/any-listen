@@ -3,7 +3,7 @@ import path from 'node:path'
 
 import { MEDIA_FILE_TYPES, PIC_FILE_TYPES } from '@any-listen/common/constants'
 import { buildVirtualPublicPath } from '@any-listen/common/tools'
-import { extname, joinPath, normalizePath, toSha256 } from '@any-listen/nodejs'
+import { extname, fileSha256, joinPath, normalizePath, toSha256 } from '@any-listen/nodejs'
 
 import { appState } from '@/app/app/state'
 import { filterFileName } from '@/app/shared/utils'
@@ -22,7 +22,7 @@ export const checkAllowPathError = (filePath: string) => {
   throw new Error(`Not allow path: ${filePath}`)
 }
 
-export const createExtensionIconPublicPath = (extDir: string, filePath: string) => {
+export const createExtensionIconPublicPath = async (extDir: string, filePath: string) => {
   if (!checkAllowPath(filePath, [extDir])) {
     throw new Error(`Not allow path: ${filePath}`)
   }
@@ -30,14 +30,14 @@ export const createExtensionIconPublicPath = (extDir: string, filePath: string) 
   if (!PIC_FILE_TYPES.includes(extName.toLowerCase() as (typeof PIC_FILE_TYPES)[number])) {
     throw new Error(`Not allow file type: ${extName}`)
   }
-  const fileName = `${toSha256(filePath)}.${extName}`
+  const fileName = `${await fileSha256(filePath)}.${extName}`
   global.anylisten.publicStaticPaths.set(fileName, filePath)
   // if (import.meta.env.DEV) return `${devHost}${PUBLIC_RESOURCE_PATH}/${fileName}`
   return buildVirtualPublicPath(PUBLIC_RESOURCE_PATH, fileName)
 }
-export const removeExtensionIconPublicPath = (filePath: string) => {
+export const removeExtensionIconPublicPath = async (filePath: string) => {
   const extName = extname(filePath).substring(1)
-  const fileName = `${toSha256(filePath)}.${extName}`
+  const fileName = `${await fileSha256(filePath)}.${extName}`
   global.anylisten.publicStaticPaths.delete(fileName)
 }
 
@@ -45,7 +45,7 @@ export const createMediaPublicPath = async (filePath: string) => {
   const extName = extname(filePath).substring(1) as (typeof MEDIA_FILE_TYPES)[number]
   if (MEDIA_FILE_TYPES.includes(extName)) {
     checkAllowPathError(filePath)
-    const fileName = `${toSha256(filePath)}.${extName}`
+    const fileName = `${await fileSha256(filePath)}.${extName}`
     global.anylisten.publicStaticPaths.set(fileName, filePath)
     // if (import.meta.env.DEV) return `${devHost}${PUBLIC_RESOURCE_PATH}/${fileName}`
     return buildVirtualPublicPath(PUBLIC_RESOURCE_PATH, fileName)
@@ -55,11 +55,12 @@ export const createMediaPublicPath = async (filePath: string) => {
 export const createPicFilePublicPath = async (rawPath: string, format: string, file: Uint8Array) => {
   if (PIC_FILE_TYPES.includes(format as (typeof PIC_FILE_TYPES)[number])) {
     checkAllowPathError(rawPath)
-    const fileName = `${toSha256(rawPath)}.${format}`
+    let fileName = `${toSha256(rawPath)}.${format}`
     const filePath = joinPath(appState.tempDataPath, fileName)
     try {
       // TODO clear temp file
       await fs.writeFile(filePath, file)
+      fileName = `${await fileSha256(filePath)}.${format}`
       global.anylisten.publicStaticPaths.set(fileName, filePath)
       // if (import.meta.env.DEV) return `${devHost}${PUBLIC_RESOURCE_PATH}/${fileName}`
       return buildVirtualPublicPath(PUBLIC_RESOURCE_PATH, fileName)
@@ -70,11 +71,11 @@ export const createPicFilePublicPath = async (rawPath: string, format: string, f
   return null
 }
 
-export const createPicPublicPath = async (rawPath: string, filePath: string) => {
+export const createPicPublicPath = async (filePath: string) => {
   checkAllowPathError(filePath)
   const format = extname(filePath).substring(1)
   if (PIC_FILE_TYPES.includes(format as (typeof PIC_FILE_TYPES)[number])) {
-    const fileName = `${toSha256(rawPath)}.${format}`
+    const fileName = `${await fileSha256(filePath)}.${format}`
     global.anylisten.publicStaticPaths.set(fileName, filePath)
     // if (import.meta.env.DEV) return `${devHost}${PUBLIC_RESOURCE_PATH}/${fileName}`
     return buildVirtualPublicPath(PUBLIC_RESOURCE_PATH, fileName)

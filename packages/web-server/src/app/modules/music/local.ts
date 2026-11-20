@@ -73,7 +73,7 @@ export const getMusicPicUrl = async ({
           }
         }
 
-        let url = await createPicPublicPath(musicInfo.meta.filePath, pic)
+        let url = await createPicPublicPath(pic)
         if (url) {
           return {
             url,

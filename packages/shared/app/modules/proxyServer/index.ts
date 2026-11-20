@@ -8,13 +8,20 @@ import { verifyResource, type Options } from '@any-listen/nodejs/request'
 import { checkAllowedExt, clearTempFiles } from './shared'
 import { proxyServerState } from './state'
 
-export const generateName = (url: string) => {
+const checkUrl = (url: string) => {
   if (url.length > 2048) throw new Error('URL too long')
-
   const ext = extname(url)
   if (ext && !checkAllowedExt(ext)) throw new Error('Not allowed file type')
-
+  return ext
+}
+export const generateName = (url: string) => {
+  const ext = checkUrl(url)
   return (toSha256(`${url}.${Date.now()}`) + ext).toLowerCase()
+}
+
+export const generateStaticName = (url: string) => {
+  const ext = checkUrl(url)
+  return (toSha256(url) + ext).toLowerCase()
 }
 
 export const createProxy = async (url: string, reqOptions: Options = {}, enabledCache?: boolean) => {
@@ -36,7 +43,7 @@ export const checkProxyCache = async (url: string) => {
 }
 
 export const writeProxyCache = async (fileName: string, data: Uint8Array) => {
-  const name = generateName(fileName)
+  const name = generateStaticName(toMD5(data) + fileName)
   const filePath = joinPath(proxyServerState.cacheDir, name)
   await fs.writeFile(filePath, data)
   return buildVirtualPublicPath(proxyServerState.proxyBaseUrl, name)
