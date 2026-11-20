@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { buildSourceKey, getData } from '@/modules/resource/topSongs/list/actions'
+  import { getData } from '@/modules/resource/topSongs/list/actions'
   import type { SourceType } from '../../shared.svelte'
   import { untrack } from 'svelte'
   import Songlist from './Songlist.svelte'
+  import { generateIdSimple } from '@/shared'
 
   let { source }: { source?: SourceType } = $props()
   let list = $state.raw<AnyListen.Resource.TopSongsItem[]>([])
@@ -10,31 +11,29 @@
     loading: boolean
     error: boolean
   }>({ loading: false, error: false })
+  let searchKey: string
 
   const handleSearch = () => {
     let extId = source!.extensionId
     let sourceId = source!.id
-    const searchId = buildSourceKey(extId, sourceId)
+    const key = generateIdSimple()
+    searchKey = key
     listInfo.loading = true
     void getData(extId, sourceId)
       .then((_list) => {
-        if (!source || searchId != buildSourceKey(source.extensionId, source.id)) {
-          return
-        }
+        if (key != searchKey) return
         listInfo.error = false
         list = _list
         console.log(_list)
       })
       .catch((err) => {
         console.log(err)
-        if (!source || searchId != buildSourceKey(source.extensionId, source.id)) {
-          return
-        }
+        if (key != searchKey) return
         listInfo.error = true
         list = []
       })
       .finally(() => {
-        listInfo.loading = false
+        if (key == searchKey) listInfo.loading = false
       })
   }
 
