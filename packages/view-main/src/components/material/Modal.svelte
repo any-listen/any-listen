@@ -1,3 +1,8 @@
+<script lang="ts" module>
+  // eslint-disable-next-line svelte/prefer-svelte-reactivity
+  const modalCounts = new Map<Element, number>()
+</script>
+
 <script lang="ts">
   import { fly } from 'svelte/transition'
   import Portal from '@/components/base/Portal.svelte'
@@ -44,12 +49,9 @@
   let domContainer: HTMLElement | null = $state(null)
   let headerEl: HTMLElement | null = $state(null)
 
-  let modalCount = $state(0)
-  let filter = $derived(teleport == '#root' || modalCount > 1)
   let contentStyle = $derived(
     `max-width: ${maxwidth}; min-width: ${minwidth}; max-height: ${maxheight}; width: ${width}; height: ${height};`
   )
-  let isAddedClass = false
 
   const close = async () => {
     const result = onclose?.()
@@ -58,27 +60,24 @@
   }
   let parentNode: HTMLElement | null = null
   let prevFocusedNode: HTMLElement | null = null
-  const removeClass = () => {
-    if (!isAddedClass) return
-    parentNode?.classList.remove(MODAL_CLASSNAMES.modal)
-  }
   const handleShowChange = async (val: boolean) => {
     // console.log(val)
     if (val) {
       await tick()
       if (!domContainer) return
-      modalCount++
       parentNode = domContainer.parentNode as HTMLElement
-      if (!parentNode.classList.contains(MODAL_CLASSNAMES.modal)) {
-        parentNode.classList.add(MODAL_CLASSNAMES.modal)
-        isAddedClass = true
-      }
+      let modalCount = (modalCounts.get(parentNode) || 0) + 1
+      modalCounts.set(parentNode, modalCount)
+      if (modalCount == 1) parentNode.classList.add(MODAL_CLASSNAMES.modal)
       prevFocusedNode = document.activeElement as HTMLElement
       ;(domContainer.querySelector('.content') as HTMLDivElement).focus()
       // showContent = true
     } else {
-      if (modalCount > 0) modalCount--
-      removeClass()
+      let modalCount = (modalCounts.get(parentNode!) || 0) - 1
+      if (modalCount <= 0) {
+        parentNode?.classList.remove(MODAL_CLASSNAMES.modal)
+        modalCounts.delete(parentNode!)
+      } else modalCounts.set(parentNode!, modalCount)
       prevFocusedNode?.focus()
       // showContent = false
     }
@@ -123,7 +122,7 @@
       bind:this={domContainer}
       class="modal"
       transition:fly={{ y: -30 }}
-      class:filter
+      class:filter={teleport == '#root'}
       {@attach domClick(() => {
         if (bgclose) void close()
       })}
