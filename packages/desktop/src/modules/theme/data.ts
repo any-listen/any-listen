@@ -6,14 +6,6 @@ import { getStore } from '@/shared/store'
 import { encodePath, isUrl, joinPath } from '@/shared/utils'
 
 let userThemes: AnyListen.Theme[]
-
-// 主题由客户端提交并持久化，getTheme 启动时会按 Theme 的形状解引用，
-// 不合规的数据存进去会让之后的每次启动都崩在这里
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-const isValidTheme = (theme: AnyListen.Theme | null | undefined): boolean => {
-  return !!theme && !!theme.id && !!theme.config && !!theme.config.extInfo && !!theme.config.themeColors
-}
-
 export const getAllThemes = () => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   userThemes ??= getStore(STORE_NAMES.THEME).get<AnyListen.Theme[]>('themes') ?? []
@@ -25,7 +17,6 @@ export const getAllThemes = () => {
 }
 
 export const saveTheme = (theme: AnyListen.Theme) => {
-  if (!isValidTheme(theme)) throw new Error('Invalid theme')
   const targetTheme = userThemes.find((t) => t.id === theme.id)
   if (targetTheme) Object.assign(targetTheme, theme)
   else userThemes.push(theme)
@@ -65,7 +56,7 @@ export const getTheme = () => {
   let theme = themes.find((theme) => theme.id == themeId)
   if (!theme) {
     userThemes = getStore(STORE_NAMES.THEME).get('themes') ?? []
-    theme = userThemes.find((theme) => theme.id == themeId && isValidTheme(theme))
+    theme = userThemes.find((theme) => theme.id == themeId)
     if (theme) {
       if (theme.config.extInfo['--background-image'] != 'none') {
         theme = copyTheme(theme)
