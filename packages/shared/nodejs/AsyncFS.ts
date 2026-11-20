@@ -13,49 +13,37 @@ export default class Store {
   private readonly dirPath: string
   private readonly batch: boolean
   private readonly safeWrite: boolean
+  private data: string | Record<string, unknown> | null = null
+  // eslint-disable-next-line @typescript-eslint/no-unused-private-class-members
   private immediate: NodeJS.Immediate | null = null
-  private data: string | Record<string, unknown> | Buffer | Uint8Array | null = null
   private running = false
 
-  private getFormatData() {
-    if (this.data) {
-      if (typeof this.data === 'object') return JSON.stringify(this.data, null, '\t')
-      return this.data
+  private static getFormatData(data: string | Record<string, unknown>) {
+    if (data) {
+      if (typeof data === 'object') return JSON.stringify(data, null, '\t')
+      return data
     }
     return ''
   }
-  private async handleWriteFile() {
-    this.running = true
+  private async handleWriteFile(data: string | Record<string, unknown>) {
     if (this.safeWrite) {
       const tempPath = `${this.filePath}.${Math.random().toString().substring(2, 10)}.temp`
       try {
-        await fs.writeFile(tempPath, this.getFormatData(), 'utf8')
-        this.data = null
+        await fs.writeFile(tempPath, Store.getFormatData(data), 'utf8')
       } catch (err) {
         if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
-          try {
-            await fs.mkdir(this.dirPath, { recursive: true })
-            await fs.writeFile(tempPath, this.getFormatData(), 'utf8')
-            this.data = null
-          } catch (err) {
-            this.data = null
-            throw err as Error
-          } finally {
-            this.running = false
-          }
+          await fs.mkdir(this.dirPath, { recursive: true })
+          await fs.writeFile(tempPath, Store.getFormatData(data), 'utf8')
         } else {
-          this.data = null
           throw err as Error
         }
-      } finally {
-        this.running = false
       }
-      await fs.rename(tempPath, this.filePath)
-    } else {
-      await fs.writeFile(this.filePath, this.getFormatData(), 'utf8').finally(() => {
-        this.running = false
-        this.data = null
+      await fs.rename(tempPath, this.filePath).catch(async (err) => {
+        console.error('Failed to rename temp file to target file:', err)
+        void fs.unlink(tempPath)
       })
+    } else {
+      await fs.writeFile(this.filePath, Store.getFormatData(data), 'utf8')
     }
   }
 
@@ -77,14 +65,24 @@ export default class Store {
     }
     return null
   }
-  writeFile(data: string | Record<string, unknown> | Buffer | Uint8Array) {
+
+  private flush() {
+    if (this.data === null || this.running) return
+    this.running = true
+    const d = this.data
+    this.data = null
+    void this.handleWriteFile(d).finally(() => {
+      this.running = false
+      if (this.data !== null) this.flush()
+    })
+  }
+  writeFile(data: string | Record<string, unknown>) {
     this.data = data
-    if (this.running) return
     if (this.batch) {
       this.immediate ??= setImmediate(() => {
         this.immediate = null
-        void this.handleWriteFile()
+        this.flush()
       })
-    } else void this.handleWriteFile()
+    } else this.flush()
   }
 }
