@@ -14,6 +14,7 @@
 - Fixed an issue where songs could not be read when local file names contained `?` ([#420](https://github.com/any-listen/any-listen/issues/420)).
 - Fixed an issue where frontend assets might not be updated on the first visit after an update.
 - Fixed an issue where some lyric timestamp tags were parsed incorrectly.
+- Fixed numerous bugs. Thanks to [@xinghui79](https://github.com/xinghui79) for the contribution.
 
 ---
 
@@ -33,3 +34,4 @@
 - 修复本地文件名包含 `?` 时歌曲无法读取的问题（[#420](https://github.com/any-listen/any-listen/issues/420)）。
 - 修复更新后首次访问时前端资源可能未更新的问题。
 - 修复某些歌词时间标签解析错误的问题。
+- 修复大量 bug，感谢 [@xinghui79](https://github.com/xinghui79) 提供的 PR。
