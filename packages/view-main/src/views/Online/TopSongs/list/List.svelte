@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getData } from '@/modules/resource/topSongs/list/actions'
+  import { buildSourceKey, getData } from '@/modules/resource/topSongs/list/actions'
   import type { SourceType } from '../../shared.svelte'
   import { untrack } from 'svelte'
   import Songlist from './Songlist.svelte'
@@ -10,28 +10,31 @@
     loading: boolean
     error: boolean
   }>({ loading: false, error: false })
-  let searchSeq = 0
 
   const handleSearch = () => {
     let extId = source!.extensionId
     let sourceId = source!.id
-    const seq = ++searchSeq
+    const searchId = buildSourceKey(extId, sourceId)
     listInfo.loading = true
     void getData(extId, sourceId)
       .then((_list) => {
-        if (seq != searchSeq) return
+        if (!source || searchId != buildSourceKey(source.extensionId, source.id)) {
+          return
+        }
         listInfo.error = false
         list = _list
         console.log(_list)
       })
       .catch((err) => {
         console.log(err)
-        if (seq != searchSeq) return
+        if (!source || searchId != buildSourceKey(source.extensionId, source.id)) {
+          return
+        }
         listInfo.error = true
         list = []
       })
       .finally(() => {
-        if (seq == searchSeq) listInfo.loading = false
+        listInfo.loading = false
       })
   }
 
@@ -44,5 +47,5 @@
 </script>
 
 {#if source}
-  <Songlist sId={source.sId} {list} {listInfo} />
+  <Songlist sId={source.sId} {list} {listInfo} onreload={() => handleSearch()} />
 {/if}
