@@ -7,12 +7,14 @@
     list,
     itemkey,
     itemname,
+    disabled = false,
     onchange,
   }: {
     value: T[K]
     list: T[]
     itemkey: K
     itemname: keyof T
+    disabled?: boolean
     onchange?: (val: T[K]) => void
   } = $props()
 
@@ -42,6 +44,7 @@
     return offsetHeight - 5
   }
   const handleShow = async () => {
+    if (disabled) return
     visible = true
     await tick()
     listStyle = `transform: scaleY(1) translateY(${handleGetOffset()}px);`
@@ -67,8 +70,8 @@
   }
 </script>
 
-<div class={['select', { active: visible }]}>
-  <button bind:this={domBtn} class="button" onclick={handleShow}>
+<div class={['select', { active: visible, disabled }]}>
+  <button bind:this={domBtn} class="button" {disabled} onclick={handleShow}>
     <span class="label">{label}</span>
     <div class="icon">
       <svg version="1.1" xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 0 451.847 451.847">
@@ -103,6 +106,14 @@
     display: inline-block;
     width: var(--selection-width, 300px);
     font-size: 12px;
+
+    &.disabled {
+      opacity: 0.5;
+
+      .button {
+        cursor: not-allowed;
+      }
+    }
 
     &.active {
       .button {

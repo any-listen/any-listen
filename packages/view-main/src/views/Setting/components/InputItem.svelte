@@ -8,6 +8,7 @@
     desc,
     value,
     textarea,
+    disabled = false,
     onchange,
   }: {
     id: string
@@ -15,6 +16,7 @@
     desc?: string
     value: string
     textarea?: boolean
+    disabled?: boolean
     onchange: (value: string) => void
   } = $props()
   // let id = $derived(`${name}_${desc}_${f}`)
@@ -23,9 +25,9 @@
 <TitleContent {name} {desc}>
   <div class="settings-item-input">
     {#if textarea}
-      <Textarea {id} {value} {onchange} />
+      <Textarea {id} {value} {disabled} {onchange} />
     {:else}
-      <Input {id} {value} {onchange} />
+      <Input {id} {value} {disabled} {onchange} />
     {/if}
   </div>
 </TitleContent>

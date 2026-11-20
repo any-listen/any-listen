@@ -25,6 +25,14 @@ declare global {
         field: string
         name: string
         description: string
+        /**
+         * Disable this item while another config field has the given value.
+         * The resolved state is passed to the client as `FormValue.disabled`.
+         */
+        disabledWhen?: {
+          field: string
+          value: unknown
+        }
       }
       interface FormInput extends FormBase {
         type: 'input'
@@ -68,7 +76,7 @@ declare global {
         type: 'lazzyParseMeta'
         default?: boolean
       }
-      type FormValue<T extends FormItems> = T & { value?: T['default'] }
+      type FormValue<T extends FormItems> = T & { value?: T['default']; disabled?: boolean }
       type FormConfigValue<T extends FormConfigCheckbox | FormConfigCheckboxMultiple> = T & {
         enum: ConfigEnum[]
         value?: T['default']
