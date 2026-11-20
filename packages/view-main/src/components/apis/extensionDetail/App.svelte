@@ -18,6 +18,7 @@
   import Tab from '@/components/base/Tab.svelte'
   import Readme from './Readme.svelte'
   import Contributes from './Contributes.svelte'
+  import { generateIdSimple } from '@/shared'
   // import Content from './Contributes.svelte'
 
   let { onafterleave }: { onafterleave: () => void } = $props()
@@ -69,25 +70,28 @@
   }
 
   let extId: string | null = null
-  let loadSeq = 0
+  let loadKey: string
   const loadExtensionDetail = async () => {
     if (!extId) return
-    const seq = ++loadSeq
+    const key = generateIdSimple()
+    loadKey = key
     loadStats = { loading: true, error: false, errorMessage: '' }
     try {
       const detail = await getOnlineExtensionDetail(extId)
-      if (seq != loadSeq) return
+      if (key != loadKey) return
       ext = detail
       loadStats.loading = false
     } catch (err) {
       console.log(err)
-      if (seq != loadSeq) return
+      if (key != loadKey) return
       loadStats = { loading: false, error: true, errorMessage: (err as Error).message }
     }
   }
   export const show = (_ext: AnyListen.Extension.Extension | AnyListen.IPCExtension.OnlineListItem) => {
     if ('internal' in _ext) {
       ext = _ext
+      extId = null
+      loadStats = { loading: false, error: false, errorMessage: '' }
     } else {
       ext = {
         ..._ext,
