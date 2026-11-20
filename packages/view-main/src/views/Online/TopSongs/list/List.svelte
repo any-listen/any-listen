@@ -18,7 +18,7 @@
     listInfo.loading = true
     void getData(extId, sourceId)
       .then((_list) => {
-        if (searchId != buildSourceKey(extId, sourceId)) {
+        if (!source || searchId != buildSourceKey(source.extensionId, source.id)) {
           return
         }
         listInfo.error = false
@@ -27,7 +27,7 @@
       })
       .catch((err) => {
         console.log(err)
-        if (searchId != buildSourceKey(extId, sourceId)) {
+        if (!source || searchId != buildSourceKey(source.extensionId, source.id)) {
           return
         }
         listInfo.error = true
