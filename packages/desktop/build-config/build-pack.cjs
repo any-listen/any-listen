@@ -134,6 +134,10 @@ const macOptions = {
     icon: './resources/icons/icon.icns',
     category: 'public.app-category.music',
     // artifactName: '${productName}-${version}.${ext}',
+    extendInfo: {
+      NSLocalNetworkUsageDescription:
+        'This app requires access to the local network to connect to devices and services on the LAN.',
+    },
   },
   dmg: {
     artifactName: `\${productName}-\${version}-\${arch}.\${ext}`,
