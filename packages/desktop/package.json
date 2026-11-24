@@ -53,7 +53,7 @@
     "electron": "^43.8.12",
     "electron-builder": "26.18.0",
     "electron-debug": "^4.1.0",
-    "electron-to-chromium": "^1.5.492",
+    "electron-to-chromium": "^1.5.493",
     "tar": "^7.5.23",
     "vite": "^8.3.8"
   }
