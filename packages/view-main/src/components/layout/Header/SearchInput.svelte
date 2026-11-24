@@ -113,14 +113,8 @@
   }
 
   $effect(() => {
-    if ($query[urlParamKeyMap.type] != 'search') return
-    const kwd = $query[urlParamKeyMap.query]
-    if (kwd == null) {
-      if (!currentText) return
-      void toOnlineSearch(currentText)
-      return
-    }
-    currentText = kwd
+    if ($query[urlParamKeyMap.type] != 'search' || !$query[urlParamKeyMap.queryType]) return
+    currentText = $query[urlParamKeyMap.query] || ''
     untrack(() => {
       searchInput?.setText(currentText)
       if (!currentText) searchInput?.setList([])

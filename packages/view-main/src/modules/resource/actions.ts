@@ -6,7 +6,11 @@ export const setLastHistory = (path: string, query: Params) => {
   const last = historys[historys.length - 1] as [string, Params] | undefined
   if (last) {
     if (path == '/online') {
-      if (query[urlParamKeyMap.type] == last[1][urlParamKeyMap.type]) return
+      if (query[urlParamKeyMap.type] == last[1][urlParamKeyMap.type]) {
+        last[0] = path
+        last[1] = query
+        return
+      }
     } else if (path == last[0]) return
   }
   historys.push([path, query])
@@ -72,6 +76,7 @@ export const toOnlineSearch = async (text?: string) => {
   } else if (loc.location.startsWith('/online')) {
     const params = buildQueryParams({ ...loc.query }, text)
     await replace('/online', params)
+    console.log('historys after replace:', [...historys])
   } else {
     const [path, query] = lastLoc || ['/online', {}]
     const params = buildQueryParams(query, text)

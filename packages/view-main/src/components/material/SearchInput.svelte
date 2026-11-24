@@ -71,13 +71,17 @@
       hideList()
     }, 50)
   }
-  const handleSearch = () => {
+  const handleListClick = (index: number) => {
     hideList()
+    onlistclick?.(index, list[index]?.id ?? '')
+  }
+  const handleSearch = () => {
     if (selectIndex < 0) {
+      hideList()
       onsubmit(text.trim())
       return
     }
-    onlistclick?.(selectIndex, list[selectIndex]?.id ?? '')
+    handleListClick(selectIndex)
   }
   const handleKeyDown = () => {
     if (list.length) {
@@ -198,7 +202,7 @@
             aria-label={item.title}
             onkeydown={(evt) => {
               if (evt.key === 'Enter') {
-                onlistclick?.(index, item.id)
+                handleListClick(index)
               }
             }}
             onfocus={showList}
@@ -209,7 +213,7 @@
             }}
             onclick={(evt) => {
               evt.stopPropagation()
-              onlistclick?.(index, item.id)
+              handleListClick(index)
             }}
           >
             {#if item.label}
