@@ -8,7 +8,7 @@ const buildSourceKey = (extId: string, source: string) => `${extId}.${source}`
 const buildSearchKey = (extId: string, source: string, limit: number, text: string) => {
   return `${extId}.${source}.${limit}.${text}`
 }
-export const buildRequestKey = (extId: string, source: string, page: number, limit: number, text: string) => {
+const buildRequestKey = (extId: string, source: string, page: number, limit: number, text: string) => {
   return JSON.stringify({ extId, source, page, limit, text })
 }
 export const parseRequestKey = (params: string) => {

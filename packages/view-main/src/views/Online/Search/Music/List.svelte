@@ -2,11 +2,12 @@
   import Empty from '@/components/material/Empty.svelte'
   import MusicList from '@/components/common/MusicList/MusicList.svelte'
   import Pagination from '@/components/material/Pagination.svelte'
-  import { buildRequestKey, search } from '@/modules/resource/search/music/actions'
+  import { search } from '@/modules/resource/search/music/actions'
   import { query, getLocation } from '@/plugins/routes'
   import { urlParamKeyMap, type SourceType } from '../../shared.svelte'
   import { tick, untrack, type ComponentExports } from 'svelte'
   import { pushRoute, replaceRoute } from '@/modules/resource/actions'
+  import { generateId } from '@any-listen/common/common'
 
   let { source }: { source?: SourceType } = $props()
   let list = $state.raw<AnyListen.Music.MusicInfoOnline[]>([])
@@ -20,6 +21,7 @@
   }>({ total: 0, page: 1, limit: 20, loading: false, error: false, id: 'search' })
   let musicList = $state<ComponentExports<typeof MusicList> | null>(null)
   const searchInfo = {
+    searchId: '',
     extId: '',
     source: '',
     text: '',
@@ -34,16 +36,15 @@
     if (text != null) searchInfo.text = text
     listInfo.page = page
     requestParams = [page, searchInfo.text]
-    const searchId = buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.text)
+    const searchId = generateId()
+    searchInfo.searchId = searchId
     listInfo.loading = true
     const { promise, total } = search(extId, sourceId, searchInfo.text, '', page, listInfo.limit)
     listInfo.total = total
     listInfo.id = searchId
     void promise
       .then(({ list: _list, total, limit, page }) => {
-        if (searchId != buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.text)) {
-          return
-        }
+        if (searchId != searchInfo.searchId) return
         if (listInfo.total !== total) listInfo.total = total
         if (listInfo.limit !== limit) listInfo.limit = limit
         if (listInfo.page !== page) listInfo.page = page
@@ -67,16 +68,13 @@
       })
       .catch((err) => {
         console.log(err)
-        if (searchId != buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.text)) {
-          return
-        }
+        if (searchId != searchInfo.searchId) return
         listInfo.error = true
         list = []
       })
       .finally(() => {
-        if (searchId == buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.text)) {
-          listInfo.loading = false
-        }
+        if (searchId != searchInfo.searchId) return
+        listInfo.loading = false
       })
   }
 

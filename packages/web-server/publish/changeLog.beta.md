@@ -2,8 +2,7 @@
 
 ### Fixed
 
-- Fixed an issue where some lyric timestamp tags were parsed incorrectly.
-- Fixed numerous bugs. Thanks to [@xinghui79](https://github.com/xinghui79) for the contribution.
+- Fixed an issue where the loading overlay for online playlists was displayed incorrectly ([#559](https://github.com/any-listen/any-listen/issues/559)).
 
 ---
 
@@ -11,5 +10,4 @@
 
 ### 修复
 
-- 修复某些歌词时间标签解析错误的问题。
-- 修复大量 bug，感谢 [@xinghui79](https://github.com/xinghui79) 提供的 PR。
+- 修复在线歌单加载层显示异常的问题（[#559](https://github.com/any-listen/any-listen/issues/559)）。

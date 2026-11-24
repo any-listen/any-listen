@@ -6,12 +6,13 @@
   import { verticalScrollbar } from '@/shared/compositions/verticalScrollbar.svelte'
   import { i18n, t } from '@/plugins/i18n'
   import { getSourceId, useResourceList } from '@/views/Online/shared.svelte'
-  import { buildRequestKey, search } from '@/modules/resource/search/music/actions'
+  import { search } from '@/modules/resource/search/music/actions'
   import { playerState } from '@/modules/player/store/state'
   import { addPlayLaterMusic, play, playId, skipNext } from '@/modules/player/store/actions'
   import { addListMusics, getListMusics, removeListMusics, updateListMusicsPosition } from '@/modules/musicLibrary/actions'
   import { showSimpleConfirmModal } from '@/components/apis/dialog'
   import { playerEvent } from '@/modules/player/store/event'
+  import { generateId } from '@any-listen/common/common'
 
   let {
     onafterleave,
@@ -39,7 +40,7 @@
   let musicInfo = $state.raw<AnyListen.Music.MusicInfo | null>(null)
   let listId = ''
   let toggleMusicInfo = $state.raw<AnyListen.Music.MusicInfo | null>(null)
-  let searchId = $state('')
+  let searchId = ''
 
   const list = $derived(lists[activeSource] ?? [])
   const noItemLabel = $derived(loading ? $t('list_loading') : isError ? $t('list_error') : $t('no_item'))
@@ -53,13 +54,7 @@
     if (!visible || !musicInfo?.name) return
     loading = true
     isError = false
-    const currentSearchId = buildRequestKey(
-      source.extensionId,
-      source.id,
-      1,
-      limit,
-      `${listId}-${musicInfo.id}-${musicInfo.name}`
-    )
+    const currentSearchId = generateId()
     searchId = currentSearchId
 
     try {

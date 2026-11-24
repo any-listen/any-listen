@@ -2,13 +2,14 @@
   import Empty from '@/components/material/Empty.svelte'
   import MusicList from '@/components/common/MusicList/MusicList.svelte'
   import Pagination from '@/components/material/Pagination.svelte'
-  import { buildRequestKey, detail } from '@/modules/resource/topSongs/detail/actions'
+  import { detail } from '@/modules/resource/topSongs/detail/actions'
   import { location, query, getLocation } from '@/plugins/routes'
   import { tick, untrack, type ComponentExports } from 'svelte'
   import { urlParamKeyMap, useActiveSource } from '../../shared.svelte'
   import { saveList, saveListAsGeneral } from './action'
   import { topSongsUrlParamKeyMap } from '../shared.svelte'
   import { pushRoute, replaceRoute, setLastHistory } from '@/modules/resource/actions'
+  import { generateId } from '@any-listen/common/common'
 
   const activeSource = useActiveSource('topSongs', 'topSongs')
 
@@ -22,6 +23,7 @@
     error: boolean
   }>({ total: 0, page: 1, limit: 1000, loading: false, error: false })
   const searchInfo = {
+    searchId: '',
     extId: '',
     source: '',
     id: '',
@@ -30,6 +32,8 @@
   let musicList = $state<ComponentExports<typeof MusicList> | null>(null)
 
   const handleFetch = (page: number, id: string, date = '') => {
+    const searchId = generateId()
+    searchInfo.searchId = searchId
     searchInfo.extId = activeSource.val!.extensionId
     let extId = searchInfo.extId
     searchInfo.source = activeSource.val!.id
@@ -37,15 +41,12 @@
     if (id != null) searchInfo.id = id
     if (date != null) searchInfo.date = date
     listInfo.page = page
-    const searchId = buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.id, searchInfo.date)
     listInfo.loading = true
     const { promise, total } = detail(extId, sourceId, searchInfo.id, searchInfo.date, page, listInfo.limit)
     listInfo.total = total
     void promise
       .then(({ list: _list, info: _info, total, limit, page }) => {
-        if (searchId != buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.id, searchInfo.date)) {
-          return
-        }
+        if (searchId != searchInfo.searchId) return
         if (listInfo.total !== total) listInfo.total = total
         if (listInfo.limit !== limit) listInfo.limit = limit
         if (listInfo.page !== page) listInfo.page = page
@@ -70,13 +71,12 @@
       })
       .catch((err) => {
         console.log(err)
-        if (searchId != buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.id, searchInfo.date)) {
-          return
-        }
+        if (searchId != searchInfo.searchId) return
         listInfo.error = true
         list = []
       })
       .finally(() => {
+        if (searchId != searchInfo.searchId) return
         listInfo.loading = false
       })
   }

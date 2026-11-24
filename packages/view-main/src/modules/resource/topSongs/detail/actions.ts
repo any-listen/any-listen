@@ -10,7 +10,7 @@ const buildSourceKey = (extId: string, source: string) => `${extId}.${source}`
 const buildSearchKey = (extId: string, source: string, limit: number, id: string, date: string) => {
   return `${extId}.${source}.${limit}.${id}.${date}`
 }
-export const buildRequestKey = (extId: string, source: string, page: number, limit: number, id: string, date: string) => {
+const buildRequestKey = (extId: string, source: string, page: number, limit: number, id: string, date: string) => {
   return `${extId}.${source}.${page}.${limit}.${id}.${date}`
 }
 

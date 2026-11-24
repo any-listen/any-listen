@@ -2,12 +2,13 @@
   import Empty from '@/components/material/Empty.svelte'
   import MusicList from '@/components/common/MusicList/MusicList.svelte'
   import Pagination from '@/components/material/Pagination.svelte'
-  import { buildRequestKey, detail } from '@/modules/resource/songlist/detail/actions'
+  import { detail } from '@/modules/resource/songlist/detail/actions'
   import { location, query, getLocation } from '@/plugins/routes'
   import { tick, untrack, type ComponentExports } from 'svelte'
   import { urlParamKeyMap, useActiveSource } from '../../shared.svelte'
   import { saveList, saveListAsGeneral } from './action'
   import { pushRoute, replaceRoute, setLastHistory } from '@/modules/resource/actions'
+  import { generateId } from '@any-listen/common/common'
 
   const activeSource = useActiveSource('songlist', 'songlist')
 
@@ -21,6 +22,7 @@
     error: boolean
   }>({ total: 0, page: 1, limit: 10000, loading: false, error: false })
   const searchInfo = {
+    searchId: '',
     extId: '',
     source: '',
     id: '',
@@ -34,17 +36,16 @@
     searchInfo.source = activeSource.val!.id
     let sourceId = searchInfo.source
     if (id != null) searchInfo.id = id
+    searchInfo.searchId = generateId()
+    const searchId = searchInfo.searchId
     listInfo.page = page
     requestParams = [page, searchInfo.id]
-    const searchId = buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.id)
     listInfo.loading = true
     const { promise, total } = detail(extId, sourceId, searchInfo.id, page, listInfo.limit)
     listInfo.total = total
     void promise
       .then(({ list: _list, info: _info, total, limit, page }) => {
-        if (searchId != buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.id)) {
-          return
-        }
+        if (searchId != searchInfo.searchId) return
         if (listInfo.total !== total) listInfo.total = total
         if (listInfo.limit !== limit) listInfo.limit = limit
         if (listInfo.page !== page) listInfo.page = page
@@ -69,16 +70,13 @@
       })
       .catch((err) => {
         console.log(err)
-        if (searchId != buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.id)) {
-          return
-        }
+        if (searchId != searchInfo.searchId) return
         listInfo.error = true
         list = []
       })
       .finally(() => {
-        if (searchId == buildRequestKey(extId, sourceId, page, listInfo.limit, searchInfo.id)) {
-          listInfo.loading = false
-        }
+        if (searchId != searchInfo.searchId) return
+        listInfo.loading = false
       })
   }
 

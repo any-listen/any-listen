@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { buildRequestKey, getData } from '@/modules/resource/songlist/list/actions'
+  import { getData } from '@/modules/resource/songlist/list/actions'
   import { query } from '@/plugins/routes'
   import { urlParamKeyMap, type SourceType } from '../../shared.svelte'
   import { untrack } from 'svelte'
   import Songlist from './Songlist.svelte'
   import { songlistUrlParamKeyMap } from '../shared.svelte'
+  import { generateId } from '@any-listen/common/common'
 
   let { source }: { source?: SourceType } = $props()
   let list = $state.raw<AnyListen.Resource.SongListItem[]>([])
@@ -16,22 +17,22 @@
     error: boolean
   }>({ total: 0, page: 1, limit: 30, loading: false, error: false })
   let requestParams: unknown[] = []
+  let searchId = ''
 
   const handleSearch = (page: number, tag?: string, sort?: string) => {
     if (tag == null || sort == null) return
+    const _searchId = generateId()
+    searchId = _searchId
     requestParams = [page, tag, sort]
     let extId = source!.extensionId
     let sourceId = source!.id
     listInfo.page = page
-    const searchId = buildRequestKey(extId, sourceId, page, listInfo.limit, tag, sort)
     listInfo.loading = true
     const { promise, total } = getData(extId, sourceId, tag, sort, page, listInfo.limit)
     if (total) listInfo.total = total
     void promise
       .then(({ list: _list, total, limit, page }) => {
-        if (searchId != buildRequestKey(extId, sourceId, page, listInfo.limit, tag, sort)) {
-          return
-        }
+        if (_searchId != searchId) return
         if (listInfo.total !== total) listInfo.total = total
         if (listInfo.limit !== limit) listInfo.limit = limit
         if (listInfo.page !== page) listInfo.page = page
@@ -40,16 +41,13 @@
       })
       .catch((err) => {
         console.log(err)
-        if (searchId != buildRequestKey(extId, sourceId, page, listInfo.limit, tag, sort)) {
-          return
-        }
+        if (_searchId != searchId) return
         listInfo.error = true
         list = []
       })
       .finally(() => {
-        if (searchId == buildRequestKey(extId, sourceId, page, listInfo.limit, tag, sort)) {
-          listInfo.loading = false
-        }
+        if (_searchId != searchId) return
+        listInfo.loading = false
       })
   }
 

@@ -8,7 +8,7 @@ const buildSourceKey = (extId: string, source: string) => `${extId}.${source}`
 const buildSearchKey = (extId: string, source: string, limit: number, tag: string, sort: string) => {
   return `${extId}.${source}.${limit}.${tag}-${sort}`
 }
-export const buildRequestKey = (extId: string, source: string, page: number, limit: number, tag: string, sort: string) => {
+const buildRequestKey = (extId: string, source: string, page: number, limit: number, tag: string, sort: string) => {
   return `${extId}.${source}.${page}.${limit}.${tag}-${sort}`
 }
 
