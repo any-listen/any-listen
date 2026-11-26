@@ -3,7 +3,6 @@ import { type MessagePort, parentPort } from 'node:worker_threads'
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
 import type { UserConfig } from 'vite'
 
-import { dynamicImport } from './import-esm.cjs'
 import { type Target, type TaskName, build } from './utils'
 
 if (!parentPort) throw new Error('Require run in worker')
@@ -17,22 +16,22 @@ const getWebViewLyricIpc = () => {
 
 type ViewMainTarget = 'desktop' | 'web'
 const getViewMainConfig = async (target: Target) => {
-  const { buildConfig } = (await dynamicImport('@any-listen/view-main')) as {
-    buildConfig: (target: ViewMainTarget, port: number, path: string) => Promise<UserConfig>
+  const { buildConfig } = (await import('@any-listen/view-main')) as {
+    buildConfig: (target: ViewMainTarget, port: number, path: string) => UserConfig
   }
   if (target !== 'desktop' && target !== 'web') throw new Error(`Invalid target for view-main: ${target}`)
   return buildConfig(target, DEV_SERVER_PORTS['view-main'], target == 'web' ? getWebViewMainIpc() : '')
 }
 const getViewLyricConfig = async (target: Target) => {
-  const { buildConfig } = (await dynamicImport('@any-listen/view-lyric')) as {
-    buildConfig: (target: ViewMainTarget, port: number, path: string) => Promise<UserConfig>
+  const { buildConfig } = (await import('@any-listen/view-lyric')) as {
+    buildConfig: (target: ViewMainTarget, port: number, path: string) => UserConfig
   }
   if (target !== 'desktop' && target !== 'web') throw new Error(`Invalid target for view-lyric: ${target}`)
   return buildConfig(target, DEV_SERVER_PORTS['view-lyric'], target == 'web' ? getWebViewLyricIpc() : '')
 }
 
 // const getExtensionPreloadConfig = async (target: Target) => {
-//   const { buildConfig } = await dynamicImport('@any-listen/extension-preload/vite.config')
+//   const { buildConfig } = await import('@any-listen/extension-preload/vite.config')
 //   return buildConfig(target)
 // }
 

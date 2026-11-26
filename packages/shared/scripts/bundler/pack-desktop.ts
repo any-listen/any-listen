@@ -2,20 +2,18 @@ import path from 'node:path'
 
 import { deleteSync } from 'del'
 import colors from 'picocolors'
+import { createLogger } from 'vite'
 
 // import rendererConfig from './configs/renderer'
 import copyAssets from './copyAssets'
-import { dynamicImport } from './import-esm.cjs'
-import type { Vite } from './types'
 import { runBuildWorkerStatus, taskTools } from './utils'
 
 // process.env.VITE_CJS_TRACE = 'true'
+const logger = createLogger('info')
 
 const rootPath = path.join(__dirname, '../../../../')
 
 const runMainThread = async () => {
-  const { createLogger } = (await dynamicImport('vite')) as typeof Vite
-  const logger = createLogger('info')
   console.time('Build time')
   deleteSync(['build/**'], { cwd: rootPath })
   deleteSync(['dist/**'], { cwd: path.join(rootPath, 'packages/desktop') })

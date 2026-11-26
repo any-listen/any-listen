@@ -24,16 +24,16 @@
     "publish:linux": "pnpm -F desktop publish:linux",
     "publish:desktop": "pnpm -F desktop publish",
     "publish:web": "pnpm -F web-server publish",
-    "dev:desktop": "ts-node dev-desktop.ts",
-    "dev:web": "ts-node dev-web.ts",
-    "build:desktop:dir": "ts-node pack-desktop.ts && pnpm -F desktop pack:dir",
-    "build:desktop:win": "ts-node pack-desktop.ts && pnpm -F desktop pack:win:setup:x64",
-    "build:desktop:mac": "ts-node pack-desktop.ts && pnpm -F desktop pack:mac:dmg:arm64",
-    "build:desktop:linux": "ts-node pack-desktop.ts && pnpm -F desktop pack:linux:deb:amd64",
-    "build:desktop": "ts-node pack-desktop.ts",
-    "copy:web": "ts-node copy-web.ts",
-    "build:web": "ts-node pack-web.ts",
-    "build": "ts-node pack.ts",
+    "dev:desktop": "tsx dev-desktop.ts",
+    "dev:web": "tsx dev-web.ts",
+    "build:desktop:dir": "tsx pack-desktop.ts && pnpm -F desktop pack:dir",
+    "build:desktop:win": "tsx pack-desktop.ts && pnpm -F desktop pack:win:setup:x64",
+    "build:desktop:mac": "tsx pack-desktop.ts && pnpm -F desktop pack:mac:dmg:arm64",
+    "build:desktop:linux": "tsx pack-desktop.ts && pnpm -F desktop pack:linux:deb:amd64",
+    "build:desktop": "tsx pack-desktop.ts",
+    "copy:web": "tsx copy-web.ts",
+    "build:web": "tsx pack-web.ts",
+    "build": "pnpm run build:desktop",
     "postinstall": "node ./postinstall.ts"
   },
   "devDependencies": {
@@ -51,7 +51,7 @@
     "esbuild": "^0.28.2",
     "picocolors": "^1.1.1",
     "spinnies": "github:lyswhut/spinnies#233305c58694aa3b053e3ab9af9049993f918b9d",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.23.15",
     "vite": "^8.3.8"
   }
 }

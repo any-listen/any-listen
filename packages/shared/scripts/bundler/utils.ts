@@ -5,9 +5,6 @@ import { MessageChannel, Worker } from 'node:worker_threads'
 import Spinnies from 'spinnies'
 import type { UserConfig } from 'vite'
 
-import { dynamicImport } from './import-esm.cjs'
-import type { Vite } from './types'
-
 export type BuildSuatus = 'success' | 'error' | 'updated'
 export type TaskName = 'desktop' | 'web-server' | 'web-preload' | 'view-main' | 'view-lyric' | 'extension-preload'
 export type Target = 'desktop' | 'web' | 'mobile'
@@ -19,7 +16,7 @@ export type Target = 'desktop' | 'web' | 'mobile'
  * @returns is success
  */
 export const build = async (config: UserConfig, onUpdated: () => void): Promise<{ status: boolean; reload: () => void }> => {
-  const { build: viteBuild } = (await dynamicImport('vite')) as typeof Vite
+  const { build: viteBuild } = await import('vite')
   if (process.env.NODE_ENV === 'production') {
     if (config.build) config.build.watch = null
     return viteBuild({ ...config, configFile: false })
@@ -44,7 +41,7 @@ export const build = async (config: UserConfig, onUpdated: () => void): Promise<
  * @returns is success
  */
 const buildDev = async (config: UserConfig, onUpdated: () => void) => {
-  const { build: viteBuild, mergeConfig } = (await dynamicImport('vite')) as typeof Vite
+  const { build: viteBuild, mergeConfig } = await import('vite')
 
   return new Promise<{ status: boolean; reload: () => void }>((resolve) => {
     let firstBundle = true
@@ -76,7 +73,7 @@ const buildDev = async (config: UserConfig, onUpdated: () => void) => {
 }
 
 export const createBuildServer = async (config: UserConfig, onUpdated: () => void) => {
-  const { mergeConfig, createServer } = (await dynamicImport('vite')) as typeof Vite
+  const { mergeConfig, createServer } = await import('vite')
 
   return new Promise<{ status: boolean; reload: () => void }>((resolve) => {
     let firstBundle = true
@@ -141,7 +138,7 @@ export const createBuildServer = async (config: UserConfig, onUpdated: () => voi
 export const runBuildWorker = async (taskName: TaskName, onUpdated: () => void) =>
   new Promise<{ status: boolean; reload: () => void }>((resolve) => {
     const worker = new Worker(path.resolve(__dirname, './worker.ts'), {
-      execArgv: ['--require', 'ts-node/register'],
+      execArgv: ['--import', 'tsx'],
       env: process.env,
     })
     const subChannel = new MessageChannel()

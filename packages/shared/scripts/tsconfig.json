@@ -9,13 +9,5 @@
     "rootDir": "./",
     "types": ["@any-listen/nodejs/node_modules/@types/node"],
     "outDir": "./dist"
-  },
-  "ts-node": {
-    // "esm": true /* ... Line to be added ... */,
-    "experimentalSpecifierResolution": "node",
-    "compilerOptions": {
-      "module": "CommonJS"
-    },
-    "include": ["**/*.d.ts", "**/*.ts", "**/*.js"]
   }
 }

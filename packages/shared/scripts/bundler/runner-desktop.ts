@@ -4,14 +4,12 @@ import type { ChildProcessWithoutNullStreams } from 'node:child_process'
 import { debounce } from '@any-listen/common/common'
 import { Arch, buildConfig, replaceLib, runDesktop } from '@any-listen/desktop'
 import colors from 'picocolors'
-import type { Logger } from 'vite'
+import { createLogger } from 'vite'
 
 import copyAssets from './copyAssets'
-import { dynamicImport } from './import-esm.cjs'
-import type { Vite } from './types'
 import { buildSuatus, runBuildWorkerStatus, taskTools } from './utils'
 
-let logger: Logger
+const logger = createLogger('info')
 
 // del.sync(['dist/**'])
 
@@ -35,8 +33,6 @@ function desktopLog(data: Buffer, color: 'red' | 'blue') {
 
 const runMainThread = async () => {
   console.time('init')
-  const { createLogger } = (await dynamicImport('vite')) as typeof Vite
-  logger = createLogger('info')
 
   // let server: ViteDevServer | undefined
   let desktopProcess: ChildProcessWithoutNullStreams | undefined

@@ -4,14 +4,12 @@ import type { ChildProcessWithoutNullStreams } from 'node:child_process'
 import { DEV_SERVER_PORTS } from '@any-listen/common/constants'
 import { buildConfig, runServer } from '@any-listen/web-server'
 import colors from 'picocolors'
-import type { Logger } from 'vite'
+import { createLogger } from 'vite'
 
 import copyAssets from './copyAssets'
-import { dynamicImport } from './import-esm.cjs'
-import type { Vite } from './types'
 import { buildSuatus, runBuildWorker, runBuildWorkerStatus, taskTools } from './utils'
 
-let logger: Logger
+const logger = createLogger('info')
 
 // del.sync(['dist/**'])
 const logs: string[] = []
@@ -27,8 +25,6 @@ function serverLog(data: Buffer, color: 'red' | 'blue') {
 
 const runMainThread = async () => {
   console.time('init')
-  const { createLogger } = (await dynamicImport('vite')) as typeof Vite
-  logger = createLogger('info')
 
   // let server: ViteDevServer | undefined
   let serverProcess: ChildProcessWithoutNullStreams | undefined
