@@ -214,6 +214,7 @@ const parseSettings = (settings: NonNullable<Contributes['settings']>): NonNulla
         case 'input':
           return {
             type: s.type,
+            disabledWhen: s.disabledWhen,
             field: String(s.field),
             name: String(s.name),
             description: String(s.description),
@@ -223,6 +224,7 @@ const parseSettings = (settings: NonNullable<Contributes['settings']>): NonNulla
         case 'boolean':
           return {
             type: s.type,
+            disabledWhen: s.disabledWhen,
             field: String(s.field),
             name: String(s.name),
             description: String(s.description),
@@ -231,6 +233,7 @@ const parseSettings = (settings: NonNullable<Contributes['settings']>): NonNulla
         case 'selection':
           return {
             type: s.type,
+            disabledWhen: s.disabledWhen,
             field: String(s.field),
             name: String(s.name),
             description: String(s.description),
@@ -241,6 +244,7 @@ const parseSettings = (settings: NonNullable<Contributes['settings']>): NonNulla
         case 'configCheckbox':
           return {
             type: s.type,
+            disabledWhen: s.disabledWhen,
             field: String(s.field),
             name: String(s.name),
             description: String(s.description),
@@ -256,6 +260,7 @@ const parseSettings = (settings: NonNullable<Contributes['settings']>): NonNulla
         case 'configCheckboxMultiple':
           return {
             type: s.type,
+            disabledWhen: s.disabledWhen,
             field: String(s.field),
             name: String(s.name),
             description: String(s.description),
