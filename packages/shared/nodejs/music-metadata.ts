@@ -12,7 +12,7 @@ const bitrateFormat = (formate: IAudioMetadata['format']) => {
   if (formate.bitrate) return `${Math.trunc(formate.bitrate / 1000)}k`
   return ''
 }
-type IComment = NonNullable<IAudioMetadata['common']['comment']> extends Array<infer U> ? U : never
+type IComment = NonNullable<IAudioMetadata['common']['comments']> extends Array<infer U> ? U : never
 export const getMetadataLyric = (metadata: IAudioMetadata | null) => {
   if (!metadata) return null
   // let lyricInfo = metadata.common.lyrics?.[0]
@@ -84,8 +84,8 @@ export interface FileMetadata {
   ext: string
   bitrateLabel: string
   year: number
-  trackNo: number | null
-  discNo: number | null
+  trackNo?: number | null
+  discNo?: number | null
 }
 
 /**
@@ -109,8 +109,8 @@ export const parseBufferMetadata = async (buffer: Buffer, mimeType: string, ext:
     albumName,
     bitrateLabel: bitrateFormat(metadata.format),
     year: metadata.common.year ?? 0,
-    trackNo: metadata.common.track.no,
-    discNo: metadata.common.disk.no,
+    trackNo: metadata.common.trackNumber,
+    discNo: metadata.common.discNumber,
     pic: selectCover(metadata.common.picture) || null,
     lyric: getMetadataLyric(metadata),
   }
@@ -152,8 +152,8 @@ export const parseFileMetadata = async (path: string): Promise<FileMetadata | nu
     ext: ext.replace(/^\./, ''),
     bitrateLabel: bitrateFormat(metadata.format),
     year: metadata.common.year ?? 0,
-    trackNo: metadata.common.track.no,
-    discNo: metadata.common.disk.no,
+    trackNo: metadata.common.trackNumber,
+    discNo: metadata.common.discNumber,
   }
 }
 
