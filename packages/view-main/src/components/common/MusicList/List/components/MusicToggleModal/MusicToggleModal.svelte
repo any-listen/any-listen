@@ -117,17 +117,21 @@
       !playerState.playMusicInfo.playLater &&
       playerState.playMusicInfo.source === 'local' &&
       playerState.playMusicInfo.listId == listId &&
-      playerState.playMusicInfo.musicInfo.id == oldId
+      playerState.playMusicInfo.musicInfo.id == oldId &&
+      playerState.playInfo.isLinkedList
     await removeListMusics(listId, removeIds)
     if (isPlayingOld) {
       const unsub = playerEvent.on('playListMusicChanged', (playList) => {
         const targetMusic = playList.find((m) => !m.playLater && m.source == 'local' && m.musicInfo.id === toggleMusicInfo.id)
         if (targetMusic) {
           unsub()
+          clearTimeout(watchTimeout)
           playId(targetMusic.itemId)
           console.log('play', targetMusic.itemId)
         }
       })
+      // 失联/同步中断时事件可能永不到来，超时退订防监听器泄漏与幽灵续播
+      const watchTimeout = setTimeout(unsub, 10_000)
     }
     await addListMusics(listId, [toggleMusicInfo])
     if (index != -1 && index < oldIdx) oldIdx--
