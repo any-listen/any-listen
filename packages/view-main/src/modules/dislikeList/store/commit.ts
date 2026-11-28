@@ -42,7 +42,9 @@ const initNameSet = () => {
 }
 
 export const addDislikeInfo = (infos: AnyListen.Dislike.DislikeMusicInfo[]) => {
-  dislikeListState.rules += `\n${infos.map((info) => `${info.name ?? ''}${SPLIT_CHAR.DISLIKE_NAME}${info.singer ?? ''}`).join('\n')}`
+  // 名称/歌手中的分隔符必须先转义，否则 "a@b" 会被拆成错误的 name/singer 规则
+  const escape = (str?: string) => (str ?? '').replaceAll(SPLIT_CHAR.DISLIKE_NAME, SPLIT_CHAR.DISLIKE_NAME_ALIAS)
+  dislikeListState.rules += `\n${infos.map((info) => `${escape(info.name)}${SPLIT_CHAR.DISLIKE_NAME}${escape(info.singer)}`).join('\n')}`
   initNameSet()
   dislikeListEvent.updated()
 }

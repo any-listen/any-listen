@@ -88,7 +88,11 @@ export const getDislikeRulesMD5 = () => {
  * @param lists 列表信息
  */
 export const dislikeInfoAdd = async (lists: AnyListen.Dislike.DislikeMusicInfo[]) => {
-  await inertDislikeList(lists.map((info) => ({ content: `${info.name}${SPLIT_CHAR.DISLIKE_NAME}${info.singer}` })))
+  // 名称/歌手中的分隔符必须先转义，否则 "a@b" 会被拆成错误的 name/singer 规则
+  const escape = (str: string) => str.replaceAll(SPLIT_CHAR.DISLIKE_NAME, SPLIT_CHAR.DISLIKE_NAME_ALIAS)
+  await inertDislikeList(
+    lists.map((info) => ({ content: `${escape(info.name)}${SPLIT_CHAR.DISLIKE_NAME}${escape(info.singer)}` }))
+  )
 }
 
 /**
