@@ -1,5 +1,5 @@
 import { isLikelyGarbage, sizeFormate } from '@any-listen/common/utils'
-import type { IAudioMetadata } from 'music-metadata'
+import type { IAudioMetadata } from 'music-metadata/node'
 
 import { basename, checkFile, extname, getFileStats } from './index'
 import { getMetadataLyric, parseFileMetadata, type FileMetadata } from './music-metadata'
@@ -40,7 +40,7 @@ const getFileMetadata = async (path: string) => {
   prevFileInfo.path = path
   return (prevFileInfo.promise = checkFile(path).then(async (isExist) => {
     return isExist
-      ? import('music-metadata')
+      ? import('music-metadata/node')
           .then(async ({ parseFile }) => parseFile(path))
           .catch(() => {
             // console.log(err)
@@ -55,7 +55,7 @@ export const getFilePic = async (path: string) => {
   // 尝试读取文件内图片
   const metadata = await getFileMetadata(path)
   if (!metadata) return null
-  const { selectCover } = await import('music-metadata')
+  const { selectCover } = await import('music-metadata/node')
   const pic = selectCover(metadata.common.picture)
   return pic || null
 }

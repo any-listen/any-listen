@@ -1,7 +1,7 @@
 import { MEDIA_FILE_TYPES, MEDIA_FILE_TYPES_LOCAL } from '@any-listen/common/constants'
 import { singerFormat } from '@any-listen/common/tools'
 import { formatPlayTime, isLikelyGarbage, sizeFormate } from '@any-listen/common/utils'
-import type { IAudioMetadata } from 'music-metadata'
+import type { IAudioMetadata } from 'music-metadata/node'
 
 import { basename, checkFile, extname, getFileStats } from '.'
 
@@ -92,7 +92,7 @@ export interface FileMetadata {
  * 解析音频文件的元数据
  */
 export const parseBufferMetadata = async (buffer: Buffer, mimeType: string, ext: string) => {
-  const { parseBuffer, selectCover } = await import('music-metadata')
+  const { parseBuffer, selectCover } = await import('music-metadata/node')
   const metadata = await parseBuffer(buffer, mimeType, { skipPostHeaders: true, duration: false })
   // console.log(metadata)
   let name = (metadata.common.title || '').trim()
@@ -118,7 +118,7 @@ export const parseBufferMetadata = async (buffer: Buffer, mimeType: string, ext:
 
 export const parseFileMetadata = async (path: string): Promise<FileMetadata | null> => {
   if (!(await checkFile(path))) return null
-  const { parseFile } = await import('music-metadata')
+  const { parseFile } = await import('music-metadata/node')
 
   let metadata
   try {
