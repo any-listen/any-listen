@@ -105,6 +105,7 @@
         id: listInfo.id,
         name: 'search',
         type: 'online',
+        count: listInfo.total,
         listMeta: {
           extensionId: searchInfo.extId,
           source: searchInfo.source,

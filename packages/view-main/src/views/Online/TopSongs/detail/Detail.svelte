@@ -115,6 +115,7 @@
         name: info?.name ?? searchInfo.id,
         pic: info?.pic,
         desc: info?.desc,
+        count: listInfo.total,
         createTime: info?.date,
         saveable: true,
         type: 'online',

@@ -111,6 +111,7 @@
         name: info?.name ?? searchInfo.id,
         pic: info?.img,
         desc: info?.desc,
+        count: listInfo.total,
         saveable: true,
         type: 'online',
         listMeta: {

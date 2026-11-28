@@ -10,6 +10,7 @@ interface ListInfoBase<T extends 'default' | AnyListen.List.UserListType> {
   name: string
   pic?: string
   desc?: string
+  count?: number
   playCount?: number
   createTime?: string
   picIcon?: string

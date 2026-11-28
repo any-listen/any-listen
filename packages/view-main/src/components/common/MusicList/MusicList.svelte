@@ -57,7 +57,7 @@
     {#if miniheader}
       <MiniHeader
         disabled={loading || error}
-        musiccount={list.length}
+        musiccount={listinfo.count ?? list.length}
         {source}
         saveable={listinfo.saveable}
         {multimode}
@@ -99,7 +99,7 @@
       <Header
         disabled={loading || error}
         {listinfo}
-        musiccount={list.length}
+        musiccount={listinfo.count ?? list.length}
         {source}
         saveable={listinfo.saveable}
         {multimode}
