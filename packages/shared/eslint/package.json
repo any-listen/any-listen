@@ -7,7 +7,7 @@
     "@tsconfig/recommended": "^1.0.14",
     "@typescript-eslint/eslint-plugin": "^8.74.0",
     "@typescript-eslint/parser": "^8.74.0",
-    "eslint": "^10.15.0",
+    "eslint": "^10.16.0",
     "eslint-config-love": "^158.0.0",
     "globals": "^17.14.0",
     "typescript": "^6.0.3"
